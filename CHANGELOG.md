@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.0 (2026-03-27)
+
+Full Changelog: [v0.2.1...v0.3.0](https://github.com/TeamWarp/warp-cli/compare/v0.2.1...v0.3.0)
+
+### Features
+
+* **api:** update import names to warp ([f24fb41](https://github.com/TeamWarp/warp-cli/commit/f24fb413c7c1b24764782e8d7759a12fb74bf445))
+
 ## 0.2.1 (2026-03-27)
 
 Full Changelog: [v0.2.0...v0.2.1](https://github.com/TeamWarp/warp-cli/compare/v0.2.0...v0.2.1)
