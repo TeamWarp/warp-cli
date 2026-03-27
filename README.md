@@ -1,6 +1,6 @@
-# Warp Hr CLI
+# Warp CLI
 
-The official CLI for the [Warp Hr REST API](https://docs.warp.co).
+The official CLI for the [Warp REST API](https://docs.warp.co).
 
 It is generated with [Stainless](https://www.stainless.com/).
 

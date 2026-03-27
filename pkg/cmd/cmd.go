@@ -26,7 +26,7 @@ var (
 func init() {
 	Command = &cli.Command{
 		Name:      "warp-hr",
-		Usage:     "CLI for the warp-hr API",
+		Usage:     "CLI for the warp API",
 		Suggest:   true,
 		Version:   Version,
 		ErrWriter: &CommandErrorBuffer,
