@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0 (2026-03-27)
+
+Full Changelog: [v0.1.0...v0.2.0](https://github.com/TeamWarp/warp-cli/compare/v0.1.0...v0.2.0)
+
+### Features
+
+* **api:** update contact email ([23d4b66](https://github.com/TeamWarp/warp-cli/commit/23d4b66de7df979530942a11d2fd0aa9815efd74))
+
 ## 0.1.0 (2026-03-27)
 
 Full Changelog: [v0.0.2...v0.1.0](https://github.com/TeamWarp/warp-cli/compare/v0.0.2...v0.1.0)
