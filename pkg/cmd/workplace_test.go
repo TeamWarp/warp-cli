@@ -5,8 +5,8 @@ package cmd
 import (
 	"testing"
 
-	"github.com/stainless-sdks/warp-hr-cli/internal/mocktest"
-	"github.com/stainless-sdks/warp-hr-cli/internal/requestflag"
+	"github.com/TeamWarp/warp-cli/internal/mocktest"
+	"github.com/TeamWarp/warp-cli/internal/requestflag"
 )
 
 func TestWorkplacesCreate(t *testing.T) {

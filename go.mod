@@ -1,4 +1,4 @@
-module github.com/stainless-sdks/warp-hr-cli
+module github.com/TeamWarp/warp-cli
 
 go 1.25
 

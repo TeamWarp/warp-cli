@@ -16,8 +16,8 @@ import (
 	"strings"
 	"syscall"
 
+	"github.com/TeamWarp/warp-cli/internal/jsonview"
 	"github.com/TeamWarp/warp-go-sdk/option"
-	"github.com/stainless-sdks/warp-hr-cli/internal/jsonview"
 
 	"github.com/charmbracelet/x/term"
 	"github.com/itchyny/json2yaml"

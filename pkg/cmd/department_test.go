@@ -5,7 +5,7 @@ package cmd
 import (
 	"testing"
 
-	"github.com/stainless-sdks/warp-hr-cli/internal/mocktest"
+	"github.com/TeamWarp/warp-cli/internal/mocktest"
 )
 
 func TestDepartmentsCreate(t *testing.T) {
