@@ -31,7 +31,7 @@ var OutputFormats = []string{"auto", "explore", "json", "jsonl", "pretty", "raw"
 
 func getDefaultRequestOptions(cmd *cli.Command) []option.RequestOption {
 	opts := []option.RequestOption{
-		option.WithHeader("User-Agent", fmt.Sprintf("WarpHr/CLI %s", Version)),
+		option.WithHeader("User-Agent", fmt.Sprintf("Warp/CLI %s", Version)),
 		option.WithHeader("X-Stainless-Lang", "cli"),
 		option.WithHeader("X-Stainless-Package-Version", Version),
 		option.WithHeader("X-Stainless-Runtime", "cli"),
