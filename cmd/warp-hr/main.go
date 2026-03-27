@@ -10,8 +10,8 @@ import (
 	"os"
 	"slices"
 
+	"github.com/TeamWarp/warp-cli/pkg/cmd"
 	"github.com/TeamWarp/warp-go-sdk"
-	"github.com/stainless-sdks/warp-hr-cli/pkg/cmd"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )

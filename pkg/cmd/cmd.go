@@ -12,8 +12,8 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/stainless-sdks/warp-hr-cli/internal/autocomplete"
-	"github.com/stainless-sdks/warp-hr-cli/internal/requestflag"
+	"github.com/TeamWarp/warp-cli/internal/autocomplete"
+	"github.com/TeamWarp/warp-cli/internal/requestflag"
 	docs "github.com/urfave/cli-docs/v3"
 	"github.com/urfave/cli/v3"
 )

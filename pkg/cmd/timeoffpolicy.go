@@ -7,10 +7,10 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/TeamWarp/warp-cli/internal/apiquery"
+	"github.com/TeamWarp/warp-cli/internal/requestflag"
 	"github.com/TeamWarp/warp-go-sdk"
 	"github.com/TeamWarp/warp-go-sdk/option"
-	"github.com/stainless-sdks/warp-hr-cli/internal/apiquery"
-	"github.com/stainless-sdks/warp-hr-cli/internal/requestflag"
 	"github.com/tidwall/gjson"
 	"github.com/urfave/cli/v3"
 )
