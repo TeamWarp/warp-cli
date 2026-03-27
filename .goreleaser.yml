@@ -78,3 +78,19 @@ nfpms:
     contents:
       - src: man/man1/*.1.gz
         dst: /usr/share/man/man1/
+homebrew_casks:
+  - name: warp-hr
+    repository:
+      owner: TeamWarp
+      name: homebrew-tap
+      token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
+    homepage: https://warp.co
+    description: The official CLI for Warp
+    license: Apache-2.0
+    binary: "warp-hr"
+    completions:
+      bash: "completions/warp-hr.bash"
+      zsh: "completions/warp-hr.zsh"
+      fish: "completions/warp-hr.fish"
+    manpages:
+    - man/man1/warp-hr.1.gz
