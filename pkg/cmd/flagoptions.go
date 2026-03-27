@@ -14,11 +14,11 @@ import (
 	"strings"
 	"unicode/utf8"
 
+	"github.com/TeamWarp/warp-cli/internal/apiform"
+	"github.com/TeamWarp/warp-cli/internal/apiquery"
+	"github.com/TeamWarp/warp-cli/internal/debugmiddleware"
+	"github.com/TeamWarp/warp-cli/internal/requestflag"
 	"github.com/TeamWarp/warp-go-sdk/option"
-	"github.com/stainless-sdks/warp-hr-cli/internal/apiform"
-	"github.com/stainless-sdks/warp-hr-cli/internal/apiquery"
-	"github.com/stainless-sdks/warp-hr-cli/internal/debugmiddleware"
-	"github.com/stainless-sdks/warp-hr-cli/internal/requestflag"
 
 	"github.com/goccy/go-yaml"
 	"github.com/urfave/cli/v3"
