@@ -15,7 +15,7 @@ on:
       - 'stl-preview-base/**'
 
 env:
-  GOPRIVATE: github.com/stainless-sdks/warp-hr-go
+  GOPRIVATE: github.com/TeamWarp/warp-go-sdk,github.com/stainless-sdks/warp-hr-go
 
 jobs:
   lint:
