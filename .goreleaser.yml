@@ -67,7 +67,7 @@ snapshot:
 
 nfpms:
   - license: Apache-2.0
-    maintainer: adam@joinwarp.com
+    maintainer: adam@warp.co
     bindir: /usr
     formats:
       - apk
