@@ -5,6 +5,6 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 
 # Mark the necessary Go modules as private to avoid Go's proxy
-export GOPRIVATE="${GOPRIVATE:+$GOPRIVATE,}github.com/stainless-sdks/warp-hr-go"
+export GOPRIVATE="${GOPRIVATE:+$GOPRIVATE,}github.com/TeamWarp/warp-go-sdk,github.com/stainless-sdks/warp-hr-go"
 
 go run ./cmd/warp-hr "$@"
