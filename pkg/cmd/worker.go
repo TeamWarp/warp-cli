@@ -150,7 +150,7 @@ var workersCreateContractor = requestflag.WithInnerFlags(cli.Command{
 			Usage:    `Required when entityType is "business". The legal name of the contractor's business.`,
 			BodyPath: "businessName",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[map[string]any]{
 			Name:     "compensation",
 			Usage:    "The pay rate for the contractor. Leave this blank if you'd like to pay this contractor on-demand or via invoicing.",
 			BodyPath: "compensation",
