@@ -341,8 +341,9 @@ func handleWorkersRetrieve(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "workers retrieve", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "workers retrieve", obj, format, explicitFormat, transform)
 }
 
 func handleWorkersList(ctx context.Context, cmd *cli.Command) error {
@@ -367,6 +368,7 @@ func handleWorkersList(ctx context.Context, cmd *cli.Command) error {
 	}
 
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
 	if format == "raw" {
 		var res []byte
@@ -376,14 +378,14 @@ func handleWorkersList(ctx context.Context, cmd *cli.Command) error {
 			return err
 		}
 		obj := gjson.ParseBytes(res)
-		return ShowJSON(os.Stdout, "workers list", obj, format, transform)
+		return ShowJSON(os.Stdout, os.Stderr, "workers list", obj, format, explicitFormat, transform)
 	} else {
 		iter := client.Workers.ListAutoPaging(ctx, params, options...)
 		maxItems := int64(-1)
 		if cmd.IsSet("max-items") {
 			maxItems = cmd.Value("max-items").(int64)
 		}
-		return ShowJSONIterator(os.Stdout, "workers list", iter, format, transform, maxItems)
+		return ShowJSONIterator(os.Stdout, os.Stderr, "workers list", iter, format, explicitFormat, transform, maxItems)
 	}
 }
 
@@ -442,8 +444,9 @@ func handleWorkersCreateContractor(ctx context.Context, cmd *cli.Command) error 
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "workers create-contractor", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "workers create-contractor", obj, format, explicitFormat, transform)
 }
 
 func handleWorkersCreateEmployee(ctx context.Context, cmd *cli.Command) error {
@@ -476,8 +479,9 @@ func handleWorkersCreateEmployee(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "workers create-employee", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "workers create-employee", obj, format, explicitFormat, transform)
 }
 
 func handleWorkersInvite(ctx context.Context, cmd *cli.Command) error {
@@ -511,6 +515,7 @@ func handleWorkersInvite(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "workers invite", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "workers invite", obj, format, explicitFormat, transform)
 }

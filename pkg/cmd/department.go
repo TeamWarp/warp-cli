@@ -109,8 +109,9 @@ func handleDepartmentsCreate(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "departments create", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "departments create", obj, format, explicitFormat, transform)
 }
 
 func handleDepartmentsUpdate(ctx context.Context, cmd *cli.Command) error {
@@ -151,8 +152,9 @@ func handleDepartmentsUpdate(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "departments update", obj, format, transform)
+	return ShowJSON(os.Stdout, os.Stderr, "departments update", obj, format, explicitFormat, transform)
 }
 
 func handleDepartmentsList(ctx context.Context, cmd *cli.Command) error {
@@ -177,6 +179,7 @@ func handleDepartmentsList(ctx context.Context, cmd *cli.Command) error {
 	}
 
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
 	if format == "raw" {
 		var res []byte
@@ -186,13 +189,13 @@ func handleDepartmentsList(ctx context.Context, cmd *cli.Command) error {
 			return err
 		}
 		obj := gjson.ParseBytes(res)
-		return ShowJSON(os.Stdout, "departments list", obj, format, transform)
+		return ShowJSON(os.Stdout, os.Stderr, "departments list", obj, format, explicitFormat, transform)
 	} else {
 		iter := client.Departments.ListAutoPaging(ctx, params, options...)
 		maxItems := int64(-1)
 		if cmd.IsSet("max-items") {
 			maxItems = cmd.Value("max-items").(int64)
 		}
-		return ShowJSONIterator(os.Stdout, "departments list", iter, format, transform, maxItems)
+		return ShowJSONIterator(os.Stdout, os.Stderr, "departments list", iter, format, explicitFormat, transform, maxItems)
 	}
 }
