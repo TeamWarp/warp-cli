@@ -188,6 +188,7 @@ func handleTimeOffListAssignments(ctx context.Context, cmd *cli.Command) error {
 		return ShowJSON(obj, ShowJSONOpts{
 			ExplicitFormat: explicitFormat,
 			Format:         format,
+			RawOutput:      cmd.Root().Bool("raw-output"),
 			Title:          "time-off list-assignments",
 			Transform:      transform,
 		})
@@ -200,6 +201,7 @@ func handleTimeOffListAssignments(ctx context.Context, cmd *cli.Command) error {
 		return ShowJSONIterator(iter, maxItems, ShowJSONOpts{
 			ExplicitFormat: explicitFormat,
 			Format:         format,
+			RawOutput:      cmd.Root().Bool("raw-output"),
 			Title:          "time-off list-assignments",
 			Transform:      transform,
 		})
@@ -241,6 +243,7 @@ func handleTimeOffListBalances(ctx context.Context, cmd *cli.Command) error {
 		return ShowJSON(obj, ShowJSONOpts{
 			ExplicitFormat: explicitFormat,
 			Format:         format,
+			RawOutput:      cmd.Root().Bool("raw-output"),
 			Title:          "time-off list-balances",
 			Transform:      transform,
 		})
@@ -253,6 +256,7 @@ func handleTimeOffListBalances(ctx context.Context, cmd *cli.Command) error {
 		return ShowJSONIterator(iter, maxItems, ShowJSONOpts{
 			ExplicitFormat: explicitFormat,
 			Format:         format,
+			RawOutput:      cmd.Root().Bool("raw-output"),
 			Title:          "time-off list-balances",
 			Transform:      transform,
 		})
@@ -294,6 +298,7 @@ func handleTimeOffListRequests(ctx context.Context, cmd *cli.Command) error {
 		return ShowJSON(obj, ShowJSONOpts{
 			ExplicitFormat: explicitFormat,
 			Format:         format,
+			RawOutput:      cmd.Root().Bool("raw-output"),
 			Title:          "time-off list-requests",
 			Transform:      transform,
 		})
@@ -306,6 +311,7 @@ func handleTimeOffListRequests(ctx context.Context, cmd *cli.Command) error {
 		return ShowJSONIterator(iter, maxItems, ShowJSONOpts{
 			ExplicitFormat: explicitFormat,
 			Format:         format,
+			RawOutput:      cmd.Root().Bool("raw-output"),
 			Title:          "time-off list-requests",
 			Transform:      transform,
 		})
