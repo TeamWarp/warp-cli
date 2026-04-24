@@ -5,7 +5,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/TeamWarp/warp-cli/internal/apiquery"
 	"github.com/TeamWarp/warp-cli/internal/requestflag"
@@ -150,7 +149,7 @@ var workersCreateContractor = requestflag.WithInnerFlags(cli.Command{
 			Usage:    `Required when entityType is "business". The legal name of the contractor's business.`,
 			BodyPath: "businessName",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[map[string]any]{
 			Name:     "compensation",
 			Usage:    "The pay rate for the contractor. Leave this blank if you'd like to pay this contractor on-demand or via invoicing.",
 			BodyPath: "compensation",
@@ -341,8 +340,15 @@ func handleWorkersRetrieve(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "workers retrieve", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "workers retrieve",
+		Transform:      transform,
+	})
 }
 
 func handleWorkersList(ctx context.Context, cmd *cli.Command) error {
@@ -367,6 +373,7 @@ func handleWorkersList(ctx context.Context, cmd *cli.Command) error {
 	}
 
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
 	if format == "raw" {
 		var res []byte
@@ -376,14 +383,26 @@ func handleWorkersList(ctx context.Context, cmd *cli.Command) error {
 			return err
 		}
 		obj := gjson.ParseBytes(res)
-		return ShowJSON(os.Stdout, "workers list", obj, format, transform)
+		return ShowJSON(obj, ShowJSONOpts{
+			ExplicitFormat: explicitFormat,
+			Format:         format,
+			RawOutput:      cmd.Root().Bool("raw-output"),
+			Title:          "workers list",
+			Transform:      transform,
+		})
 	} else {
 		iter := client.Workers.ListAutoPaging(ctx, params, options...)
 		maxItems := int64(-1)
 		if cmd.IsSet("max-items") {
 			maxItems = cmd.Value("max-items").(int64)
 		}
-		return ShowJSONIterator(os.Stdout, "workers list", iter, format, transform, maxItems)
+		return ShowJSONIterator(iter, maxItems, ShowJSONOpts{
+			ExplicitFormat: explicitFormat,
+			Format:         format,
+			RawOutput:      cmd.Root().Bool("raw-output"),
+			Title:          "workers list",
+			Transform:      transform,
+		})
 	}
 }
 
@@ -442,8 +461,15 @@ func handleWorkersCreateContractor(ctx context.Context, cmd *cli.Command) error 
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "workers create-contractor", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "workers create-contractor",
+		Transform:      transform,
+	})
 }
 
 func handleWorkersCreateEmployee(ctx context.Context, cmd *cli.Command) error {
@@ -476,8 +502,15 @@ func handleWorkersCreateEmployee(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "workers create-employee", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "workers create-employee",
+		Transform:      transform,
+	})
 }
 
 func handleWorkersInvite(ctx context.Context, cmd *cli.Command) error {
@@ -511,6 +544,13 @@ func handleWorkersInvite(ctx context.Context, cmd *cli.Command) error {
 
 	obj := gjson.ParseBytes(res)
 	format := cmd.Root().String("format")
+	explicitFormat := cmd.Root().IsSet("format")
 	transform := cmd.Root().String("transform")
-	return ShowJSON(os.Stdout, "workers invite", obj, format, transform)
+	return ShowJSON(obj, ShowJSONOpts{
+		ExplicitFormat: explicitFormat,
+		Format:         format,
+		RawOutput:      cmd.Root().Bool("raw-output"),
+		Title:          "workers invite",
+		Transform:      transform,
+	})
 }
