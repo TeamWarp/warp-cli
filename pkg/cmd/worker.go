@@ -154,17 +154,17 @@ var workersCreateContractor = requestflag.WithInnerFlags(cli.Command{
 			Usage:    "The pay rate for the contractor. Leave this blank if you'd like to pay this contractor on-demand or via invoicing.",
 			BodyPath: "compensation",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[*string]{
 			Name:     "pay-schedule",
 			Usage:    "The contractor's pay schedule. Must be a pay schedule that the company has configured.",
 			BodyPath: "paySchedule",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[*string]{
 			Name:     "scope-of-work",
 			Usage:    "A description of the work the contractor will perform.",
 			BodyPath: "scopeOfWork",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[*string]{
 			Name:     "work-email",
 			Usage:    "An email with a reasonably valid regex (shamelessly taken from zod)",
 			BodyPath: "workEmail",
@@ -251,7 +251,7 @@ var workersCreateEmployee = requestflag.WithInnerFlags(cli.Command{
 			Required: true,
 			BodyPath: "workLocation",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[*string]{
 			Name:     "pay-schedule",
 			Usage:    "The employee's pay schedule. Must be a pay schedule that the company has configured.",
 			BodyPath: "paySchedule",
@@ -266,12 +266,12 @@ var workersCreateEmployee = requestflag.WithInnerFlags(cli.Command{
 			Usage:    "How state tax registration is handled for this employee's work state. Required when hiring in a state where your company doesn't have an existing registration. Use 'self_managed' if you've already registered in this state, or 'warp_managed' for Warp to handle registration on your behalf.",
 			BodyPath: "stateRegistration",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[*float64]{
 			Name:     "stock-options",
 			Usage:    "a non-negative number",
 			BodyPath: "stockOptions",
 		},
-		&requestflag.Flag[any]{
+		&requestflag.Flag[*string]{
 			Name:     "work-email",
 			Usage:    "An email with a reasonably valid regex (shamelessly taken from zod)",
 			BodyPath: "workEmail",
