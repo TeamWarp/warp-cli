@@ -20,9 +20,10 @@ var timeOffPoliciesRetrieve = cli.Command{
 	Suggest: true,
 	Flags: []cli.Flag{
 		&requestflag.Flag[string]{
-			Name:     "id",
-			Usage:    `a string starting with "top_"`,
-			Required: true,
+			Name:      "id",
+			Usage:     `a string starting with "top_"`,
+			Required:  true,
+			PathParam: "id",
 		},
 	},
 	Action:          handleTimeOffPoliciesRetrieve,
@@ -108,8 +109,6 @@ func handleTimeOffPoliciesList(ctx context.Context, cmd *cli.Command) error {
 		return fmt.Errorf("Unexpected extra arguments: %v", unusedArgs)
 	}
 
-	params := warphr.TimeOffPolicyListParams{}
-
 	options, err := flagOptions(
 		cmd,
 		apiquery.NestedQueryFormatBrackets,
@@ -120,6 +119,8 @@ func handleTimeOffPoliciesList(ctx context.Context, cmd *cli.Command) error {
 	if err != nil {
 		return err
 	}
+
+	params := warphr.TimeOffPolicyListParams{}
 
 	format := cmd.Root().String("format")
 	explicitFormat := cmd.Root().IsSet("format")
