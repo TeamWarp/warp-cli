@@ -168,7 +168,7 @@ var workersCreateContractor = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[*string]{
 			Name:     "work-email",
-			Usage:    "An email with a reasonably valid regex (shamelessly taken from zod)",
+			Usage:    "An email with a reasonably valid regex (based on RFC 5321 atext characters)",
 			BodyPath: "workEmail",
 		},
 	},
@@ -275,7 +275,7 @@ var workersCreateEmployee = requestflag.WithInnerFlags(cli.Command{
 		},
 		&requestflag.Flag[*string]{
 			Name:     "work-email",
-			Usage:    "An email with a reasonably valid regex (shamelessly taken from zod)",
+			Usage:    "An email with a reasonably valid regex (based on RFC 5321 atext characters)",
 			BodyPath: "workEmail",
 		},
 	},
