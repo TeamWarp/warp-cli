@@ -1,5 +1,5 @@
-.prism.log
-.stdy.log
+node_modules/
 dist/
-/warp-hr
-*.exe
+*.tsbuildinfo
+.env
+.env.*

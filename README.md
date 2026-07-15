@@ -1,119 +1,105 @@
-# Warp CLI
+# Warp
 
-The official CLI for the [Warp REST API](https://docs.warp.co).
+Generated CLI SDK for Warp API.
 
-It is generated with [Stainless](https://www.stainless.com/).
+<br />
 
-<!-- x-release-please-start-version -->
+## Contents
+
+- [Installation](#installation)
+- [Usage](#usage)
+- [API Reference](./api.md)
+- [Authentication](#authentication)
+- [Errors](#errors)
+- [Client Options](#client-options)
+- [Retries and Timeouts](#retries-and-timeouts)
+- [Helpers](#helpers)
+- [Logging](#logging)
+- [Requirements](#requirements)
+
+<br />
 
 ## Installation
 
-### Installing with Homebrew
-
 ```sh
-brew install TeamWarp/tap/warp-hr
+npm install -g warp-cli
 ```
 
-### Installing with Go
-
-To test or install the CLI locally, you need [Go](https://go.dev/doc/install) version 1.22 or later installed.
-
-```sh
-go install 'github.com/TeamWarp/warp-cli/cmd/warp-hr@latest'
-```
-
-Once you have run `go install`, the binary is placed in your Go bin directory:
-
-- **Default location**: `$HOME/go/bin` (or `$GOPATH/bin` if GOPATH is set)
-- **Check your path**: Run `go env GOPATH` to see the base directory
-
-If commands aren't found after installation, add the Go bin directory to your PATH:
-
-```sh
-# Add to your shell profile (.zshrc, .bashrc, etc.)
-export PATH="$PATH:$(go env GOPATH)/bin"
-```
-
-<!-- x-release-please-end -->
-
-### Running Locally
-
-After cloning the git repository for this project, you can use the
-`scripts/run` script to run the tool locally:
-
-```sh
-./scripts/run args...
-```
+<br />
 
 ## Usage
 
-The CLI follows a resource-based command structure:
-
 ```sh
-warp-hr [resource] <command> [flags...]
+warp [resource] [command] [flags]
+
+warp time-off list-assignments --api-key "$WARP_API_KEY"
 ```
 
-```sh
-warp-hr time-off:policies list \
-  --api-key 'My API Key'
-```
+The examples in the following sections assume a `client` configured as shown above.
 
-For details about specific commands, use the `--help` flag.
+See the [API reference](./api.md) for every available operation.
 
-### Environment variables
+<br />
 
-| Environment variable | Required |
-| -------------------- | -------- |
-| `WARP_API_KEY`       | yes      |
+## Authentication
 
-### Global flags
+Pass credentials to the generated client constructor. Environment variables are read automatically when supported by the target runtime.
 
-- `--api-key` (can also be set with `WARP_API_KEY` env var)
-- `--help` - Show command line usage
-- `--debug` - Enable debug logging (includes HTTP request/response details)
-- `--version`, `-v` - Show the CLI version
-- `--base-url` - Use a custom API backend URL
-- `--format` - Change the output format (`auto`, `explore`, `json`, `jsonl`, `pretty`, `raw`, `yaml`)
-- `--format-error` - Change the output format for errors (`auto`, `explore`, `json`, `jsonl`, `pretty`, `raw`, `yaml`)
-- `--transform` - Transform the data output using [GJSON syntax](https://github.com/tidwall/gjson/blob/master/SYNTAX.md)
-- `--transform-error` - Transform the error output using [GJSON syntax](https://github.com/tidwall/gjson/blob/master/SYNTAX.md)
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `--api-key` | `string \| provider` | - | Credential for the apiKey scheme. Defaults to WARP_API_KEY. |
 
-### Passing files as arguments
+Declared schemes:
 
-To pass files to your API, you can use the `@myfile.ext` syntax:
+- `apiKey` API key in header `x-api-key`
 
-```bash
-warp-hr <command> --arg @abe.jpg
-```
+<br />
 
-Files can also be passed inside JSON or YAML blobs:
+## Errors
 
-```bash
-warp-hr <command> --arg '{image: "@abe.jpg"}'
-# Equivalent:
-warp-hr <command> <<YAML
-arg:
-  image: "@abe.jpg"
-YAML
-```
+Non-success responses throw generated API errors. Error objects expose status, headers, response body, and request metadata where the target runtime supports it.
 
-If you need to pass a string literal that begins with an `@` sign, you can
-escape the `@` sign to avoid accidentally passing a file.
+Documented error statuses: `400`, `401`, `403`, `404`, `409`, `429`, `500`.
 
-```bash
-warp-hr <command> --username '\@abe'
-```
+<br />
 
-#### Explicit encoding
+## Client Options
 
-For JSON endpoints, the CLI tool does filetype sniffing to determine whether the
-file contents should be sent as a string literal (for plain text files) or as a
-base64-encoded string literal (for binary files). If you need to explicitly send
-the file as either plain text or base64-encoded data, you can use
-`@file://myfile.txt` (for string encoding) or `@data://myfile.dat` (for
-base64-encoding). Note that absolute paths will begin with `@file://` or
-`@data://`, followed by a third `/` (for example, `@file:///tmp/file.txt`).
+Configure the generated client by setting any of these options when you create it.
 
-```bash
-warp-hr <command> --arg @data://file.txt
-```
+| Option | Type | Default | Description |
+| --- | --- | --- | --- |
+| `--base-url` | `<url>` | - | Override the base URL for API requests. |
+| `--timeout` | `<ms>` | - | Request timeout in milliseconds. |
+| `--max-retries` | `<count>` | - | Number of retries for retryable failures. |
+| `--debug` | `flag` | - | Enable SDK debug logging. |
+
+<br />
+
+## Retries and Timeouts
+
+Generated clients support request timeouts and retry temporary failures such as network errors, 408, 409, 429, and 5xx responses. Retry delays honor `Retry-After` headers when present. Tune the retry and timeout client options shown above, or override them per request.
+
+<br />
+
+## Helpers
+
+- `--format <format>` — output format: `auto`, `json`, `jsonl`, `pretty`, `raw`, or `yaml`.
+- `--format-error <format>` — error output format: `auto`, `json`, `jsonl`, `pretty`, `raw`, or `yaml`.
+- `--transform <path>` and `--transform-error <path>` — dot-path transform for data/error output.
+- `--raw-output`, `-r` — print transformed string values without JSON quotes.
+- `--max-items <count>` — bound iterator, streaming, and WebSocket command output.
+
+<br />
+
+## Logging
+
+- Pass `--debug` to any command to enable SDK debug logging on stderr.
+
+<br />
+
+## Requirements
+
+- Node.js 20 or newer
+
+Powered by Scalar.

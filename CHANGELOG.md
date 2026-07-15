@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.1.6 (2026-07-15)
+
+Minor internal updates.
+
 ## 0.3.0 (2026-03-27)
 
 Full Changelog: [v0.2.1...v0.3.0](https://github.com/TeamWarp/warp-cli/compare/v0.2.1...v0.3.0)
