@@ -1,6 +1,6 @@
 # Changelog
 
-## v0.1.6 (2026-07-15)
+## v0.1.6 (2026-07-16)
 
 Minor internal updates.
 
