@@ -1,6 +1,8 @@
 # Warp
 
-Generated CLI SDK for Warp API.
+This library provides convenient access to the Warp REST API from the command line.
+
+The full API of this library can be found in [api.md](./api.md).
 
 <br />
 
