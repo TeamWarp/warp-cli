@@ -3,8 +3,9 @@
 import { APIResource } from "../../resource";
 import { APIPromise } from "../../api-promise";
 import type { RequestOptions } from "../../internal/request-options";
+import type * as OffersAPI from "../offers";
 import * as PoliciesAPI from "./policies";
-import { Policies, type PolicyListResponse, type PolicyRetrieveResponse, type PolicyListParams } from "./policies";
+import { Policies, type PolicyTimeOffGetResponse, type PolicyTimeOffGet2Response, type PolicyTimeOffGetParams } from "./policies";
 
 export class TimeOff extends APIResource {
   policies: PoliciesAPI.Policies = new PoliciesAPI.Policies(this._client);
@@ -12,7 +13,7 @@ export class TimeOff extends APIResource {
   /**
    * Time off assignments are mappings between workers and time off policies. Useful for finding out which policies a worker is assigned to, or which workers are assigned to a given policy.
    *
-   * @param {TimeOffListAssignmentsParams} [params] - The parameters to send with the request.
+   * @param {TimeOffListAssignmentsParams} [query] - The parameters to send with the request.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
    * @returns {APIPromise<TimeOffListAssignmentsResponse>} Success
    *
@@ -21,15 +22,14 @@ export class TimeOff extends APIResource {
    * const listAssignments = await client.timeOff.listAssignments();
    * ```
    */
-  listAssignments(params: TimeOffListAssignmentsParams | null | undefined = {}, options?: RequestOptions): APIPromise<TimeOffListAssignmentsResponse> {
-    const { limit, afterId, beforeId, policyIds, workerIds } = params ?? {};
-    return this._client.get("/v1/time_off/assignments", { query: { limit: limit, afterId: afterId, beforeId: beforeId, policyIds: policyIds, workerIds: workerIds }, ...options });
+  listAssignments(query: TimeOffListAssignmentsParams | null | undefined = {}, options?: RequestOptions): APIPromise<TimeOffListAssignmentsResponse> {
+    return this._client.get("/v1/time_off/assignments", { query, ...options });
   }
 
   /**
    * Get worker remaining time-off balances.
    *
-   * @param {TimeOffListBalancesParams} [params] - The parameters to send with the request.
+   * @param {TimeOffListBalancesParams} [query] - The parameters to send with the request.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
    * @returns {APIPromise<TimeOffListBalancesResponse>} Success
    *
@@ -38,15 +38,14 @@ export class TimeOff extends APIResource {
    * const listBalances = await client.timeOff.listBalances();
    * ```
    */
-  listBalances(params: TimeOffListBalancesParams | null | undefined = {}, options?: RequestOptions): APIPromise<TimeOffListBalancesResponse> {
-    const { limit, afterId, beforeId, policyIds, workerIds, startDate, endDate } = params ?? {};
-    return this._client.get("/v1/time_off/balances", { query: { limit: limit, afterId: afterId, beforeId: beforeId, policyIds: policyIds, workerIds: workerIds, startDate: startDate, endDate: endDate }, ...options });
+  listBalances(query: TimeOffListBalancesParams | null | undefined = {}, options?: RequestOptions): APIPromise<TimeOffListBalancesResponse> {
+    return this._client.get("/v1/time_off/balances", { query, ...options });
   }
 
   /**
    * Get the time off requests that workers in your company have made.
    *
-   * @param {TimeOffListRequestsParams} [params] - The parameters to send with the request.
+   * @param {TimeOffListRequestsParams} [query] - The parameters to send with the request.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
    * @returns {APIPromise<TimeOffListRequestsResponse>} Success
    *
@@ -55,9 +54,8 @@ export class TimeOff extends APIResource {
    * const listRequests = await client.timeOff.listRequests();
    * ```
    */
-  listRequests(params: TimeOffListRequestsParams | null | undefined = {}, options?: RequestOptions): APIPromise<TimeOffListRequestsResponse> {
-    const { limit, afterId, beforeId, statuses, policyIds, workerIds, startsOnOrAfter, startsBefore, endsOnOrAfter, endsBefore } = params ?? {};
-    return this._client.get("/v1/time_off/requests", { query: { limit: limit, afterId: afterId, beforeId: beforeId, statuses: statuses, policyIds: policyIds, workerIds: workerIds, startsOnOrAfter: startsOnOrAfter, startsBefore: startsBefore, endsOnOrAfter: endsOnOrAfter, endsBefore: endsBefore }, ...options });
+  listRequests(query: TimeOffListRequestsParams | null | undefined = {}, options?: RequestOptions): APIPromise<TimeOffListRequestsResponse> {
+    return this._client.get("/v1/time_off/requests", { query, ...options });
   }
 }
 
@@ -97,7 +95,7 @@ export namespace TimeOffListAssignmentsResponse {
     /**
      * a string to be decoded into a Date
      */
-    assignedAt: string;
+    assignedAt: OffersAPI.Date;
   }
 }
 
@@ -113,11 +111,11 @@ export interface TimeOffListBalancesParams {
   /**
    * a string to be decoded into a Date
    */
-  startDate?: string;
+  startDate?: OffersAPI.Date;
   /**
    * a string to be decoded into a Date
    */
-  endDate?: string;
+  endDate?: OffersAPI.Date;
 }
 
 export interface TimeOffListBalancesResponse {
@@ -159,19 +157,19 @@ export interface TimeOffListRequestsParams {
   /**
    * a string to be decoded into a Date
    */
-  startsOnOrAfter?: string;
+  startsOnOrAfter?: OffersAPI.Date;
   /**
    * a string to be decoded into a Date
    */
-  startsBefore?: string;
+  startsBefore?: OffersAPI.Date;
   /**
    * a string to be decoded into a Date
    */
-  endsOnOrAfter?: string;
+  endsOnOrAfter?: OffersAPI.Date;
   /**
    * a string to be decoded into a Date
    */
-  endsBefore?: string;
+  endsBefore?: OffersAPI.Date;
 }
 
 export interface TimeOffListRequestsResponse {
@@ -200,18 +198,18 @@ export namespace TimeOffListRequestsResponse {
     /**
      * a string to be decoded into a Date
      */
-    startAt: string;
+    startAt: OffersAPI.Date;
     startRangeType: "date" | "datetime";
     /**
      * a string to be decoded into a Date
      */
-    endAt: string;
+    endAt: OffersAPI.Date;
     endRangeType: "date" | "datetime";
     reason: string | null;
     /**
      * a string to be decoded into a Date
      */
-    createdAt: string;
+    createdAt: OffersAPI.Date;
     requestedMinutes: number;
     /**
      * The time zone that the worker is requesting time off in.
@@ -233,8 +231,8 @@ export declare namespace TimeOff {
 
   export {
     Policies as Policies,
-    type PolicyListResponse as PolicyListResponse,
-    type PolicyRetrieveResponse as PolicyRetrieveResponse,
-    type PolicyListParams as PolicyListParams,
+    type PolicyTimeOffGetResponse as PolicyTimeOffGetResponse,
+    type PolicyTimeOffGet2Response as PolicyTimeOffGet2Response,
+    type PolicyTimeOffGetParams as PolicyTimeOffGetParams,
   };
 }

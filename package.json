@@ -1,10 +1,10 @@
 {
-  "name": "warp-cli",
+  "name": "warpapi-cli",
   "version": "0.1.0",
-  "description": "Warp CLI",
+  "description": "Warp API CLI",
   "type": "module",
   "bin": {
-    "warp": "./dist/esm/bin.js"
+    "warpapi": "./dist/esm/bin.js"
   },
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",

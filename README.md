@@ -1,6 +1,6 @@
-# Warp
+# Warp API
 
-This library provides convenient access to the Warp REST API from the command line.
+This library provides convenient access to the Warp API from the command line.
 
 The full API of this library can be found in [api.md](./api.md).
 
@@ -24,7 +24,7 @@ The full API of this library can be found in [api.md](./api.md).
 ## Installation
 
 ```sh
-npm install -g warp-cli
+npm install -g warpapi-cli
 ```
 
 <br />
@@ -32,9 +32,9 @@ npm install -g warp-cli
 ## Usage
 
 ```sh
-warp [resource] [command] [flags]
+warpapi [resource] [command] [flags]
 
-warp time-off list-assignments --api-key "$WARP_API_KEY"
+warpapi custom-worker-fields list --api-key "$API_KEY"
 ```
 
 The examples in the following sections assume a `client` configured as shown above.
@@ -49,7 +49,7 @@ Pass credentials to the generated client constructor. Environment variables are 
 
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
-| `--api-key` | `string \| provider` | - | Credential for the apiKey scheme. Defaults to WARP_API_KEY. |
+| `--api-key` | `string \| provider` | - | Credential for the apiKey scheme. Defaults to API_KEY. |
 
 Declared schemes:
 
@@ -61,7 +61,7 @@ Declared schemes:
 
 Non-success responses throw generated API errors. Error objects expose status, headers, response body, and request metadata where the target runtime supports it.
 
-Documented error statuses: `400`, `401`, `403`, `404`, `409`, `429`, `500`.
+Documented error statuses: `400`, `401`, `403`, `404`, `409`, `422`, `429`, `500`.
 
 <br />
 
