@@ -4,12 +4,14 @@ import { APIResource } from "../resource";
 import { APIPromise } from "../api-promise";
 import type { RequestOptions } from "../internal/request-options";
 import { path as __scalarPath } from "../internal/utils/path";
+import type * as OffersAPI from "./offers";
+import type * as CustomWorkerFieldsAPI from "./custom-worker-fields";
 
 export class Workplaces extends APIResource {
   /**
    * List all workplaces for your company.
    *
-   * @param {WorkplaceListParams} [params] - The parameters to send with the request.
+   * @param {WorkplaceListParams} [query] - The parameters to send with the request.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
    * @returns {APIPromise<WorkplaceListResponse>} Success
    *
@@ -18,9 +20,8 @@ export class Workplaces extends APIResource {
    * const list = await client.workplaces.list();
    * ```
    */
-  list(params: WorkplaceListParams | null | undefined = {}, options?: RequestOptions): APIPromise<WorkplaceListResponse> {
-    const { limit, afterId, beforeId } = params ?? {};
-    return this._client.get("/v1/workplaces", { query: { limit: limit, afterId: afterId, beforeId: beforeId }, ...options });
+  list(query: WorkplaceListParams | null | undefined = {}, options?: RequestOptions): APIPromise<WorkplaceListResponse> {
+    return this._client.get("/v1/workplaces", { query, ...options });
   }
 
   /**
@@ -46,7 +47,7 @@ export class Workplaces extends APIResource {
    * ```
    */
   create(body: WorkplaceCreateParams, options?: RequestOptions): APIPromise<WorkplaceCreateResponse> {
-    return this._client.post("/v1/workplaces", { body: body, ...options });
+    return this._client.post("/v1/workplaces", { body, ...options });
   }
 
   /**
@@ -63,7 +64,7 @@ export class Workplaces extends APIResource {
    * ```
    */
   update(id: string, body: WorkplaceUpdateParams, options?: RequestOptions): APIPromise<WorkplaceUpdateResponse> {
-    return this._client.patch(__scalarPath`/v1/workplaces/${id}`, { body: body, ...options });
+    return this._client.patch(__scalarPath`/v1/workplaces/${id}`, { body, ...options });
   }
 }
 
@@ -110,7 +111,7 @@ export namespace WorkplaceListResponse {
     /**
      * a string to be decoded into a Date
      */
-    createdAt: string;
+    createdAt: OffersAPI.Date;
   }
 
   export namespace Data {
@@ -134,7 +135,7 @@ export interface WorkplaceCreateParams {
    * a non empty string
    * @pattern ^\S[\s\S]*\S$|^\S$|^$
    */
-  name: string;
+  name: CustomWorkerFieldsAPI.Trimmed;
   type: "remote" | "office";
   /**
    * A valid US address
@@ -173,7 +174,7 @@ export interface WorkplaceCreateResponse {
   /**
    * a string to be decoded into a Date
    */
-  createdAt: string;
+  createdAt: OffersAPI.Date;
 }
 
 export namespace WorkplaceCreateResponse {
@@ -211,7 +212,7 @@ export interface WorkplaceUpdateResponse {
   /**
    * a string to be decoded into a Date
    */
-  createdAt: string;
+  createdAt: OffersAPI.Date;
 }
 
 export namespace WorkplaceUpdateResponse {

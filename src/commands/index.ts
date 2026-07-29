@@ -10,12 +10,1103 @@ const clientOptions = [
     "sdkKey": "apiKey",
     "name": "api-key",
     "optionKey": "apiKey",
-    "env": "WARP_API_KEY",
+    "env": "API_KEY",
     "auth": true
   }
 ] as const satisfies readonly CliClientOptionDefinition[]
 
 const commands = [
+  {
+    "resourcePath": [
+      "customWorkerFields"
+    ],
+    "commandPath": [
+      "custom-worker-fields",
+      "list"
+    ],
+    "methodName": "list",
+    "summary": "List custom worker fields",
+    "description": "List the custom worker field definitions your API key can read. Each field belongs to a worker-data category; fields whose category your key cannot read are omitted unless the key holds workers:custom_fields.",
+    "transport": "http",
+    "iterable": false,
+    "callShape": "options",
+    "positional": [],
+    "flags": []
+  },
+  {
+    "resourcePath": [
+      "customWorkerFields"
+    ],
+    "commandPath": [
+      "custom-worker-fields",
+      "create"
+    ],
+    "methodName": "create",
+    "summary": "Create custom worker field",
+    "description": "Create a custom worker field definition. The field type is immutable after creation. Select and multi_select fields can include their initial options. Access to values derives from the field category; requires the workers:custom_fields permission.",
+    "transport": "http",
+    "iterable": false,
+    "callShape": "body",
+    "positional": [],
+    "flags": [
+      {
+        "name": "name",
+        "optionKey": "name",
+        "paramKey": "name",
+        "location": "body",
+        "required": true,
+        "description": "a non empty string",
+        "valueKind": "string"
+      },
+      {
+        "name": "description",
+        "optionKey": "description",
+        "paramKey": "description",
+        "location": "body",
+        "required": false,
+        "valueKind": "string"
+      },
+      {
+        "name": "type",
+        "optionKey": "type",
+        "paramKey": "type",
+        "location": "body",
+        "required": true,
+        "valueKind": "string"
+      },
+      {
+        "name": "config",
+        "optionKey": "config",
+        "paramKey": "config",
+        "location": "body",
+        "required": false,
+        "valueKind": "object"
+      },
+      {
+        "name": "category",
+        "optionKey": "category",
+        "paramKey": "category",
+        "location": "body",
+        "required": true,
+        "valueKind": "string"
+      },
+      {
+        "name": "access-level",
+        "optionKey": "accessLevel",
+        "paramKey": "accessLevel",
+        "location": "body",
+        "required": false,
+        "valueKind": "string"
+      },
+      {
+        "name": "input-by",
+        "optionKey": "inputBy",
+        "paramKey": "inputBy",
+        "location": "body",
+        "required": false,
+        "valueKind": "string"
+      },
+      {
+        "name": "required",
+        "optionKey": "required",
+        "paramKey": "required",
+        "location": "body",
+        "required": false,
+        "valueKind": "boolean"
+      },
+      {
+        "name": "option",
+        "optionKey": "option",
+        "paramKey": "options",
+        "location": "body",
+        "required": false,
+        "valueKind": "array",
+        "repeatable": true
+      }
+    ]
+  },
+  {
+    "resourcePath": [
+      "customWorkerFields"
+    ],
+    "commandPath": [
+      "custom-worker-fields",
+      "retrieve"
+    ],
+    "methodName": "retrieve",
+    "summary": "Get custom worker field",
+    "description": "Get a custom worker field definition, including its select options. Archived options may appear on existing worker values but cannot be newly selected.",
+    "transport": "http",
+    "iterable": false,
+    "callShape": "options",
+    "positional": [
+      {
+        "name": "id",
+        "optionKey": "id",
+        "paramKey": "id",
+        "location": "path",
+        "required": true,
+        "description": "The tag of a company custom worker field.",
+        "valueKind": "string"
+      }
+    ],
+    "flags": []
+  },
+  {
+    "resourcePath": [
+      "customWorkerFields"
+    ],
+    "commandPath": [
+      "custom-worker-fields",
+      "update"
+    ],
+    "methodName": "update",
+    "summary": "Update custom worker field",
+    "description": "Update a custom worker field definition. The field type cannot be changed; create a new field instead. Requires the workers:custom_fields permission; changing the category, access level, or input source requires the manage level.",
+    "transport": "http",
+    "iterable": false,
+    "callShape": "body",
+    "positional": [
+      {
+        "name": "id",
+        "optionKey": "id",
+        "paramKey": "id",
+        "location": "path",
+        "required": true,
+        "description": "The tag of a company custom worker field.",
+        "valueKind": "string"
+      }
+    ],
+    "flags": [
+      {
+        "name": "name",
+        "optionKey": "name",
+        "paramKey": "name",
+        "location": "body",
+        "required": false,
+        "description": "a non empty string",
+        "valueKind": "string"
+      },
+      {
+        "name": "description",
+        "optionKey": "description",
+        "paramKey": "description",
+        "location": "body",
+        "required": false,
+        "valueKind": "string"
+      },
+      {
+        "name": "config",
+        "optionKey": "config",
+        "paramKey": "config",
+        "location": "body",
+        "required": false,
+        "valueKind": "object"
+      },
+      {
+        "name": "category",
+        "optionKey": "category",
+        "paramKey": "category",
+        "location": "body",
+        "required": false,
+        "valueKind": "string"
+      },
+      {
+        "name": "access-level",
+        "optionKey": "accessLevel",
+        "paramKey": "accessLevel",
+        "location": "body",
+        "required": false,
+        "valueKind": "string"
+      },
+      {
+        "name": "input-by",
+        "optionKey": "inputBy",
+        "paramKey": "inputBy",
+        "location": "body",
+        "required": false,
+        "valueKind": "string"
+      },
+      {
+        "name": "required",
+        "optionKey": "required",
+        "paramKey": "required",
+        "location": "body",
+        "required": false,
+        "valueKind": "boolean"
+      }
+    ]
+  },
+  {
+    "resourcePath": [
+      "customWorkerFields"
+    ],
+    "commandPath": [
+      "custom-worker-fields",
+      "archive"
+    ],
+    "methodName": "archive",
+    "summary": "Archive custom worker field",
+    "description": "Archive a custom worker field. Archived fields keep their existing worker values but cannot receive new ones. Requires the workers:custom_fields permission at the manage level.",
+    "transport": "http",
+    "iterable": false,
+    "callShape": "options",
+    "positional": [
+      {
+        "name": "id",
+        "optionKey": "id",
+        "paramKey": "id",
+        "location": "path",
+        "required": true,
+        "description": "The tag of a company custom worker field.",
+        "valueKind": "string"
+      }
+    ],
+    "flags": []
+  },
+  {
+    "resourcePath": [
+      "customWorkerFields"
+    ],
+    "commandPath": [
+      "custom-worker-fields",
+      "create-option"
+    ],
+    "methodName": "createOption",
+    "summary": "Create field option",
+    "description": "Add an option to a select or multi_select custom worker field. The option value should be treated as stable; the label can change. Requires the workers:custom_fields permission.",
+    "transport": "http",
+    "iterable": false,
+    "callShape": "body",
+    "positional": [
+      {
+        "name": "id",
+        "optionKey": "id",
+        "paramKey": "id",
+        "location": "path",
+        "required": true,
+        "description": "The tag of a company custom worker field.",
+        "valueKind": "string"
+      }
+    ],
+    "flags": [
+      {
+        "name": "label",
+        "optionKey": "label",
+        "paramKey": "label",
+        "location": "body",
+        "required": true,
+        "description": "a non empty string",
+        "valueKind": "string"
+      },
+      {
+        "name": "value",
+        "optionKey": "value",
+        "paramKey": "value",
+        "location": "body",
+        "required": true,
+        "description": "a non empty string",
+        "valueKind": "string"
+      },
+      {
+        "name": "sort-order",
+        "optionKey": "sortOrder",
+        "paramKey": "sortOrder",
+        "location": "body",
+        "required": false,
+        "valueKind": "number"
+      }
+    ]
+  },
+  {
+    "resourcePath": [
+      "customWorkerFields"
+    ],
+    "commandPath": [
+      "custom-worker-fields",
+      "update-option"
+    ],
+    "methodName": "updateOption",
+    "summary": "Update field option",
+    "description": "Update the label or sort order of a custom worker field option. Options of archived fields cannot be edited. Requires the workers:custom_fields permission.",
+    "transport": "http",
+    "iterable": false,
+    "callShape": "body",
+    "positional": [
+      {
+        "name": "id",
+        "optionKey": "id",
+        "paramKey": "id",
+        "location": "path",
+        "required": true,
+        "description": "The tag of a company custom worker field option.",
+        "valueKind": "string"
+      }
+    ],
+    "flags": [
+      {
+        "name": "label",
+        "optionKey": "label",
+        "paramKey": "label",
+        "location": "body",
+        "required": false,
+        "description": "a non empty string",
+        "valueKind": "string"
+      },
+      {
+        "name": "sort-order",
+        "optionKey": "sortOrder",
+        "paramKey": "sortOrder",
+        "location": "body",
+        "required": false,
+        "valueKind": "number"
+      }
+    ]
+  },
+  {
+    "resourcePath": [
+      "customWorkerFields"
+    ],
+    "commandPath": [
+      "custom-worker-fields",
+      "delete-option"
+    ],
+    "methodName": "deleteOption",
+    "summary": "Delete unused field option",
+    "description": "Delete a custom worker field option that is not applied to any worker. Options in use must be archived instead. Requires the workers:custom_fields permission at the manage level.",
+    "transport": "http",
+    "iterable": false,
+    "callShape": "options",
+    "positional": [
+      {
+        "name": "id",
+        "optionKey": "id",
+        "paramKey": "id",
+        "location": "path",
+        "required": true,
+        "description": "The tag of a company custom worker field option.",
+        "valueKind": "string"
+      }
+    ],
+    "flags": []
+  },
+  {
+    "resourcePath": [
+      "customWorkerFields"
+    ],
+    "commandPath": [
+      "custom-worker-fields",
+      "archive-option"
+    ],
+    "methodName": "archiveOption",
+    "summary": "Archive field option",
+    "description": "Archive a custom worker field option. Archived options remain on existing worker values but cannot be newly selected. Requires the workers:custom_fields permission at the manage level.",
+    "transport": "http",
+    "iterable": false,
+    "callShape": "options",
+    "positional": [
+      {
+        "name": "id",
+        "optionKey": "id",
+        "paramKey": "id",
+        "location": "path",
+        "required": true,
+        "description": "The tag of a company custom worker field option.",
+        "valueKind": "string"
+      }
+    ],
+    "flags": []
+  },
+  {
+    "resourcePath": [
+      "customWorkerFields"
+    ],
+    "commandPath": [
+      "custom-worker-fields",
+      "list-values"
+    ],
+    "methodName": "listValues",
+    "summary": "List worker custom field values",
+    "description": "List custom field values for workers, optionally filtered by worker or field. Values are returned only for fields whose category your API key can read.",
+    "transport": "http",
+    "iterable": false,
+    "callShape": "params",
+    "positional": [],
+    "flags": [
+      {
+        "name": "worker-id",
+        "optionKey": "workerId",
+        "paramKey": "workerIds",
+        "location": "query",
+        "required": false,
+        "valueKind": "array",
+        "repeatable": true
+      },
+      {
+        "name": "field-id",
+        "optionKey": "fieldId",
+        "paramKey": "fieldIds",
+        "location": "query",
+        "required": false,
+        "valueKind": "array",
+        "repeatable": true
+      }
+    ]
+  },
+  {
+    "resourcePath": [
+      "customWorkerFields"
+    ],
+    "commandPath": [
+      "custom-worker-fields",
+      "upsert-value"
+    ],
+    "methodName": "upsertValue",
+    "summary": "Set worker custom field value",
+    "description": "Create or replace a worker's value for a custom field. The value shape must match the field type, and your API key must hold write on the field's category.",
+    "transport": "http",
+    "iterable": false,
+    "callShape": "body",
+    "positional": [],
+    "flags": [
+      {
+        "name": "worker-id",
+        "optionKey": "workerId",
+        "paramKey": "workerId",
+        "location": "body",
+        "required": true,
+        "description": "The id of the worker.",
+        "valueKind": "string"
+      },
+      {
+        "name": "field-id",
+        "optionKey": "fieldId",
+        "paramKey": "fieldId",
+        "location": "body",
+        "required": true,
+        "description": "The tag of a company custom worker field.",
+        "valueKind": "string"
+      },
+      {
+        "name": "value",
+        "optionKey": "value",
+        "paramKey": "value",
+        "location": "body",
+        "required": true,
+        "valueKind": "unknown"
+      }
+    ]
+  },
+  {
+    "resourcePath": [
+      "customWorkerFields"
+    ],
+    "commandPath": [
+      "custom-worker-fields",
+      "clear-value"
+    ],
+    "methodName": "clearValue",
+    "summary": "Clear worker custom field value",
+    "description": "Remove a worker's value for a custom field. Your API key must hold write on the field's category.",
+    "transport": "http",
+    "iterable": false,
+    "callShape": "params",
+    "positional": [],
+    "flags": [
+      {
+        "name": "worker-id",
+        "optionKey": "workerId",
+        "paramKey": "workerId",
+        "location": "query",
+        "required": true,
+        "description": "The id of the worker.",
+        "valueKind": "string"
+      },
+      {
+        "name": "field-id",
+        "optionKey": "fieldId",
+        "paramKey": "fieldId",
+        "location": "query",
+        "required": true,
+        "description": "The tag of a company custom worker field.",
+        "valueKind": "string"
+      }
+    ]
+  },
+  {
+    "resourcePath": [
+      "departments"
+    ],
+    "commandPath": [
+      "departments",
+      "list"
+    ],
+    "methodName": "list",
+    "summary": "List departments",
+    "description": "List all departments for your company.",
+    "transport": "http",
+    "iterable": false,
+    "callShape": "params",
+    "positional": [],
+    "flags": [
+      {
+        "name": "limit",
+        "optionKey": "limit",
+        "paramKey": "limit",
+        "location": "query",
+        "required": false,
+        "description": "a number less than or equal to 100",
+        "valueKind": "string"
+      },
+      {
+        "name": "after-id",
+        "optionKey": "afterId",
+        "paramKey": "afterId",
+        "location": "query",
+        "required": false,
+        "description": "The unique public id of the department",
+        "valueKind": "string"
+      },
+      {
+        "name": "before-id",
+        "optionKey": "beforeId",
+        "paramKey": "beforeId",
+        "location": "query",
+        "required": false,
+        "description": "The unique public id of the department",
+        "valueKind": "string"
+      }
+    ]
+  },
+  {
+    "resourcePath": [
+      "departments"
+    ],
+    "commandPath": [
+      "departments",
+      "create"
+    ],
+    "methodName": "create",
+    "summary": "Create department",
+    "description": "Create a new department.",
+    "transport": "http",
+    "iterable": false,
+    "callShape": "body",
+    "positional": [],
+    "flags": [
+      {
+        "name": "name",
+        "optionKey": "name",
+        "paramKey": "name",
+        "location": "body",
+        "required": true,
+        "description": "a non empty string",
+        "valueKind": "string"
+      }
+    ]
+  },
+  {
+    "resourcePath": [
+      "departments"
+    ],
+    "commandPath": [
+      "departments",
+      "update"
+    ],
+    "methodName": "update",
+    "summary": "Update department",
+    "description": "Update an existing department.",
+    "transport": "http",
+    "iterable": false,
+    "callShape": "body",
+    "positional": [
+      {
+        "name": "id",
+        "optionKey": "id",
+        "paramKey": "id",
+        "location": "path",
+        "required": true,
+        "description": "The unique public id of the department",
+        "valueKind": "string"
+      }
+    ],
+    "flags": [
+      {
+        "name": "name",
+        "optionKey": "name",
+        "paramKey": "name",
+        "location": "body",
+        "required": false,
+        "valueKind": "string"
+      }
+    ]
+  },
+  {
+    "resourcePath": [
+      "offers"
+    ],
+    "commandPath": [
+      "offers",
+      "list"
+    ],
+    "methodName": "list",
+    "summary": "List offers",
+    "description": "List the candidate offers for your company.",
+    "transport": "http",
+    "iterable": false,
+    "callShape": "params",
+    "positional": [],
+    "flags": [
+      {
+        "name": "limit",
+        "optionKey": "limit",
+        "paramKey": "limit",
+        "location": "query",
+        "required": false,
+        "description": "a number less than or equal to 100",
+        "valueKind": "string"
+      },
+      {
+        "name": "after-id",
+        "optionKey": "afterId",
+        "paramKey": "afterId",
+        "location": "query",
+        "required": false,
+        "description": "The tag of the offer.",
+        "valueKind": "string"
+      },
+      {
+        "name": "before-id",
+        "optionKey": "beforeId",
+        "paramKey": "beforeId",
+        "location": "query",
+        "required": false,
+        "description": "The tag of the offer.",
+        "valueKind": "string"
+      },
+      {
+        "name": "status",
+        "optionKey": "status",
+        "paramKey": "statuses",
+        "location": "query",
+        "required": false,
+        "valueKind": "array",
+        "repeatable": true
+      },
+      {
+        "name": "worker-type",
+        "optionKey": "workerType",
+        "paramKey": "workerTypes",
+        "location": "query",
+        "required": false,
+        "valueKind": "array",
+        "repeatable": true
+      },
+      {
+        "name": "candidate-email",
+        "optionKey": "candidateEmail",
+        "paramKey": "candidateEmail",
+        "location": "query",
+        "required": false,
+        "description": "An email with a reasonably valid regex (based on RFC 5321 atext characters)",
+        "valueKind": "string"
+      }
+    ]
+  },
+  {
+    "resourcePath": [
+      "offers"
+    ],
+    "commandPath": [
+      "offers",
+      "create"
+    ],
+    "methodName": "create",
+    "summary": "Create offer",
+    "description": "Create and send a candidate offer. The candidate receives an email with a link to the offer portal.",
+    "transport": "http",
+    "iterable": false,
+    "callShape": "body",
+    "positional": [],
+    "flags": [
+      {
+        "name": "candidate",
+        "optionKey": "candidate",
+        "paramKey": "candidate",
+        "location": "body",
+        "required": true,
+        "valueKind": "object"
+      },
+      {
+        "name": "candidate.first-name",
+        "optionKey": "candidate.firstName",
+        "paramKey": "candidate",
+        "location": "body",
+        "required": false,
+        "description": "a non empty string",
+        "valueKind": "string",
+        "objectPath": [
+          "firstName"
+        ]
+      },
+      {
+        "name": "candidate.last-name",
+        "optionKey": "candidate.lastName",
+        "paramKey": "candidate",
+        "location": "body",
+        "required": false,
+        "description": "a non empty string",
+        "valueKind": "string",
+        "objectPath": [
+          "lastName"
+        ]
+      },
+      {
+        "name": "candidate.email",
+        "optionKey": "candidate.email",
+        "paramKey": "candidate",
+        "location": "body",
+        "required": false,
+        "description": "An email with a reasonably valid regex (based on RFC 5321 atext characters)",
+        "valueKind": "string",
+        "objectPath": [
+          "email"
+        ]
+      },
+      {
+        "name": "candidate.contractor-details",
+        "optionKey": "candidate.contractorDetails",
+        "paramKey": "candidate",
+        "location": "body",
+        "required": false,
+        "valueKind": "object",
+        "objectPath": [
+          "contractorDetails"
+        ]
+      },
+      {
+        "name": "candidate.contractor-details.is-business",
+        "optionKey": "candidate.contractorDetails.isBusiness",
+        "paramKey": "candidate",
+        "location": "body",
+        "required": false,
+        "valueKind": "boolean",
+        "objectPath": [
+          "contractorDetails",
+          "isBusiness"
+        ]
+      },
+      {
+        "name": "candidate.contractor-details.legal-business-name",
+        "optionKey": "candidate.contractorDetails.legalBusinessName",
+        "paramKey": "candidate",
+        "location": "body",
+        "required": false,
+        "valueKind": "string",
+        "objectPath": [
+          "contractorDetails",
+          "legalBusinessName"
+        ]
+      },
+      {
+        "name": "position",
+        "optionKey": "position",
+        "paramKey": "position",
+        "location": "body",
+        "required": true,
+        "valueKind": "object"
+      },
+      {
+        "name": "position.title",
+        "optionKey": "position.title",
+        "paramKey": "position",
+        "location": "body",
+        "required": false,
+        "description": "a non empty string",
+        "valueKind": "string",
+        "objectPath": [
+          "title"
+        ]
+      },
+      {
+        "name": "position.start-date",
+        "optionKey": "position.startDate",
+        "paramKey": "position",
+        "location": "body",
+        "required": false,
+        "description": "A date string in the form YYYY-MM-DD",
+        "valueKind": "string",
+        "objectPath": [
+          "startDate"
+        ]
+      },
+      {
+        "name": "position.country",
+        "optionKey": "position.country",
+        "paramKey": "position",
+        "location": "body",
+        "required": false,
+        "description": "Required when workerType is global_contractor. Ignored for employee and us_contractor offers.",
+        "valueKind": "string",
+        "objectPath": [
+          "country"
+        ]
+      },
+      {
+        "name": "position.scope-of-work",
+        "optionKey": "position.scopeOfWork",
+        "paramKey": "position",
+        "location": "body",
+        "required": false,
+        "valueKind": "string",
+        "objectPath": [
+          "scopeOfWork"
+        ]
+      },
+      {
+        "name": "department-id",
+        "optionKey": "departmentId",
+        "paramKey": "departmentId",
+        "location": "body",
+        "required": false,
+        "valueKind": "string"
+      },
+      {
+        "name": "manager-id",
+        "optionKey": "managerId",
+        "paramKey": "managerId",
+        "location": "body",
+        "required": false,
+        "valueKind": "string"
+      },
+      {
+        "name": "worker-type",
+        "optionKey": "workerType",
+        "paramKey": "workerType",
+        "location": "body",
+        "required": true,
+        "valueKind": "string"
+      },
+      {
+        "name": "compensation",
+        "optionKey": "compensation",
+        "paramKey": "compensation",
+        "location": "body",
+        "required": true,
+        "valueKind": "object"
+      },
+      {
+        "name": "compensation.pay-basis",
+        "optionKey": "compensation.payBasis",
+        "paramKey": "compensation",
+        "location": "body",
+        "required": false,
+        "valueKind": "string",
+        "objectPath": [
+          "payBasis"
+        ]
+      },
+      {
+        "name": "compensation.pay-currency",
+        "optionKey": "compensation.payCurrency",
+        "paramKey": "compensation",
+        "location": "body",
+        "required": false,
+        "valueKind": "string",
+        "objectPath": [
+          "payCurrency"
+        ]
+      },
+      {
+        "name": "compensation.pay-rate",
+        "optionKey": "compensation.payRate",
+        "paramKey": "compensation",
+        "location": "body",
+        "required": false,
+        "description": "a positive number",
+        "valueKind": "number",
+        "objectPath": [
+          "payRate"
+        ]
+      },
+      {
+        "name": "compensation.pay-type",
+        "optionKey": "compensation.payType",
+        "paramKey": "compensation",
+        "location": "body",
+        "required": false,
+        "valueKind": "string",
+        "objectPath": [
+          "payType"
+        ]
+      },
+      {
+        "name": "compensation.pay-variable-rate",
+        "optionKey": "compensation.payVariableRate",
+        "paramKey": "compensation",
+        "location": "body",
+        "required": false,
+        "valueKind": "number",
+        "objectPath": [
+          "payVariableRate"
+        ]
+      },
+      {
+        "name": "compensation.sign-on-bonus",
+        "optionKey": "compensation.signOnBonus",
+        "paramKey": "compensation",
+        "location": "body",
+        "required": false,
+        "valueKind": "number",
+        "objectPath": [
+          "signOnBonus"
+        ]
+      },
+      {
+        "name": "compensation.relocation-bonus",
+        "optionKey": "compensation.relocationBonus",
+        "paramKey": "compensation",
+        "location": "body",
+        "required": false,
+        "valueKind": "number",
+        "objectPath": [
+          "relocationBonus"
+        ]
+      },
+      {
+        "name": "compensation.stock-options",
+        "optionKey": "compensation.stockOptions",
+        "paramKey": "compensation",
+        "location": "body",
+        "required": false,
+        "valueKind": "integer",
+        "objectPath": [
+          "stockOptions"
+        ]
+      },
+      {
+        "name": "compensation.vesting-schedule-months",
+        "optionKey": "compensation.vestingScheduleMonths",
+        "paramKey": "compensation",
+        "location": "body",
+        "required": false,
+        "valueKind": "integer",
+        "objectPath": [
+          "vestingScheduleMonths"
+        ]
+      },
+      {
+        "name": "compensation.cliff-months",
+        "optionKey": "compensation.cliffMonths",
+        "paramKey": "compensation",
+        "location": "body",
+        "required": false,
+        "valueKind": "integer",
+        "objectPath": [
+          "cliffMonths"
+        ]
+      },
+      {
+        "name": "expiration-time",
+        "optionKey": "expirationTime",
+        "paramKey": "expirationTime",
+        "location": "body",
+        "required": false,
+        "valueKind": "string"
+      }
+    ]
+  },
+  {
+    "resourcePath": [
+      "offers"
+    ],
+    "commandPath": [
+      "offers",
+      "void"
+    ],
+    "methodName": "void",
+    "summary": "Void offer",
+    "description": "Void a previously sent offer. Only sent offers can be voided.",
+    "transport": "http",
+    "iterable": false,
+    "callShape": "options",
+    "positional": [
+      {
+        "name": "id",
+        "optionKey": "id",
+        "paramKey": "id",
+        "location": "path",
+        "required": true,
+        "description": "The tag of the offer.",
+        "valueKind": "string"
+      }
+    ],
+    "flags": []
+  },
+  {
+    "resourcePath": [
+      "offers"
+    ],
+    "commandPath": [
+      "offers",
+      "extend-deadline"
+    ],
+    "methodName": "extendDeadline",
+    "summary": "Extend offer deadline",
+    "description": "Extend the expiration deadline of a sent offer.",
+    "transport": "http",
+    "iterable": false,
+    "callShape": "body",
+    "positional": [
+      {
+        "name": "id",
+        "optionKey": "id",
+        "paramKey": "id",
+        "location": "path",
+        "required": true,
+        "description": "The tag of the offer.",
+        "valueKind": "string"
+      }
+    ],
+    "flags": [
+      {
+        "name": "expiration-time",
+        "optionKey": "expirationTime",
+        "paramKey": "expirationTime",
+        "location": "body",
+        "required": true,
+        "description": "a string to be decoded into a Date",
+        "valueKind": "string"
+      }
+    ]
+  },
+  {
+    "resourcePath": [
+      "offers"
+    ],
+    "commandPath": [
+      "offers",
+      "resend"
+    ],
+    "methodName": "resend",
+    "summary": "Resend offer",
+    "description": "Resend the offer email to the candidate for a sent offer.",
+    "transport": "http",
+    "iterable": false,
+    "callShape": "options",
+    "positional": [
+      {
+        "name": "id",
+        "optionKey": "id",
+        "paramKey": "id",
+        "location": "path",
+        "required": true,
+        "description": "The tag of the offer.",
+        "valueKind": "string"
+      }
+    ],
+    "flags": []
+  },
   {
     "resourcePath": [
       "timeOff"
@@ -269,9 +1360,9 @@ const commands = [
     ],
     "commandPath": [
       "time-off:policies",
-      "list"
+      "time-off-get"
     ],
-    "methodName": "list",
+    "methodName": "timeOffGet",
     "summary": "List time off policies",
     "description": "Get the time off policies for your company",
     "transport": "http",
@@ -315,9 +1406,9 @@ const commands = [
     ],
     "commandPath": [
       "time-off:policies",
-      "retrieve"
+      "time-off-get2"
     ],
-    "methodName": "retrieve",
+    "methodName": "timeOffGet2",
     "summary": "Get time off policy",
     "description": "Get a specific time off policy by id",
     "transport": "http",
@@ -836,114 +1927,6 @@ const commands = [
   },
   {
     "resourcePath": [
-      "departments"
-    ],
-    "commandPath": [
-      "departments",
-      "list"
-    ],
-    "methodName": "list",
-    "summary": "List departments",
-    "description": "List all departments for your company.",
-    "transport": "http",
-    "iterable": false,
-    "callShape": "params",
-    "positional": [],
-    "flags": [
-      {
-        "name": "limit",
-        "optionKey": "limit",
-        "paramKey": "limit",
-        "location": "query",
-        "required": false,
-        "description": "a number less than or equal to 100",
-        "valueKind": "string"
-      },
-      {
-        "name": "after-id",
-        "optionKey": "afterId",
-        "paramKey": "afterId",
-        "location": "query",
-        "required": false,
-        "description": "The unique public id of the department",
-        "valueKind": "string"
-      },
-      {
-        "name": "before-id",
-        "optionKey": "beforeId",
-        "paramKey": "beforeId",
-        "location": "query",
-        "required": false,
-        "description": "The unique public id of the department",
-        "valueKind": "string"
-      }
-    ]
-  },
-  {
-    "resourcePath": [
-      "departments"
-    ],
-    "commandPath": [
-      "departments",
-      "create"
-    ],
-    "methodName": "create",
-    "summary": "Create department",
-    "description": "Create a new department.",
-    "transport": "http",
-    "iterable": false,
-    "callShape": "body",
-    "positional": [],
-    "flags": [
-      {
-        "name": "name",
-        "optionKey": "name",
-        "paramKey": "name",
-        "location": "body",
-        "required": true,
-        "description": "a non empty string",
-        "valueKind": "string"
-      }
-    ]
-  },
-  {
-    "resourcePath": [
-      "departments"
-    ],
-    "commandPath": [
-      "departments",
-      "update"
-    ],
-    "methodName": "update",
-    "summary": "Update department",
-    "description": "Update an existing department.",
-    "transport": "http",
-    "iterable": false,
-    "callShape": "body",
-    "positional": [
-      {
-        "name": "id",
-        "optionKey": "id",
-        "paramKey": "id",
-        "location": "path",
-        "required": true,
-        "description": "The unique public id of the department",
-        "valueKind": "string"
-      }
-    ],
-    "flags": [
-      {
-        "name": "name",
-        "optionKey": "name",
-        "paramKey": "name",
-        "location": "body",
-        "required": false,
-        "valueKind": "string"
-      }
-    ]
-  },
-  {
-    "resourcePath": [
       "workplaces"
     ],
     "commandPath": [
@@ -1139,9 +2122,9 @@ const commands = [
 export const getProgram = (): Command =>
   createProgram({
     SDK,
-    binaryName: "warp",
+    binaryName: "warpapi",
     version: "0.1.0", // x-release-please-version
-    description: "CLI for Warp",
+    description: "CLI for Warp API",
     defaultFormat: "auto",
     defaultErrorFormat: "auto",
     clientOptions,

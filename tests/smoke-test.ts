@@ -34,6 +34,146 @@ type SmokeResult = {
 // the CLI command surface.
 const cases: { operation: string; method: string; path: string; args: string[] }[] = [
   {
+    operation: "list",
+    method: "GET",
+    path: "/v1/custom-worker-fields",
+    args: ["custom-worker-fields","list"],
+  },
+
+  {
+    operation: "create",
+    method: "POST",
+    path: "/v1/custom-worker-fields",
+    args: ["custom-worker-fields","create","--name","name","--type","text","--category","info"],
+  },
+
+  {
+    operation: "retrieve",
+    method: "GET",
+    path: "/v1/custom-worker-fields/{id}",
+    args: ["custom-worker-fields","retrieve","cf_1234"],
+  },
+
+  {
+    operation: "update",
+    method: "PATCH",
+    path: "/v1/custom-worker-fields/{id}",
+    args: ["custom-worker-fields","update","cf_1234"],
+  },
+
+  {
+    operation: "archive",
+    method: "POST",
+    path: "/v1/custom-worker-fields/{id}/archive",
+    args: ["custom-worker-fields","archive","cf_1234"],
+  },
+
+  {
+    operation: "createOption",
+    method: "POST",
+    path: "/v1/custom-worker-fields/{id}/options",
+    args: ["custom-worker-fields","create-option","cf_1234","--label","label","--value","value"],
+  },
+
+  {
+    operation: "updateOption",
+    method: "PATCH",
+    path: "/v1/custom-worker-field-options/{id}",
+    args: ["custom-worker-fields","update-option","cfo_1234"],
+  },
+
+  {
+    operation: "deleteOption",
+    method: "DELETE",
+    path: "/v1/custom-worker-field-options/{id}",
+    args: ["custom-worker-fields","delete-option","cfo_1234"],
+  },
+
+  {
+    operation: "archiveOption",
+    method: "POST",
+    path: "/v1/custom-worker-field-options/{id}/archive",
+    args: ["custom-worker-fields","archive-option","cfo_1234"],
+  },
+
+  {
+    operation: "listValues",
+    method: "GET",
+    path: "/v1/worker-custom-field-values",
+    args: ["custom-worker-fields","list-values"],
+  },
+
+  {
+    operation: "upsertValue",
+    method: "PUT",
+    path: "/v1/worker-custom-field-values",
+    args: ["custom-worker-fields","upsert-value","--worker-id","wrk_1234","--field-id","cf_1234","--value","{\"type\":\"text\",\"value\":\"\"}"],
+  },
+
+  {
+    operation: "clearValue",
+    method: "DELETE",
+    path: "/v1/worker-custom-field-values",
+    args: ["custom-worker-fields","clear-value","--worker-id","wrk_1234","--field-id","cf_1234"],
+  },
+
+  {
+    operation: "list",
+    method: "GET",
+    path: "/v1/departments",
+    args: ["departments","list"],
+  },
+
+  {
+    operation: "create",
+    method: "POST",
+    path: "/v1/departments",
+    args: ["departments","create","--name","name"],
+  },
+
+  {
+    operation: "update",
+    method: "PATCH",
+    path: "/v1/departments/{id}",
+    args: ["departments","update","dpt_1234"],
+  },
+
+  {
+    operation: "list",
+    method: "GET",
+    path: "/v1/offers",
+    args: ["offers","list"],
+  },
+
+  {
+    operation: "create",
+    method: "POST",
+    path: "/v1/offers",
+    args: ["offers","create","--candidate","{\"firstName\":\"x\",\"lastName\":\"x\",\"email\":\"john@joinwarp.com\"}","--position","{\"title\":\"x\",\"startDate\":\"2000-01-01\"}","--worker-type","employee","--compensation","{\"payBasis\":\"year\",\"payCurrency\":\"USD\",\"payRate\":0}"],
+  },
+
+  {
+    operation: "void",
+    method: "POST",
+    path: "/v1/offers/{id}/void",
+    args: ["offers","void","offr_1234"],
+  },
+
+  {
+    operation: "extendDeadline",
+    method: "POST",
+    path: "/v1/offers/{id}/extend-deadline",
+    args: ["offers","extend-deadline","offr_1234","--expiration-time","expirationTime"],
+  },
+
+  {
+    operation: "resend",
+    method: "POST",
+    path: "/v1/offers/{id}/resend",
+    args: ["offers","resend","offr_1234"],
+  },
+
+  {
     operation: "listAssignments",
     method: "GET",
     path: "/v1/time_off/assignments",
@@ -55,17 +195,17 @@ const cases: { operation: string; method: string; path: string; args: string[] }
   },
 
   {
-    operation: "list",
+    operation: "timeOffGet",
     method: "GET",
     path: "/v1/time_off/policies",
-    args: ["time-off:policies","list"],
+    args: ["time-off:policies","time-off-get"],
   },
 
   {
-    operation: "retrieve",
+    operation: "timeOffGet2",
     method: "GET",
     path: "/v1/time_off/policies/{id}",
-    args: ["time-off:policies","retrieve","top_1234"],
+    args: ["time-off:policies","time-off-get2","top_1234"],
   },
 
   {
@@ -108,27 +248,6 @@ const cases: { operation: string; method: string; path: string; args: string[] }
     method: "POST",
     path: "/v1/workers/{id}/invite",
     args: ["workers","invite","wrk_1234"],
-  },
-
-  {
-    operation: "list",
-    method: "GET",
-    path: "/v1/departments",
-    args: ["departments","list"],
-  },
-
-  {
-    operation: "create",
-    method: "POST",
-    path: "/v1/departments",
-    args: ["departments","create","--name","name"],
-  },
-
-  {
-    operation: "update",
-    method: "PATCH",
-    path: "/v1/departments/{id}",
-    args: ["departments","update","dpt_1234"],
   },
 
   {

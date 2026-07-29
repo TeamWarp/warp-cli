@@ -1,30 +1,30 @@
 ---
-name: warp-cli-sdk
-description: "CLI SDK for Warp API. Use when writing CLI code that calls Warp API with the warp-cli package: installing it, constructing and authenticating the client, and calling API operations."
+name: warp-api-cli-sdk
+description: "CLI SDK for Warp API. Use when writing CLI code that calls Warp API with the warpapi-cli package: installing it, constructing and authenticating the client, and calling API operations."
 ---
 
-# Warp CLI SDK
+# Warp API CLI SDK
 
-Generated CLI client for Warp API, published as `warp-cli`. Use the generated client instead of hand-writing HTTP requests.
+Generated CLI client for Warp API, published as `warpapi-cli`. Use the generated client instead of hand-writing HTTP requests.
 
 ## Install
 
 ```sh
-npm install -g warp-cli
+npm install -g warpapi-cli
 ```
 
 ## Client setup and authentication
 
 Provide credentials using the options below. Environment variables are read automatically when the target runtime supports them:
 
-- `--api-key` (env: `WARP_API_KEY`) — Credential for the apiKey scheme.
+- `--api-key` (env: `API_KEY`) — Credential for the apiKey scheme.
 
 ## Calling operations
 
 ```sh
-warp [resource] [command] [flags]
+warpapi [resource] [command] [flags]
 
-warp time-off list-assignments --api-key "$WARP_API_KEY"
+warpapi custom-worker-fields list --api-key "$API_KEY"
 ```
 
 Method names, parameter shapes, and response types are generated from the API description — do not guess them. Look up the exact call signature in [api.md](../../../api.md) before writing a call.

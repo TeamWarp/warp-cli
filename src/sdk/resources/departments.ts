@@ -4,12 +4,14 @@ import { APIResource } from "../resource";
 import { APIPromise } from "../api-promise";
 import type { RequestOptions } from "../internal/request-options";
 import { path as __scalarPath } from "../internal/utils/path";
+import type * as OffersAPI from "./offers";
+import type * as CustomWorkerFieldsAPI from "./custom-worker-fields";
 
 export class Departments extends APIResource {
   /**
    * List all departments for your company.
    *
-   * @param {DepartmentListParams} [params] - The parameters to send with the request.
+   * @param {DepartmentListParams} [query] - The parameters to send with the request.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
    * @returns {APIPromise<DepartmentListResponse>} Success
    *
@@ -18,9 +20,8 @@ export class Departments extends APIResource {
    * const list = await client.departments.list();
    * ```
    */
-  list(params: DepartmentListParams | null | undefined = {}, options?: RequestOptions): APIPromise<DepartmentListResponse> {
-    const { limit, afterId, beforeId } = params ?? {};
-    return this._client.get("/v1/departments", { query: { limit: limit, afterId: afterId, beforeId: beforeId }, ...options });
+  list(query: DepartmentListParams | null | undefined = {}, options?: RequestOptions): APIPromise<DepartmentListResponse> {
+    return this._client.get("/v1/departments", { query, ...options });
   }
 
   /**
@@ -38,7 +39,7 @@ export class Departments extends APIResource {
    * ```
    */
   create(body: DepartmentCreateParams, options?: RequestOptions): APIPromise<DepartmentCreateResponse> {
-    return this._client.post("/v1/departments", { body: body, ...options });
+    return this._client.post("/v1/departments", { body, ...options });
   }
 
   /**
@@ -55,7 +56,7 @@ export class Departments extends APIResource {
    * ```
    */
   update(id: string, body: DepartmentUpdateParams, options?: RequestOptions): APIPromise<DepartmentUpdateResponse> {
-    return this._client.patch(__scalarPath`/v1/departments/${id}`, { body: body, ...options });
+    return this._client.patch(__scalarPath`/v1/departments/${id}`, { body, ...options });
   }
 }
 
@@ -96,7 +97,7 @@ export namespace DepartmentListResponse {
     /**
      * a string to be decoded into a Date
      */
-    createdAt: string;
+    createdAt: OffersAPI.Date;
   }
 }
 
@@ -105,7 +106,7 @@ export interface DepartmentCreateParams {
    * a non empty string
    * @pattern ^\S[\s\S]*\S$|^\S$|^$
    */
-  name: string;
+  name: CustomWorkerFieldsAPI.Trimmed;
 }
 
 export interface DepartmentCreateResponse {
@@ -118,7 +119,7 @@ export interface DepartmentCreateResponse {
   /**
    * a string to be decoded into a Date
    */
-  createdAt: string;
+  createdAt: OffersAPI.Date;
 }
 
 export interface DepartmentUpdateParams {
@@ -135,7 +136,7 @@ export interface DepartmentUpdateResponse {
   /**
    * a string to be decoded into a Date
    */
-  createdAt: string;
+  createdAt: OffersAPI.Date;
 }
 export declare namespace Departments {
   export {
