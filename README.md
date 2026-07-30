@@ -11,6 +11,7 @@ The full API of this library can be found in [api.md](./api.md).
 - [Installation](#installation)
 - [Usage](#usage)
 - [API Reference](./api.md)
+- [Manual Pages](#manual-pages)
 - [Authentication](#authentication)
 - [Errors](#errors)
 - [Client Options](#client-options)
@@ -40,6 +41,17 @@ warpapi custom-worker-fields list --api-key "$API_KEY"
 The examples in the following sections assume a `client` configured as shown above.
 
 See the [API reference](./api.md) for every available operation.
+
+<br />
+
+## Manual Pages
+
+Installing the package globally also installs man pages. `man warpapi` lists every command, and each command has its own page named after the command with spaces and `:` replaced by `-`.
+
+```sh
+man warpapi
+man warpapi-<resource>-<command>
+```
 
 <br />
 

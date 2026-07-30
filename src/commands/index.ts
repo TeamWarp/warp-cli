@@ -25,7 +25,7 @@ const commands = [
       "list"
     ],
     "methodName": "list",
-    "summary": "List custom worker fields",
+    "summary": "List Fields",
     "description": "List the custom worker field definitions your API key can read. Each field belongs to a worker-data category; fields whose category your key cannot read are omitted unless the key holds workers:custom_fields.",
     "transport": "http",
     "iterable": false,
@@ -42,7 +42,7 @@ const commands = [
       "create"
     ],
     "methodName": "create",
-    "summary": "Create custom worker field",
+    "summary": "Create Field",
     "description": "Create a custom worker field definition. The field type is immutable after creation. Select and multi_select fields can include their initial options. Access to values derives from the field category; requires the workers:custom_fields permission.",
     "transport": "http",
     "iterable": false,
@@ -134,7 +134,7 @@ const commands = [
       "retrieve"
     ],
     "methodName": "retrieve",
-    "summary": "Get custom worker field",
+    "summary": "Get Field",
     "description": "Get a custom worker field definition, including its select options. Archived options may appear on existing worker values but cannot be newly selected.",
     "transport": "http",
     "iterable": false,
@@ -161,7 +161,7 @@ const commands = [
       "update"
     ],
     "methodName": "update",
-    "summary": "Update custom worker field",
+    "summary": "Update Field",
     "description": "Update a custom worker field definition. The field type cannot be changed; create a new field instead. Requires the workers:custom_fields permission; changing the category, access level, or input source requires the manage level.",
     "transport": "http",
     "iterable": false,
@@ -246,7 +246,7 @@ const commands = [
       "archive"
     ],
     "methodName": "archive",
-    "summary": "Archive custom worker field",
+    "summary": "Archive Field",
     "description": "Archive a custom worker field. Archived fields keep their existing worker values but cannot receive new ones. Requires the workers:custom_fields permission at the manage level.",
     "transport": "http",
     "iterable": false,
@@ -273,7 +273,7 @@ const commands = [
       "create-option"
     ],
     "methodName": "createOption",
-    "summary": "Create field option",
+    "summary": "Create Field Option",
     "description": "Add an option to a select or multi_select custom worker field. The option value should be treated as stable; the label can change. Requires the workers:custom_fields permission.",
     "transport": "http",
     "iterable": false,
@@ -327,7 +327,7 @@ const commands = [
       "update-option"
     ],
     "methodName": "updateOption",
-    "summary": "Update field option",
+    "summary": "Update Field Option",
     "description": "Update the label or sort order of a custom worker field option. Options of archived fields cannot be edited. Requires the workers:custom_fields permission.",
     "transport": "http",
     "iterable": false,
@@ -372,7 +372,7 @@ const commands = [
       "delete-option"
     ],
     "methodName": "deleteOption",
-    "summary": "Delete unused field option",
+    "summary": "Delete Unused Field Option",
     "description": "Delete a custom worker field option that is not applied to any worker. Options in use must be archived instead. Requires the workers:custom_fields permission at the manage level.",
     "transport": "http",
     "iterable": false,
@@ -399,7 +399,7 @@ const commands = [
       "archive-option"
     ],
     "methodName": "archiveOption",
-    "summary": "Archive field option",
+    "summary": "Archive Field Option",
     "description": "Archive a custom worker field option. Archived options remain on existing worker values but cannot be newly selected. Requires the workers:custom_fields permission at the manage level.",
     "transport": "http",
     "iterable": false,
@@ -426,7 +426,7 @@ const commands = [
       "list-values"
     ],
     "methodName": "listValues",
-    "summary": "List worker custom field values",
+    "summary": "List Field Values",
     "description": "List custom field values for workers, optionally filtered by worker or field. Values are returned only for fields whose category your API key can read.",
     "transport": "http",
     "iterable": false,
@@ -462,7 +462,7 @@ const commands = [
       "upsert-value"
     ],
     "methodName": "upsertValue",
-    "summary": "Set worker custom field value",
+    "summary": "Set Field Value",
     "description": "Create or replace a worker's value for a custom field. The value shape must match the field type, and your API key must hold write on the field's category.",
     "transport": "http",
     "iterable": false,
@@ -506,7 +506,7 @@ const commands = [
       "clear-value"
     ],
     "methodName": "clearValue",
-    "summary": "Clear worker custom field value",
+    "summary": "Clear Field Value",
     "description": "Remove a worker's value for a custom field. Your API key must hold write on the field's category.",
     "transport": "http",
     "iterable": false,
@@ -542,7 +542,7 @@ const commands = [
       "list"
     ],
     "methodName": "list",
-    "summary": "List departments",
+    "summary": "List Departments",
     "description": "List all departments for your company.",
     "transport": "http",
     "iterable": false,
@@ -587,7 +587,7 @@ const commands = [
       "create"
     ],
     "methodName": "create",
-    "summary": "Create department",
+    "summary": "Create Department",
     "description": "Create a new department.",
     "transport": "http",
     "iterable": false,
@@ -614,7 +614,7 @@ const commands = [
       "update"
     ],
     "methodName": "update",
-    "summary": "Update department",
+    "summary": "Update Department",
     "description": "Update an existing department.",
     "transport": "http",
     "iterable": false,
@@ -650,7 +650,7 @@ const commands = [
       "list"
     ],
     "methodName": "list",
-    "summary": "List offers",
+    "summary": "List Offers",
     "description": "List the candidate offers for your company.",
     "transport": "http",
     "iterable": false,
@@ -722,7 +722,7 @@ const commands = [
       "create"
     ],
     "methodName": "create",
-    "summary": "Create offer",
+    "summary": "Create Offer",
     "description": "Create and send a candidate offer. The candidate receives an email with a link to the offer portal.",
     "transport": "http",
     "iterable": false,
@@ -1025,7 +1025,7 @@ const commands = [
       "void"
     ],
     "methodName": "void",
-    "summary": "Void offer",
+    "summary": "Void Offer",
     "description": "Void a previously sent offer. Only sent offers can be voided.",
     "transport": "http",
     "iterable": false,
@@ -1052,7 +1052,7 @@ const commands = [
       "extend-deadline"
     ],
     "methodName": "extendDeadline",
-    "summary": "Extend offer deadline",
+    "summary": "Extend Offer Deadline",
     "description": "Extend the expiration deadline of a sent offer.",
     "transport": "http",
     "iterable": false,
@@ -1089,7 +1089,7 @@ const commands = [
       "resend"
     ],
     "methodName": "resend",
-    "summary": "Resend offer",
+    "summary": "Resend Offer",
     "description": "Resend the offer email to the candidate for a sent offer.",
     "transport": "http",
     "iterable": false,
@@ -1116,7 +1116,7 @@ const commands = [
       "list-assignments"
     ],
     "methodName": "listAssignments",
-    "summary": "List time off assignments",
+    "summary": "List Time Off Assignments",
     "description": "Time off assignments are mappings between workers and time off policies. Useful for finding out which policies a worker is assigned to, or which workers are assigned to a given policy.",
     "transport": "http",
     "iterable": false,
@@ -1177,7 +1177,7 @@ const commands = [
       "list-balances"
     ],
     "methodName": "listBalances",
-    "summary": "List time off balances",
+    "summary": "List Time Off Balances",
     "description": "Get worker remaining time-off balances.",
     "transport": "http",
     "iterable": false,
@@ -1256,7 +1256,7 @@ const commands = [
       "list-requests"
     ],
     "methodName": "listRequests",
-    "summary": "List time off requests",
+    "summary": "List Time Off Requests",
     "description": "Get the time off requests that workers in your company have made.",
     "transport": "http",
     "iterable": false,
@@ -1363,7 +1363,7 @@ const commands = [
       "time-off-get"
     ],
     "methodName": "timeOffGet",
-    "summary": "List time off policies",
+    "summary": "List Time Off Policies",
     "description": "Get the time off policies for your company",
     "transport": "http",
     "iterable": false,
@@ -1409,7 +1409,7 @@ const commands = [
       "time-off-get2"
     ],
     "methodName": "timeOffGet2",
-    "summary": "Get time off policy",
+    "summary": "Get Time Off Policy",
     "description": "Get a specific time off policy by id",
     "transport": "http",
     "iterable": false,
@@ -1436,7 +1436,7 @@ const commands = [
       "list"
     ],
     "methodName": "list",
-    "summary": "List workers",
+    "summary": "List Workers",
     "description": "List all workers. Workers include anyone employed by the company, whether US or international, full-time employees or contractors.",
     "transport": "http",
     "iterable": false,
@@ -1507,7 +1507,7 @@ const commands = [
       "retrieve"
     ],
     "methodName": "retrieve",
-    "summary": "Get worker",
+    "summary": "Get Worker",
     "description": "Get a specific worker by id.",
     "transport": "http",
     "iterable": false,
@@ -1534,7 +1534,7 @@ const commands = [
       "delete"
     ],
     "methodName": "delete",
-    "summary": "Delete worker",
+    "summary": "Delete Worker",
     "description": "Delete a worker. Only workers who have not yet completed onboarding can be deleted. Active workers must be properly offboarded.",
     "transport": "http",
     "iterable": false,
@@ -1561,7 +1561,7 @@ const commands = [
       "create-employee"
     ],
     "methodName": "createEmployee",
-    "summary": "Create employee",
+    "summary": "Create Employee",
     "description": "Create a new US employee. The worker will be created in draft status and must be invited separately via the invite endpoint. If hiring in a state without an existing tax registration, you must specify the stateRegistration field.",
     "transport": "http",
     "iterable": false,
@@ -1729,7 +1729,7 @@ const commands = [
       "create-contractor"
     ],
     "methodName": "createContractor",
-    "summary": "Create contractor",
+    "summary": "Create Contractor",
     "description": "Create a new contractor. The worker will be created in draft status and must be invited separately via the invite endpoint. For business contractors, the businessName field is required.",
     "transport": "http",
     "iterable": false,
@@ -1907,7 +1907,7 @@ const commands = [
       "invite"
     ],
     "methodName": "invite",
-    "summary": "Invite worker",
+    "summary": "Invite Worker",
     "description": "Send or resend the worker invite so they can accept and complete onboarding to Warp. If the worker has already been invited, the invite will be resent with extended validity.",
     "transport": "http",
     "iterable": false,
@@ -1934,7 +1934,7 @@ const commands = [
       "list"
     ],
     "methodName": "list",
-    "summary": "List workplaces",
+    "summary": "List Workplaces",
     "description": "List all workplaces for your company.",
     "transport": "http",
     "iterable": false,
@@ -1979,7 +1979,7 @@ const commands = [
       "create"
     ],
     "methodName": "create",
-    "summary": "Create workplace",
+    "summary": "Create Workplace",
     "description": "Create a new workplace.",
     "transport": "http",
     "iterable": false,
@@ -2090,7 +2090,7 @@ const commands = [
       "update"
     ],
     "methodName": "update",
-    "summary": "Update workplace",
+    "summary": "Update Workplace",
     "description": "Update an existing workplace.",
     "transport": "http",
     "iterable": false,
