@@ -1,0 +1,141 @@
+.\" File generated from our OpenAPI spec by Scalar. Do not edit.
+.TH "WARPAPI\-OFFERS\-CREATE" "1" "" "warpapi" "Warp API Manual"
+.SH "NAME"
+warpapi\-offers\-create \- Create Offer
+.SH "SYNOPSIS"
+.B warpapi offers create
+\fB\-\-candidate\fR \fI<json>\fR \fB\-\-position\fR \fI<json>\fR \fB\-\-worker\-type\fR \fI<value>\fR \fB\-\-compensation\fR \fI<json>\fR [\fIoptions\fR]
+.SH "DESCRIPTION"
+Create and send a candidate offer. The candidate receives an email with a link to the offer portal.
+.SH "OPTIONS"
+.TP
+\fB\-\-candidate\fR \fI<json>\fR
+The candidate body parameter. Required.
+.TP
+\fB\-\-candidate.first\-name\fR \fI<value>\fR
+a non empty string.
+.TP
+\fB\-\-candidate.last\-name\fR \fI<value>\fR
+a non empty string.
+.TP
+\fB\-\-candidate.email\fR \fI<value>\fR
+An email with a reasonably valid regex (based on RFC 5321 atext characters).
+.TP
+\fB\-\-candidate.contractor\-details\fR \fI<json>\fR
+The candidate.contractor\-details body parameter.
+.TP
+\fB\-\-candidate.contractor\-details.is\-business\fR
+The candidate.contractor\-details.is\-business body parameter.
+.TP
+\fB\-\-candidate.contractor\-details.legal\-business\-name\fR \fI<value>\fR
+The candidate.contractor\-details.legal\-business\-name body parameter.
+.TP
+\fB\-\-position\fR \fI<json>\fR
+The position body parameter. Required.
+.TP
+\fB\-\-position.title\fR \fI<value>\fR
+a non empty string.
+.TP
+\fB\-\-position.start\-date\fR \fI<value>\fR
+A date string in the form YYYY\-MM\-DD.
+.TP
+\fB\-\-position.country\fR \fI<value>\fR
+Required when workerType is global_contractor. Ignored for employee and us_contractor offers.
+.TP
+\fB\-\-position.scope\-of\-work\fR \fI<value>\fR
+The position.scope\-of\-work body parameter.
+.TP
+\fB\-\-department\-id\fR \fI<value>\fR
+The department\-id body parameter.
+.TP
+\fB\-\-manager\-id\fR \fI<value>\fR
+The manager\-id body parameter.
+.TP
+\fB\-\-worker\-type\fR \fI<value>\fR
+The worker\-type body parameter. Required.
+.TP
+\fB\-\-compensation\fR \fI<json>\fR
+The compensation body parameter. Required.
+.TP
+\fB\-\-compensation.pay\-basis\fR \fI<value>\fR
+The compensation.pay\-basis body parameter.
+.TP
+\fB\-\-compensation.pay\-currency\fR \fI<value>\fR
+The compensation.pay\-currency body parameter.
+.TP
+\fB\-\-compensation.pay\-rate\fR \fI<number>\fR
+a positive number.
+.TP
+\fB\-\-compensation.pay\-type\fR \fI<value>\fR
+The compensation.pay\-type body parameter.
+.TP
+\fB\-\-compensation.pay\-variable\-rate\fR \fI<number>\fR
+The compensation.pay\-variable\-rate body parameter.
+.TP
+\fB\-\-compensation.sign\-on\-bonus\fR \fI<number>\fR
+The compensation.sign\-on\-bonus body parameter.
+.TP
+\fB\-\-compensation.relocation\-bonus\fR \fI<number>\fR
+The compensation.relocation\-bonus body parameter.
+.TP
+\fB\-\-compensation.stock\-options\fR \fI<number>\fR
+The compensation.stock\-options body parameter.
+.TP
+\fB\-\-compensation.vesting\-schedule\-months\fR \fI<number>\fR
+The compensation.vesting\-schedule\-months body parameter.
+.TP
+\fB\-\-compensation.cliff\-months\fR \fI<number>\fR
+The compensation.cliff\-months body parameter.
+.TP
+\fB\-\-expiration\-time\fR \fI<value>\fR
+The expiration\-time body parameter.
+.TP
+\fB\-\-base\-url\fR \fI<url>\fR
+Override the base URL for API requests.
+.TP
+\fB\-\-timeout\fR \fI<ms>\fR
+Request timeout in milliseconds.
+.TP
+\fB\-\-max\-retries\fR \fI<count>\fR
+Number of retries for retryable failures.
+.TP
+\fB\-\-format\fR \fI<format>\fR
+Output format: auto, json, jsonl, pretty, raw, yaml.
+.TP
+\fB\-\-format\-error\fR \fI<format>\fR
+Error output format: auto, json, jsonl, pretty, raw, yaml.
+.TP
+\fB\-\-transform\fR \fI<path>\fR
+Dot\-path transform for data output.
+.TP
+\fB\-\-transform\-error\fR \fI<path>\fR
+Dot\-path transform for error output.
+.TP
+\fB\-r\fR, \fB\-\-raw\-output\fR
+Print transformed string values without JSON quotes.
+.TP
+\fB\-\-debug\fR
+Enable SDK debug logging on standard error.
+.TP
+\fB\-\-api\-key\fR \fI<value>\fR
+API credential. Can also be set with the API_KEY environment variable.
+.SH "EXAMPLES"
+.PP
+.RS 4
+.nf
+warpapi offers create \-\-api\-key "$API_KEY" \-\-candidate '{"firstName":"x","lastName":"x","email":"john@joinwarp.com"}' \-\-position '{"title":"x","startDate":"2000\-01\-01"}' \-\-worker\-type 'employee' \-\-compensation '{"payBasis":"year","payCurrency":"USD","payRate":0}'
+.fi
+.RE
+.SH "ENVIRONMENT"
+.TP
+\fBAPI_KEY\fR
+Fallback for \-\-api\-key when the flag is not passed.
+.SH "EXIT STATUS"
+.TP
+\fB0\fR
+The command completed successfully.
+.TP
+\fB1\fR
+A usage error, or the request failed. The error is printed to standard error.
+.SH "SEE ALSO"
+.BR warpapi (1)

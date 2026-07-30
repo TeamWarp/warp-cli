@@ -1,0 +1,111 @@
+.\" File generated from our OpenAPI spec by Scalar. Do not edit.
+.TH "WARPAPI\-WORKERS\-CREATE\-CONTRACTOR" "1" "" "warpapi" "Warp API Manual"
+.SH "NAME"
+warpapi\-workers\-create\-contractor \- Create Contractor
+.SH "SYNOPSIS"
+.B warpapi workers create\-contractor
+\fB\-\-entity\-type\fR \fI<value>\fR \fB\-\-first\-name\fR \fI<value>\fR \fB\-\-last\-name\fR \fI<value>\fR \fB\-\-position\fR \fI<value>\fR \fB\-\-start\-date\fR \fI<value>\fR \fB\-\-email\fR \fI<value>\fR \fB\-\-department\-id\fR \fI<value>\fR \fB\-\-manager\-id\fR \fI<value>\fR \fB\-\-work\-country\fR \fI<value>\fR [\fIoptions\fR]
+.SH "DESCRIPTION"
+Create a new contractor. The worker will be created in draft status and must be invited separately via the invite endpoint. For business contractors, the businessName field is required.
+.SH "OPTIONS"
+.TP
+\fB\-\-entity\-type\fR \fI<value>\fR
+Whether the contractor is an individual person or a business entity. Required.
+.TP
+\fB\-\-first\-name\fR \fI<value>\fR
+a non empty string. Required.
+.TP
+\fB\-\-last\-name\fR \fI<value>\fR
+a non empty string. Required.
+.TP
+\fB\-\-position\fR \fI<value>\fR
+The contractor's role or job title. Required.
+.TP
+\fB\-\-business\-name\fR \fI<value>\fR
+Required when entityType is "business". The legal name of the contractor's business.
+.TP
+\fB\-\-scope\-of\-work\fR \fI<value>\fR
+A description of the work the contractor will perform.
+.TP
+\fB\-\-start\-date\fR \fI<value>\fR
+A date string in the form YYYY\-MM\-DD. Required.
+.TP
+\fB\-\-email\fR \fI<value>\fR
+Personal email address. The invite will be sent here. Required.
+.TP
+\fB\-\-work\-email\fR \fI<value>\fR
+Company\-issued email address, if applicable.
+.TP
+\fB\-\-department\-id\fR \fI<value>\fR
+The department to assign this contractor to. Required.
+.TP
+\fB\-\-manager\-id\fR \fI<value>\fR
+The worker id of this contractor's direct manager. Required.
+.TP
+\fB\-\-work\-country\fR \fI<value>\fR
+The work\-country body parameter. Required.
+.TP
+\fB\-\-compensation\fR \fI<json>\fR
+The contractor's pay rate. Omit if you'd like to pay on\-demand or via invoicing.
+.TP
+\fB\-\-compensation.currency\fR \fI<value>\fR
+The compensation.currency body parameter.
+.TP
+\fB\-\-compensation.amount\fR \fI<number>\fR
+a positive number.
+.TP
+\fB\-\-compensation.per\fR \fI<value>\fR
+The pay period for the compensation amount.
+.TP
+\fB\-\-pay\-schedule\fR \fI<value>\fR
+The contractor's pay schedule. Must be a pay schedule that the company has configured.
+.TP
+\fB\-\-base\-url\fR \fI<url>\fR
+Override the base URL for API requests.
+.TP
+\fB\-\-timeout\fR \fI<ms>\fR
+Request timeout in milliseconds.
+.TP
+\fB\-\-max\-retries\fR \fI<count>\fR
+Number of retries for retryable failures.
+.TP
+\fB\-\-format\fR \fI<format>\fR
+Output format: auto, json, jsonl, pretty, raw, yaml.
+.TP
+\fB\-\-format\-error\fR \fI<format>\fR
+Error output format: auto, json, jsonl, pretty, raw, yaml.
+.TP
+\fB\-\-transform\fR \fI<path>\fR
+Dot\-path transform for data output.
+.TP
+\fB\-\-transform\-error\fR \fI<path>\fR
+Dot\-path transform for error output.
+.TP
+\fB\-r\fR, \fB\-\-raw\-output\fR
+Print transformed string values without JSON quotes.
+.TP
+\fB\-\-debug\fR
+Enable SDK debug logging on standard error.
+.TP
+\fB\-\-api\-key\fR \fI<value>\fR
+API credential. Can also be set with the API_KEY environment variable.
+.SH "EXAMPLES"
+.PP
+.RS 4
+.nf
+warpapi workers create\-contractor \-\-api\-key "$API_KEY" \-\-entity\-type 'individual' \-\-first\-name 'firstName' \-\-last\-name 'lastName' \-\-position 'position' \-\-start\-date '2000\-01\-01' \-\-email 'john@joinwarp.com' \-\-department\-id 'dpt_1234' \-\-manager\-id 'wrk_1234' \-\-work\-country 'AD'
+.fi
+.RE
+.SH "ENVIRONMENT"
+.TP
+\fBAPI_KEY\fR
+Fallback for \-\-api\-key when the flag is not passed.
+.SH "EXIT STATUS"
+.TP
+\fB0\fR
+The command completed successfully.
+.TP
+\fB1\fR
+A usage error, or the request failed. The error is printed to standard error.
+.SH "SEE ALSO"
+.BR warpapi (1)

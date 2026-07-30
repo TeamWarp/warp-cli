@@ -1,0 +1,78 @@
+.\" File generated from our OpenAPI spec by Scalar. Do not edit.
+.TH "WARPAPI\-WORKERS\-LIST" "1" "" "warpapi" "Warp API Manual"
+.SH "NAME"
+warpapi\-workers\-list \- List Workers
+.SH "SYNOPSIS"
+.B warpapi workers list
+[\fIoptions\fR]
+.SH "DESCRIPTION"
+List all workers. Workers include anyone employed by the company, whether US or international, full\-time employees or contractors.
+.SH "OPTIONS"
+.TP
+\fB\-\-limit\fR \fI<value>\fR
+a number less than or equal to 100.
+.TP
+\fB\-\-after\-id\fR \fI<value>\fR
+The id of the worker.
+.TP
+\fB\-\-before\-id\fR \fI<value>\fR
+The id of the worker.
+.TP
+\fB\-\-status\fR \fI<value>\fR
+The status query parameter. Repeat the flag to pass multiple values.
+.TP
+\fB\-\-type\fR \fI<value>\fR
+The type query parameter. Repeat the flag to pass multiple values.
+.TP
+\fB\-\-work\-email\fR \fI<value>\fR
+The work\-email query parameter.
+.TP
+\fB\-\-base\-url\fR \fI<url>\fR
+Override the base URL for API requests.
+.TP
+\fB\-\-timeout\fR \fI<ms>\fR
+Request timeout in milliseconds.
+.TP
+\fB\-\-max\-retries\fR \fI<count>\fR
+Number of retries for retryable failures.
+.TP
+\fB\-\-format\fR \fI<format>\fR
+Output format: auto, json, jsonl, pretty, raw, yaml.
+.TP
+\fB\-\-format\-error\fR \fI<format>\fR
+Error output format: auto, json, jsonl, pretty, raw, yaml.
+.TP
+\fB\-\-transform\fR \fI<path>\fR
+Dot\-path transform for data output.
+.TP
+\fB\-\-transform\-error\fR \fI<path>\fR
+Dot\-path transform for error output.
+.TP
+\fB\-r\fR, \fB\-\-raw\-output\fR
+Print transformed string values without JSON quotes.
+.TP
+\fB\-\-debug\fR
+Enable SDK debug logging on standard error.
+.TP
+\fB\-\-api\-key\fR \fI<value>\fR
+API credential. Can also be set with the API_KEY environment variable.
+.SH "EXAMPLES"
+.PP
+.RS 4
+.nf
+warpapi workers list \-\-api\-key "$API_KEY"
+.fi
+.RE
+.SH "ENVIRONMENT"
+.TP
+\fBAPI_KEY\fR
+Fallback for \-\-api\-key when the flag is not passed.
+.SH "EXIT STATUS"
+.TP
+\fB0\fR
+The command completed successfully.
+.TP
+\fB1\fR
+A usage error, or the request failed. The error is printed to standard error.
+.SH "SEE ALSO"
+.BR warpapi (1)
