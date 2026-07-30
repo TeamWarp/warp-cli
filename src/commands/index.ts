@@ -10,7 +10,7 @@ const clientOptions = [
     "sdkKey": "apiKey",
     "name": "api-key",
     "optionKey": "apiKey",
-    "env": "API_KEY",
+    "env": "WARP_API_KEY",
     "auth": true
   }
 ] as const satisfies readonly CliClientOptionDefinition[]

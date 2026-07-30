@@ -35,7 +35,7 @@ npm install -g warpapi-cli
 ```sh
 warpapi [resource] [command] [flags]
 
-warpapi custom-worker-fields list --api-key "$API_KEY"
+warpapi custom-worker-fields list --api-key "$WARP_API_KEY"
 ```
 
 The examples in the following sections assume a `client` configured as shown above.
@@ -61,7 +61,7 @@ Pass credentials to the generated client constructor. Environment variables are 
 
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
-| `--api-key` | `string \| provider` | - | Credential for the apiKey scheme. Defaults to API_KEY. |
+| `--api-key` | `string \| provider` | - | Credential for the apiKey scheme. Defaults to WARP_API_KEY. |
 
 Declared schemes:
 
