@@ -17,14 +17,14 @@ npm install -g warpapi-cli
 
 Provide credentials using the options below. Environment variables are read automatically when the target runtime supports them:
 
-- `--api-key` (env: `API_KEY`) — Credential for the apiKey scheme.
+- `--api-key` (env: `WARP_API_KEY`) — Credential for the apiKey scheme.
 
 ## Calling operations
 
 ```sh
 warpapi [resource] [command] [flags]
 
-warpapi custom-worker-fields list --api-key "$API_KEY"
+warpapi custom-worker-fields list --api-key "$WARP_API_KEY"
 ```
 
 Method names, parameter shapes, and response types are generated from the API description — do not guess them. Look up the exact call signature in [api.md](./api.md) before writing a call.

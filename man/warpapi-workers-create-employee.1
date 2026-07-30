@@ -85,17 +85,17 @@ Print transformed string values without JSON quotes.
 Enable SDK debug logging on standard error.
 .TP
 \fB\-\-api\-key\fR \fI<value>\fR
-API credential. Can also be set with the API_KEY environment variable.
+API credential. Can also be set with the WARP_API_KEY environment variable.
 .SH "EXAMPLES"
 .PP
 .RS 4
 .nf
-warpapi workers create\-employee \-\-api\-key "$API_KEY" \-\-first\-name 'firstName' \-\-last\-name 'lastName' \-\-position 'position' \-\-start\-date '2000\-01\-01' \-\-email 'john@joinwarp.com' \-\-department\-id 'dpt_1234' \-\-manager\-id 'wrk_1234' \-\-work\-location '{"type":"office","workplaceId":"wkp_1234"}' \-\-compensation '{"amount":0,"per":"hour"}'
+warpapi workers create\-employee \-\-api\-key "$WARP_API_KEY" \-\-first\-name 'firstName' \-\-last\-name 'lastName' \-\-position 'position' \-\-start\-date '2000\-01\-01' \-\-email 'john@joinwarp.com' \-\-department\-id 'dpt_1234' \-\-manager\-id 'wrk_1234' \-\-work\-location '{"type":"office","workplaceId":"wkp_1234"}' \-\-compensation '{"amount":0,"per":"hour"}'
 .fi
 .RE
 .SH "ENVIRONMENT"
 .TP
-\fBAPI_KEY\fR
+\fBWARP_API_KEY\fR
 Fallback for \-\-api\-key when the flag is not passed.
 .SH "EXIT STATUS"
 .TP
