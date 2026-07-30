@@ -18020,7 +18020,7 @@
         "tags": [
           "Workers"
         ],
-        "summary": "Employee Created",
+        "summary": "Worker Created",
         "description": "Sent when a new worker is created.",
         "parameters": [
           {
@@ -18320,7 +18320,7 @@
         "tags": [
           "Workers"
         ],
-        "summary": "Employee Updated",
+        "summary": "Worker Updated",
         "description": "Sent when a worker's details change.",
         "parameters": [
           {
@@ -18620,7 +18620,7 @@
         "tags": [
           "Workers"
         ],
-        "summary": "Employee Deleted",
+        "summary": "Worker Deleted",
         "description": "Sent when a worker is deleted.",
         "parameters": [
           {
@@ -18920,7 +18920,7 @@
         "tags": [
           "Workers"
         ],
-        "summary": "Employee Invite Sent",
+        "summary": "Worker Invite Sent",
         "description": "Sent when a worker is invited to the platform.",
         "parameters": [
           {
@@ -19220,7 +19220,7 @@
         "tags": [
           "Workers"
         ],
-        "summary": "Employee Invite Accepted",
+        "summary": "Worker Invite Accepted",
         "description": "Sent when a worker accepts their invitation.",
         "parameters": [
           {
@@ -19520,7 +19520,7 @@
         "tags": [
           "Workers"
         ],
-        "summary": "Employee Onboarding Completed",
+        "summary": "Worker Onboarding Completed",
         "description": "Sent when a worker completes onboarding.",
         "parameters": [
           {
@@ -19820,7 +19820,7 @@
         "tags": [
           "Workers"
         ],
-        "summary": "Employee Offboarding Started",
+        "summary": "Worker Offboarding Started",
         "description": "Sent when offboarding begins for a worker.",
         "parameters": [
           {
@@ -20120,7 +20120,7 @@
         "tags": [
           "Workers"
         ],
-        "summary": "Employee Offboarded",
+        "summary": "Worker Offboarded",
         "description": "Sent when a worker has been offboarded.",
         "parameters": [
           {
@@ -20420,7 +20420,7 @@
         "tags": [
           "Workers"
         ],
-        "summary": "Employee Reactivated",
+        "summary": "Worker Reactivated",
         "description": "Sent when a previously offboarded worker is reactivated.",
         "parameters": [
           {
