@@ -35,7 +35,7 @@ npm install -g warpapi-cli
 ```sh
 warpapi [resource] [command] [flags]
 
-warpapi custom-worker-fields list --api-key "$WARP_API_KEY"
+warpapi departments list --api-key "$WARP_API_KEY"
 ```
 
 The examples in the following sections assume a `client` configured as shown above.
