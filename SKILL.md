@@ -24,7 +24,7 @@ Provide credentials using the options below. Environment variables are read auto
 ```sh
 warpapi [resource] [command] [flags]
 
-warpapi custom-worker-fields list --api-key "$WARP_API_KEY"
+warpapi departments list --api-key "$WARP_API_KEY"
 ```
 
 Method names, parameter shapes, and response types are generated from the API description — do not guess them. Look up the exact call signature in [api.md](./api.md) before writing a call.
