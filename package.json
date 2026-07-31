@@ -26,6 +26,18 @@
   ],
   "man": [
     "./man/warpapi.1",
+    "./man/warpapi-custom-fields-list.1",
+    "./man/warpapi-custom-fields-create.1",
+    "./man/warpapi-custom-fields-retrieve.1",
+    "./man/warpapi-custom-fields-update.1",
+    "./man/warpapi-custom-fields-archive.1",
+    "./man/warpapi-custom-fields-create-option.1",
+    "./man/warpapi-custom-fields-update-option.1",
+    "./man/warpapi-custom-fields-delete-option.1",
+    "./man/warpapi-custom-fields-archive-option.1",
+    "./man/warpapi-custom-fields-list-values.1",
+    "./man/warpapi-custom-fields-upsert-value.1",
+    "./man/warpapi-custom-fields-clear-value.1",
     "./man/warpapi-departments-list.1",
     "./man/warpapi-departments-create.1",
     "./man/warpapi-departments-update.1",
@@ -56,7 +68,8 @@
   "dependencies": {
     "ansis": "^4.3.0",
     "commander": "^14.0.3",
-    "yaml": "^2.9.0"
+    "yaml": "^2.9.0",
+    "standardwebhooks": "^1.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.17.0",
