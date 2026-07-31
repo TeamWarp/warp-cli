@@ -36,6 +36,90 @@ const cases: { operation: string; method: string; path: string; args: string[] }
   {
     operation: "list",
     method: "GET",
+    path: "/v1/custom_fields",
+    args: ["custom-fields","list"],
+  },
+
+  {
+    operation: "create",
+    method: "POST",
+    path: "/v1/custom_fields",
+    args: ["custom-fields","create","--name","name","--type","text","--category","info"],
+  },
+
+  {
+    operation: "retrieve",
+    method: "GET",
+    path: "/v1/custom_fields/{id}",
+    args: ["custom-fields","retrieve","cf_1234"],
+  },
+
+  {
+    operation: "update",
+    method: "PATCH",
+    path: "/v1/custom_fields/{id}",
+    args: ["custom-fields","update","cf_1234"],
+  },
+
+  {
+    operation: "archive",
+    method: "POST",
+    path: "/v1/custom_fields/{id}/archive",
+    args: ["custom-fields","archive","cf_1234"],
+  },
+
+  {
+    operation: "createOption",
+    method: "POST",
+    path: "/v1/custom_fields/{id}/options",
+    args: ["custom-fields","create-option","cf_1234","--label","label","--value","value"],
+  },
+
+  {
+    operation: "updateOption",
+    method: "PATCH",
+    path: "/v1/custom_field_options/{id}",
+    args: ["custom-fields","update-option","cfo_1234"],
+  },
+
+  {
+    operation: "deleteOption",
+    method: "DELETE",
+    path: "/v1/custom_field_options/{id}",
+    args: ["custom-fields","delete-option","cfo_1234"],
+  },
+
+  {
+    operation: "archiveOption",
+    method: "POST",
+    path: "/v1/custom_field_options/{id}/archive",
+    args: ["custom-fields","archive-option","cfo_1234"],
+  },
+
+  {
+    operation: "listValues",
+    method: "GET",
+    path: "/v1/custom_field_values",
+    args: ["custom-fields","list-values"],
+  },
+
+  {
+    operation: "upsertValue",
+    method: "PUT",
+    path: "/v1/custom_field_values",
+    args: ["custom-fields","upsert-value","--worker-id","wrk_1234","--field-id","cf_1234","--value","{\"type\":\"text\",\"value\":\"\"}"],
+  },
+
+  {
+    operation: "clearValue",
+    method: "DELETE",
+    path: "/v1/custom_field_values",
+    args: ["custom-fields","clear-value","--worker-id","wrk_1234","--field-id","cf_1234"],
+  },
+
+  {
+    operation: "list",
+    method: "GET",
     path: "/v1/departments",
     args: ["departments","list"],
   },
