@@ -1,0 +1,108 @@
+.\" File generated from our OpenAPI spec by Scalar. Do not edit.
+.TH "WARPAPI\-WORKERS\-CREATE\-EMPLOYEE" "1" "" "warpapi" "Warp API Manual"
+.SH "NAME"
+warpapi\-workers\-create\-employee \- Create Employee
+.SH "SYNOPSIS"
+.B warpapi workers create\-employee
+\fB\-\-first\-name\fR \fI<value>\fR \fB\-\-last\-name\fR \fI<value>\fR \fB\-\-position\fR \fI<value>\fR \fB\-\-start\-date\fR \fI<value>\fR \fB\-\-email\fR \fI<value>\fR \fB\-\-department\-id\fR \fI<value>\fR \fB\-\-manager\-id\fR \fI<value>\fR \fB\-\-work\-location\fR \fI<value>\fR \fB\-\-compensation\fR \fI<json>\fR [\fIoptions\fR]
+.SH "DESCRIPTION"
+Create a new US employee. The worker will be created in draft status and must be invited separately via the invite endpoint. If hiring in a state without an existing tax registration, you must specify the stateRegistration field.
+.SH "OPTIONS"
+.TP
+\fB\-\-first\-name\fR \fI<value>\fR
+a non empty string. Required.
+.TP
+\fB\-\-last\-name\fR \fI<value>\fR
+a non empty string. Required.
+.TP
+\fB\-\-position\fR \fI<value>\fR
+The employee's job title. Required.
+.TP
+\fB\-\-start\-date\fR \fI<value>\fR
+A date string in the form YYYY\-MM\-DD. Required.
+.TP
+\fB\-\-email\fR \fI<value>\fR
+Personal email address. The invite will be sent here. Required.
+.TP
+\fB\-\-work\-email\fR \fI<value>\fR
+Company\-issued email address, if applicable.
+.TP
+\fB\-\-require\-i9\fR
+Whether the employee is required to complete I\-9 work authorization. Set to false if the employee has already been verified off\-platform. Defaults to true.
+.TP
+\fB\-\-state\-registration\fR \fI<value>\fR
+How state tax registration is handled for this employee's work state. Required when hiring in a state where your company doesn't have an existing registration. Use 'self_managed' if you've already registered in this state, or 'warp_managed' for Warp to handle registration on your behalf.
+.TP
+\fB\-\-department\-id\fR \fI<value>\fR
+The department to assign this employee to. Required.
+.TP
+\fB\-\-manager\-id\fR \fI<value>\fR
+The worker id of this employee's direct manager. Required.
+.TP
+\fB\-\-stock\-options\fR \fI<number>\fR
+Number of stock options granted to this employee.
+.TP
+\fB\-\-work\-location\fR \fI<value>\fR
+Where the employee will work. Either an existing company workplace or a remote US state. Required.
+.TP
+\fB\-\-compensation\fR \fI<json>\fR
+The employee's base compensation. Required.
+.TP
+\fB\-\-compensation.amount\fR \fI<number>\fR
+a positive number.
+.TP
+\fB\-\-compensation.per\fR \fI<value>\fR
+Whether the amount is per hour or per year.
+.TP
+\fB\-\-pay\-schedule\fR \fI<value>\fR
+The employee's pay schedule. Must be a pay schedule that the company has configured.
+.TP
+\fB\-\-base\-url\fR \fI<url>\fR
+Override the base URL for API requests.
+.TP
+\fB\-\-timeout\fR \fI<ms>\fR
+Request timeout in milliseconds.
+.TP
+\fB\-\-max\-retries\fR \fI<count>\fR
+Number of retries for retryable failures.
+.TP
+\fB\-\-format\fR \fI<format>\fR
+Output format: auto, json, jsonl, pretty, raw, yaml.
+.TP
+\fB\-\-format\-error\fR \fI<format>\fR
+Error output format: auto, json, jsonl, pretty, raw, yaml.
+.TP
+\fB\-\-transform\fR \fI<path>\fR
+Dot\-path transform for data output.
+.TP
+\fB\-\-transform\-error\fR \fI<path>\fR
+Dot\-path transform for error output.
+.TP
+\fB\-r\fR, \fB\-\-raw\-output\fR
+Print transformed string values without JSON quotes.
+.TP
+\fB\-\-debug\fR
+Enable SDK debug logging on standard error.
+.TP
+\fB\-\-api\-key\fR \fI<value>\fR
+API credential. Can also be set with the WARP_API_KEY environment variable.
+.SH "EXAMPLES"
+.PP
+.RS 4
+.nf
+warpapi workers create\-employee \-\-api\-key "$WARP_API_KEY" \-\-first\-name 'firstName' \-\-last\-name 'lastName' \-\-position 'position' \-\-start\-date '2000\-01\-01' \-\-email 'john@joinwarp.com' \-\-department\-id 'dpt_1234' \-\-manager\-id 'wrk_1234' \-\-work\-location '{"type":"office","workplaceId":"wkp_1234"}' \-\-compensation '{"amount":0,"per":"hour"}'
+.fi
+.RE
+.SH "ENVIRONMENT"
+.TP
+\fBWARP_API_KEY\fR
+Fallback for \-\-api\-key when the flag is not passed.
+.SH "EXIT STATUS"
+.TP
+\fB0\fR
+The command completed successfully.
+.TP
+\fB1\fR
+A usage error, or the request failed. The error is printed to standard error.
+.SH "SEE ALSO"
+.BR warpapi (1)

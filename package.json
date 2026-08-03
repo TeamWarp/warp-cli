@@ -1,0 +1,79 @@
+{
+  "name": "warpapi-cli",
+  "version": "0.2.0",
+  "description": "Warp API CLI",
+  "type": "module",
+  "bin": {
+    "warpapi": "./dist/esm/bin.js"
+  },
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/esm/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/esm/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js",
+      "default": "./dist/esm/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "api.md",
+    "man",
+    "SKILL.md"
+  ],
+  "man": [
+    "./man/warpapi.1",
+    "./man/warpapi-custom-fields-list.1",
+    "./man/warpapi-custom-fields-create.1",
+    "./man/warpapi-custom-fields-retrieve.1",
+    "./man/warpapi-custom-fields-update.1",
+    "./man/warpapi-custom-fields-archive.1",
+    "./man/warpapi-custom-fields-create-option.1",
+    "./man/warpapi-custom-fields-update-option.1",
+    "./man/warpapi-custom-fields-delete-option.1",
+    "./man/warpapi-custom-fields-archive-option.1",
+    "./man/warpapi-custom-fields-list-values.1",
+    "./man/warpapi-custom-fields-upsert-value.1",
+    "./man/warpapi-custom-fields-clear-value.1",
+    "./man/warpapi-departments-list.1",
+    "./man/warpapi-departments-create.1",
+    "./man/warpapi-departments-update.1",
+    "./man/warpapi-offers-list.1",
+    "./man/warpapi-offers-create.1",
+    "./man/warpapi-offers-void.1",
+    "./man/warpapi-offers-extend-deadline.1",
+    "./man/warpapi-offers-resend.1",
+    "./man/warpapi-time-off-list-assignments.1",
+    "./man/warpapi-time-off-list-balances.1",
+    "./man/warpapi-time-off-list-requests.1",
+    "./man/warpapi-time-off-policies-time-off-get.1",
+    "./man/warpapi-time-off-policies-time-off-get2.1",
+    "./man/warpapi-workers-list.1",
+    "./man/warpapi-workers-retrieve.1",
+    "./man/warpapi-workers-delete.1",
+    "./man/warpapi-workers-create-employee.1",
+    "./man/warpapi-workers-create-contractor.1",
+    "./man/warpapi-workers-invite.1",
+    "./man/warpapi-workplaces-list.1",
+    "./man/warpapi-workplaces-create.1",
+    "./man/warpapi-workplaces-update.1"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json && tsc -p tsconfig.cjs.json && node scripts/finalize-build.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.cjs.json --noEmit"
+  },
+  "dependencies": {
+    "ansis": "^4.3.0",
+    "commander": "^14.0.3",
+    "yaml": "^2.9.0",
+    "standardwebhooks": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.0",
+    "typescript": "^6.0.0"
+  },
+  "license": "Apache-2.0"
+}
