@@ -59,7 +59,8 @@
     "./man/warpapi-workers-invite.1",
     "./man/warpapi-workplaces-list.1",
     "./man/warpapi-workplaces-create.1",
-    "./man/warpapi-workplaces-update.1"
+    "./man/warpapi-workplaces-update.1",
+    "./man/warpapi-completion.1"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json && tsc -p tsconfig.cjs.json && node scripts/finalize-build.mjs",

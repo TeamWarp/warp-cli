@@ -141,6 +141,19 @@ Create Workplace. See warpapi\-workplaces\-create(1).
 .TP
 \fBwarpapi workplaces update\fR
 Update Workplace. See warpapi\-workplaces\-update(1).
+.TP
+\fBwarpapi completion\fR
+Print a shell completion script. See warpapi\-completion(1).
+.SH "SHELL COMPLETION"
+warpapi completion <shell> prints a completion script for bash, zsh, and fish. Load it from your shell startup file:
+.PP
+.RS 4
+.nf
+eval "$(warpapi completion bash)"
+eval "$(warpapi completion zsh)"
+warpapi completion fish | source
+.fi
+.RE
 .SH "ENVIRONMENT"
 .TP
 \fBWARP_API_KEY\fR
