@@ -10,6 +10,7 @@ Generated CLI client for Warp API, published as `warpapi-cli`. Use the generated
 ## Install
 
 ```sh
+# npm (requires Node.js)
 npm install -g warpapi-cli
 ```
 

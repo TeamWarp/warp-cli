@@ -11,6 +11,7 @@ The full API of this library can be found in [api.md](./api.md).
 - [Installation](#installation)
 - [Usage](#usage)
 - [API Reference](./api.md)
+- [Shell Completion](#shell-completion)
 - [Manual Pages](#manual-pages)
 - [Authentication](#authentication)
 - [Errors](#errors)
@@ -25,6 +26,7 @@ The full API of this library can be found in [api.md](./api.md).
 ## Installation
 
 ```sh
+# npm (requires Node.js)
 npm install -g warpapi-cli
 ```
 
@@ -41,6 +43,23 @@ warpapi custom-fields list --api-key "$WARP_API_KEY"
 The examples in the following sections assume a `client` configured as shown above.
 
 See the [API reference](./api.md) for every available operation.
+
+<br />
+
+## Shell Completion
+
+`warpapi completion <shell>` prints a completion script for bash, zsh, and fish. Add the matching line to your shell startup file to complete commands, subcommands, and flags with Tab.
+
+```sh
+# bash (~/.bashrc)
+eval "$(warpapi completion bash)"
+
+# zsh (~/.zshrc)
+eval "$(warpapi completion zsh)"
+
+# fish (~/.config/fish/config.fish)
+warpapi completion fish | source
+```
 
 <br />
 
