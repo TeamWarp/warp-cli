@@ -19,6 +19,330 @@ const clientOptions = [
 const commands = [
   {
     "resourcePath": [
+      "benefits",
+      "healthPlans"
+    ],
+    "commandPath": [
+      "benefits:health-plans",
+      "benefits-list"
+    ],
+    "methodName": "benefitsList",
+    "summary": "List Health Plans",
+    "description": "List company health plans. Defaults to active plans. A plan whose effectiveEndDate has elapsed is reported and filtered as terminated.",
+    "transport": "http",
+    "iterable": false,
+    "callShape": "params",
+    "positional": [],
+    "flags": [
+      {
+        "name": "limit",
+        "optionKey": "limit",
+        "paramKey": "limit",
+        "location": "query",
+        "required": false,
+        "description": "a number less than or equal to 100",
+        "valueKind": "string"
+      },
+      {
+        "name": "after-id",
+        "optionKey": "afterId",
+        "paramKey": "afterId",
+        "location": "query",
+        "required": false,
+        "description": "The tag of a company health plan.",
+        "valueKind": "string"
+      },
+      {
+        "name": "before-id",
+        "optionKey": "beforeId",
+        "paramKey": "beforeId",
+        "location": "query",
+        "required": false,
+        "description": "The tag of a company health plan.",
+        "valueKind": "string"
+      },
+      {
+        "name": "type",
+        "optionKey": "type",
+        "paramKey": "types",
+        "location": "query",
+        "required": false,
+        "valueKind": "array",
+        "repeatable": true
+      },
+      {
+        "name": "status",
+        "optionKey": "status",
+        "paramKey": "statuses",
+        "location": "query",
+        "required": false,
+        "description": "Statuses to include. Defaults to [\"active\"]. An elapsed effectiveEndDate is reported and filtered as \"terminated\".",
+        "valueKind": "array",
+        "repeatable": true
+      },
+      {
+        "name": "carrier-id",
+        "optionKey": "carrierId",
+        "paramKey": "carrierIds",
+        "location": "query",
+        "required": false,
+        "valueKind": "array",
+        "repeatable": true
+      }
+    ]
+  },
+  {
+    "resourcePath": [
+      "benefits",
+      "healthPlans"
+    ],
+    "commandPath": [
+      "benefits:health-plans",
+      "benefits-get"
+    ],
+    "methodName": "benefitsGet",
+    "summary": "Get Health Plan",
+    "description": "Get a publicly visible company health plan by id.",
+    "transport": "http",
+    "iterable": false,
+    "callShape": "options",
+    "positional": [
+      {
+        "name": "id",
+        "optionKey": "id",
+        "paramKey": "id",
+        "location": "path",
+        "required": true,
+        "description": "The tag of a company health plan.",
+        "valueKind": "string"
+      }
+    ],
+    "flags": []
+  },
+  {
+    "resourcePath": [
+      "benefits",
+      "retirementPlans"
+    ],
+    "commandPath": [
+      "benefits:retirement-plans",
+      "benefits-list"
+    ],
+    "methodName": "benefitsList",
+    "summary": "List Retirement Plans",
+    "description": "List company retirement plans. Defaults to active plans. A plan whose effectiveEndDate has elapsed is reported and filtered as terminated.",
+    "transport": "http",
+    "iterable": false,
+    "callShape": "params",
+    "positional": [],
+    "flags": [
+      {
+        "name": "limit",
+        "optionKey": "limit",
+        "paramKey": "limit",
+        "location": "query",
+        "required": false,
+        "description": "a number less than or equal to 100",
+        "valueKind": "string"
+      },
+      {
+        "name": "after-id",
+        "optionKey": "afterId",
+        "paramKey": "afterId",
+        "location": "query",
+        "required": false,
+        "description": "The tag of a company retirement plan.",
+        "valueKind": "string"
+      },
+      {
+        "name": "before-id",
+        "optionKey": "beforeId",
+        "paramKey": "beforeId",
+        "location": "query",
+        "required": false,
+        "description": "The tag of a company retirement plan.",
+        "valueKind": "string"
+      },
+      {
+        "name": "type",
+        "optionKey": "type",
+        "paramKey": "types",
+        "location": "query",
+        "required": false,
+        "valueKind": "array",
+        "repeatable": true
+      },
+      {
+        "name": "status",
+        "optionKey": "status",
+        "paramKey": "statuses",
+        "location": "query",
+        "required": false,
+        "description": "Statuses to include. Defaults to [\"active\"]. An elapsed effectiveEndDate is reported and filtered as \"terminated\".",
+        "valueKind": "array",
+        "repeatable": true
+      }
+    ]
+  },
+  {
+    "resourcePath": [
+      "benefits",
+      "retirementPlans"
+    ],
+    "commandPath": [
+      "benefits:retirement-plans",
+      "benefits-get"
+    ],
+    "methodName": "benefitsGet",
+    "summary": "Get Retirement Plan",
+    "description": "Get a company retirement plan by id, regardless of status.",
+    "transport": "http",
+    "iterable": false,
+    "callShape": "options",
+    "positional": [
+      {
+        "name": "id",
+        "optionKey": "id",
+        "paramKey": "id",
+        "location": "path",
+        "required": true,
+        "description": "The tag of a company retirement plan.",
+        "valueKind": "string"
+      }
+    ],
+    "flags": []
+  },
+  {
+    "resourcePath": [
+      "benefits",
+      "deductions"
+    ],
+    "commandPath": [
+      "benefits:deductions",
+      "benefits-list"
+    ],
+    "methodName": "benefitsList",
+    "summary": "List Benefit Deductions",
+    "description": "List current payroll benefit deductions. Defaults to active deductions. A deduction whose effectiveEndDate has elapsed is reported and filtered as terminated.",
+    "transport": "http",
+    "iterable": false,
+    "callShape": "params",
+    "positional": [],
+    "flags": [
+      {
+        "name": "limit",
+        "optionKey": "limit",
+        "paramKey": "limit",
+        "location": "query",
+        "required": false,
+        "description": "a number less than or equal to 100",
+        "valueKind": "string"
+      },
+      {
+        "name": "after-id",
+        "optionKey": "afterId",
+        "paramKey": "afterId",
+        "location": "query",
+        "required": false,
+        "description": "The version-group tag of a payroll benefit deduction. Stable across edits.",
+        "valueKind": "string"
+      },
+      {
+        "name": "before-id",
+        "optionKey": "beforeId",
+        "paramKey": "beforeId",
+        "location": "query",
+        "required": false,
+        "description": "The version-group tag of a payroll benefit deduction. Stable across edits.",
+        "valueKind": "string"
+      },
+      {
+        "name": "worker-id",
+        "optionKey": "workerId",
+        "paramKey": "workerIds",
+        "location": "query",
+        "required": false,
+        "valueKind": "array",
+        "repeatable": true
+      },
+      {
+        "name": "category",
+        "optionKey": "category",
+        "paramKey": "categories",
+        "location": "query",
+        "required": false,
+        "valueKind": "array",
+        "repeatable": true
+      },
+      {
+        "name": "type",
+        "optionKey": "type",
+        "paramKey": "types",
+        "location": "query",
+        "required": false,
+        "valueKind": "array",
+        "repeatable": true
+      },
+      {
+        "name": "status",
+        "optionKey": "status",
+        "paramKey": "statuses",
+        "location": "query",
+        "required": false,
+        "description": "Statuses to include. Defaults to [\"active\"]. An elapsed effectiveEndDate is reported and filtered as \"terminated\".",
+        "valueKind": "array",
+        "repeatable": true
+      },
+      {
+        "name": "health-plan-id",
+        "optionKey": "healthPlanId",
+        "paramKey": "healthPlanIds",
+        "location": "query",
+        "required": false,
+        "valueKind": "array",
+        "repeatable": true
+      },
+      {
+        "name": "retirement-plan-id",
+        "optionKey": "retirementPlanId",
+        "paramKey": "retirementPlanIds",
+        "location": "query",
+        "required": false,
+        "valueKind": "array",
+        "repeatable": true
+      }
+    ]
+  },
+  {
+    "resourcePath": [
+      "benefits",
+      "deductions"
+    ],
+    "commandPath": [
+      "benefits:deductions",
+      "benefits-get"
+    ],
+    "methodName": "benefitsGet",
+    "summary": "Get Benefit Deduction",
+    "description": "Get the current version of a company benefit deduction by id.",
+    "transport": "http",
+    "iterable": false,
+    "callShape": "options",
+    "positional": [
+      {
+        "name": "id",
+        "optionKey": "id",
+        "paramKey": "id",
+        "location": "path",
+        "required": true,
+        "description": "The version-group tag of a payroll benefit deduction. Stable across edits.",
+        "valueKind": "string"
+      }
+    ],
+    "flags": []
+  },
+  {
+    "resourcePath": [
       "customFields"
     ],
     "commandPath": [
@@ -2123,9 +2447,9 @@ const commands = [
 export const getProgram = (): Command =>
   createProgram({
     SDK,
-    binaryName: "warpapi",
+    binaryName: "warp",
     version: "0.1.0", // x-release-please-version
-    description: "CLI for Warp API",
+    description: "CLI for Warp",
     defaultFormat: "auto",
     defaultErrorFormat: "auto",
     clientOptions,

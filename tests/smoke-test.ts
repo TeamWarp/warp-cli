@@ -34,6 +34,48 @@ type SmokeResult = {
 // the CLI command surface.
 const cases: { operation: string; method: string; path: string; args: string[] }[] = [
   {
+    operation: "benefitsList",
+    method: "GET",
+    path: "/v1/benefits/health_plans",
+    args: ["benefits:health-plans","benefits-list","--status","active"],
+  },
+
+  {
+    operation: "benefitsGet",
+    method: "GET",
+    path: "/v1/benefits/health_plans/{id}",
+    args: ["benefits:health-plans","benefits-get","chpl_1234"],
+  },
+
+  {
+    operation: "benefitsList",
+    method: "GET",
+    path: "/v1/benefits/retirement_plans",
+    args: ["benefits:retirement-plans","benefits-list","--status","active"],
+  },
+
+  {
+    operation: "benefitsGet",
+    method: "GET",
+    path: "/v1/benefits/retirement_plans/{id}",
+    args: ["benefits:retirement-plans","benefits-get","crpl_1234"],
+  },
+
+  {
+    operation: "benefitsList",
+    method: "GET",
+    path: "/v1/benefits/deductions",
+    args: ["benefits:deductions","benefits-list","--status","active"],
+  },
+
+  {
+    operation: "benefitsGet",
+    method: "GET",
+    path: "/v1/benefits/deductions/{id}",
+    args: ["benefits:deductions","benefits-get","pbdg_1234"],
+  },
+
+  {
     operation: "list",
     method: "GET",
     path: "/v1/custom_fields",

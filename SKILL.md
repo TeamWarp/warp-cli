@@ -1,17 +1,17 @@
 ---
-name: warp-api-cli-sdk
-description: "CLI SDK for Warp API. Use when writing CLI code that calls Warp API with the warpapi-cli package: installing it, constructing and authenticating the client, and calling API operations."
+name: warp-cli-sdk
+description: "CLI SDK for Warp API. Use when writing CLI code that calls Warp API with the warp-cli package: installing it, constructing and authenticating the client, and calling API operations."
 ---
 
-# Warp API CLI SDK
+# Warp CLI SDK
 
-Generated CLI client for Warp API, published as `warpapi-cli`. Use the generated client instead of hand-writing HTTP requests.
+Generated CLI client for Warp API, published as `warp-cli`. Use the generated client instead of hand-writing HTTP requests.
 
 ## Install
 
 ```sh
 # npm (requires Node.js)
-npm install -g warpapi-cli
+npm install -g warp-cli
 ```
 
 ## Client setup and authentication
@@ -23,9 +23,9 @@ Provide credentials using the options below. Environment variables are read auto
 ## Calling operations
 
 ```sh
-warpapi [resource] [command] [flags]
+warp [resource] [command] [flags]
 
-warpapi custom-fields list --api-key "$WARP_API_KEY"
+warp benefits:health-plans benefits-list --api-key "$WARP_API_KEY" --status 'active'
 ```
 
 Method names, parameter shapes, and response types are generated from the API description — do not guess them. Look up the exact call signature in [api.md](./api.md) before writing a call.
