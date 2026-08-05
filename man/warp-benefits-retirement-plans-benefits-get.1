@@ -1,0 +1,64 @@
+.\" File generated from our OpenAPI spec by Scalar. Do not edit.
+.TH "WARP\-BENEFITS\-RETIREMENT\-PLANS\-BENEFITS\-GET" "1" "" "warp" "Warp Manual"
+.SH "NAME"
+warp\-benefits\-retirement\-plans\-benefits\-get \- Get Retirement Plan
+.SH "SYNOPSIS"
+.B warp benefits:retirement\-plans benefits\-get
+\fIid\fR [\fIoptions\fR]
+.SH "DESCRIPTION"
+Get a company retirement plan by id, regardless of status.
+.SH "ARGUMENTS"
+.TP
+\fIid\fR, \fB\-\-id\fR \fI<value>\fR
+The tag of a company retirement plan. Required. Can also be supplied as \-\-id.
+.SH "OPTIONS"
+.TP
+\fB\-\-base\-url\fR \fI<url>\fR
+Override the base URL for API requests.
+.TP
+\fB\-\-timeout\fR \fI<ms>\fR
+Request timeout in milliseconds.
+.TP
+\fB\-\-max\-retries\fR \fI<count>\fR
+Number of retries for retryable failures.
+.TP
+\fB\-\-format\fR \fI<format>\fR
+Output format: auto, json, jsonl, pretty, raw, yaml.
+.TP
+\fB\-\-format\-error\fR \fI<format>\fR
+Error output format: auto, json, jsonl, pretty, raw, yaml.
+.TP
+\fB\-\-transform\fR \fI<path>\fR
+Dot\-path transform for data output.
+.TP
+\fB\-\-transform\-error\fR \fI<path>\fR
+Dot\-path transform for error output.
+.TP
+\fB\-r\fR, \fB\-\-raw\-output\fR
+Print transformed string values without JSON quotes.
+.TP
+\fB\-\-debug\fR
+Enable SDK debug logging on standard error.
+.TP
+\fB\-\-api\-key\fR \fI<value>\fR
+API credential. Can also be set with the WARP_API_KEY environment variable.
+.SH "EXAMPLES"
+.PP
+.RS 4
+.nf
+warp benefits:retirement\-plans benefits\-get 'crpl_1234' \-\-api\-key "$WARP_API_KEY"
+.fi
+.RE
+.SH "ENVIRONMENT"
+.TP
+\fBWARP_API_KEY\fR
+Fallback for \-\-api\-key when the flag is not passed.
+.SH "EXIT STATUS"
+.TP
+\fB0\fR
+The command completed successfully.
+.TP
+\fB1\fR
+A usage error, or the request failed. The error is printed to standard error.
+.SH "SEE ALSO"
+.BR warp (1)

@@ -1,6 +1,6 @@
-# Warp API
+# Warp
 
-This library provides convenient access to the Warp API from the command line.
+This library provides convenient access to the Warp REST API from the command line.
 
 The full API of this library can be found in [api.md](./api.md).
 
@@ -27,7 +27,7 @@ The full API of this library can be found in [api.md](./api.md).
 
 ```sh
 # npm (requires Node.js)
-npm install -g warpapi-cli
+npm install -g warp-cli
 ```
 
 <br />
@@ -35,9 +35,9 @@ npm install -g warpapi-cli
 ## Usage
 
 ```sh
-warpapi [resource] [command] [flags]
+warp [resource] [command] [flags]
 
-warpapi custom-fields list --api-key "$WARP_API_KEY"
+warp benefits:health-plans benefits-list --api-key "$WARP_API_KEY" --status 'active'
 ```
 
 The examples in the following sections assume a `client` configured as shown above.
@@ -48,28 +48,28 @@ See the [API reference](./api.md) for every available operation.
 
 ## Shell Completion
 
-`warpapi completion <shell>` prints a completion script for bash, zsh, and fish. Add the matching line to your shell startup file to complete commands, subcommands, and flags with Tab.
+`warp completion <shell>` prints a completion script for bash, zsh, and fish. Add the matching line to your shell startup file to complete commands, subcommands, and flags with Tab.
 
 ```sh
 # bash (~/.bashrc)
-eval "$(warpapi completion bash)"
+eval "$(warp completion bash)"
 
 # zsh (~/.zshrc)
-eval "$(warpapi completion zsh)"
+eval "$(warp completion zsh)"
 
 # fish (~/.config/fish/config.fish)
-warpapi completion fish | source
+warp completion fish | source
 ```
 
 <br />
 
 ## Manual Pages
 
-Installing the package globally also installs man pages. `man warpapi` lists every command, and each command has its own page named after the command with spaces and `:` replaced by `-`.
+Installing the package globally also installs man pages. `man warp` lists every command, and each command has its own page named after the command with spaces and `:` replaced by `-`.
 
 ```sh
-man warpapi
-man warpapi-<resource>-<command>
+man warp
+man warp-<resource>-<command>
 ```
 
 <br />
