@@ -65,7 +65,7 @@ Complete reference of every operation, grouped by resource. See [the README](./R
 List company health plans. Defaults to active plans. A plan whose effectiveEndDate has elapsed is reported and filtered as terminated.
 
 ```sh
-warp benefits:health-plans benefits-list --api-key "$WARP_API_KEY" --status 'active'
+warp benefits:health-plans list --api-key "$WARP_API_KEY" --status 'active'
 ```
 
 #### Get Health Plan
@@ -73,7 +73,7 @@ warp benefits:health-plans benefits-list --api-key "$WARP_API_KEY" --status 'act
 Get a publicly visible company health plan by id.
 
 ```sh
-warp benefits:health-plans benefits-get 'chpl_1234' --api-key "$WARP_API_KEY"
+warp benefits:health-plans get 'chpl_1234' --api-key "$WARP_API_KEY"
 ```
 
 ### `Benefits RetirementPlans`
@@ -83,7 +83,7 @@ warp benefits:health-plans benefits-get 'chpl_1234' --api-key "$WARP_API_KEY"
 List company retirement plans. Defaults to active plans. A plan whose effectiveEndDate has elapsed is reported and filtered as terminated.
 
 ```sh
-warp benefits:retirement-plans benefits-list --api-key "$WARP_API_KEY" --status 'active'
+warp benefits:retirement-plans list --api-key "$WARP_API_KEY" --status 'active'
 ```
 
 #### Get Retirement Plan
@@ -91,7 +91,7 @@ warp benefits:retirement-plans benefits-list --api-key "$WARP_API_KEY" --status 
 Get a company retirement plan by id, regardless of status.
 
 ```sh
-warp benefits:retirement-plans benefits-get 'crpl_1234' --api-key "$WARP_API_KEY"
+warp benefits:retirement-plans get 'crpl_1234' --api-key "$WARP_API_KEY"
 ```
 
 ### `Benefits Deductions`
@@ -101,7 +101,7 @@ warp benefits:retirement-plans benefits-get 'crpl_1234' --api-key "$WARP_API_KEY
 List current payroll benefit deductions. Defaults to active deductions. A deduction whose effectiveEndDate has elapsed is reported and filtered as terminated.
 
 ```sh
-warp benefits:deductions benefits-list --api-key "$WARP_API_KEY" --status 'active'
+warp benefits:deductions list --api-key "$WARP_API_KEY" --status 'active'
 ```
 
 #### Get Benefit Deduction
@@ -109,7 +109,7 @@ warp benefits:deductions benefits-list --api-key "$WARP_API_KEY" --status 'activ
 Get the current version of a company benefit deduction by id.
 
 ```sh
-warp benefits:deductions benefits-get 'pbdg_1234' --api-key "$WARP_API_KEY"
+warp benefits:deductions get 'pbdg_1234' --api-key "$WARP_API_KEY"
 ```
 
 ## `CustomFields`

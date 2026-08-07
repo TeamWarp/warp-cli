@@ -941,6 +941,7 @@ export namespace OfferCreatedWebhookEvent {
     candidate: Payload.Candidate;
     position: Payload.Position;
     department: Payload.Department | null;
+    workplace: Payload.Workplace | null;
     manager: Payload.Manager | null;
     /**
      * Display name of the person or company that sent the offer. Null for offers not yet sent.
@@ -993,6 +994,15 @@ export namespace OfferCreatedWebhookEvent {
       /**
        * The unique public id of the department
        * @pattern ^dpt_
+       */
+      id: string;
+      name: string;
+    }
+
+    export interface Workplace {
+      /**
+       * Public workplace identifier
+       * @pattern ^wkp_
        */
       id: string;
       name: string;
@@ -1126,6 +1136,7 @@ export namespace OfferSentWebhookEvent {
     candidate: Payload.Candidate;
     position: Payload.Position;
     department: Payload.Department | null;
+    workplace: Payload.Workplace | null;
     manager: Payload.Manager | null;
     /**
      * Display name of the person or company that sent the offer. Null for offers not yet sent.
@@ -1178,6 +1189,15 @@ export namespace OfferSentWebhookEvent {
       /**
        * The unique public id of the department
        * @pattern ^dpt_
+       */
+      id: string;
+      name: string;
+    }
+
+    export interface Workplace {
+      /**
+       * Public workplace identifier
+       * @pattern ^wkp_
        */
       id: string;
       name: string;
@@ -1311,6 +1331,7 @@ export namespace OfferViewedWebhookEvent {
     candidate: Payload.Candidate;
     position: Payload.Position;
     department: Payload.Department | null;
+    workplace: Payload.Workplace | null;
     manager: Payload.Manager | null;
     /**
      * Display name of the person or company that sent the offer. Null for offers not yet sent.
@@ -1363,6 +1384,15 @@ export namespace OfferViewedWebhookEvent {
       /**
        * The unique public id of the department
        * @pattern ^dpt_
+       */
+      id: string;
+      name: string;
+    }
+
+    export interface Workplace {
+      /**
+       * Public workplace identifier
+       * @pattern ^wkp_
        */
       id: string;
       name: string;
@@ -1496,6 +1526,7 @@ export namespace OfferAcceptedWebhookEvent {
     candidate: Payload.Candidate;
     position: Payload.Position;
     department: Payload.Department | null;
+    workplace: Payload.Workplace | null;
     manager: Payload.Manager | null;
     /**
      * Display name of the person or company that sent the offer. Null for offers not yet sent.
@@ -1548,6 +1579,15 @@ export namespace OfferAcceptedWebhookEvent {
       /**
        * The unique public id of the department
        * @pattern ^dpt_
+       */
+      id: string;
+      name: string;
+    }
+
+    export interface Workplace {
+      /**
+       * Public workplace identifier
+       * @pattern ^wkp_
        */
       id: string;
       name: string;
@@ -1681,6 +1721,7 @@ export namespace OfferVoidedWebhookEvent {
     candidate: Payload.Candidate;
     position: Payload.Position;
     department: Payload.Department | null;
+    workplace: Payload.Workplace | null;
     manager: Payload.Manager | null;
     /**
      * Display name of the person or company that sent the offer. Null for offers not yet sent.
@@ -1733,6 +1774,15 @@ export namespace OfferVoidedWebhookEvent {
       /**
        * The unique public id of the department
        * @pattern ^dpt_
+       */
+      id: string;
+      name: string;
+    }
+
+    export interface Workplace {
+      /**
+       * Public workplace identifier
+       * @pattern ^wkp_
        */
       id: string;
       name: string;

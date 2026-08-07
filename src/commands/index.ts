@@ -24,9 +24,9 @@ const commands = [
     ],
     "commandPath": [
       "benefits:health-plans",
-      "benefits-list"
+      "list"
     ],
-    "methodName": "benefitsList",
+    "methodName": "list",
     "summary": "List Health Plans",
     "description": "List company health plans. Defaults to active plans. A plan whose effectiveEndDate has elapsed is reported and filtered as terminated.",
     "transport": "http",
@@ -98,9 +98,9 @@ const commands = [
     ],
     "commandPath": [
       "benefits:health-plans",
-      "benefits-get"
+      "get"
     ],
-    "methodName": "benefitsGet",
+    "methodName": "get",
     "summary": "Get Health Plan",
     "description": "Get a publicly visible company health plan by id.",
     "transport": "http",
@@ -126,9 +126,9 @@ const commands = [
     ],
     "commandPath": [
       "benefits:retirement-plans",
-      "benefits-list"
+      "list"
     ],
-    "methodName": "benefitsList",
+    "methodName": "list",
     "summary": "List Retirement Plans",
     "description": "List company retirement plans. Defaults to active plans. A plan whose effectiveEndDate has elapsed is reported and filtered as terminated.",
     "transport": "http",
@@ -191,9 +191,9 @@ const commands = [
     ],
     "commandPath": [
       "benefits:retirement-plans",
-      "benefits-get"
+      "get"
     ],
-    "methodName": "benefitsGet",
+    "methodName": "get",
     "summary": "Get Retirement Plan",
     "description": "Get a company retirement plan by id, regardless of status.",
     "transport": "http",
@@ -219,9 +219,9 @@ const commands = [
     ],
     "commandPath": [
       "benefits:deductions",
-      "benefits-list"
+      "list"
     ],
-    "methodName": "benefitsList",
+    "methodName": "list",
     "summary": "List Benefit Deductions",
     "description": "List current payroll benefit deductions. Defaults to active deductions. A deduction whose effectiveEndDate has elapsed is reported and filtered as terminated.",
     "transport": "http",
@@ -320,9 +320,9 @@ const commands = [
     ],
     "commandPath": [
       "benefits:deductions",
-      "benefits-get"
+      "get"
     ],
-    "methodName": "benefitsGet",
+    "methodName": "get",
     "summary": "Get Benefit Deduction",
     "description": "Get the current version of a company benefit deduction by id.",
     "transport": "http",
@@ -1192,6 +1192,14 @@ const commands = [
         "name": "department-id",
         "optionKey": "departmentId",
         "paramKey": "departmentId",
+        "location": "body",
+        "required": false,
+        "valueKind": "string"
+      },
+      {
+        "name": "workplace-id",
+        "optionKey": "workplaceId",
+        "paramKey": "workplaceId",
         "location": "body",
         "required": false,
         "valueKind": "string"

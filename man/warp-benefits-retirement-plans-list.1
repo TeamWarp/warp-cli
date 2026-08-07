@@ -1,40 +1,28 @@
 .\" File generated from our OpenAPI spec by Scalar. Do not edit.
-.TH "WARP\-BENEFITS\-DEDUCTIONS\-BENEFITS\-LIST" "1" "" "warp" "Warp Manual"
+.TH "WARP\-BENEFITS\-RETIREMENT\-PLANS\-LIST" "1" "" "warp" "Warp Manual"
 .SH "NAME"
-warp\-benefits\-deductions\-benefits\-list \- List Benefit Deductions
+warp\-benefits\-retirement\-plans\-list \- List Retirement Plans
 .SH "SYNOPSIS"
-.B warp benefits:deductions benefits\-list
+.B warp benefits:retirement\-plans list
 [\fIoptions\fR]
 .SH "DESCRIPTION"
-List current payroll benefit deductions. Defaults to active deductions. A deduction whose effectiveEndDate has elapsed is reported and filtered as terminated.
+List company retirement plans. Defaults to active plans. A plan whose effectiveEndDate has elapsed is reported and filtered as terminated.
 .SH "OPTIONS"
 .TP
 \fB\-\-limit\fR \fI<value>\fR
 a number less than or equal to 100.
 .TP
 \fB\-\-after\-id\fR \fI<value>\fR
-The version\-group tag of a payroll benefit deduction. Stable across edits.
+The tag of a company retirement plan.
 .TP
 \fB\-\-before\-id\fR \fI<value>\fR
-The version\-group tag of a payroll benefit deduction. Stable across edits.
-.TP
-\fB\-\-worker\-id\fR \fI<value>\fR
-The worker\-id query parameter. Repeat the flag to pass multiple values.
-.TP
-\fB\-\-category\fR \fI<value>\fR
-The category query parameter. Repeat the flag to pass multiple values.
+The tag of a company retirement plan.
 .TP
 \fB\-\-type\fR \fI<value>\fR
 The type query parameter. Repeat the flag to pass multiple values.
 .TP
 \fB\-\-status\fR \fI<value>\fR
 Statuses to include. Defaults to ["active"]. An elapsed effectiveEndDate is reported and filtered as "terminated". Repeat the flag to pass multiple values.
-.TP
-\fB\-\-health\-plan\-id\fR \fI<value>\fR
-The health\-plan\-id query parameter. Repeat the flag to pass multiple values.
-.TP
-\fB\-\-retirement\-plan\-id\fR \fI<value>\fR
-The retirement\-plan\-id query parameter. Repeat the flag to pass multiple values.
 .TP
 \fB\-\-base\-url\fR \fI<url>\fR
 Override the base URL for API requests.
@@ -69,7 +57,7 @@ API credential. Can also be set with the WARP_API_KEY environment variable.
 .PP
 .RS 4
 .nf
-warp benefits:deductions benefits\-list \-\-api\-key "$WARP_API_KEY" \-\-status 'active'
+warp benefits:retirement\-plans list \-\-api\-key "$WARP_API_KEY" \-\-status 'active'
 .fi
 .RE
 .SH "ENVIRONMENT"

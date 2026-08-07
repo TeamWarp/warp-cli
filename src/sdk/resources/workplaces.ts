@@ -34,14 +34,14 @@ export class Workplaces extends APIResource {
    * @example
    * ```ts
    * const create = await client.workplaces.create({
-   *   name: "",
-   *   type: "remote",
+   *   name: '',
+   *   type: 'remote',
    *   address: {
-   *     line1: "x",
-   *     city: "",
-   *     postalCode: "",
-   *     state: "AL",
-   *     country: "US",
+   *     line1: 'x',
+   *     city: '',
+   *     postalCode: '',
+   *     state: 'AL',
+   *     country: 'US',
    *   },
    * });
    * ```
@@ -60,7 +60,7 @@ export class Workplaces extends APIResource {
    *
    * @example
    * ```ts
-   * const update = await client.workplaces.update("wkp_1234", {});
+   * const update = await client.workplaces.update('wkp_1234', {});
    * ```
    */
   update(id: string, body: WorkplaceUpdateParams, options?: RequestOptions): APIPromise<WorkplaceUpdateResponse> {

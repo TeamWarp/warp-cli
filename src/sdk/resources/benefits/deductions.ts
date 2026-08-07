@@ -9,18 +9,18 @@ export class Deductions extends APIResource {
   /**
    * List current payroll benefit deductions. Defaults to active deductions. A deduction whose effectiveEndDate has elapsed is reported and filtered as terminated.
    *
-   * @param {DeductionBenefitsListParams} [query] - The parameters to send with the request.
+   * @param {DeductionListParams} [query] - The parameters to send with the request.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
-   * @returns {APIPromise<DeductionBenefitsListResponse>} Success
+   * @returns {APIPromise<DeductionListResponse>} Success
    *
    * @example
    * ```ts
-   * const benefitsList = await client.benefits.deductions.benefitsList({
-   *   statuses: ["active"],
+   * const list = await client.benefits.deductions.list({
+   *   statuses: ['active'],
    * });
    * ```
    */
-  benefitsList(query: DeductionBenefitsListParams | null | undefined = {}, options?: RequestOptions): APIPromise<DeductionBenefitsListResponse> {
+  list(query: DeductionListParams | null | undefined = {}, options?: RequestOptions): APIPromise<DeductionListResponse> {
     return this._client.get("/v1/benefits/deductions", { query, ...options });
   }
 
@@ -29,19 +29,19 @@ export class Deductions extends APIResource {
    *
    * @param {string} id - The version-group tag of a payroll benefit deduction. Stable across edits.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
-   * @returns {APIPromise<DeductionBenefitsGetResponse>} The current version of a stable payroll benefit deduction.
+   * @returns {APIPromise<DeductionGetResponse>} The current version of a stable payroll benefit deduction.
    *
    * @example
    * ```ts
-   * const benefitsGet = await client.benefits.deductions.benefitsGet("pbdg_1234");
+   * const get_ = await client.benefits.deductions.get('pbdg_1234');
    * ```
    */
-  benefitsGet(id: string, options?: RequestOptions): APIPromise<DeductionBenefitsGetResponse> {
+  get(id: string, options?: RequestOptions): APIPromise<DeductionGetResponse> {
     return this._client.get(__scalarPath`/v1/benefits/deductions/${id}`, options);
   }
 }
 
-export interface DeductionBenefitsListParams {
+export interface DeductionListParams {
   /**
    * a number less than or equal to 100
    */
@@ -68,16 +68,16 @@ export interface DeductionBenefitsListParams {
   retirementPlanIds?: Array<string>;
 }
 
-export interface DeductionBenefitsListResponse {
+export interface DeductionListResponse {
   hasMore: boolean;
   /**
    * an integer
    */
   count: number;
-  data: Array<DeductionBenefitsListResponse.Data>;
+  data: Array<DeductionListResponse.Data>;
 }
 
-export namespace DeductionBenefitsListResponse {
+export namespace DeductionListResponse {
   export interface Data {
     /**
      * Stable identifier shared by every internal version of this deduction.
@@ -264,7 +264,7 @@ export namespace DeductionBenefitsListResponse {
   }
 }
 
-export interface DeductionBenefitsGetResponse {
+export interface DeductionGetResponse {
   /**
    * Stable identifier shared by every internal version of this deduction.
    * @pattern ^pbdg_
@@ -273,7 +273,7 @@ export interface DeductionBenefitsGetResponse {
   /**
    * Basic identifying information for a worker associated with another resource.
    */
-  worker: DeductionBenefitsGetResponse.Worker;
+  worker: DeductionGetResponse.Worker;
   /**
    * The deduction name shown in payroll and benefits surfaces.
    */
@@ -293,11 +293,11 @@ export interface DeductionBenefitsGetResponse {
   /**
    * The associated benefit plan, or null for a planless payroll deduction.
    */
-  plan: DeductionBenefitsGetResponse.HealthPlanReference | DeductionBenefitsGetResponse.RetirementPlanReference | null;
+  plan: DeductionGetResponse.HealthPlanReference | DeductionGetResponse.RetirementPlanReference | null;
   /**
    * How the employee and employer contributions are calculated.
    */
-  calculation: DeductionBenefitsGetResponse.FixedAmountBenefitCalculation | DeductionBenefitsGetResponse.PercentageBenefitCalculation;
+  calculation: DeductionGetResponse.FixedAmountBenefitCalculation | DeductionGetResponse.PercentageBenefitCalculation;
   /**
    * A date string in the form YYYY-MM-DD
    * @pattern ^\d{4}-\d{2}-\d{2}$
@@ -321,7 +321,7 @@ export interface DeductionBenefitsGetResponse {
   updatedAt: string;
 }
 
-export namespace DeductionBenefitsGetResponse {
+export namespace DeductionGetResponse {
   export interface Worker {
     /**
      * The worker id.
@@ -450,8 +450,8 @@ export namespace DeductionBenefitsGetResponse {
 }
 export declare namespace Deductions {
   export {
-    type DeductionBenefitsListResponse as DeductionBenefitsListResponse,
-    type DeductionBenefitsGetResponse as DeductionBenefitsGetResponse,
-    type DeductionBenefitsListParams as DeductionBenefitsListParams,
+    type DeductionListResponse as DeductionListResponse,
+    type DeductionGetResponse as DeductionGetResponse,
+    type DeductionListParams as DeductionListParams,
   };
 }

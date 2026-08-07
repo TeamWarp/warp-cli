@@ -34,45 +34,45 @@ type SmokeResult = {
 // the CLI command surface.
 const cases: { operation: string; method: string; path: string; args: string[] }[] = [
   {
-    operation: "benefitsList",
+    operation: "list",
     method: "GET",
     path: "/v1/benefits/health_plans",
-    args: ["benefits:health-plans","benefits-list","--status","active"],
+    args: ["benefits:health-plans","list","--status","active"],
   },
 
   {
-    operation: "benefitsGet",
+    operation: "get",
     method: "GET",
     path: "/v1/benefits/health_plans/{id}",
-    args: ["benefits:health-plans","benefits-get","chpl_1234"],
+    args: ["benefits:health-plans","get","chpl_1234"],
   },
 
   {
-    operation: "benefitsList",
+    operation: "list",
     method: "GET",
     path: "/v1/benefits/retirement_plans",
-    args: ["benefits:retirement-plans","benefits-list","--status","active"],
+    args: ["benefits:retirement-plans","list","--status","active"],
   },
 
   {
-    operation: "benefitsGet",
+    operation: "get",
     method: "GET",
     path: "/v1/benefits/retirement_plans/{id}",
-    args: ["benefits:retirement-plans","benefits-get","crpl_1234"],
+    args: ["benefits:retirement-plans","get","crpl_1234"],
   },
 
   {
-    operation: "benefitsList",
+    operation: "list",
     method: "GET",
     path: "/v1/benefits/deductions",
-    args: ["benefits:deductions","benefits-list","--status","active"],
+    args: ["benefits:deductions","list","--status","active"],
   },
 
   {
-    operation: "benefitsGet",
+    operation: "get",
     method: "GET",
     path: "/v1/benefits/deductions/{id}",
-    args: ["benefits:deductions","benefits-get","pbdg_1234"],
+    args: ["benefits:deductions","get","pbdg_1234"],
   },
 
   {
