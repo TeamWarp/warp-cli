@@ -10,18 +10,18 @@ export class RetirementPlans extends APIResource {
   /**
    * List company retirement plans. Defaults to active plans. A plan whose effectiveEndDate has elapsed is reported and filtered as terminated.
    *
-   * @param {RetirementPlanBenefitsListParams} [query] - The parameters to send with the request.
+   * @param {RetirementPlanListParams} [query] - The parameters to send with the request.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
-   * @returns {APIPromise<RetirementPlanBenefitsListResponse>} Success
+   * @returns {APIPromise<RetirementPlanListResponse>} Success
    *
    * @example
    * ```ts
-   * const benefitsList = await client.benefits.retirementPlans.benefitsList({
-   *   statuses: ["active"],
+   * const list = await client.benefits.retirementPlans.list({
+   *   statuses: ['active'],
    * });
    * ```
    */
-  benefitsList(query: RetirementPlanBenefitsListParams | null | undefined = {}, options?: RequestOptions): APIPromise<RetirementPlanBenefitsListResponse> {
+  list(query: RetirementPlanListParams | null | undefined = {}, options?: RequestOptions): APIPromise<RetirementPlanListResponse> {
     return this._client.get("/v1/benefits/retirement_plans", { query, ...options });
   }
 
@@ -30,19 +30,19 @@ export class RetirementPlans extends APIResource {
    *
    * @param {string} id - The tag of a company retirement plan.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
-   * @returns {APIPromise<RetirementPlanBenefitsGetResponse>} A company retirement plan available through Warp.
+   * @returns {APIPromise<RetirementPlanGetResponse>} A company retirement plan available through Warp.
    *
    * @example
    * ```ts
-   * const benefitsGet = await client.benefits.retirementPlans.benefitsGet("crpl_1234");
+   * const get_ = await client.benefits.retirementPlans.get('crpl_1234');
    * ```
    */
-  benefitsGet(id: string, options?: RequestOptions): APIPromise<RetirementPlanBenefitsGetResponse> {
+  get(id: string, options?: RequestOptions): APIPromise<RetirementPlanGetResponse> {
     return this._client.get(__scalarPath`/v1/benefits/retirement_plans/${id}`, options);
   }
 }
 
-export interface RetirementPlanBenefitsListParams {
+export interface RetirementPlanListParams {
   /**
    * a number less than or equal to 100
    */
@@ -65,16 +65,16 @@ export interface RetirementPlanBenefitsListParams {
   statuses?: Array<"active" | "terminated">;
 }
 
-export interface RetirementPlanBenefitsListResponse {
+export interface RetirementPlanListResponse {
   hasMore: boolean;
   /**
    * an integer
    */
   count: number;
-  data: Array<RetirementPlanBenefitsListResponse.Data>;
+  data: Array<RetirementPlanListResponse.Data>;
 }
 
-export namespace RetirementPlanBenefitsListResponse {
+export namespace RetirementPlanListResponse {
   export interface Data {
     /**
      * The tag of a company retirement plan.
@@ -117,7 +117,7 @@ export namespace RetirementPlanBenefitsListResponse {
   }
 }
 
-export interface RetirementPlanBenefitsGetResponse {
+export interface RetirementPlanGetResponse {
   /**
    * The tag of a company retirement plan.
    * @pattern ^crpl_
@@ -159,8 +159,8 @@ export interface RetirementPlanBenefitsGetResponse {
 }
 export declare namespace RetirementPlans {
   export {
-    type RetirementPlanBenefitsListResponse as RetirementPlanBenefitsListResponse,
-    type RetirementPlanBenefitsGetResponse as RetirementPlanBenefitsGetResponse,
-    type RetirementPlanBenefitsListParams as RetirementPlanBenefitsListParams,
+    type RetirementPlanListResponse as RetirementPlanListResponse,
+    type RetirementPlanGetResponse as RetirementPlanGetResponse,
+    type RetirementPlanListParams as RetirementPlanListParams,
   };
 }

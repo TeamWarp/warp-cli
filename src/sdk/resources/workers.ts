@@ -33,7 +33,7 @@ export class Workers extends APIResource {
    *
    * @example
    * ```ts
-   * const retrieve = await client.workers.retrieve("wrk_1234");
+   * const retrieve = await client.workers.retrieve('wrk_1234');
    * ```
    */
   retrieve(id: string, options?: RequestOptions): APIPromise<WorkerRetrieveResponse> {
@@ -49,7 +49,7 @@ export class Workers extends APIResource {
    *
    * @example
    * ```ts
-   * await client.workers.delete("wrk_1234");
+   * await client.workers.delete('wrk_1234');
    * ```
    */
   delete(id: string, options?: RequestOptions): APIPromise<void> {
@@ -66,20 +66,20 @@ export class Workers extends APIResource {
    * @example
    * ```ts
    * const createEmployee = await client.workers.createEmployee({
-   *   firstName: "",
-   *   lastName: "",
-   *   position: "",
-   *   startDate: "2000-01-01",
-   *   email: "john@joinwarp.com",
-   *   departmentId: "dpt_1234",
-   *   managerId: "wrk_1234",
+   *   firstName: '',
+   *   lastName: '',
+   *   position: '',
+   *   startDate: '2000-01-01',
+   *   email: 'john@joinwarp.com',
+   *   departmentId: 'dpt_1234',
+   *   managerId: 'wrk_1234',
    *   workLocation: {
-   *     type: "office",
-   *     workplaceId: "wkp_1234",
+   *     type: 'office',
+   *     workplaceId: 'wkp_1234',
    *   },
    *   compensation: {
    *     amount: 0,
-   *     per: "hour",
+   *     per: 'hour',
    *   },
    * });
    * ```
@@ -98,15 +98,15 @@ export class Workers extends APIResource {
    * @example
    * ```ts
    * const createContractor = await client.workers.createContractor({
-   *   entityType: "individual",
-   *   firstName: "",
-   *   lastName: "",
-   *   position: "",
-   *   startDate: "2000-01-01",
-   *   email: "john@joinwarp.com",
-   *   departmentId: "dpt_1234",
-   *   managerId: "wrk_1234",
-   *   workCountry: "AD",
+   *   entityType: 'individual',
+   *   firstName: '',
+   *   lastName: '',
+   *   position: '',
+   *   startDate: '2000-01-01',
+   *   email: 'john@joinwarp.com',
+   *   departmentId: 'dpt_1234',
+   *   managerId: 'wrk_1234',
+   *   workCountry: 'AD',
    * });
    * ```
    */
@@ -123,7 +123,7 @@ export class Workers extends APIResource {
    *
    * @example
    * ```ts
-   * const invite = await client.workers.invite("wrk_1234");
+   * const invite = await client.workers.invite('wrk_1234');
    * ```
    */
   invite(id: string, options?: RequestOptions): APIPromise<WorkerInviteResponse> {

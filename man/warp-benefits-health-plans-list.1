@@ -1,17 +1,31 @@
 .\" File generated from our OpenAPI spec by Scalar. Do not edit.
-.TH "WARP\-BENEFITS\-DEDUCTIONS\-BENEFITS\-GET" "1" "" "warp" "Warp Manual"
+.TH "WARP\-BENEFITS\-HEALTH\-PLANS\-LIST" "1" "" "warp" "Warp Manual"
 .SH "NAME"
-warp\-benefits\-deductions\-benefits\-get \- Get Benefit Deduction
+warp\-benefits\-health\-plans\-list \- List Health Plans
 .SH "SYNOPSIS"
-.B warp benefits:deductions benefits\-get
-\fIid\fR [\fIoptions\fR]
+.B warp benefits:health\-plans list
+[\fIoptions\fR]
 .SH "DESCRIPTION"
-Get the current version of a company benefit deduction by id.
-.SH "ARGUMENTS"
-.TP
-\fIid\fR, \fB\-\-id\fR \fI<value>\fR
-The version\-group tag of a payroll benefit deduction. Stable across edits. Required. Can also be supplied as \-\-id.
+List company health plans. Defaults to active plans. A plan whose effectiveEndDate has elapsed is reported and filtered as terminated.
 .SH "OPTIONS"
+.TP
+\fB\-\-limit\fR \fI<value>\fR
+a number less than or equal to 100.
+.TP
+\fB\-\-after\-id\fR \fI<value>\fR
+The tag of a company health plan.
+.TP
+\fB\-\-before\-id\fR \fI<value>\fR
+The tag of a company health plan.
+.TP
+\fB\-\-type\fR \fI<value>\fR
+The type query parameter. Repeat the flag to pass multiple values.
+.TP
+\fB\-\-status\fR \fI<value>\fR
+Statuses to include. Defaults to ["active"]. An elapsed effectiveEndDate is reported and filtered as "terminated". Repeat the flag to pass multiple values.
+.TP
+\fB\-\-carrier\-id\fR \fI<value>\fR
+The carrier\-id query parameter. Repeat the flag to pass multiple values.
 .TP
 \fB\-\-base\-url\fR \fI<url>\fR
 Override the base URL for API requests.
@@ -46,7 +60,7 @@ API credential. Can also be set with the WARP_API_KEY environment variable.
 .PP
 .RS 4
 .nf
-warp benefits:deductions benefits\-get 'pbdg_1234' \-\-api\-key "$WARP_API_KEY"
+warp benefits:health\-plans list \-\-api\-key "$WARP_API_KEY" \-\-status 'active'
 .fi
 .RE
 .SH "ENVIRONMENT"

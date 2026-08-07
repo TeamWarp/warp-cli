@@ -34,7 +34,7 @@ export class Departments extends APIResource {
    * @example
    * ```ts
    * const create = await client.departments.create({
-   *   name: "",
+   *   name: '',
    * });
    * ```
    */
@@ -52,7 +52,7 @@ export class Departments extends APIResource {
    *
    * @example
    * ```ts
-   * const update = await client.departments.update("dpt_1234", {});
+   * const update = await client.departments.update('dpt_1234', {});
    * ```
    */
   update(id: string, body: DepartmentUpdateParams, options?: RequestOptions): APIPromise<DepartmentUpdateResponse> {

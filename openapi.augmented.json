@@ -230,22 +230,22 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nconst benefitsList = await client.benefits.healthPlans.benefitsList({\n  statuses: [\"active\"],\n});\n\nconsole.log(benefitsList);"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst list = await client.benefits.healthPlans.list({\n  statuses: ['active'],\n});\n\nconsole.log(list);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nhealth_plan = client.benefits.health_plans.benefits_list(\n    statuses=[\"active\"],\n)\n\nprint(health_plan)"
+            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nhealth_plan = client.benefits.health_plans.list(\n    statuses=[\"active\"],\n)\n\nprint(health_plan)"
           },
           {
             "lang": "Go",
             "label": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\t\"os\"\n\n\tsdk \"warp-hr\"\n\t\"warp-hr/option\"\n)\n\nfunc main() {\n\tclient := sdk.NewClient(\n\t\toption.WithAPIKey(os.Getenv(\"WARP_API_KEY\")),\n\t)\n\n\thealthPlan, err := client.Benefits.HealthPlans.BenefitsList(context.Background(), sdk.BenefitHealthPlanBenefitsListParams{\n\t\tStatuses: sdk.F[[]sdk.BenefitHealthPlanBenefitsListParamsStatus]([]sdk.BenefitHealthPlanBenefitsListParamsStatus{\"active\"}),\n\t})\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\n\tfmt.Println(healthPlan)\n}"
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\t\"os\"\n\n\tsdk \"warp-hr\"\n\t\"warp-hr/option\"\n)\n\nfunc main() {\n\tclient := sdk.NewClient(\n\t\toption.WithAPIKey(os.Getenv(\"WARP_API_KEY\")),\n\t)\n\n\thealthPlan, err := client.Benefits.HealthPlans.List(context.Background(), sdk.BenefitHealthPlanListParams{\n\t\tStatuses: sdk.F[[]sdk.BenefitHealthPlanListParamsStatus]([]sdk.BenefitHealthPlanListParamsStatus{\"active\"}),\n\t})\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\n\tfmt.Println(healthPlan)\n}"
           },
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp benefits:health-plans benefits-list --api-key \"$WARP_API_KEY\" --status 'active'"
+            "source": "warp benefits:health-plans list --api-key \"$WARP_API_KEY\" --status 'active'"
           }
         ]
       }
@@ -370,22 +370,22 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nconst benefitsGet = await client.benefits.healthPlans.benefitsGet(\"chpl_1234\");\n\nconsole.log(benefitsGet);"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst get_ = await client.benefits.healthPlans.get('chpl_1234');\n\nconsole.log(get_);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nhealth_plan = client.benefits.health_plans.benefits_get(\n    id=\"chpl_1234\",\n)\n\nprint(health_plan)"
+            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nhealth_plan = client.benefits.health_plans.get(\n    id=\"chpl_1234\",\n)\n\nprint(health_plan)"
           },
           {
             "lang": "Go",
             "label": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\t\"os\"\n\n\tsdk \"warp-hr\"\n\t\"warp-hr/option\"\n)\n\nfunc main() {\n\tclient := sdk.NewClient(\n\t\toption.WithAPIKey(os.Getenv(\"WARP_API_KEY\")),\n\t)\n\n\thealthPlan, err := client.Benefits.HealthPlans.BenefitsGet(context.Background(), \"chpl_1234\")\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\n\tfmt.Println(healthPlan)\n}"
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\t\"os\"\n\n\tsdk \"warp-hr\"\n\t\"warp-hr/option\"\n)\n\nfunc main() {\n\tclient := sdk.NewClient(\n\t\toption.WithAPIKey(os.Getenv(\"WARP_API_KEY\")),\n\t)\n\n\thealthPlan, err := client.Benefits.HealthPlans.Get(context.Background(), \"chpl_1234\")\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\n\tfmt.Println(healthPlan)\n}"
           },
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp benefits:health-plans benefits-get 'chpl_1234' --api-key \"$WARP_API_KEY\""
+            "source": "warp benefits:health-plans get 'chpl_1234' --api-key \"$WARP_API_KEY\""
           }
         ]
       }
@@ -585,22 +585,22 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nconst benefitsList = await client.benefits.retirementPlans.benefitsList({\n  statuses: [\"active\"],\n});\n\nconsole.log(benefitsList);"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst list = await client.benefits.retirementPlans.list({\n  statuses: ['active'],\n});\n\nconsole.log(list);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nretirement_plan = client.benefits.retirement_plans.benefits_list(\n    statuses=[\"active\"],\n)\n\nprint(retirement_plan)"
+            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nretirement_plan = client.benefits.retirement_plans.list(\n    statuses=[\"active\"],\n)\n\nprint(retirement_plan)"
           },
           {
             "lang": "Go",
             "label": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\t\"os\"\n\n\tsdk \"warp-hr\"\n\t\"warp-hr/option\"\n)\n\nfunc main() {\n\tclient := sdk.NewClient(\n\t\toption.WithAPIKey(os.Getenv(\"WARP_API_KEY\")),\n\t)\n\n\tretirementPlan, err := client.Benefits.RetirementPlans.BenefitsList(context.Background(), sdk.BenefitRetirementPlanBenefitsListParams{\n\t\tStatuses: sdk.F[[]sdk.BenefitRetirementPlanBenefitsListParamsStatus]([]sdk.BenefitRetirementPlanBenefitsListParamsStatus{\"active\"}),\n\t})\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\n\tfmt.Println(retirementPlan)\n}"
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\t\"os\"\n\n\tsdk \"warp-hr\"\n\t\"warp-hr/option\"\n)\n\nfunc main() {\n\tclient := sdk.NewClient(\n\t\toption.WithAPIKey(os.Getenv(\"WARP_API_KEY\")),\n\t)\n\n\tretirementPlan, err := client.Benefits.RetirementPlans.List(context.Background(), sdk.BenefitRetirementPlanListParams{\n\t\tStatuses: sdk.F[[]sdk.BenefitRetirementPlanListParamsStatus]([]sdk.BenefitRetirementPlanListParamsStatus{\"active\"}),\n\t})\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\n\tfmt.Println(retirementPlan)\n}"
           },
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp benefits:retirement-plans benefits-list --api-key \"$WARP_API_KEY\" --status 'active'"
+            "source": "warp benefits:retirement-plans list --api-key \"$WARP_API_KEY\" --status 'active'"
           }
         ]
       }
@@ -725,22 +725,22 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nconst benefitsGet = await client.benefits.retirementPlans.benefitsGet(\"crpl_1234\");\n\nconsole.log(benefitsGet);"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst get_ = await client.benefits.retirementPlans.get('crpl_1234');\n\nconsole.log(get_);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nretirement_plan = client.benefits.retirement_plans.benefits_get(\n    id=\"crpl_1234\",\n)\n\nprint(retirement_plan)"
+            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nretirement_plan = client.benefits.retirement_plans.get(\n    id=\"crpl_1234\",\n)\n\nprint(retirement_plan)"
           },
           {
             "lang": "Go",
             "label": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\t\"os\"\n\n\tsdk \"warp-hr\"\n\t\"warp-hr/option\"\n)\n\nfunc main() {\n\tclient := sdk.NewClient(\n\t\toption.WithAPIKey(os.Getenv(\"WARP_API_KEY\")),\n\t)\n\n\tretirementPlan, err := client.Benefits.RetirementPlans.BenefitsGet(context.Background(), \"crpl_1234\")\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\n\tfmt.Println(retirementPlan)\n}"
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\t\"os\"\n\n\tsdk \"warp-hr\"\n\t\"warp-hr/option\"\n)\n\nfunc main() {\n\tclient := sdk.NewClient(\n\t\toption.WithAPIKey(os.Getenv(\"WARP_API_KEY\")),\n\t)\n\n\tretirementPlan, err := client.Benefits.RetirementPlans.Get(context.Background(), \"crpl_1234\")\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\n\tfmt.Println(retirementPlan)\n}"
           },
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp benefits:retirement-plans benefits-get 'crpl_1234' --api-key \"$WARP_API_KEY\""
+            "source": "warp benefits:retirement-plans get 'crpl_1234' --api-key \"$WARP_API_KEY\""
           }
         ]
       }
@@ -1024,22 +1024,22 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nconst benefitsList = await client.benefits.deductions.benefitsList({\n  statuses: [\"active\"],\n});\n\nconsole.log(benefitsList);"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst list = await client.benefits.deductions.list({\n  statuses: ['active'],\n});\n\nconsole.log(list);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ndeduction = client.benefits.deductions.benefits_list(\n    statuses=[\"active\"],\n)\n\nprint(deduction)"
+            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ndeduction = client.benefits.deductions.list(\n    statuses=[\"active\"],\n)\n\nprint(deduction)"
           },
           {
             "lang": "Go",
             "label": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\t\"os\"\n\n\tsdk \"warp-hr\"\n\t\"warp-hr/option\"\n)\n\nfunc main() {\n\tclient := sdk.NewClient(\n\t\toption.WithAPIKey(os.Getenv(\"WARP_API_KEY\")),\n\t)\n\n\tdeduction, err := client.Benefits.Deductions.BenefitsList(context.Background(), sdk.BenefitDeductionBenefitsListParams{\n\t\tStatuses: sdk.F[[]sdk.BenefitDeductionBenefitsListParamsStatus]([]sdk.BenefitDeductionBenefitsListParamsStatus{\"active\"}),\n\t})\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\n\tfmt.Println(deduction)\n}"
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\t\"os\"\n\n\tsdk \"warp-hr\"\n\t\"warp-hr/option\"\n)\n\nfunc main() {\n\tclient := sdk.NewClient(\n\t\toption.WithAPIKey(os.Getenv(\"WARP_API_KEY\")),\n\t)\n\n\tdeduction, err := client.Benefits.Deductions.List(context.Background(), sdk.BenefitDeductionListParams{\n\t\tStatuses: sdk.F[[]sdk.BenefitDeductionListParamsStatus]([]sdk.BenefitDeductionListParamsStatus{\"active\"}),\n\t})\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\n\tfmt.Println(deduction)\n}"
           },
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp benefits:deductions benefits-list --api-key \"$WARP_API_KEY\" --status 'active'"
+            "source": "warp benefits:deductions list --api-key \"$WARP_API_KEY\" --status 'active'"
           }
         ]
       }
@@ -1164,22 +1164,22 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nconst benefitsGet = await client.benefits.deductions.benefitsGet(\"pbdg_1234\");\n\nconsole.log(benefitsGet);"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst get_ = await client.benefits.deductions.get('pbdg_1234');\n\nconsole.log(get_);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ndeduction = client.benefits.deductions.benefits_get(\n    id=\"pbdg_1234\",\n)\n\nprint(deduction)"
+            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ndeduction = client.benefits.deductions.get(\n    id=\"pbdg_1234\",\n)\n\nprint(deduction)"
           },
           {
             "lang": "Go",
             "label": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\t\"os\"\n\n\tsdk \"warp-hr\"\n\t\"warp-hr/option\"\n)\n\nfunc main() {\n\tclient := sdk.NewClient(\n\t\toption.WithAPIKey(os.Getenv(\"WARP_API_KEY\")),\n\t)\n\n\tdeduction, err := client.Benefits.Deductions.BenefitsGet(context.Background(), \"pbdg_1234\")\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\n\tfmt.Println(deduction)\n}"
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\t\"os\"\n\n\tsdk \"warp-hr\"\n\t\"warp-hr/option\"\n)\n\nfunc main() {\n\tclient := sdk.NewClient(\n\t\toption.WithAPIKey(os.Getenv(\"WARP_API_KEY\")),\n\t)\n\n\tdeduction, err := client.Benefits.Deductions.Get(context.Background(), \"pbdg_1234\")\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\n\tfmt.Println(deduction)\n}"
           },
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp benefits:deductions benefits-get 'pbdg_1234' --api-key \"$WARP_API_KEY\""
+            "source": "warp benefits:deductions get 'pbdg_1234' --api-key \"$WARP_API_KEY\""
           }
         ]
       }
@@ -1383,7 +1383,7 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nconst list = await client.customFields.list();\n\nconsole.log(list);"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst list = await client.customFields.list();\n\nconsole.log(list);"
           },
           {
             "lang": "Python",
@@ -1726,7 +1726,7 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nconst create = await client.customFields.create({\n  name: \"\",\n  type: \"text\",\n  category: \"info\",\n});\n\nconsole.log(create);"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst create = await client.customFields.create({\n  name: '',\n  type: 'text',\n  category: 'info',\n});\n\nconsole.log(create);"
           },
           {
             "lang": "Python",
@@ -2014,7 +2014,7 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nconst retrieve = await client.customFields.retrieve(\"cf_1234\");\n\nconsole.log(retrieve);"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst retrieve = await client.customFields.retrieve('cf_1234');\n\nconsole.log(retrieve);"
           },
           {
             "lang": "Python",
@@ -2336,7 +2336,7 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nconst update = await client.customFields.update(\"cf_1234\", {});\n\nconsole.log(update);"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst update = await client.customFields.update('cf_1234', {});\n\nconsole.log(update);"
           },
           {
             "lang": "Python",
@@ -2578,7 +2578,7 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nconst archive = await client.customFields.archive(\"cf_1234\");\n\nconsole.log(archive);"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst archive = await client.customFields.archive('cf_1234');\n\nconsole.log(archive);"
           },
           {
             "lang": "Python",
@@ -2800,7 +2800,7 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nconst createOption = await client.customFields.createOption(\"cf_1234\", {\n  label: \"x\",\n  value: \"x\",\n});\n\nconsole.log(createOption);"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst createOption = await client.customFields.createOption('cf_1234', {\n  label: 'x',\n  value: 'x',\n});\n\nconsole.log(createOption);"
           },
           {
             "lang": "Python",
@@ -3016,7 +3016,7 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nconst updateOption = await client.customFields.updateOption(\"cfo_1234\", {});\n\nconsole.log(updateOption);"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst updateOption = await client.customFields.updateOption('cfo_1234', {});\n\nconsole.log(updateOption);"
           },
           {
             "lang": "Python",
@@ -3157,7 +3157,7 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nawait client.customFields.deleteOption(\"cfo_1234\");"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nawait client.customFields.deleteOption('cfo_1234');"
           },
           {
             "lang": "Python",
@@ -3336,7 +3336,7 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nconst archiveOption = await client.customFields.archiveOption(\"cfo_1234\");\n\nconsole.log(archiveOption);"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst archiveOption = await client.customFields.archiveOption('cfo_1234');\n\nconsole.log(archiveOption);"
           },
           {
             "lang": "Python",
@@ -3839,7 +3839,7 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nconst listValues = await client.customFields.listValues();\n\nconsole.log(listValues);"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst listValues = await client.customFields.listValues();\n\nconsole.log(listValues);"
           },
           {
             "lang": "Python",
@@ -4610,7 +4610,7 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nconst upsertValue = await client.customFields.upsertValue({\n  workerId: \"wrk_1234\",\n  fieldId: \"cf_1234\",\n  value: {\n    type: \"text\",\n    value: \"\",\n  },\n});\n\nconsole.log(upsertValue);"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst upsertValue = await client.customFields.upsertValue({\n  workerId: 'wrk_1234',\n  fieldId: 'cf_1234',\n  value: {\n    type: 'text',\n    value: '',\n  },\n});\n\nconsole.log(upsertValue);"
           },
           {
             "lang": "Python",
@@ -4620,7 +4620,7 @@
           {
             "lang": "Go",
             "label": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\t\"os\"\n\n\tsdk \"warp-hr\"\n\t\"warp-hr/option\"\n)\n\nfunc main() {\n\tclient := sdk.NewClient(\n\t\toption.WithAPIKey(os.Getenv(\"WARP_API_KEY\")),\n\t)\n\n\tcustomField, err := client.CustomFields.UpsertValue(context.Background(), sdk.CustomFieldUpsertValueParams{\n\t\tFieldID: sdk.F[string](\"cf_1234\"),\n\t\tValue: sdk.F[sdk.CustomFieldUpsertValueParamsValueUnion](sdk.CustomFieldUpsertValueParamsValueUnion{}),\n\t\tWorkerID: sdk.F[string](\"wrk_1234\"),\n\t})\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\n\tfmt.Println(customField)\n}"
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\t\"os\"\n\n\tsdk \"warp-hr\"\n\t\"warp-hr/option\"\n)\n\nfunc main() {\n\tclient := sdk.NewClient(\n\t\toption.WithAPIKey(os.Getenv(\"WARP_API_KEY\")),\n\t)\n\n\tcustomField, err := client.CustomFields.UpsertValue(context.Background(), sdk.CustomFieldUpsertValueParams{\n\t\tFieldID:  sdk.F[string](\"cf_1234\"),\n\t\tValue:    sdk.F[sdk.CustomFieldUpsertValueParamsValueUnion](sdk.CustomFieldUpsertValueParamsValueUnion{}),\n\t\tWorkerID: sdk.F[string](\"wrk_1234\"),\n\t})\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\n\tfmt.Println(customField)\n}"
           },
           {
             "lang": "Shell",
@@ -4763,7 +4763,7 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nawait client.customFields.clearValue({\n  workerId: \"wrk_1234\",\n  fieldId: \"cf_1234\",\n});"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nawait client.customFields.clearValue({\n  workerId: 'wrk_1234',\n  fieldId: 'cf_1234',\n});"
           },
           {
             "lang": "Python",
@@ -4773,7 +4773,7 @@
           {
             "lang": "Go",
             "label": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\t\"os\"\n\n\tsdk \"warp-hr\"\n\t\"warp-hr/option\"\n)\n\nfunc main() {\n\tclient := sdk.NewClient(\n\t\toption.WithAPIKey(os.Getenv(\"WARP_API_KEY\")),\n\t)\n\n\terr := client.CustomFields.ClearValue(context.Background(), sdk.CustomFieldClearValueParams{\n\t\tFieldID: sdk.F[string](\"cf_1234\"),\n\t\tWorkerID: sdk.F[string](\"wrk_1234\"),\n\t})\n\tif err != nil {\n\t\tpanic(err)\n\t}\n}"
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"os\"\n\n\tsdk \"warp-hr\"\n\t\"warp-hr/option\"\n)\n\nfunc main() {\n\tclient := sdk.NewClient(\n\t\toption.WithAPIKey(os.Getenv(\"WARP_API_KEY\")),\n\t)\n\n\terr := client.CustomFields.ClearValue(context.Background(), sdk.CustomFieldClearValueParams{\n\t\tFieldID:  sdk.F[string](\"cf_1234\"),\n\t\tWorkerID: sdk.F[string](\"wrk_1234\"),\n\t})\n\tif err != nil {\n\t\tpanic(err)\n\t}\n}"
           },
           {
             "lang": "Shell",
@@ -4969,7 +4969,7 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nconst list = await client.departments.list();\n\nconsole.log(list);"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst list = await client.departments.list();\n\nconsole.log(list);"
           },
           {
             "lang": "Python",
@@ -5139,7 +5139,7 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nconst create = await client.departments.create({\n  name: \"\",\n});\n\nconsole.log(create);"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst create = await client.departments.create({\n  name: '',\n});\n\nconsole.log(create);"
           },
           {
             "lang": "Python",
@@ -5334,7 +5334,7 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nconst update = await client.departments.update(\"dpt_1234\", {});\n\nconsole.log(update);"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst update = await client.departments.update('dpt_1234', {});\n\nconsole.log(update);"
           },
           {
             "lang": "Python",
@@ -5488,6 +5488,7 @@
                           "candidate",
                           "position",
                           "department",
+                          "workplace",
                           "manager",
                           "sentBy",
                           "compensation",
@@ -5915,6 +5916,38 @@
                               }
                             ]
                           },
+                          "workplace": {
+                            "anyOf": [
+                              {
+                                "type": "object",
+                                "required": [
+                                  "id",
+                                  "name"
+                                ],
+                                "properties": {
+                                  "id": {
+                                    "type": "string",
+                                    "description": "Public workplace identifier",
+                                    "title": "startsWith(\"wkp_\")",
+                                    "examples": [
+                                      "wkp_1234"
+                                    ],
+                                    "pattern": "^wkp_"
+                                  },
+                                  "name": {
+                                    "type": "string",
+                                    "examples": [
+                                      "New York Office"
+                                    ]
+                                  }
+                                },
+                                "additionalProperties": false
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          },
                           "manager": {
                             "anyOf": [
                               {
@@ -6217,7 +6250,7 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nconst list = await client.offers.list();\n\nconsole.log(list);"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst list = await client.offers.list();\n\nconsole.log(list);"
           },
           {
             "lang": "Python",
@@ -6261,6 +6294,7 @@
                     "candidate",
                     "position",
                     "department",
+                    "workplace",
                     "manager",
                     "sentBy",
                     "compensation",
@@ -6688,6 +6722,38 @@
                         }
                       ]
                     },
+                    "workplace": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "required": [
+                            "id",
+                            "name"
+                          ],
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "description": "Public workplace identifier",
+                              "title": "startsWith(\"wkp_\")",
+                              "examples": [
+                                "wkp_1234"
+                              ],
+                              "pattern": "^wkp_"
+                            },
+                            "name": {
+                              "type": "string",
+                              "examples": [
+                                "New York Office"
+                              ]
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
                     "manager": {
                       "anyOf": [
                         {
@@ -6960,6 +7026,9 @@
                   "anyOf": [
                     {
                       "$ref": "#/components/schemas/DepartmentNotFound"
+                    },
+                    {
+                      "$ref": "#/components/schemas/WorkplaceNotFound"
                     },
                     {
                       "$ref": "#/components/schemas/ManagerNotFoundError"
@@ -7389,6 +7458,22 @@
                       }
                     ]
                   },
+                  "workplaceId": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "description": "Public workplace identifier",
+                        "title": "startsWith(\"wkp_\")",
+                        "examples": [
+                          "wkp_1234"
+                        ],
+                        "pattern": "^wkp_"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
                   "managerId": {
                     "anyOf": [
                       {
@@ -7619,7 +7704,7 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nconst create = await client.offers.create({\n  candidate: {\n    firstName: \"x\",\n    lastName: \"x\",\n    email: \"john@joinwarp.com\",\n  },\n  position: {\n    title: \"x\",\n    startDate: \"2000-01-01\",\n  },\n  workerType: \"employee\",\n  compensation: {\n    payBasis: \"year\",\n    payCurrency: \"USD\",\n    payRate: 0,\n  },\n});\n\nconsole.log(create);"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst create = await client.offers.create({\n  candidate: {\n    firstName: 'x',\n    lastName: 'x',\n    email: 'john@joinwarp.com',\n  },\n  position: {\n    title: 'x',\n    startDate: '2000-01-01',\n  },\n  workerType: 'employee',\n  compensation: {\n    payBasis: 'year',\n    payCurrency: 'USD',\n    payRate: 0,\n  },\n});\n\nconsole.log(create);"
           },
           {
             "lang": "Python",
@@ -7629,7 +7714,7 @@
           {
             "lang": "Go",
             "label": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\t\"os\"\n\n\tsdk \"warp-hr\"\n\t\"warp-hr/option\"\n)\n\nfunc main() {\n\tclient := sdk.NewClient(\n\t\toption.WithAPIKey(os.Getenv(\"WARP_API_KEY\")),\n\t)\n\n\toffer, err := client.Offers.New(context.Background(), sdk.OfferNewParams{\n\t\tCandidate: sdk.F[sdk.OfferNewParamsCandidate](sdk.OfferNewParamsCandidate{\n\t\t\tFirstName: sdk.F[string](\"x\"),\n\t\t\tLastName: sdk.F[string](\"x\"),\n\t\t\tEmail: sdk.F[string](\"john@joinwarp.com\"),\n\t\t}),\n\t\tCompensation: sdk.F[sdk.OfferNewParamsCompensation](sdk.OfferNewParamsCompensation{\n\t\t\tPayRate: sdk.F[float64](0),\n\t\t}),\n\t\tPosition: sdk.F[sdk.OfferNewParamsPosition](sdk.OfferNewParamsPosition{\n\t\t\tTitle: sdk.F[string](\"x\"),\n\t\t\tStartDate: sdk.F[string](\"2000-01-01\"),\n\t\t}),\n\t})\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\n\tfmt.Println(offer)\n}"
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\t\"os\"\n\n\tsdk \"warp-hr\"\n\t\"warp-hr/option\"\n)\n\nfunc main() {\n\tclient := sdk.NewClient(\n\t\toption.WithAPIKey(os.Getenv(\"WARP_API_KEY\")),\n\t)\n\n\toffer, err := client.Offers.New(context.Background(), sdk.OfferNewParams{\n\t\tCandidate: sdk.F[sdk.OfferNewParamsCandidate](sdk.OfferNewParamsCandidate{\n\t\t\tFirstName: sdk.F[string](\"x\"),\n\t\t\tLastName:  sdk.F[string](\"x\"),\n\t\t\tEmail:     sdk.F[string](\"john@joinwarp.com\"),\n\t\t}),\n\t\tCompensation: sdk.F[sdk.OfferNewParamsCompensation](sdk.OfferNewParamsCompensation{\n\t\t\tPayRate: sdk.F[float64](0),\n\t\t}),\n\t\tPosition: sdk.F[sdk.OfferNewParamsPosition](sdk.OfferNewParamsPosition{\n\t\t\tTitle:     sdk.F[string](\"x\"),\n\t\t\tStartDate: sdk.F[string](\"2000-01-01\"),\n\t\t}),\n\t})\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\n\tfmt.Println(offer)\n}"
           },
           {
             "lang": "Shell",
@@ -7681,6 +7766,7 @@
                     "candidate",
                     "position",
                     "department",
+                    "workplace",
                     "manager",
                     "sentBy",
                     "compensation",
@@ -8098,6 +8184,38 @@
                               "type": "string",
                               "examples": [
                                 "Engineering"
+                              ]
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "workplace": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "required": [
+                            "id",
+                            "name"
+                          ],
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "description": "Public workplace identifier",
+                              "title": "startsWith(\"wkp_\")",
+                              "examples": [
+                                "wkp_1234"
+                              ],
+                              "pattern": "^wkp_"
+                            },
+                            "name": {
+                              "type": "string",
+                              "examples": [
+                                "New York Office"
                               ]
                             }
                           },
@@ -8426,7 +8544,7 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nconst void_ = await client.offers.void(\"offr_1234\");\n\nconsole.log(void_);"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst void_ = await client.offers.void('offr_1234');\n\nconsole.log(void_);"
           },
           {
             "lang": "Python",
@@ -8488,6 +8606,7 @@
                     "candidate",
                     "position",
                     "department",
+                    "workplace",
                     "manager",
                     "sentBy",
                     "compensation",
@@ -8905,6 +9024,38 @@
                               "type": "string",
                               "examples": [
                                 "Engineering"
+                              ]
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "workplace": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "required": [
+                            "id",
+                            "name"
+                          ],
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "description": "Public workplace identifier",
+                              "title": "startsWith(\"wkp_\")",
+                              "examples": [
+                                "wkp_1234"
+                              ],
+                              "pattern": "^wkp_"
+                            },
+                            "name": {
+                              "type": "string",
+                              "examples": [
+                                "New York Office"
                               ]
                             }
                           },
@@ -9262,7 +9413,7 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nconst extendDeadline = await client.offers.extendDeadline(\"offr_1234\", {\n  expirationTime: \"\",\n});\n\nconsole.log(extendDeadline);"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst extendDeadline = await client.offers.extendDeadline('offr_1234', {\n  expirationTime: '',\n});\n\nconsole.log(extendDeadline);"
           },
           {
             "lang": "Python",
@@ -9324,6 +9475,7 @@
                     "candidate",
                     "position",
                     "department",
+                    "workplace",
                     "manager",
                     "sentBy",
                     "compensation",
@@ -9751,6 +9903,38 @@
                         }
                       ]
                     },
+                    "workplace": {
+                      "anyOf": [
+                        {
+                          "type": "object",
+                          "required": [
+                            "id",
+                            "name"
+                          ],
+                          "properties": {
+                            "id": {
+                              "type": "string",
+                              "description": "Public workplace identifier",
+                              "title": "startsWith(\"wkp_\")",
+                              "examples": [
+                                "wkp_1234"
+                              ],
+                              "pattern": "^wkp_"
+                            },
+                            "name": {
+                              "type": "string",
+                              "examples": [
+                                "New York Office"
+                              ]
+                            }
+                          },
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
                     "manager": {
                       "anyOf": [
                         {
@@ -10069,7 +10253,7 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nconst resend = await client.offers.resend(\"offr_1234\");\n\nconsole.log(resend);"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst resend = await client.offers.resend('offr_1234');\n\nconsole.log(resend);"
           },
           {
             "lang": "Python",
@@ -10374,7 +10558,7 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nconst timeOffGet = await client.timeOff.policies.timeOffGet();\n\nconsole.log(timeOffGet);"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst timeOffGet = await client.timeOff.policies.timeOffGet();\n\nconsole.log(timeOffGet);"
           },
           {
             "lang": "Python",
@@ -10631,7 +10815,7 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nconst timeOffGet2 = await client.timeOff.policies.timeOffGet2(\"top_1234\");\n\nconsole.log(timeOffGet2);"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst timeOffGet2 = await client.timeOff.policies.timeOffGet2('top_1234');\n\nconsole.log(timeOffGet2);"
           },
           {
             "lang": "Python",
@@ -10862,7 +11046,7 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nconst listAssignments = await client.timeOff.listAssignments();\n\nconsole.log(listAssignments);"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst listAssignments = await client.timeOff.listAssignments();\n\nconsole.log(listAssignments);"
           },
           {
             "lang": "Python",
@@ -11129,7 +11313,7 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nconst listBalances = await client.timeOff.listBalances();\n\nconsole.log(listBalances);"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst listBalances = await client.timeOff.listBalances();\n\nconsole.log(listBalances);"
           },
           {
             "lang": "Python",
@@ -11481,7 +11665,7 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nconst listRequests = await client.timeOff.listRequests();\n\nconsole.log(listRequests);"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst listRequests = await client.timeOff.listRequests();\n\nconsole.log(listRequests);"
           },
           {
             "lang": "Python",
@@ -11921,7 +12105,7 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nconst list = await client.workers.list();\n\nconsole.log(list);"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst list = await client.workers.list();\n\nconsole.log(list);"
           },
           {
             "lang": "Python",
@@ -12281,7 +12465,7 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nconst retrieve = await client.workers.retrieve(\"wrk_1234\");\n\nconsole.log(retrieve);"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst retrieve = await client.workers.retrieve('wrk_1234');\n\nconsole.log(retrieve);"
           },
           {
             "lang": "Python",
@@ -12422,7 +12606,7 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nawait client.workers.delete(\"wrk_1234\");"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nawait client.workers.delete('wrk_1234');"
           },
           {
             "lang": "Python",
@@ -12960,7 +13144,7 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nconst createEmployee = await client.workers.createEmployee({\n  firstName: \"\",\n  lastName: \"\",\n  position: \"\",\n  startDate: \"2000-01-01\",\n  email: \"john@joinwarp.com\",\n  departmentId: \"dpt_1234\",\n  managerId: \"wrk_1234\",\n  workLocation: {\n    type: \"office\",\n    workplaceId: \"wkp_1234\",\n  },\n  compensation: {\n    amount: 0,\n    per: \"hour\",\n  },\n});\n\nconsole.log(createEmployee);"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst createEmployee = await client.workers.createEmployee({\n  firstName: '',\n  lastName: '',\n  position: '',\n  startDate: '2000-01-01',\n  email: 'john@joinwarp.com',\n  departmentId: 'dpt_1234',\n  managerId: 'wrk_1234',\n  workLocation: {\n    type: 'office',\n    workplaceId: 'wkp_1234',\n  },\n  compensation: {\n    amount: 0,\n    per: 'hour',\n  },\n});\n\nconsole.log(createEmployee);"
           },
           {
             "lang": "Python",
@@ -12970,7 +13154,7 @@
           {
             "lang": "Go",
             "label": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\t\"os\"\n\n\tsdk \"warp-hr\"\n\t\"warp-hr/option\"\n)\n\nfunc main() {\n\tclient := sdk.NewClient(\n\t\toption.WithAPIKey(os.Getenv(\"WARP_API_KEY\")),\n\t)\n\n\tworker, err := client.Workers.NewEmployee(context.Background(), sdk.WorkerNewEmployeeParams{\n\t\tCompensation: sdk.F[sdk.WorkerNewEmployeeParamsCompensation](sdk.WorkerNewEmployeeParamsCompensation{\n\t\t\tAmount: sdk.F[float64](0),\n\t\t}),\n\t\tDepartmentID: sdk.F[string](\"dpt_1234\"),\n\t\tEmail: sdk.F[string](\"john@joinwarp.com\"),\n\t\tFirstName: sdk.F[string](\"\"),\n\t\tLastName: sdk.F[string](\"\"),\n\t\tManagerID: sdk.F[string](\"wrk_1234\"),\n\t\tPosition: sdk.F[string](\"\"),\n\t\tStartDate: sdk.F[string](\"2000-01-01\"),\n\t\tWorkLocation: sdk.F[sdk.WorkerNewEmployeeParamsWorkLocationUnion](sdk.WorkerNewEmployeeParamsWorkLocationOfficeWorkLocation{\n\t\t\tWorkplaceID: sdk.F[string](\"wkp_1234\"),\n\t\t}),\n\t})\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\n\tfmt.Println(worker)\n}"
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\t\"os\"\n\n\tsdk \"warp-hr\"\n\t\"warp-hr/option\"\n)\n\nfunc main() {\n\tclient := sdk.NewClient(\n\t\toption.WithAPIKey(os.Getenv(\"WARP_API_KEY\")),\n\t)\n\n\tworker, err := client.Workers.NewEmployee(context.Background(), sdk.WorkerNewEmployeeParams{\n\t\tCompensation: sdk.F[sdk.WorkerNewEmployeeParamsCompensation](sdk.WorkerNewEmployeeParamsCompensation{\n\t\t\tAmount: sdk.F[float64](0),\n\t\t}),\n\t\tDepartmentID: sdk.F[string](\"dpt_1234\"),\n\t\tEmail:        sdk.F[string](\"john@joinwarp.com\"),\n\t\tFirstName:    sdk.F[string](\"\"),\n\t\tLastName:     sdk.F[string](\"\"),\n\t\tManagerID:    sdk.F[string](\"wrk_1234\"),\n\t\tPosition:     sdk.F[string](\"\"),\n\t\tStartDate:    sdk.F[string](\"2000-01-01\"),\n\t\tWorkLocation: sdk.F[sdk.WorkerNewEmployeeParamsWorkLocationUnion](sdk.WorkerNewEmployeeParamsWorkLocationOfficeWorkLocation{\n\t\t\tWorkplaceID: sdk.F[string](\"wkp_1234\"),\n\t\t}),\n\t})\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\n\tfmt.Println(worker)\n}"
           },
           {
             "lang": "Shell",
@@ -13806,7 +13990,7 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nconst createContractor = await client.workers.createContractor({\n  entityType: \"individual\",\n  firstName: \"\",\n  lastName: \"\",\n  position: \"\",\n  startDate: \"2000-01-01\",\n  email: \"john@joinwarp.com\",\n  departmentId: \"dpt_1234\",\n  managerId: \"wrk_1234\",\n  workCountry: \"AD\",\n});\n\nconsole.log(createContractor);"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst createContractor = await client.workers.createContractor({\n  entityType: 'individual',\n  firstName: '',\n  lastName: '',\n  position: '',\n  startDate: '2000-01-01',\n  email: 'john@joinwarp.com',\n  departmentId: 'dpt_1234',\n  managerId: 'wrk_1234',\n  workCountry: 'AD',\n});\n\nconsole.log(createContractor);"
           },
           {
             "lang": "Python",
@@ -13816,7 +14000,7 @@
           {
             "lang": "Go",
             "label": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\t\"os\"\n\n\tsdk \"warp-hr\"\n\t\"warp-hr/option\"\n)\n\nfunc main() {\n\tclient := sdk.NewClient(\n\t\toption.WithAPIKey(os.Getenv(\"WARP_API_KEY\")),\n\t)\n\n\tworker, err := client.Workers.NewContractor(context.Background(), sdk.WorkerNewContractorParams{\n\t\tDepartmentID: sdk.F[string](\"dpt_1234\"),\n\t\tEmail: sdk.F[string](\"john@joinwarp.com\"),\n\t\tFirstName: sdk.F[string](\"\"),\n\t\tLastName: sdk.F[string](\"\"),\n\t\tManagerID: sdk.F[string](\"wrk_1234\"),\n\t\tPosition: sdk.F[string](\"\"),\n\t\tStartDate: sdk.F[string](\"2000-01-01\"),\n\t})\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\n\tfmt.Println(worker)\n}"
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\t\"os\"\n\n\tsdk \"warp-hr\"\n\t\"warp-hr/option\"\n)\n\nfunc main() {\n\tclient := sdk.NewClient(\n\t\toption.WithAPIKey(os.Getenv(\"WARP_API_KEY\")),\n\t)\n\n\tworker, err := client.Workers.NewContractor(context.Background(), sdk.WorkerNewContractorParams{\n\t\tDepartmentID: sdk.F[string](\"dpt_1234\"),\n\t\tEmail:        sdk.F[string](\"john@joinwarp.com\"),\n\t\tFirstName:    sdk.F[string](\"\"),\n\t\tLastName:     sdk.F[string](\"\"),\n\t\tManagerID:    sdk.F[string](\"wrk_1234\"),\n\t\tPosition:     sdk.F[string](\"\"),\n\t\tStartDate:    sdk.F[string](\"2000-01-01\"),\n\t})\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\n\tfmt.Println(worker)\n}"
           },
           {
             "lang": "Shell",
@@ -14186,7 +14370,7 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nconst invite = await client.workers.invite(\"wrk_1234\");\n\nconsole.log(invite);"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst invite = await client.workers.invite('wrk_1234');\n\nconsole.log(invite);"
           },
           {
             "lang": "Python",
@@ -14506,7 +14690,7 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nconst list = await client.workplaces.list();\n\nconsole.log(list);"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst list = await client.workplaces.list();\n\nconsole.log(list);"
           },
           {
             "lang": "Python",
@@ -14904,7 +15088,7 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nconst create = await client.workplaces.create({\n  name: \"\",\n  type: \"remote\",\n  address: {\n    line1: \"x\",\n    city: \"\",\n    postalCode: \"\",\n    state: \"AL\",\n    country: \"US\",\n  },\n});\n\nconsole.log(create);"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst create = await client.workplaces.create({\n  name: '',\n  type: 'remote',\n  address: {\n    line1: 'x',\n    city: '',\n    postalCode: '',\n    state: 'AL',\n    country: 'US',\n  },\n});\n\nconsole.log(create);"
           },
           {
             "lang": "Python",
@@ -14914,7 +15098,7 @@
           {
             "lang": "Go",
             "label": "Go",
-            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\t\"os\"\n\n\tsdk \"warp-hr\"\n\t\"warp-hr/option\"\n)\n\nfunc main() {\n\tclient := sdk.NewClient(\n\t\toption.WithAPIKey(os.Getenv(\"WARP_API_KEY\")),\n\t)\n\n\tworkplace, err := client.Workplaces.New(context.Background(), sdk.WorkplaceNewParams{\n\t\tAddress: sdk.F[sdk.WorkplaceNewParamsAddress](sdk.WorkplaceNewParamsAddress{\n\t\t\tLine1: sdk.F[string](\"x\"),\n\t\t\tCity: sdk.F[string](\"\"),\n\t\t\tPostalCode: sdk.F[string](\"\"),\n\t\t}),\n\t\tName: sdk.F[string](\"\"),\n\t})\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\n\tfmt.Println(workplace)\n}"
+            "source": "package main\n\nimport (\n\t\"context\"\n\t\"fmt\"\n\t\"os\"\n\n\tsdk \"warp-hr\"\n\t\"warp-hr/option\"\n)\n\nfunc main() {\n\tclient := sdk.NewClient(\n\t\toption.WithAPIKey(os.Getenv(\"WARP_API_KEY\")),\n\t)\n\n\tworkplace, err := client.Workplaces.New(context.Background(), sdk.WorkplaceNewParams{\n\t\tAddress: sdk.F[sdk.WorkplaceNewParamsAddress](sdk.WorkplaceNewParamsAddress{\n\t\t\tLine1:      sdk.F[string](\"x\"),\n\t\t\tCity:       sdk.F[string](\"\"),\n\t\t\tPostalCode: sdk.F[string](\"\"),\n\t\t}),\n\t\tName: sdk.F[string](\"\"),\n\t})\n\tif err != nil {\n\t\tpanic(err)\n\t}\n\n\tfmt.Println(workplace)\n}"
           },
           {
             "lang": "Shell",
@@ -15213,7 +15397,7 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from \"warp-hr\";\n\nconst client = new Warp({\n  apiKey: process.env[\"WARP_API_KEY\"], // defaults to the WARP_API_KEY env var\n});\n\nconst update = await client.workplaces.update(\"wkp_1234\", {});\n\nconsole.log(update);"
+            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst update = await client.workplaces.update('wkp_1234', {});\n\nconsole.log(update);"
           },
           {
             "lang": "Python",
@@ -16565,6 +16749,35 @@
         },
         "additionalProperties": false
       },
+      "WorkplaceNotFound": {
+        "type": "object",
+        "required": [
+          "id",
+          "message",
+          "_tag"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Public workplace identifier",
+            "title": "startsWith(\"wkp_\")",
+            "examples": [
+              "wkp_1234"
+            ],
+            "pattern": "^wkp_"
+          },
+          "message": {
+            "type": "string"
+          },
+          "_tag": {
+            "type": "string",
+            "enum": [
+              "WorkplaceNotFound"
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
       "ManagerNotFoundError": {
         "type": "object",
         "required": [
@@ -16882,35 +17095,6 @@
         },
         "additionalProperties": false,
         "description": "You are hiring in a state where your company does not have an existing tax registration. Set stateRegistration to 'self_managed' or 'warp_managed' to proceed."
-      },
-      "WorkplaceNotFound": {
-        "type": "object",
-        "required": [
-          "id",
-          "message",
-          "_tag"
-        ],
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "Public workplace identifier",
-            "title": "startsWith(\"wkp_\")",
-            "examples": [
-              "wkp_1234"
-            ],
-            "pattern": "^wkp_"
-          },
-          "message": {
-            "type": "string"
-          },
-          "_tag": {
-            "type": "string",
-            "enum": [
-              "WorkplaceNotFound"
-            ]
-          }
-        },
-        "additionalProperties": false
       },
       "PayScheduleNotConfigured": {
         "type": "object",
@@ -20922,6 +21106,7 @@
                       "candidate",
                       "position",
                       "department",
+                      "workplace",
                       "manager",
                       "sentBy",
                       "compensation",
@@ -21339,6 +21524,38 @@
                                 "type": "string",
                                 "examples": [
                                   "Engineering"
+                                ]
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "workplace": {
+                        "anyOf": [
+                          {
+                            "type": "object",
+                            "required": [
+                              "id",
+                              "name"
+                            ],
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "description": "Public workplace identifier",
+                                "title": "startsWith(\"wkp_\")",
+                                "examples": [
+                                  "wkp_1234"
+                                ],
+                                "pattern": "^wkp_"
+                              },
+                              "name": {
+                                "type": "string",
+                                "examples": [
+                                  "New York Office"
                                 ]
                               }
                             },
@@ -21659,6 +21876,7 @@
                       "candidate",
                       "position",
                       "department",
+                      "workplace",
                       "manager",
                       "sentBy",
                       "compensation",
@@ -22076,6 +22294,38 @@
                                 "type": "string",
                                 "examples": [
                                   "Engineering"
+                                ]
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "workplace": {
+                        "anyOf": [
+                          {
+                            "type": "object",
+                            "required": [
+                              "id",
+                              "name"
+                            ],
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "description": "Public workplace identifier",
+                                "title": "startsWith(\"wkp_\")",
+                                "examples": [
+                                  "wkp_1234"
+                                ],
+                                "pattern": "^wkp_"
+                              },
+                              "name": {
+                                "type": "string",
+                                "examples": [
+                                  "New York Office"
                                 ]
                               }
                             },
@@ -22396,6 +22646,7 @@
                       "candidate",
                       "position",
                       "department",
+                      "workplace",
                       "manager",
                       "sentBy",
                       "compensation",
@@ -22813,6 +23064,38 @@
                                 "type": "string",
                                 "examples": [
                                   "Engineering"
+                                ]
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "workplace": {
+                        "anyOf": [
+                          {
+                            "type": "object",
+                            "required": [
+                              "id",
+                              "name"
+                            ],
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "description": "Public workplace identifier",
+                                "title": "startsWith(\"wkp_\")",
+                                "examples": [
+                                  "wkp_1234"
+                                ],
+                                "pattern": "^wkp_"
+                              },
+                              "name": {
+                                "type": "string",
+                                "examples": [
+                                  "New York Office"
                                 ]
                               }
                             },
@@ -23133,6 +23416,7 @@
                       "candidate",
                       "position",
                       "department",
+                      "workplace",
                       "manager",
                       "sentBy",
                       "compensation",
@@ -23550,6 +23834,38 @@
                                 "type": "string",
                                 "examples": [
                                   "Engineering"
+                                ]
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "workplace": {
+                        "anyOf": [
+                          {
+                            "type": "object",
+                            "required": [
+                              "id",
+                              "name"
+                            ],
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "description": "Public workplace identifier",
+                                "title": "startsWith(\"wkp_\")",
+                                "examples": [
+                                  "wkp_1234"
+                                ],
+                                "pattern": "^wkp_"
+                              },
+                              "name": {
+                                "type": "string",
+                                "examples": [
+                                  "New York Office"
                                 ]
                               }
                             },
@@ -23870,6 +24186,7 @@
                       "candidate",
                       "position",
                       "department",
+                      "workplace",
                       "manager",
                       "sentBy",
                       "compensation",
@@ -24287,6 +24604,38 @@
                                 "type": "string",
                                 "examples": [
                                   "Engineering"
+                                ]
+                              }
+                            },
+                            "additionalProperties": false
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "workplace": {
+                        "anyOf": [
+                          {
+                            "type": "object",
+                            "required": [
+                              "id",
+                              "name"
+                            ],
+                            "properties": {
+                              "id": {
+                                "type": "string",
+                                "description": "Public workplace identifier",
+                                "title": "startsWith(\"wkp_\")",
+                                "examples": [
+                                  "wkp_1234"
+                                ],
+                                "pattern": "^wkp_"
+                              },
+                              "name": {
+                                "type": "string",
+                                "examples": [
+                                  "New York Office"
                                 ]
                               }
                             },

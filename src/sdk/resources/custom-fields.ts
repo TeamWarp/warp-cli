@@ -33,9 +33,9 @@ export class CustomFields extends APIResource {
    * @example
    * ```ts
    * const create = await client.customFields.create({
-   *   name: "",
-   *   type: "text",
-   *   category: "info",
+   *   name: '',
+   *   type: 'text',
+   *   category: 'info',
    * });
    * ```
    */
@@ -52,7 +52,7 @@ export class CustomFields extends APIResource {
    *
    * @example
    * ```ts
-   * const retrieve = await client.customFields.retrieve("cf_1234");
+   * const retrieve = await client.customFields.retrieve('cf_1234');
    * ```
    */
   retrieve(id: string, options?: RequestOptions): APIPromise<CustomFieldRetrieveResponse> {
@@ -69,7 +69,7 @@ export class CustomFields extends APIResource {
    *
    * @example
    * ```ts
-   * const update = await client.customFields.update("cf_1234", {});
+   * const update = await client.customFields.update('cf_1234', {});
    * ```
    */
   update(id: string, body: CustomFieldUpdateParams, options?: RequestOptions): APIPromise<CustomFieldUpdateResponse> {
@@ -85,7 +85,7 @@ export class CustomFields extends APIResource {
    *
    * @example
    * ```ts
-   * const archive = await client.customFields.archive("cf_1234");
+   * const archive = await client.customFields.archive('cf_1234');
    * ```
    */
   archive(id: string, options?: RequestOptions): APIPromise<CustomFieldArchiveResponse> {
@@ -102,9 +102,9 @@ export class CustomFields extends APIResource {
    *
    * @example
    * ```ts
-   * const createOption = await client.customFields.createOption("cf_1234", {
-   *   label: "x",
-   *   value: "x",
+   * const createOption = await client.customFields.createOption('cf_1234', {
+   *   label: 'x',
+   *   value: 'x',
    * });
    * ```
    */
@@ -122,7 +122,7 @@ export class CustomFields extends APIResource {
    *
    * @example
    * ```ts
-   * const updateOption = await client.customFields.updateOption("cfo_1234", {});
+   * const updateOption = await client.customFields.updateOption('cfo_1234', {});
    * ```
    */
   updateOption(id: string, body: CustomFieldUpdateOptionParams, options?: RequestOptions): APIPromise<CustomFieldUpdateOptionResponse> {
@@ -138,7 +138,7 @@ export class CustomFields extends APIResource {
    *
    * @example
    * ```ts
-   * await client.customFields.deleteOption("cfo_1234");
+   * await client.customFields.deleteOption('cfo_1234');
    * ```
    */
   deleteOption(id: string, options?: RequestOptions): APIPromise<void> {
@@ -154,7 +154,7 @@ export class CustomFields extends APIResource {
    *
    * @example
    * ```ts
-   * const archiveOption = await client.customFields.archiveOption("cfo_1234");
+   * const archiveOption = await client.customFields.archiveOption('cfo_1234');
    * ```
    */
   archiveOption(id: string, options?: RequestOptions): APIPromise<CustomFieldArchiveOptionResponse> {
@@ -187,11 +187,11 @@ export class CustomFields extends APIResource {
    * @example
    * ```ts
    * const upsertValue = await client.customFields.upsertValue({
-   *   workerId: "wrk_1234",
-   *   fieldId: "cf_1234",
+   *   workerId: 'wrk_1234',
+   *   fieldId: 'cf_1234',
    *   value: {
-   *     type: "text",
-   *     value: "",
+   *     type: 'text',
+   *     value: '',
    *   },
    * });
    * ```
@@ -210,8 +210,8 @@ export class CustomFields extends APIResource {
    * @example
    * ```ts
    * await client.customFields.clearValue({
-   *   workerId: "wrk_1234",
-   *   fieldId: "cf_1234",
+   *   workerId: 'wrk_1234',
+   *   fieldId: 'cf_1234',
    * });
    * ```
    */

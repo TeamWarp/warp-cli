@@ -10,18 +10,18 @@ export class HealthPlans extends APIResource {
   /**
    * List company health plans. Defaults to active plans. A plan whose effectiveEndDate has elapsed is reported and filtered as terminated.
    *
-   * @param {HealthPlanBenefitsListParams} [query] - The parameters to send with the request.
+   * @param {HealthPlanListParams} [query] - The parameters to send with the request.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
-   * @returns {APIPromise<HealthPlanBenefitsListResponse>} Success
+   * @returns {APIPromise<HealthPlanListResponse>} Success
    *
    * @example
    * ```ts
-   * const benefitsList = await client.benefits.healthPlans.benefitsList({
-   *   statuses: ["active"],
+   * const list = await client.benefits.healthPlans.list({
+   *   statuses: ['active'],
    * });
    * ```
    */
-  benefitsList(query: HealthPlanBenefitsListParams | null | undefined = {}, options?: RequestOptions): APIPromise<HealthPlanBenefitsListResponse> {
+  list(query: HealthPlanListParams | null | undefined = {}, options?: RequestOptions): APIPromise<HealthPlanListResponse> {
     return this._client.get("/v1/benefits/health_plans", { query, ...options });
   }
 
@@ -30,19 +30,19 @@ export class HealthPlans extends APIResource {
    *
    * @param {string} id - The tag of a company health plan.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
-   * @returns {APIPromise<HealthPlanBenefitsGetResponse>} A company health plan available through Warp.
+   * @returns {APIPromise<HealthPlanGetResponse>} A company health plan available through Warp.
    *
    * @example
    * ```ts
-   * const benefitsGet = await client.benefits.healthPlans.benefitsGet("chpl_1234");
+   * const get_ = await client.benefits.healthPlans.get('chpl_1234');
    * ```
    */
-  benefitsGet(id: string, options?: RequestOptions): APIPromise<HealthPlanBenefitsGetResponse> {
+  get(id: string, options?: RequestOptions): APIPromise<HealthPlanGetResponse> {
     return this._client.get(__scalarPath`/v1/benefits/health_plans/${id}`, options);
   }
 }
 
-export interface HealthPlanBenefitsListParams {
+export interface HealthPlanListParams {
   /**
    * a number less than or equal to 100
    */
@@ -66,16 +66,16 @@ export interface HealthPlanBenefitsListParams {
   carrierIds?: Array<string>;
 }
 
-export interface HealthPlanBenefitsListResponse {
+export interface HealthPlanListResponse {
   hasMore: boolean;
   /**
    * an integer
    */
   count: number;
-  data: Array<HealthPlanBenefitsListResponse.Data>;
+  data: Array<HealthPlanListResponse.Data>;
 }
 
-export namespace HealthPlanBenefitsListResponse {
+export namespace HealthPlanListResponse {
   export interface Data {
     /**
      * The tag of a company health plan.
@@ -140,7 +140,7 @@ export namespace HealthPlanBenefitsListResponse {
   }
 }
 
-export interface HealthPlanBenefitsGetResponse {
+export interface HealthPlanGetResponse {
   /**
    * The tag of a company health plan.
    * @pattern ^chpl_
@@ -149,7 +149,7 @@ export interface HealthPlanBenefitsGetResponse {
   /**
    * The insurance carrier underwriting the health plan.
    */
-  carrier: HealthPlanBenefitsGetResponse.Carrier;
+  carrier: HealthPlanGetResponse.Carrier;
   /**
    * The health coverage type.
    */
@@ -189,7 +189,7 @@ export interface HealthPlanBenefitsGetResponse {
   updatedAt: OffersAPI.Date;
 }
 
-export namespace HealthPlanBenefitsGetResponse {
+export namespace HealthPlanGetResponse {
   export interface Carrier {
     /**
      * The tag of a carrier.
@@ -204,8 +204,8 @@ export namespace HealthPlanBenefitsGetResponse {
 }
 export declare namespace HealthPlans {
   export {
-    type HealthPlanBenefitsListResponse as HealthPlanBenefitsListResponse,
-    type HealthPlanBenefitsGetResponse as HealthPlanBenefitsGetResponse,
-    type HealthPlanBenefitsListParams as HealthPlanBenefitsListParams,
+    type HealthPlanListResponse as HealthPlanListResponse,
+    type HealthPlanGetResponse as HealthPlanGetResponse,
+    type HealthPlanListParams as HealthPlanListParams,
   };
 }

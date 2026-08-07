@@ -37,7 +37,7 @@ npm install -g warp-cli
 ```sh
 warp [resource] [command] [flags]
 
-warp benefits:health-plans benefits-list --api-key "$WARP_API_KEY" --status 'active'
+warp benefits:health-plans list --api-key "$WARP_API_KEY" --status 'active'
 ```
 
 The examples in the following sections assume a `client` configured as shown above.

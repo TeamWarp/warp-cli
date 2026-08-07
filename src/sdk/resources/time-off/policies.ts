@@ -31,7 +31,7 @@ export class Policies extends APIResource {
    *
    * @example
    * ```ts
-   * const timeOffGet2 = await client.timeOff.policies.timeOffGet2("top_1234");
+   * const timeOffGet2 = await client.timeOff.policies.timeOffGet2('top_1234');
    * ```
    */
   timeOffGet2(id: string, options?: RequestOptions): APIPromise<PolicyTimeOffGet2Response> {

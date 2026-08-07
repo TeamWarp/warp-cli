@@ -25,7 +25,7 @@ Provide credentials using the options below. Environment variables are read auto
 ```sh
 warp [resource] [command] [flags]
 
-warp benefits:health-plans benefits-list --api-key "$WARP_API_KEY" --status 'active'
+warp benefits:health-plans list --api-key "$WARP_API_KEY" --status 'active'
 ```
 
 Method names, parameter shapes, and response types are generated from the API description — do not guess them. Look up the exact call signature in [api.md](./api.md) before writing a call.

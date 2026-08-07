@@ -34,18 +34,18 @@ export class Offers extends APIResource {
    * ```ts
    * const create = await client.offers.create({
    *   candidate: {
-   *     firstName: "x",
-   *     lastName: "x",
-   *     email: "john@joinwarp.com",
+   *     firstName: 'x',
+   *     lastName: 'x',
+   *     email: 'john@joinwarp.com',
    *   },
    *   position: {
-   *     title: "x",
-   *     startDate: "2000-01-01",
+   *     title: 'x',
+   *     startDate: '2000-01-01',
    *   },
-   *   workerType: "employee",
+   *   workerType: 'employee',
    *   compensation: {
-   *     payBasis: "year",
-   *     payCurrency: "USD",
+   *     payBasis: 'year',
+   *     payCurrency: 'USD',
    *     payRate: 0,
    *   },
    * });
@@ -64,7 +64,7 @@ export class Offers extends APIResource {
    *
    * @example
    * ```ts
-   * const void_ = await client.offers.void("offr_1234");
+   * const void_ = await client.offers.void('offr_1234');
    * ```
    */
   void(id: string, options?: RequestOptions): APIPromise<OfferVoidResponse> {
@@ -81,8 +81,8 @@ export class Offers extends APIResource {
    *
    * @example
    * ```ts
-   * const extendDeadline = await client.offers.extendDeadline("offr_1234", {
-   *   expirationTime: "",
+   * const extendDeadline = await client.offers.extendDeadline('offr_1234', {
+   *   expirationTime: '',
    * });
    * ```
    */
@@ -99,7 +99,7 @@ export class Offers extends APIResource {
    *
    * @example
    * ```ts
-   * const resend = await client.offers.resend("offr_1234");
+   * const resend = await client.offers.resend('offr_1234');
    * ```
    */
   resend(id: string, options?: RequestOptions): APIPromise<OfferResendResponse> {
@@ -157,6 +157,7 @@ export namespace OfferListResponse {
     candidate: Data.Candidate;
     position: Data.Position;
     department: Data.Department | null;
+    workplace: Data.Workplace | null;
     manager: Data.Manager | null;
     /**
      * Display name of the person or company that sent the offer. Null for offers not yet sent.
@@ -209,6 +210,15 @@ export namespace OfferListResponse {
       /**
        * The unique public id of the department
        * @pattern ^dpt_
+       */
+      id: string;
+      name: string;
+    }
+
+    export interface Workplace {
+      /**
+       * Public workplace identifier
+       * @pattern ^wkp_
        */
       id: string;
       name: string;
@@ -324,6 +334,10 @@ export interface OfferCreateParams {
    */
   departmentId?: string | null;
   /**
+   * @pattern ^wkp_
+   */
+  workplaceId?: string | null;
+  /**
    * @pattern ^wrk_
    */
   managerId?: string | null;
@@ -415,6 +429,7 @@ export interface OfferCreateResponse {
   candidate: OfferCreateResponse.Candidate;
   position: OfferCreateResponse.Position;
   department: OfferCreateResponse.Department | null;
+  workplace: OfferCreateResponse.Workplace | null;
   manager: OfferCreateResponse.Manager | null;
   /**
    * Display name of the person or company that sent the offer. Null for offers not yet sent.
@@ -467,6 +482,15 @@ export namespace OfferCreateResponse {
     /**
      * The unique public id of the department
      * @pattern ^dpt_
+     */
+    id: string;
+    name: string;
+  }
+
+  export interface Workplace {
+    /**
+     * Public workplace identifier
+     * @pattern ^wkp_
      */
     id: string;
     name: string;
@@ -582,6 +606,7 @@ export interface OfferVoidResponse {
   candidate: OfferVoidResponse.Candidate;
   position: OfferVoidResponse.Position;
   department: OfferVoidResponse.Department | null;
+  workplace: OfferVoidResponse.Workplace | null;
   manager: OfferVoidResponse.Manager | null;
   /**
    * Display name of the person or company that sent the offer. Null for offers not yet sent.
@@ -634,6 +659,15 @@ export namespace OfferVoidResponse {
     /**
      * The unique public id of the department
      * @pattern ^dpt_
+     */
+    id: string;
+    name: string;
+  }
+
+  export interface Workplace {
+    /**
+     * Public workplace identifier
+     * @pattern ^wkp_
      */
     id: string;
     name: string;
@@ -756,6 +790,7 @@ export interface OfferExtendDeadlineResponse {
   candidate: OfferExtendDeadlineResponse.Candidate;
   position: OfferExtendDeadlineResponse.Position;
   department: OfferExtendDeadlineResponse.Department | null;
+  workplace: OfferExtendDeadlineResponse.Workplace | null;
   manager: OfferExtendDeadlineResponse.Manager | null;
   /**
    * Display name of the person or company that sent the offer. Null for offers not yet sent.
@@ -808,6 +843,15 @@ export namespace OfferExtendDeadlineResponse {
     /**
      * The unique public id of the department
      * @pattern ^dpt_
+     */
+    id: string;
+    name: string;
+  }
+
+  export interface Workplace {
+    /**
+     * Public workplace identifier
+     * @pattern ^wkp_
      */
     id: string;
     name: string;
@@ -923,6 +967,7 @@ export interface OfferResendResponse {
   candidate: OfferResendResponse.Candidate;
   position: OfferResendResponse.Position;
   department: OfferResendResponse.Department | null;
+  workplace: OfferResendResponse.Workplace | null;
   manager: OfferResendResponse.Manager | null;
   /**
    * Display name of the person or company that sent the offer. Null for offers not yet sent.
@@ -975,6 +1020,15 @@ export namespace OfferResendResponse {
     /**
      * The unique public id of the department
      * @pattern ^dpt_
+     */
+    id: string;
+    name: string;
+  }
+
+  export interface Workplace {
+    /**
+     * Public workplace identifier
+     * @pattern ^wkp_
      */
     id: string;
     name: string;
