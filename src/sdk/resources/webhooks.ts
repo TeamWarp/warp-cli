@@ -1,7 +1,7 @@
 // File generated from our OpenAPI spec by Scalar. See README.md for details.
 
-import { APIResource } from "../resource";
-import * as DateAPI from "./offers";
+import { APIResource } from '../resource';
+import * as DateAPI from './offers';
 import { Webhook } from 'standardwebhooks';
 
 export class Webhooks extends APIResource {
@@ -27,7 +27,7 @@ export interface TimeOffRequestCreatedWebhookEvent {
   /**
    * The event type.
    */
-  event_type: "time_off:request:created";
+  event_type: 'time_off:request:created';
   payload: TimeOffRequestCreatedWebhookEvent.Payload;
   /**
    * ISO 8601 timestamp of when the event was generated.
@@ -48,17 +48,17 @@ export namespace TimeOffRequestCreatedWebhookEvent {
      * @pattern ^wrk_
      */
     workerId: string;
-    status: "pending" | "approved" | "denied";
+    status: 'pending' | 'approved' | 'denied';
     /**
      * a string to be decoded into a Date
      */
     startAt: DateAPI.Date;
-    startRangeType: "date" | "datetime";
+    startRangeType: 'date' | 'datetime';
     /**
      * a string to be decoded into a Date
      */
     endAt: DateAPI.Date;
-    endRangeType: "date" | "datetime";
+    endRangeType: 'date' | 'datetime';
     reason: string | null;
     /**
      * a string to be decoded into a Date
@@ -80,7 +80,7 @@ export interface TimeOffRequestReviewedWebhookEvent {
   /**
    * The event type.
    */
-  event_type: "time_off:request:reviewed";
+  event_type: 'time_off:request:reviewed';
   payload: TimeOffRequestReviewedWebhookEvent.Payload;
   /**
    * ISO 8601 timestamp of when the event was generated.
@@ -101,17 +101,17 @@ export namespace TimeOffRequestReviewedWebhookEvent {
      * @pattern ^wrk_
      */
     workerId: string;
-    status: "pending" | "approved" | "denied";
+    status: 'pending' | 'approved' | 'denied';
     /**
      * a string to be decoded into a Date
      */
     startAt: DateAPI.Date;
-    startRangeType: "date" | "datetime";
+    startRangeType: 'date' | 'datetime';
     /**
      * a string to be decoded into a Date
      */
     endAt: DateAPI.Date;
-    endRangeType: "date" | "datetime";
+    endRangeType: 'date' | 'datetime';
     reason: string | null;
     /**
      * a string to be decoded into a Date
@@ -133,7 +133,7 @@ export interface TimeOffRequestDeletedWebhookEvent {
   /**
    * The event type.
    */
-  event_type: "time_off:request:deleted";
+  event_type: 'time_off:request:deleted';
   payload: TimeOffRequestDeletedWebhookEvent.Payload;
   /**
    * ISO 8601 timestamp of when the event was generated.
@@ -154,17 +154,17 @@ export namespace TimeOffRequestDeletedWebhookEvent {
      * @pattern ^wrk_
      */
     workerId: string;
-    status: "pending" | "approved" | "denied";
+    status: 'pending' | 'approved' | 'denied';
     /**
      * a string to be decoded into a Date
      */
     startAt: DateAPI.Date;
-    startRangeType: "date" | "datetime";
+    startRangeType: 'date' | 'datetime';
     /**
      * a string to be decoded into a Date
      */
     endAt: DateAPI.Date;
-    endRangeType: "date" | "datetime";
+    endRangeType: 'date' | 'datetime';
     reason: string | null;
     /**
      * a string to be decoded into a Date
@@ -186,7 +186,7 @@ export interface TimeOffBalanceAdjustedWebhookEvent {
   /**
    * The event type.
    */
-  event_type: "time_off:balance:adjusted";
+  event_type: 'time_off:balance:adjusted';
   payload: TimeOffBalanceAdjustedWebhookEvent.Payload;
   /**
    * ISO 8601 timestamp of when the event was generated.
@@ -217,6 +217,7 @@ export namespace TimeOffBalanceAdjustedWebhookEvent {
     effectiveDate?: string;
     previousBalance?: Payload.PreviousBalance;
     newBalance?: Payload.NewBalance;
+    [k: string]: unknown;
   }
 
   export namespace Payload {
@@ -246,7 +247,7 @@ export interface WorkerCreatedWebhookEvent {
   /**
    * The event type.
    */
-  event_type: "worker:created";
+  event_type: 'worker:created';
   payload: WorkerCreatedWebhookEvent.Payload;
   /**
    * ISO 8601 timestamp of when the event was generated.
@@ -262,8 +263,8 @@ export namespace WorkerCreatedWebhookEvent {
      */
     id: string;
     position: string;
-    type: "employee" | "contractor";
-    status: "draft" | "invited" | "onboarding" | "active" | "offboarding" | "inactive";
+    type: 'employee' | 'contractor';
+    status: 'draft' | 'invited' | 'onboarding' | 'active' | 'offboarding' | 'inactive';
     /**
      * A date string in the form YYYY-MM-DD
      * @pattern ^\d{4}-\d{2}-\d{2}$
@@ -321,7 +322,7 @@ export interface WorkerUpdatedWebhookEvent {
   /**
    * The event type.
    */
-  event_type: "worker:updated";
+  event_type: 'worker:updated';
   payload: WorkerUpdatedWebhookEvent.Payload;
   /**
    * ISO 8601 timestamp of when the event was generated.
@@ -337,8 +338,8 @@ export namespace WorkerUpdatedWebhookEvent {
      */
     id: string;
     position: string;
-    type: "employee" | "contractor";
-    status: "draft" | "invited" | "onboarding" | "active" | "offboarding" | "inactive";
+    type: 'employee' | 'contractor';
+    status: 'draft' | 'invited' | 'onboarding' | 'active' | 'offboarding' | 'inactive';
     /**
      * A date string in the form YYYY-MM-DD
      * @pattern ^\d{4}-\d{2}-\d{2}$
@@ -396,7 +397,7 @@ export interface WorkerDeletedWebhookEvent {
   /**
    * The event type.
    */
-  event_type: "worker:deleted";
+  event_type: 'worker:deleted';
   payload: WorkerDeletedWebhookEvent.Payload;
   /**
    * ISO 8601 timestamp of when the event was generated.
@@ -412,8 +413,8 @@ export namespace WorkerDeletedWebhookEvent {
      */
     id: string;
     position: string;
-    type: "employee" | "contractor";
-    status: "draft" | "invited" | "onboarding" | "active" | "offboarding" | "inactive";
+    type: 'employee' | 'contractor';
+    status: 'draft' | 'invited' | 'onboarding' | 'active' | 'offboarding' | 'inactive';
     /**
      * A date string in the form YYYY-MM-DD
      * @pattern ^\d{4}-\d{2}-\d{2}$
@@ -471,7 +472,7 @@ export interface WorkerInviteSentWebhookEvent {
   /**
    * The event type.
    */
-  event_type: "worker:invite_sent";
+  event_type: 'worker:invite_sent';
   payload: WorkerInviteSentWebhookEvent.Payload;
   /**
    * ISO 8601 timestamp of when the event was generated.
@@ -487,8 +488,8 @@ export namespace WorkerInviteSentWebhookEvent {
      */
     id: string;
     position: string;
-    type: "employee" | "contractor";
-    status: "draft" | "invited" | "onboarding" | "active" | "offboarding" | "inactive";
+    type: 'employee' | 'contractor';
+    status: 'draft' | 'invited' | 'onboarding' | 'active' | 'offboarding' | 'inactive';
     /**
      * A date string in the form YYYY-MM-DD
      * @pattern ^\d{4}-\d{2}-\d{2}$
@@ -546,7 +547,7 @@ export interface WorkerInviteAcceptedWebhookEvent {
   /**
    * The event type.
    */
-  event_type: "worker:invite_accepted";
+  event_type: 'worker:invite_accepted';
   payload: WorkerInviteAcceptedWebhookEvent.Payload;
   /**
    * ISO 8601 timestamp of when the event was generated.
@@ -562,8 +563,8 @@ export namespace WorkerInviteAcceptedWebhookEvent {
      */
     id: string;
     position: string;
-    type: "employee" | "contractor";
-    status: "draft" | "invited" | "onboarding" | "active" | "offboarding" | "inactive";
+    type: 'employee' | 'contractor';
+    status: 'draft' | 'invited' | 'onboarding' | 'active' | 'offboarding' | 'inactive';
     /**
      * A date string in the form YYYY-MM-DD
      * @pattern ^\d{4}-\d{2}-\d{2}$
@@ -621,7 +622,7 @@ export interface WorkerOnboardingCompletedWebhookEvent {
   /**
    * The event type.
    */
-  event_type: "worker:onboarding_completed";
+  event_type: 'worker:onboarding_completed';
   payload: WorkerOnboardingCompletedWebhookEvent.Payload;
   /**
    * ISO 8601 timestamp of when the event was generated.
@@ -637,8 +638,8 @@ export namespace WorkerOnboardingCompletedWebhookEvent {
      */
     id: string;
     position: string;
-    type: "employee" | "contractor";
-    status: "draft" | "invited" | "onboarding" | "active" | "offboarding" | "inactive";
+    type: 'employee' | 'contractor';
+    status: 'draft' | 'invited' | 'onboarding' | 'active' | 'offboarding' | 'inactive';
     /**
      * A date string in the form YYYY-MM-DD
      * @pattern ^\d{4}-\d{2}-\d{2}$
@@ -696,7 +697,7 @@ export interface WorkerOffboardingStartedWebhookEvent {
   /**
    * The event type.
    */
-  event_type: "worker:offboarding_started";
+  event_type: 'worker:offboarding_started';
   payload: WorkerOffboardingStartedWebhookEvent.Payload;
   /**
    * ISO 8601 timestamp of when the event was generated.
@@ -712,8 +713,8 @@ export namespace WorkerOffboardingStartedWebhookEvent {
      */
     id: string;
     position: string;
-    type: "employee" | "contractor";
-    status: "draft" | "invited" | "onboarding" | "active" | "offboarding" | "inactive";
+    type: 'employee' | 'contractor';
+    status: 'draft' | 'invited' | 'onboarding' | 'active' | 'offboarding' | 'inactive';
     /**
      * A date string in the form YYYY-MM-DD
      * @pattern ^\d{4}-\d{2}-\d{2}$
@@ -771,7 +772,7 @@ export interface WorkerOffboardedWebhookEvent {
   /**
    * The event type.
    */
-  event_type: "worker:offboarded";
+  event_type: 'worker:offboarded';
   payload: WorkerOffboardedWebhookEvent.Payload;
   /**
    * ISO 8601 timestamp of when the event was generated.
@@ -787,8 +788,8 @@ export namespace WorkerOffboardedWebhookEvent {
      */
     id: string;
     position: string;
-    type: "employee" | "contractor";
-    status: "draft" | "invited" | "onboarding" | "active" | "offboarding" | "inactive";
+    type: 'employee' | 'contractor';
+    status: 'draft' | 'invited' | 'onboarding' | 'active' | 'offboarding' | 'inactive';
     /**
      * A date string in the form YYYY-MM-DD
      * @pattern ^\d{4}-\d{2}-\d{2}$
@@ -846,7 +847,7 @@ export interface WorkerReactivatedWebhookEvent {
   /**
    * The event type.
    */
-  event_type: "worker:reactivated";
+  event_type: 'worker:reactivated';
   payload: WorkerReactivatedWebhookEvent.Payload;
   /**
    * ISO 8601 timestamp of when the event was generated.
@@ -862,8 +863,8 @@ export namespace WorkerReactivatedWebhookEvent {
      */
     id: string;
     position: string;
-    type: "employee" | "contractor";
-    status: "draft" | "invited" | "onboarding" | "active" | "offboarding" | "inactive";
+    type: 'employee' | 'contractor';
+    status: 'draft' | 'invited' | 'onboarding' | 'active' | 'offboarding' | 'inactive';
     /**
      * A date string in the form YYYY-MM-DD
      * @pattern ^\d{4}-\d{2}-\d{2}$
@@ -921,7 +922,7 @@ export interface OfferCreatedWebhookEvent {
   /**
    * The event type.
    */
-  event_type: "offer:created";
+  event_type: 'offer:created';
   payload: OfferCreatedWebhookEvent.Payload;
   /**
    * ISO 8601 timestamp of when the event was generated.
@@ -936,8 +937,8 @@ export namespace OfferCreatedWebhookEvent {
      * @pattern ^offr_
      */
     id: string;
-    status: "draft" | "sent" | "accepted" | "void";
-    workerType: "employee" | "us_contractor" | "global_contractor";
+    status: 'draft' | 'sent' | 'accepted' | 'void';
+    workerType: 'employee' | 'us_contractor' | 'global_contractor';
     candidate: Payload.Candidate;
     position: Payload.Position;
     department: Payload.Department | null;
@@ -986,7 +987,257 @@ export namespace OfferCreatedWebhookEvent {
        * @pattern ^\d{4}-\d{2}-\d{2}$
        */
       startDate: string;
-      country: "AD" | "AE" | "AF" | "AG" | "AI" | "AL" | "AM" | "AO" | "AQ" | "AR" | "AS" | "AT" | "AU" | "AW" | "AX" | "AZ" | "BA" | "BB" | "BD" | "BE" | "BF" | "BG" | "BH" | "BI" | "BJ" | "BL" | "BM" | "BN" | "BO" | "BQ" | "BR" | "BS" | "BT" | "BV" | "BW" | "BY" | "BZ" | "CA" | "CC" | "CD" | "CF" | "CG" | "CH" | "CI" | "CK" | "CL" | "CM" | "CN" | "CO" | "CR" | "CU" | "CV" | "CW" | "CX" | "CY" | "CZ" | "DE" | "DJ" | "DK" | "DM" | "DO" | "DZ" | "EC" | "EE" | "EG" | "EH" | "ER" | "ES" | "ET" | "FI" | "FJ" | "FK" | "FM" | "FO" | "FR" | "GA" | "GB" | "GD" | "GE" | "GF" | "GG" | "GH" | "GI" | "GL" | "GM" | "GN" | "GP" | "GQ" | "GR" | "GS" | "GT" | "GU" | "GW" | "GY" | "HK" | "HM" | "HN" | "HR" | "HT" | "HU" | "ID" | "IE" | "IL" | "IM" | "IN" | "IO" | "IQ" | "IR" | "IS" | "IT" | "JE" | "JM" | "JO" | "JP" | "KE" | "KG" | "KH" | "KI" | "KM" | "KN" | "KP" | "KR" | "KW" | "KY" | "KZ" | "LA" | "LB" | "LC" | "LI" | "LK" | "LR" | "LS" | "LT" | "LU" | "LV" | "LY" | "MA" | "MC" | "MD" | "ME" | "MF" | "MG" | "MH" | "MK" | "ML" | "MM" | "MN" | "MO" | "MP" | "MQ" | "MR" | "MS" | "MT" | "MU" | "MV" | "MW" | "MX" | "MY" | "MZ" | "NA" | "NC" | "NE" | "NF" | "NG" | "NI" | "NL" | "NO" | "NP" | "NR" | "NU" | "NZ" | "OM" | "PA" | "PE" | "PF" | "PG" | "PH" | "PK" | "PL" | "PM" | "PN" | "PR" | "PS" | "PT" | "PW" | "PY" | "QA" | "RE" | "RO" | "RS" | "RU" | "RW" | "SA" | "SB" | "SC" | "SD" | "SE" | "SG" | "SH" | "SI" | "SJ" | "SK" | "SL" | "SM" | "SN" | "SO" | "SR" | "SS" | "ST" | "SV" | "SX" | "SY" | "SZ" | "TC" | "TD" | "TF" | "TG" | "TH" | "TJ" | "TK" | "TL" | "TM" | "TN" | "TO" | "TR" | "TT" | "TV" | "TW" | "TZ" | "UA" | "UG" | "UM" | "US" | "UY" | "UZ" | "VA" | "VC" | "VE" | "VG" | "VI" | "VN" | "VU" | "WF" | "WS" | "XK" | "YE" | "YT" | "ZA" | "ZM" | "ZW";
+      country:
+        | 'AD'
+        | 'AE'
+        | 'AF'
+        | 'AG'
+        | 'AI'
+        | 'AL'
+        | 'AM'
+        | 'AO'
+        | 'AQ'
+        | 'AR'
+        | 'AS'
+        | 'AT'
+        | 'AU'
+        | 'AW'
+        | 'AX'
+        | 'AZ'
+        | 'BA'
+        | 'BB'
+        | 'BD'
+        | 'BE'
+        | 'BF'
+        | 'BG'
+        | 'BH'
+        | 'BI'
+        | 'BJ'
+        | 'BL'
+        | 'BM'
+        | 'BN'
+        | 'BO'
+        | 'BQ'
+        | 'BR'
+        | 'BS'
+        | 'BT'
+        | 'BV'
+        | 'BW'
+        | 'BY'
+        | 'BZ'
+        | 'CA'
+        | 'CC'
+        | 'CD'
+        | 'CF'
+        | 'CG'
+        | 'CH'
+        | 'CI'
+        | 'CK'
+        | 'CL'
+        | 'CM'
+        | 'CN'
+        | 'CO'
+        | 'CR'
+        | 'CU'
+        | 'CV'
+        | 'CW'
+        | 'CX'
+        | 'CY'
+        | 'CZ'
+        | 'DE'
+        | 'DJ'
+        | 'DK'
+        | 'DM'
+        | 'DO'
+        | 'DZ'
+        | 'EC'
+        | 'EE'
+        | 'EG'
+        | 'EH'
+        | 'ER'
+        | 'ES'
+        | 'ET'
+        | 'FI'
+        | 'FJ'
+        | 'FK'
+        | 'FM'
+        | 'FO'
+        | 'FR'
+        | 'GA'
+        | 'GB'
+        | 'GD'
+        | 'GE'
+        | 'GF'
+        | 'GG'
+        | 'GH'
+        | 'GI'
+        | 'GL'
+        | 'GM'
+        | 'GN'
+        | 'GP'
+        | 'GQ'
+        | 'GR'
+        | 'GS'
+        | 'GT'
+        | 'GU'
+        | 'GW'
+        | 'GY'
+        | 'HK'
+        | 'HM'
+        | 'HN'
+        | 'HR'
+        | 'HT'
+        | 'HU'
+        | 'ID'
+        | 'IE'
+        | 'IL'
+        | 'IM'
+        | 'IN'
+        | 'IO'
+        | 'IQ'
+        | 'IR'
+        | 'IS'
+        | 'IT'
+        | 'JE'
+        | 'JM'
+        | 'JO'
+        | 'JP'
+        | 'KE'
+        | 'KG'
+        | 'KH'
+        | 'KI'
+        | 'KM'
+        | 'KN'
+        | 'KP'
+        | 'KR'
+        | 'KW'
+        | 'KY'
+        | 'KZ'
+        | 'LA'
+        | 'LB'
+        | 'LC'
+        | 'LI'
+        | 'LK'
+        | 'LR'
+        | 'LS'
+        | 'LT'
+        | 'LU'
+        | 'LV'
+        | 'LY'
+        | 'MA'
+        | 'MC'
+        | 'MD'
+        | 'ME'
+        | 'MF'
+        | 'MG'
+        | 'MH'
+        | 'MK'
+        | 'ML'
+        | 'MM'
+        | 'MN'
+        | 'MO'
+        | 'MP'
+        | 'MQ'
+        | 'MR'
+        | 'MS'
+        | 'MT'
+        | 'MU'
+        | 'MV'
+        | 'MW'
+        | 'MX'
+        | 'MY'
+        | 'MZ'
+        | 'NA'
+        | 'NC'
+        | 'NE'
+        | 'NF'
+        | 'NG'
+        | 'NI'
+        | 'NL'
+        | 'NO'
+        | 'NP'
+        | 'NR'
+        | 'NU'
+        | 'NZ'
+        | 'OM'
+        | 'PA'
+        | 'PE'
+        | 'PF'
+        | 'PG'
+        | 'PH'
+        | 'PK'
+        | 'PL'
+        | 'PM'
+        | 'PN'
+        | 'PR'
+        | 'PS'
+        | 'PT'
+        | 'PW'
+        | 'PY'
+        | 'QA'
+        | 'RE'
+        | 'RO'
+        | 'RS'
+        | 'RU'
+        | 'RW'
+        | 'SA'
+        | 'SB'
+        | 'SC'
+        | 'SD'
+        | 'SE'
+        | 'SG'
+        | 'SH'
+        | 'SI'
+        | 'SJ'
+        | 'SK'
+        | 'SL'
+        | 'SM'
+        | 'SN'
+        | 'SO'
+        | 'SR'
+        | 'SS'
+        | 'ST'
+        | 'SV'
+        | 'SX'
+        | 'SY'
+        | 'SZ'
+        | 'TC'
+        | 'TD'
+        | 'TF'
+        | 'TG'
+        | 'TH'
+        | 'TJ'
+        | 'TK'
+        | 'TL'
+        | 'TM'
+        | 'TN'
+        | 'TO'
+        | 'TR'
+        | 'TT'
+        | 'TV'
+        | 'TW'
+        | 'TZ'
+        | 'UA'
+        | 'UG'
+        | 'UM'
+        | 'US'
+        | 'UY'
+        | 'UZ'
+        | 'VA'
+        | 'VC'
+        | 'VE'
+        | 'VG'
+        | 'VI'
+        | 'VN'
+        | 'VU'
+        | 'WF'
+        | 'WS'
+        | 'XK'
+        | 'YE'
+        | 'YT'
+        | 'ZA'
+        | 'ZM'
+        | 'ZW';
       scopeOfWork: string | null;
     }
 
@@ -1030,8 +1281,8 @@ export namespace OfferCreatedWebhookEvent {
          * A monetary amount with its currency and server-formatted display value.
          */
         amount: BasePay.Amount;
-        basis: "year" | "month" | "week" | "hour" | "variable";
-        type: "fixed" | "pay_as_you_go" | null;
+        basis: 'year' | 'month' | 'week' | 'hour' | 'variable';
+        type: 'fixed' | 'pay_as_you_go' | null;
         variableRate: BasePay.VariableRate | null;
       }
 
@@ -1042,7 +1293,68 @@ export namespace OfferCreatedWebhookEvent {
            * @minimum 0
            */
           amount: number;
-          currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
+          currency:
+            | 'USD'
+            | 'AUD'
+            | 'BGN'
+            | 'BRL'
+            | 'CAD'
+            | 'CHF'
+            | 'CZK'
+            | 'DKK'
+            | 'EUR'
+            | 'GBP'
+            | 'HKD'
+            | 'HUF'
+            | 'IDR'
+            | 'INR'
+            | 'JPY'
+            | 'MYR'
+            | 'NOK'
+            | 'NZD'
+            | 'CNY'
+            | 'PLN'
+            | 'RON'
+            | 'TRY'
+            | 'SEK'
+            | 'SGD'
+            | 'AED'
+            | 'ARS'
+            | 'BDT'
+            | 'BWP'
+            | 'CLP'
+            | 'COP'
+            | 'CRC'
+            | 'EGP'
+            | 'FJD'
+            | 'GEL'
+            | 'GHS'
+            | 'ILS'
+            | 'KES'
+            | 'KRW'
+            | 'LKR'
+            | 'MAD'
+            | 'MXN'
+            | 'NPR'
+            | 'PHP'
+            | 'PKR'
+            | 'THB'
+            | 'UAH'
+            | 'UGX'
+            | 'UYU'
+            | 'VND'
+            | 'ZAR'
+            | 'ZMW'
+            | 'TND'
+            | 'NGN'
+            | 'RSD'
+            | 'TWD'
+            | 'GTQ'
+            | 'HNL'
+            | 'DOP'
+            | 'SAR'
+            | 'XAF'
+            | 'PEN';
           /**
            * The server-formatted display string for the amount in its currency.
            */
@@ -1055,7 +1367,68 @@ export namespace OfferCreatedWebhookEvent {
            * @minimum 0
            */
           amount: number;
-          currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
+          currency:
+            | 'USD'
+            | 'AUD'
+            | 'BGN'
+            | 'BRL'
+            | 'CAD'
+            | 'CHF'
+            | 'CZK'
+            | 'DKK'
+            | 'EUR'
+            | 'GBP'
+            | 'HKD'
+            | 'HUF'
+            | 'IDR'
+            | 'INR'
+            | 'JPY'
+            | 'MYR'
+            | 'NOK'
+            | 'NZD'
+            | 'CNY'
+            | 'PLN'
+            | 'RON'
+            | 'TRY'
+            | 'SEK'
+            | 'SGD'
+            | 'AED'
+            | 'ARS'
+            | 'BDT'
+            | 'BWP'
+            | 'CLP'
+            | 'COP'
+            | 'CRC'
+            | 'EGP'
+            | 'FJD'
+            | 'GEL'
+            | 'GHS'
+            | 'ILS'
+            | 'KES'
+            | 'KRW'
+            | 'LKR'
+            | 'MAD'
+            | 'MXN'
+            | 'NPR'
+            | 'PHP'
+            | 'PKR'
+            | 'THB'
+            | 'UAH'
+            | 'UGX'
+            | 'UYU'
+            | 'VND'
+            | 'ZAR'
+            | 'ZMW'
+            | 'TND'
+            | 'NGN'
+            | 'RSD'
+            | 'TWD'
+            | 'GTQ'
+            | 'HNL'
+            | 'DOP'
+            | 'SAR'
+            | 'XAF'
+            | 'PEN';
           /**
            * The server-formatted display string for the amount in its currency.
            */
@@ -1069,7 +1442,68 @@ export namespace OfferCreatedWebhookEvent {
          * @minimum 0
          */
         amount: number;
-        currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
+        currency:
+          | 'USD'
+          | 'AUD'
+          | 'BGN'
+          | 'BRL'
+          | 'CAD'
+          | 'CHF'
+          | 'CZK'
+          | 'DKK'
+          | 'EUR'
+          | 'GBP'
+          | 'HKD'
+          | 'HUF'
+          | 'IDR'
+          | 'INR'
+          | 'JPY'
+          | 'MYR'
+          | 'NOK'
+          | 'NZD'
+          | 'CNY'
+          | 'PLN'
+          | 'RON'
+          | 'TRY'
+          | 'SEK'
+          | 'SGD'
+          | 'AED'
+          | 'ARS'
+          | 'BDT'
+          | 'BWP'
+          | 'CLP'
+          | 'COP'
+          | 'CRC'
+          | 'EGP'
+          | 'FJD'
+          | 'GEL'
+          | 'GHS'
+          | 'ILS'
+          | 'KES'
+          | 'KRW'
+          | 'LKR'
+          | 'MAD'
+          | 'MXN'
+          | 'NPR'
+          | 'PHP'
+          | 'PKR'
+          | 'THB'
+          | 'UAH'
+          | 'UGX'
+          | 'UYU'
+          | 'VND'
+          | 'ZAR'
+          | 'ZMW'
+          | 'TND'
+          | 'NGN'
+          | 'RSD'
+          | 'TWD'
+          | 'GTQ'
+          | 'HNL'
+          | 'DOP'
+          | 'SAR'
+          | 'XAF'
+          | 'PEN';
         /**
          * The server-formatted display string for the amount in its currency.
          */
@@ -1082,7 +1516,68 @@ export namespace OfferCreatedWebhookEvent {
          * @minimum 0
          */
         amount: number;
-        currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
+        currency:
+          | 'USD'
+          | 'AUD'
+          | 'BGN'
+          | 'BRL'
+          | 'CAD'
+          | 'CHF'
+          | 'CZK'
+          | 'DKK'
+          | 'EUR'
+          | 'GBP'
+          | 'HKD'
+          | 'HUF'
+          | 'IDR'
+          | 'INR'
+          | 'JPY'
+          | 'MYR'
+          | 'NOK'
+          | 'NZD'
+          | 'CNY'
+          | 'PLN'
+          | 'RON'
+          | 'TRY'
+          | 'SEK'
+          | 'SGD'
+          | 'AED'
+          | 'ARS'
+          | 'BDT'
+          | 'BWP'
+          | 'CLP'
+          | 'COP'
+          | 'CRC'
+          | 'EGP'
+          | 'FJD'
+          | 'GEL'
+          | 'GHS'
+          | 'ILS'
+          | 'KES'
+          | 'KRW'
+          | 'LKR'
+          | 'MAD'
+          | 'MXN'
+          | 'NPR'
+          | 'PHP'
+          | 'PKR'
+          | 'THB'
+          | 'UAH'
+          | 'UGX'
+          | 'UYU'
+          | 'VND'
+          | 'ZAR'
+          | 'ZMW'
+          | 'TND'
+          | 'NGN'
+          | 'RSD'
+          | 'TWD'
+          | 'GTQ'
+          | 'HNL'
+          | 'DOP'
+          | 'SAR'
+          | 'XAF'
+          | 'PEN';
         /**
          * The server-formatted display string for the amount in its currency.
          */
@@ -1116,7 +1611,7 @@ export interface OfferSentWebhookEvent {
   /**
    * The event type.
    */
-  event_type: "offer:sent";
+  event_type: 'offer:sent';
   payload: OfferSentWebhookEvent.Payload;
   /**
    * ISO 8601 timestamp of when the event was generated.
@@ -1131,8 +1626,8 @@ export namespace OfferSentWebhookEvent {
      * @pattern ^offr_
      */
     id: string;
-    status: "draft" | "sent" | "accepted" | "void";
-    workerType: "employee" | "us_contractor" | "global_contractor";
+    status: 'draft' | 'sent' | 'accepted' | 'void';
+    workerType: 'employee' | 'us_contractor' | 'global_contractor';
     candidate: Payload.Candidate;
     position: Payload.Position;
     department: Payload.Department | null;
@@ -1181,7 +1676,257 @@ export namespace OfferSentWebhookEvent {
        * @pattern ^\d{4}-\d{2}-\d{2}$
        */
       startDate: string;
-      country: "AD" | "AE" | "AF" | "AG" | "AI" | "AL" | "AM" | "AO" | "AQ" | "AR" | "AS" | "AT" | "AU" | "AW" | "AX" | "AZ" | "BA" | "BB" | "BD" | "BE" | "BF" | "BG" | "BH" | "BI" | "BJ" | "BL" | "BM" | "BN" | "BO" | "BQ" | "BR" | "BS" | "BT" | "BV" | "BW" | "BY" | "BZ" | "CA" | "CC" | "CD" | "CF" | "CG" | "CH" | "CI" | "CK" | "CL" | "CM" | "CN" | "CO" | "CR" | "CU" | "CV" | "CW" | "CX" | "CY" | "CZ" | "DE" | "DJ" | "DK" | "DM" | "DO" | "DZ" | "EC" | "EE" | "EG" | "EH" | "ER" | "ES" | "ET" | "FI" | "FJ" | "FK" | "FM" | "FO" | "FR" | "GA" | "GB" | "GD" | "GE" | "GF" | "GG" | "GH" | "GI" | "GL" | "GM" | "GN" | "GP" | "GQ" | "GR" | "GS" | "GT" | "GU" | "GW" | "GY" | "HK" | "HM" | "HN" | "HR" | "HT" | "HU" | "ID" | "IE" | "IL" | "IM" | "IN" | "IO" | "IQ" | "IR" | "IS" | "IT" | "JE" | "JM" | "JO" | "JP" | "KE" | "KG" | "KH" | "KI" | "KM" | "KN" | "KP" | "KR" | "KW" | "KY" | "KZ" | "LA" | "LB" | "LC" | "LI" | "LK" | "LR" | "LS" | "LT" | "LU" | "LV" | "LY" | "MA" | "MC" | "MD" | "ME" | "MF" | "MG" | "MH" | "MK" | "ML" | "MM" | "MN" | "MO" | "MP" | "MQ" | "MR" | "MS" | "MT" | "MU" | "MV" | "MW" | "MX" | "MY" | "MZ" | "NA" | "NC" | "NE" | "NF" | "NG" | "NI" | "NL" | "NO" | "NP" | "NR" | "NU" | "NZ" | "OM" | "PA" | "PE" | "PF" | "PG" | "PH" | "PK" | "PL" | "PM" | "PN" | "PR" | "PS" | "PT" | "PW" | "PY" | "QA" | "RE" | "RO" | "RS" | "RU" | "RW" | "SA" | "SB" | "SC" | "SD" | "SE" | "SG" | "SH" | "SI" | "SJ" | "SK" | "SL" | "SM" | "SN" | "SO" | "SR" | "SS" | "ST" | "SV" | "SX" | "SY" | "SZ" | "TC" | "TD" | "TF" | "TG" | "TH" | "TJ" | "TK" | "TL" | "TM" | "TN" | "TO" | "TR" | "TT" | "TV" | "TW" | "TZ" | "UA" | "UG" | "UM" | "US" | "UY" | "UZ" | "VA" | "VC" | "VE" | "VG" | "VI" | "VN" | "VU" | "WF" | "WS" | "XK" | "YE" | "YT" | "ZA" | "ZM" | "ZW";
+      country:
+        | 'AD'
+        | 'AE'
+        | 'AF'
+        | 'AG'
+        | 'AI'
+        | 'AL'
+        | 'AM'
+        | 'AO'
+        | 'AQ'
+        | 'AR'
+        | 'AS'
+        | 'AT'
+        | 'AU'
+        | 'AW'
+        | 'AX'
+        | 'AZ'
+        | 'BA'
+        | 'BB'
+        | 'BD'
+        | 'BE'
+        | 'BF'
+        | 'BG'
+        | 'BH'
+        | 'BI'
+        | 'BJ'
+        | 'BL'
+        | 'BM'
+        | 'BN'
+        | 'BO'
+        | 'BQ'
+        | 'BR'
+        | 'BS'
+        | 'BT'
+        | 'BV'
+        | 'BW'
+        | 'BY'
+        | 'BZ'
+        | 'CA'
+        | 'CC'
+        | 'CD'
+        | 'CF'
+        | 'CG'
+        | 'CH'
+        | 'CI'
+        | 'CK'
+        | 'CL'
+        | 'CM'
+        | 'CN'
+        | 'CO'
+        | 'CR'
+        | 'CU'
+        | 'CV'
+        | 'CW'
+        | 'CX'
+        | 'CY'
+        | 'CZ'
+        | 'DE'
+        | 'DJ'
+        | 'DK'
+        | 'DM'
+        | 'DO'
+        | 'DZ'
+        | 'EC'
+        | 'EE'
+        | 'EG'
+        | 'EH'
+        | 'ER'
+        | 'ES'
+        | 'ET'
+        | 'FI'
+        | 'FJ'
+        | 'FK'
+        | 'FM'
+        | 'FO'
+        | 'FR'
+        | 'GA'
+        | 'GB'
+        | 'GD'
+        | 'GE'
+        | 'GF'
+        | 'GG'
+        | 'GH'
+        | 'GI'
+        | 'GL'
+        | 'GM'
+        | 'GN'
+        | 'GP'
+        | 'GQ'
+        | 'GR'
+        | 'GS'
+        | 'GT'
+        | 'GU'
+        | 'GW'
+        | 'GY'
+        | 'HK'
+        | 'HM'
+        | 'HN'
+        | 'HR'
+        | 'HT'
+        | 'HU'
+        | 'ID'
+        | 'IE'
+        | 'IL'
+        | 'IM'
+        | 'IN'
+        | 'IO'
+        | 'IQ'
+        | 'IR'
+        | 'IS'
+        | 'IT'
+        | 'JE'
+        | 'JM'
+        | 'JO'
+        | 'JP'
+        | 'KE'
+        | 'KG'
+        | 'KH'
+        | 'KI'
+        | 'KM'
+        | 'KN'
+        | 'KP'
+        | 'KR'
+        | 'KW'
+        | 'KY'
+        | 'KZ'
+        | 'LA'
+        | 'LB'
+        | 'LC'
+        | 'LI'
+        | 'LK'
+        | 'LR'
+        | 'LS'
+        | 'LT'
+        | 'LU'
+        | 'LV'
+        | 'LY'
+        | 'MA'
+        | 'MC'
+        | 'MD'
+        | 'ME'
+        | 'MF'
+        | 'MG'
+        | 'MH'
+        | 'MK'
+        | 'ML'
+        | 'MM'
+        | 'MN'
+        | 'MO'
+        | 'MP'
+        | 'MQ'
+        | 'MR'
+        | 'MS'
+        | 'MT'
+        | 'MU'
+        | 'MV'
+        | 'MW'
+        | 'MX'
+        | 'MY'
+        | 'MZ'
+        | 'NA'
+        | 'NC'
+        | 'NE'
+        | 'NF'
+        | 'NG'
+        | 'NI'
+        | 'NL'
+        | 'NO'
+        | 'NP'
+        | 'NR'
+        | 'NU'
+        | 'NZ'
+        | 'OM'
+        | 'PA'
+        | 'PE'
+        | 'PF'
+        | 'PG'
+        | 'PH'
+        | 'PK'
+        | 'PL'
+        | 'PM'
+        | 'PN'
+        | 'PR'
+        | 'PS'
+        | 'PT'
+        | 'PW'
+        | 'PY'
+        | 'QA'
+        | 'RE'
+        | 'RO'
+        | 'RS'
+        | 'RU'
+        | 'RW'
+        | 'SA'
+        | 'SB'
+        | 'SC'
+        | 'SD'
+        | 'SE'
+        | 'SG'
+        | 'SH'
+        | 'SI'
+        | 'SJ'
+        | 'SK'
+        | 'SL'
+        | 'SM'
+        | 'SN'
+        | 'SO'
+        | 'SR'
+        | 'SS'
+        | 'ST'
+        | 'SV'
+        | 'SX'
+        | 'SY'
+        | 'SZ'
+        | 'TC'
+        | 'TD'
+        | 'TF'
+        | 'TG'
+        | 'TH'
+        | 'TJ'
+        | 'TK'
+        | 'TL'
+        | 'TM'
+        | 'TN'
+        | 'TO'
+        | 'TR'
+        | 'TT'
+        | 'TV'
+        | 'TW'
+        | 'TZ'
+        | 'UA'
+        | 'UG'
+        | 'UM'
+        | 'US'
+        | 'UY'
+        | 'UZ'
+        | 'VA'
+        | 'VC'
+        | 'VE'
+        | 'VG'
+        | 'VI'
+        | 'VN'
+        | 'VU'
+        | 'WF'
+        | 'WS'
+        | 'XK'
+        | 'YE'
+        | 'YT'
+        | 'ZA'
+        | 'ZM'
+        | 'ZW';
       scopeOfWork: string | null;
     }
 
@@ -1225,8 +1970,8 @@ export namespace OfferSentWebhookEvent {
          * A monetary amount with its currency and server-formatted display value.
          */
         amount: BasePay.Amount;
-        basis: "year" | "month" | "week" | "hour" | "variable";
-        type: "fixed" | "pay_as_you_go" | null;
+        basis: 'year' | 'month' | 'week' | 'hour' | 'variable';
+        type: 'fixed' | 'pay_as_you_go' | null;
         variableRate: BasePay.VariableRate | null;
       }
 
@@ -1237,7 +1982,68 @@ export namespace OfferSentWebhookEvent {
            * @minimum 0
            */
           amount: number;
-          currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
+          currency:
+            | 'USD'
+            | 'AUD'
+            | 'BGN'
+            | 'BRL'
+            | 'CAD'
+            | 'CHF'
+            | 'CZK'
+            | 'DKK'
+            | 'EUR'
+            | 'GBP'
+            | 'HKD'
+            | 'HUF'
+            | 'IDR'
+            | 'INR'
+            | 'JPY'
+            | 'MYR'
+            | 'NOK'
+            | 'NZD'
+            | 'CNY'
+            | 'PLN'
+            | 'RON'
+            | 'TRY'
+            | 'SEK'
+            | 'SGD'
+            | 'AED'
+            | 'ARS'
+            | 'BDT'
+            | 'BWP'
+            | 'CLP'
+            | 'COP'
+            | 'CRC'
+            | 'EGP'
+            | 'FJD'
+            | 'GEL'
+            | 'GHS'
+            | 'ILS'
+            | 'KES'
+            | 'KRW'
+            | 'LKR'
+            | 'MAD'
+            | 'MXN'
+            | 'NPR'
+            | 'PHP'
+            | 'PKR'
+            | 'THB'
+            | 'UAH'
+            | 'UGX'
+            | 'UYU'
+            | 'VND'
+            | 'ZAR'
+            | 'ZMW'
+            | 'TND'
+            | 'NGN'
+            | 'RSD'
+            | 'TWD'
+            | 'GTQ'
+            | 'HNL'
+            | 'DOP'
+            | 'SAR'
+            | 'XAF'
+            | 'PEN';
           /**
            * The server-formatted display string for the amount in its currency.
            */
@@ -1250,7 +2056,68 @@ export namespace OfferSentWebhookEvent {
            * @minimum 0
            */
           amount: number;
-          currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
+          currency:
+            | 'USD'
+            | 'AUD'
+            | 'BGN'
+            | 'BRL'
+            | 'CAD'
+            | 'CHF'
+            | 'CZK'
+            | 'DKK'
+            | 'EUR'
+            | 'GBP'
+            | 'HKD'
+            | 'HUF'
+            | 'IDR'
+            | 'INR'
+            | 'JPY'
+            | 'MYR'
+            | 'NOK'
+            | 'NZD'
+            | 'CNY'
+            | 'PLN'
+            | 'RON'
+            | 'TRY'
+            | 'SEK'
+            | 'SGD'
+            | 'AED'
+            | 'ARS'
+            | 'BDT'
+            | 'BWP'
+            | 'CLP'
+            | 'COP'
+            | 'CRC'
+            | 'EGP'
+            | 'FJD'
+            | 'GEL'
+            | 'GHS'
+            | 'ILS'
+            | 'KES'
+            | 'KRW'
+            | 'LKR'
+            | 'MAD'
+            | 'MXN'
+            | 'NPR'
+            | 'PHP'
+            | 'PKR'
+            | 'THB'
+            | 'UAH'
+            | 'UGX'
+            | 'UYU'
+            | 'VND'
+            | 'ZAR'
+            | 'ZMW'
+            | 'TND'
+            | 'NGN'
+            | 'RSD'
+            | 'TWD'
+            | 'GTQ'
+            | 'HNL'
+            | 'DOP'
+            | 'SAR'
+            | 'XAF'
+            | 'PEN';
           /**
            * The server-formatted display string for the amount in its currency.
            */
@@ -1264,7 +2131,68 @@ export namespace OfferSentWebhookEvent {
          * @minimum 0
          */
         amount: number;
-        currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
+        currency:
+          | 'USD'
+          | 'AUD'
+          | 'BGN'
+          | 'BRL'
+          | 'CAD'
+          | 'CHF'
+          | 'CZK'
+          | 'DKK'
+          | 'EUR'
+          | 'GBP'
+          | 'HKD'
+          | 'HUF'
+          | 'IDR'
+          | 'INR'
+          | 'JPY'
+          | 'MYR'
+          | 'NOK'
+          | 'NZD'
+          | 'CNY'
+          | 'PLN'
+          | 'RON'
+          | 'TRY'
+          | 'SEK'
+          | 'SGD'
+          | 'AED'
+          | 'ARS'
+          | 'BDT'
+          | 'BWP'
+          | 'CLP'
+          | 'COP'
+          | 'CRC'
+          | 'EGP'
+          | 'FJD'
+          | 'GEL'
+          | 'GHS'
+          | 'ILS'
+          | 'KES'
+          | 'KRW'
+          | 'LKR'
+          | 'MAD'
+          | 'MXN'
+          | 'NPR'
+          | 'PHP'
+          | 'PKR'
+          | 'THB'
+          | 'UAH'
+          | 'UGX'
+          | 'UYU'
+          | 'VND'
+          | 'ZAR'
+          | 'ZMW'
+          | 'TND'
+          | 'NGN'
+          | 'RSD'
+          | 'TWD'
+          | 'GTQ'
+          | 'HNL'
+          | 'DOP'
+          | 'SAR'
+          | 'XAF'
+          | 'PEN';
         /**
          * The server-formatted display string for the amount in its currency.
          */
@@ -1277,7 +2205,68 @@ export namespace OfferSentWebhookEvent {
          * @minimum 0
          */
         amount: number;
-        currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
+        currency:
+          | 'USD'
+          | 'AUD'
+          | 'BGN'
+          | 'BRL'
+          | 'CAD'
+          | 'CHF'
+          | 'CZK'
+          | 'DKK'
+          | 'EUR'
+          | 'GBP'
+          | 'HKD'
+          | 'HUF'
+          | 'IDR'
+          | 'INR'
+          | 'JPY'
+          | 'MYR'
+          | 'NOK'
+          | 'NZD'
+          | 'CNY'
+          | 'PLN'
+          | 'RON'
+          | 'TRY'
+          | 'SEK'
+          | 'SGD'
+          | 'AED'
+          | 'ARS'
+          | 'BDT'
+          | 'BWP'
+          | 'CLP'
+          | 'COP'
+          | 'CRC'
+          | 'EGP'
+          | 'FJD'
+          | 'GEL'
+          | 'GHS'
+          | 'ILS'
+          | 'KES'
+          | 'KRW'
+          | 'LKR'
+          | 'MAD'
+          | 'MXN'
+          | 'NPR'
+          | 'PHP'
+          | 'PKR'
+          | 'THB'
+          | 'UAH'
+          | 'UGX'
+          | 'UYU'
+          | 'VND'
+          | 'ZAR'
+          | 'ZMW'
+          | 'TND'
+          | 'NGN'
+          | 'RSD'
+          | 'TWD'
+          | 'GTQ'
+          | 'HNL'
+          | 'DOP'
+          | 'SAR'
+          | 'XAF'
+          | 'PEN';
         /**
          * The server-formatted display string for the amount in its currency.
          */
@@ -1311,7 +2300,7 @@ export interface OfferViewedWebhookEvent {
   /**
    * The event type.
    */
-  event_type: "offer:viewed";
+  event_type: 'offer:viewed';
   payload: OfferViewedWebhookEvent.Payload;
   /**
    * ISO 8601 timestamp of when the event was generated.
@@ -1326,8 +2315,8 @@ export namespace OfferViewedWebhookEvent {
      * @pattern ^offr_
      */
     id: string;
-    status: "draft" | "sent" | "accepted" | "void";
-    workerType: "employee" | "us_contractor" | "global_contractor";
+    status: 'draft' | 'sent' | 'accepted' | 'void';
+    workerType: 'employee' | 'us_contractor' | 'global_contractor';
     candidate: Payload.Candidate;
     position: Payload.Position;
     department: Payload.Department | null;
@@ -1376,7 +2365,257 @@ export namespace OfferViewedWebhookEvent {
        * @pattern ^\d{4}-\d{2}-\d{2}$
        */
       startDate: string;
-      country: "AD" | "AE" | "AF" | "AG" | "AI" | "AL" | "AM" | "AO" | "AQ" | "AR" | "AS" | "AT" | "AU" | "AW" | "AX" | "AZ" | "BA" | "BB" | "BD" | "BE" | "BF" | "BG" | "BH" | "BI" | "BJ" | "BL" | "BM" | "BN" | "BO" | "BQ" | "BR" | "BS" | "BT" | "BV" | "BW" | "BY" | "BZ" | "CA" | "CC" | "CD" | "CF" | "CG" | "CH" | "CI" | "CK" | "CL" | "CM" | "CN" | "CO" | "CR" | "CU" | "CV" | "CW" | "CX" | "CY" | "CZ" | "DE" | "DJ" | "DK" | "DM" | "DO" | "DZ" | "EC" | "EE" | "EG" | "EH" | "ER" | "ES" | "ET" | "FI" | "FJ" | "FK" | "FM" | "FO" | "FR" | "GA" | "GB" | "GD" | "GE" | "GF" | "GG" | "GH" | "GI" | "GL" | "GM" | "GN" | "GP" | "GQ" | "GR" | "GS" | "GT" | "GU" | "GW" | "GY" | "HK" | "HM" | "HN" | "HR" | "HT" | "HU" | "ID" | "IE" | "IL" | "IM" | "IN" | "IO" | "IQ" | "IR" | "IS" | "IT" | "JE" | "JM" | "JO" | "JP" | "KE" | "KG" | "KH" | "KI" | "KM" | "KN" | "KP" | "KR" | "KW" | "KY" | "KZ" | "LA" | "LB" | "LC" | "LI" | "LK" | "LR" | "LS" | "LT" | "LU" | "LV" | "LY" | "MA" | "MC" | "MD" | "ME" | "MF" | "MG" | "MH" | "MK" | "ML" | "MM" | "MN" | "MO" | "MP" | "MQ" | "MR" | "MS" | "MT" | "MU" | "MV" | "MW" | "MX" | "MY" | "MZ" | "NA" | "NC" | "NE" | "NF" | "NG" | "NI" | "NL" | "NO" | "NP" | "NR" | "NU" | "NZ" | "OM" | "PA" | "PE" | "PF" | "PG" | "PH" | "PK" | "PL" | "PM" | "PN" | "PR" | "PS" | "PT" | "PW" | "PY" | "QA" | "RE" | "RO" | "RS" | "RU" | "RW" | "SA" | "SB" | "SC" | "SD" | "SE" | "SG" | "SH" | "SI" | "SJ" | "SK" | "SL" | "SM" | "SN" | "SO" | "SR" | "SS" | "ST" | "SV" | "SX" | "SY" | "SZ" | "TC" | "TD" | "TF" | "TG" | "TH" | "TJ" | "TK" | "TL" | "TM" | "TN" | "TO" | "TR" | "TT" | "TV" | "TW" | "TZ" | "UA" | "UG" | "UM" | "US" | "UY" | "UZ" | "VA" | "VC" | "VE" | "VG" | "VI" | "VN" | "VU" | "WF" | "WS" | "XK" | "YE" | "YT" | "ZA" | "ZM" | "ZW";
+      country:
+        | 'AD'
+        | 'AE'
+        | 'AF'
+        | 'AG'
+        | 'AI'
+        | 'AL'
+        | 'AM'
+        | 'AO'
+        | 'AQ'
+        | 'AR'
+        | 'AS'
+        | 'AT'
+        | 'AU'
+        | 'AW'
+        | 'AX'
+        | 'AZ'
+        | 'BA'
+        | 'BB'
+        | 'BD'
+        | 'BE'
+        | 'BF'
+        | 'BG'
+        | 'BH'
+        | 'BI'
+        | 'BJ'
+        | 'BL'
+        | 'BM'
+        | 'BN'
+        | 'BO'
+        | 'BQ'
+        | 'BR'
+        | 'BS'
+        | 'BT'
+        | 'BV'
+        | 'BW'
+        | 'BY'
+        | 'BZ'
+        | 'CA'
+        | 'CC'
+        | 'CD'
+        | 'CF'
+        | 'CG'
+        | 'CH'
+        | 'CI'
+        | 'CK'
+        | 'CL'
+        | 'CM'
+        | 'CN'
+        | 'CO'
+        | 'CR'
+        | 'CU'
+        | 'CV'
+        | 'CW'
+        | 'CX'
+        | 'CY'
+        | 'CZ'
+        | 'DE'
+        | 'DJ'
+        | 'DK'
+        | 'DM'
+        | 'DO'
+        | 'DZ'
+        | 'EC'
+        | 'EE'
+        | 'EG'
+        | 'EH'
+        | 'ER'
+        | 'ES'
+        | 'ET'
+        | 'FI'
+        | 'FJ'
+        | 'FK'
+        | 'FM'
+        | 'FO'
+        | 'FR'
+        | 'GA'
+        | 'GB'
+        | 'GD'
+        | 'GE'
+        | 'GF'
+        | 'GG'
+        | 'GH'
+        | 'GI'
+        | 'GL'
+        | 'GM'
+        | 'GN'
+        | 'GP'
+        | 'GQ'
+        | 'GR'
+        | 'GS'
+        | 'GT'
+        | 'GU'
+        | 'GW'
+        | 'GY'
+        | 'HK'
+        | 'HM'
+        | 'HN'
+        | 'HR'
+        | 'HT'
+        | 'HU'
+        | 'ID'
+        | 'IE'
+        | 'IL'
+        | 'IM'
+        | 'IN'
+        | 'IO'
+        | 'IQ'
+        | 'IR'
+        | 'IS'
+        | 'IT'
+        | 'JE'
+        | 'JM'
+        | 'JO'
+        | 'JP'
+        | 'KE'
+        | 'KG'
+        | 'KH'
+        | 'KI'
+        | 'KM'
+        | 'KN'
+        | 'KP'
+        | 'KR'
+        | 'KW'
+        | 'KY'
+        | 'KZ'
+        | 'LA'
+        | 'LB'
+        | 'LC'
+        | 'LI'
+        | 'LK'
+        | 'LR'
+        | 'LS'
+        | 'LT'
+        | 'LU'
+        | 'LV'
+        | 'LY'
+        | 'MA'
+        | 'MC'
+        | 'MD'
+        | 'ME'
+        | 'MF'
+        | 'MG'
+        | 'MH'
+        | 'MK'
+        | 'ML'
+        | 'MM'
+        | 'MN'
+        | 'MO'
+        | 'MP'
+        | 'MQ'
+        | 'MR'
+        | 'MS'
+        | 'MT'
+        | 'MU'
+        | 'MV'
+        | 'MW'
+        | 'MX'
+        | 'MY'
+        | 'MZ'
+        | 'NA'
+        | 'NC'
+        | 'NE'
+        | 'NF'
+        | 'NG'
+        | 'NI'
+        | 'NL'
+        | 'NO'
+        | 'NP'
+        | 'NR'
+        | 'NU'
+        | 'NZ'
+        | 'OM'
+        | 'PA'
+        | 'PE'
+        | 'PF'
+        | 'PG'
+        | 'PH'
+        | 'PK'
+        | 'PL'
+        | 'PM'
+        | 'PN'
+        | 'PR'
+        | 'PS'
+        | 'PT'
+        | 'PW'
+        | 'PY'
+        | 'QA'
+        | 'RE'
+        | 'RO'
+        | 'RS'
+        | 'RU'
+        | 'RW'
+        | 'SA'
+        | 'SB'
+        | 'SC'
+        | 'SD'
+        | 'SE'
+        | 'SG'
+        | 'SH'
+        | 'SI'
+        | 'SJ'
+        | 'SK'
+        | 'SL'
+        | 'SM'
+        | 'SN'
+        | 'SO'
+        | 'SR'
+        | 'SS'
+        | 'ST'
+        | 'SV'
+        | 'SX'
+        | 'SY'
+        | 'SZ'
+        | 'TC'
+        | 'TD'
+        | 'TF'
+        | 'TG'
+        | 'TH'
+        | 'TJ'
+        | 'TK'
+        | 'TL'
+        | 'TM'
+        | 'TN'
+        | 'TO'
+        | 'TR'
+        | 'TT'
+        | 'TV'
+        | 'TW'
+        | 'TZ'
+        | 'UA'
+        | 'UG'
+        | 'UM'
+        | 'US'
+        | 'UY'
+        | 'UZ'
+        | 'VA'
+        | 'VC'
+        | 'VE'
+        | 'VG'
+        | 'VI'
+        | 'VN'
+        | 'VU'
+        | 'WF'
+        | 'WS'
+        | 'XK'
+        | 'YE'
+        | 'YT'
+        | 'ZA'
+        | 'ZM'
+        | 'ZW';
       scopeOfWork: string | null;
     }
 
@@ -1420,8 +2659,8 @@ export namespace OfferViewedWebhookEvent {
          * A monetary amount with its currency and server-formatted display value.
          */
         amount: BasePay.Amount;
-        basis: "year" | "month" | "week" | "hour" | "variable";
-        type: "fixed" | "pay_as_you_go" | null;
+        basis: 'year' | 'month' | 'week' | 'hour' | 'variable';
+        type: 'fixed' | 'pay_as_you_go' | null;
         variableRate: BasePay.VariableRate | null;
       }
 
@@ -1432,7 +2671,68 @@ export namespace OfferViewedWebhookEvent {
            * @minimum 0
            */
           amount: number;
-          currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
+          currency:
+            | 'USD'
+            | 'AUD'
+            | 'BGN'
+            | 'BRL'
+            | 'CAD'
+            | 'CHF'
+            | 'CZK'
+            | 'DKK'
+            | 'EUR'
+            | 'GBP'
+            | 'HKD'
+            | 'HUF'
+            | 'IDR'
+            | 'INR'
+            | 'JPY'
+            | 'MYR'
+            | 'NOK'
+            | 'NZD'
+            | 'CNY'
+            | 'PLN'
+            | 'RON'
+            | 'TRY'
+            | 'SEK'
+            | 'SGD'
+            | 'AED'
+            | 'ARS'
+            | 'BDT'
+            | 'BWP'
+            | 'CLP'
+            | 'COP'
+            | 'CRC'
+            | 'EGP'
+            | 'FJD'
+            | 'GEL'
+            | 'GHS'
+            | 'ILS'
+            | 'KES'
+            | 'KRW'
+            | 'LKR'
+            | 'MAD'
+            | 'MXN'
+            | 'NPR'
+            | 'PHP'
+            | 'PKR'
+            | 'THB'
+            | 'UAH'
+            | 'UGX'
+            | 'UYU'
+            | 'VND'
+            | 'ZAR'
+            | 'ZMW'
+            | 'TND'
+            | 'NGN'
+            | 'RSD'
+            | 'TWD'
+            | 'GTQ'
+            | 'HNL'
+            | 'DOP'
+            | 'SAR'
+            | 'XAF'
+            | 'PEN';
           /**
            * The server-formatted display string for the amount in its currency.
            */
@@ -1445,7 +2745,68 @@ export namespace OfferViewedWebhookEvent {
            * @minimum 0
            */
           amount: number;
-          currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
+          currency:
+            | 'USD'
+            | 'AUD'
+            | 'BGN'
+            | 'BRL'
+            | 'CAD'
+            | 'CHF'
+            | 'CZK'
+            | 'DKK'
+            | 'EUR'
+            | 'GBP'
+            | 'HKD'
+            | 'HUF'
+            | 'IDR'
+            | 'INR'
+            | 'JPY'
+            | 'MYR'
+            | 'NOK'
+            | 'NZD'
+            | 'CNY'
+            | 'PLN'
+            | 'RON'
+            | 'TRY'
+            | 'SEK'
+            | 'SGD'
+            | 'AED'
+            | 'ARS'
+            | 'BDT'
+            | 'BWP'
+            | 'CLP'
+            | 'COP'
+            | 'CRC'
+            | 'EGP'
+            | 'FJD'
+            | 'GEL'
+            | 'GHS'
+            | 'ILS'
+            | 'KES'
+            | 'KRW'
+            | 'LKR'
+            | 'MAD'
+            | 'MXN'
+            | 'NPR'
+            | 'PHP'
+            | 'PKR'
+            | 'THB'
+            | 'UAH'
+            | 'UGX'
+            | 'UYU'
+            | 'VND'
+            | 'ZAR'
+            | 'ZMW'
+            | 'TND'
+            | 'NGN'
+            | 'RSD'
+            | 'TWD'
+            | 'GTQ'
+            | 'HNL'
+            | 'DOP'
+            | 'SAR'
+            | 'XAF'
+            | 'PEN';
           /**
            * The server-formatted display string for the amount in its currency.
            */
@@ -1459,7 +2820,68 @@ export namespace OfferViewedWebhookEvent {
          * @minimum 0
          */
         amount: number;
-        currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
+        currency:
+          | 'USD'
+          | 'AUD'
+          | 'BGN'
+          | 'BRL'
+          | 'CAD'
+          | 'CHF'
+          | 'CZK'
+          | 'DKK'
+          | 'EUR'
+          | 'GBP'
+          | 'HKD'
+          | 'HUF'
+          | 'IDR'
+          | 'INR'
+          | 'JPY'
+          | 'MYR'
+          | 'NOK'
+          | 'NZD'
+          | 'CNY'
+          | 'PLN'
+          | 'RON'
+          | 'TRY'
+          | 'SEK'
+          | 'SGD'
+          | 'AED'
+          | 'ARS'
+          | 'BDT'
+          | 'BWP'
+          | 'CLP'
+          | 'COP'
+          | 'CRC'
+          | 'EGP'
+          | 'FJD'
+          | 'GEL'
+          | 'GHS'
+          | 'ILS'
+          | 'KES'
+          | 'KRW'
+          | 'LKR'
+          | 'MAD'
+          | 'MXN'
+          | 'NPR'
+          | 'PHP'
+          | 'PKR'
+          | 'THB'
+          | 'UAH'
+          | 'UGX'
+          | 'UYU'
+          | 'VND'
+          | 'ZAR'
+          | 'ZMW'
+          | 'TND'
+          | 'NGN'
+          | 'RSD'
+          | 'TWD'
+          | 'GTQ'
+          | 'HNL'
+          | 'DOP'
+          | 'SAR'
+          | 'XAF'
+          | 'PEN';
         /**
          * The server-formatted display string for the amount in its currency.
          */
@@ -1472,7 +2894,68 @@ export namespace OfferViewedWebhookEvent {
          * @minimum 0
          */
         amount: number;
-        currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
+        currency:
+          | 'USD'
+          | 'AUD'
+          | 'BGN'
+          | 'BRL'
+          | 'CAD'
+          | 'CHF'
+          | 'CZK'
+          | 'DKK'
+          | 'EUR'
+          | 'GBP'
+          | 'HKD'
+          | 'HUF'
+          | 'IDR'
+          | 'INR'
+          | 'JPY'
+          | 'MYR'
+          | 'NOK'
+          | 'NZD'
+          | 'CNY'
+          | 'PLN'
+          | 'RON'
+          | 'TRY'
+          | 'SEK'
+          | 'SGD'
+          | 'AED'
+          | 'ARS'
+          | 'BDT'
+          | 'BWP'
+          | 'CLP'
+          | 'COP'
+          | 'CRC'
+          | 'EGP'
+          | 'FJD'
+          | 'GEL'
+          | 'GHS'
+          | 'ILS'
+          | 'KES'
+          | 'KRW'
+          | 'LKR'
+          | 'MAD'
+          | 'MXN'
+          | 'NPR'
+          | 'PHP'
+          | 'PKR'
+          | 'THB'
+          | 'UAH'
+          | 'UGX'
+          | 'UYU'
+          | 'VND'
+          | 'ZAR'
+          | 'ZMW'
+          | 'TND'
+          | 'NGN'
+          | 'RSD'
+          | 'TWD'
+          | 'GTQ'
+          | 'HNL'
+          | 'DOP'
+          | 'SAR'
+          | 'XAF'
+          | 'PEN';
         /**
          * The server-formatted display string for the amount in its currency.
          */
@@ -1506,7 +2989,7 @@ export interface OfferAcceptedWebhookEvent {
   /**
    * The event type.
    */
-  event_type: "offer:accepted";
+  event_type: 'offer:accepted';
   payload: OfferAcceptedWebhookEvent.Payload;
   /**
    * ISO 8601 timestamp of when the event was generated.
@@ -1521,8 +3004,8 @@ export namespace OfferAcceptedWebhookEvent {
      * @pattern ^offr_
      */
     id: string;
-    status: "draft" | "sent" | "accepted" | "void";
-    workerType: "employee" | "us_contractor" | "global_contractor";
+    status: 'draft' | 'sent' | 'accepted' | 'void';
+    workerType: 'employee' | 'us_contractor' | 'global_contractor';
     candidate: Payload.Candidate;
     position: Payload.Position;
     department: Payload.Department | null;
@@ -1571,7 +3054,257 @@ export namespace OfferAcceptedWebhookEvent {
        * @pattern ^\d{4}-\d{2}-\d{2}$
        */
       startDate: string;
-      country: "AD" | "AE" | "AF" | "AG" | "AI" | "AL" | "AM" | "AO" | "AQ" | "AR" | "AS" | "AT" | "AU" | "AW" | "AX" | "AZ" | "BA" | "BB" | "BD" | "BE" | "BF" | "BG" | "BH" | "BI" | "BJ" | "BL" | "BM" | "BN" | "BO" | "BQ" | "BR" | "BS" | "BT" | "BV" | "BW" | "BY" | "BZ" | "CA" | "CC" | "CD" | "CF" | "CG" | "CH" | "CI" | "CK" | "CL" | "CM" | "CN" | "CO" | "CR" | "CU" | "CV" | "CW" | "CX" | "CY" | "CZ" | "DE" | "DJ" | "DK" | "DM" | "DO" | "DZ" | "EC" | "EE" | "EG" | "EH" | "ER" | "ES" | "ET" | "FI" | "FJ" | "FK" | "FM" | "FO" | "FR" | "GA" | "GB" | "GD" | "GE" | "GF" | "GG" | "GH" | "GI" | "GL" | "GM" | "GN" | "GP" | "GQ" | "GR" | "GS" | "GT" | "GU" | "GW" | "GY" | "HK" | "HM" | "HN" | "HR" | "HT" | "HU" | "ID" | "IE" | "IL" | "IM" | "IN" | "IO" | "IQ" | "IR" | "IS" | "IT" | "JE" | "JM" | "JO" | "JP" | "KE" | "KG" | "KH" | "KI" | "KM" | "KN" | "KP" | "KR" | "KW" | "KY" | "KZ" | "LA" | "LB" | "LC" | "LI" | "LK" | "LR" | "LS" | "LT" | "LU" | "LV" | "LY" | "MA" | "MC" | "MD" | "ME" | "MF" | "MG" | "MH" | "MK" | "ML" | "MM" | "MN" | "MO" | "MP" | "MQ" | "MR" | "MS" | "MT" | "MU" | "MV" | "MW" | "MX" | "MY" | "MZ" | "NA" | "NC" | "NE" | "NF" | "NG" | "NI" | "NL" | "NO" | "NP" | "NR" | "NU" | "NZ" | "OM" | "PA" | "PE" | "PF" | "PG" | "PH" | "PK" | "PL" | "PM" | "PN" | "PR" | "PS" | "PT" | "PW" | "PY" | "QA" | "RE" | "RO" | "RS" | "RU" | "RW" | "SA" | "SB" | "SC" | "SD" | "SE" | "SG" | "SH" | "SI" | "SJ" | "SK" | "SL" | "SM" | "SN" | "SO" | "SR" | "SS" | "ST" | "SV" | "SX" | "SY" | "SZ" | "TC" | "TD" | "TF" | "TG" | "TH" | "TJ" | "TK" | "TL" | "TM" | "TN" | "TO" | "TR" | "TT" | "TV" | "TW" | "TZ" | "UA" | "UG" | "UM" | "US" | "UY" | "UZ" | "VA" | "VC" | "VE" | "VG" | "VI" | "VN" | "VU" | "WF" | "WS" | "XK" | "YE" | "YT" | "ZA" | "ZM" | "ZW";
+      country:
+        | 'AD'
+        | 'AE'
+        | 'AF'
+        | 'AG'
+        | 'AI'
+        | 'AL'
+        | 'AM'
+        | 'AO'
+        | 'AQ'
+        | 'AR'
+        | 'AS'
+        | 'AT'
+        | 'AU'
+        | 'AW'
+        | 'AX'
+        | 'AZ'
+        | 'BA'
+        | 'BB'
+        | 'BD'
+        | 'BE'
+        | 'BF'
+        | 'BG'
+        | 'BH'
+        | 'BI'
+        | 'BJ'
+        | 'BL'
+        | 'BM'
+        | 'BN'
+        | 'BO'
+        | 'BQ'
+        | 'BR'
+        | 'BS'
+        | 'BT'
+        | 'BV'
+        | 'BW'
+        | 'BY'
+        | 'BZ'
+        | 'CA'
+        | 'CC'
+        | 'CD'
+        | 'CF'
+        | 'CG'
+        | 'CH'
+        | 'CI'
+        | 'CK'
+        | 'CL'
+        | 'CM'
+        | 'CN'
+        | 'CO'
+        | 'CR'
+        | 'CU'
+        | 'CV'
+        | 'CW'
+        | 'CX'
+        | 'CY'
+        | 'CZ'
+        | 'DE'
+        | 'DJ'
+        | 'DK'
+        | 'DM'
+        | 'DO'
+        | 'DZ'
+        | 'EC'
+        | 'EE'
+        | 'EG'
+        | 'EH'
+        | 'ER'
+        | 'ES'
+        | 'ET'
+        | 'FI'
+        | 'FJ'
+        | 'FK'
+        | 'FM'
+        | 'FO'
+        | 'FR'
+        | 'GA'
+        | 'GB'
+        | 'GD'
+        | 'GE'
+        | 'GF'
+        | 'GG'
+        | 'GH'
+        | 'GI'
+        | 'GL'
+        | 'GM'
+        | 'GN'
+        | 'GP'
+        | 'GQ'
+        | 'GR'
+        | 'GS'
+        | 'GT'
+        | 'GU'
+        | 'GW'
+        | 'GY'
+        | 'HK'
+        | 'HM'
+        | 'HN'
+        | 'HR'
+        | 'HT'
+        | 'HU'
+        | 'ID'
+        | 'IE'
+        | 'IL'
+        | 'IM'
+        | 'IN'
+        | 'IO'
+        | 'IQ'
+        | 'IR'
+        | 'IS'
+        | 'IT'
+        | 'JE'
+        | 'JM'
+        | 'JO'
+        | 'JP'
+        | 'KE'
+        | 'KG'
+        | 'KH'
+        | 'KI'
+        | 'KM'
+        | 'KN'
+        | 'KP'
+        | 'KR'
+        | 'KW'
+        | 'KY'
+        | 'KZ'
+        | 'LA'
+        | 'LB'
+        | 'LC'
+        | 'LI'
+        | 'LK'
+        | 'LR'
+        | 'LS'
+        | 'LT'
+        | 'LU'
+        | 'LV'
+        | 'LY'
+        | 'MA'
+        | 'MC'
+        | 'MD'
+        | 'ME'
+        | 'MF'
+        | 'MG'
+        | 'MH'
+        | 'MK'
+        | 'ML'
+        | 'MM'
+        | 'MN'
+        | 'MO'
+        | 'MP'
+        | 'MQ'
+        | 'MR'
+        | 'MS'
+        | 'MT'
+        | 'MU'
+        | 'MV'
+        | 'MW'
+        | 'MX'
+        | 'MY'
+        | 'MZ'
+        | 'NA'
+        | 'NC'
+        | 'NE'
+        | 'NF'
+        | 'NG'
+        | 'NI'
+        | 'NL'
+        | 'NO'
+        | 'NP'
+        | 'NR'
+        | 'NU'
+        | 'NZ'
+        | 'OM'
+        | 'PA'
+        | 'PE'
+        | 'PF'
+        | 'PG'
+        | 'PH'
+        | 'PK'
+        | 'PL'
+        | 'PM'
+        | 'PN'
+        | 'PR'
+        | 'PS'
+        | 'PT'
+        | 'PW'
+        | 'PY'
+        | 'QA'
+        | 'RE'
+        | 'RO'
+        | 'RS'
+        | 'RU'
+        | 'RW'
+        | 'SA'
+        | 'SB'
+        | 'SC'
+        | 'SD'
+        | 'SE'
+        | 'SG'
+        | 'SH'
+        | 'SI'
+        | 'SJ'
+        | 'SK'
+        | 'SL'
+        | 'SM'
+        | 'SN'
+        | 'SO'
+        | 'SR'
+        | 'SS'
+        | 'ST'
+        | 'SV'
+        | 'SX'
+        | 'SY'
+        | 'SZ'
+        | 'TC'
+        | 'TD'
+        | 'TF'
+        | 'TG'
+        | 'TH'
+        | 'TJ'
+        | 'TK'
+        | 'TL'
+        | 'TM'
+        | 'TN'
+        | 'TO'
+        | 'TR'
+        | 'TT'
+        | 'TV'
+        | 'TW'
+        | 'TZ'
+        | 'UA'
+        | 'UG'
+        | 'UM'
+        | 'US'
+        | 'UY'
+        | 'UZ'
+        | 'VA'
+        | 'VC'
+        | 'VE'
+        | 'VG'
+        | 'VI'
+        | 'VN'
+        | 'VU'
+        | 'WF'
+        | 'WS'
+        | 'XK'
+        | 'YE'
+        | 'YT'
+        | 'ZA'
+        | 'ZM'
+        | 'ZW';
       scopeOfWork: string | null;
     }
 
@@ -1615,8 +3348,8 @@ export namespace OfferAcceptedWebhookEvent {
          * A monetary amount with its currency and server-formatted display value.
          */
         amount: BasePay.Amount;
-        basis: "year" | "month" | "week" | "hour" | "variable";
-        type: "fixed" | "pay_as_you_go" | null;
+        basis: 'year' | 'month' | 'week' | 'hour' | 'variable';
+        type: 'fixed' | 'pay_as_you_go' | null;
         variableRate: BasePay.VariableRate | null;
       }
 
@@ -1627,7 +3360,68 @@ export namespace OfferAcceptedWebhookEvent {
            * @minimum 0
            */
           amount: number;
-          currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
+          currency:
+            | 'USD'
+            | 'AUD'
+            | 'BGN'
+            | 'BRL'
+            | 'CAD'
+            | 'CHF'
+            | 'CZK'
+            | 'DKK'
+            | 'EUR'
+            | 'GBP'
+            | 'HKD'
+            | 'HUF'
+            | 'IDR'
+            | 'INR'
+            | 'JPY'
+            | 'MYR'
+            | 'NOK'
+            | 'NZD'
+            | 'CNY'
+            | 'PLN'
+            | 'RON'
+            | 'TRY'
+            | 'SEK'
+            | 'SGD'
+            | 'AED'
+            | 'ARS'
+            | 'BDT'
+            | 'BWP'
+            | 'CLP'
+            | 'COP'
+            | 'CRC'
+            | 'EGP'
+            | 'FJD'
+            | 'GEL'
+            | 'GHS'
+            | 'ILS'
+            | 'KES'
+            | 'KRW'
+            | 'LKR'
+            | 'MAD'
+            | 'MXN'
+            | 'NPR'
+            | 'PHP'
+            | 'PKR'
+            | 'THB'
+            | 'UAH'
+            | 'UGX'
+            | 'UYU'
+            | 'VND'
+            | 'ZAR'
+            | 'ZMW'
+            | 'TND'
+            | 'NGN'
+            | 'RSD'
+            | 'TWD'
+            | 'GTQ'
+            | 'HNL'
+            | 'DOP'
+            | 'SAR'
+            | 'XAF'
+            | 'PEN';
           /**
            * The server-formatted display string for the amount in its currency.
            */
@@ -1640,7 +3434,68 @@ export namespace OfferAcceptedWebhookEvent {
            * @minimum 0
            */
           amount: number;
-          currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
+          currency:
+            | 'USD'
+            | 'AUD'
+            | 'BGN'
+            | 'BRL'
+            | 'CAD'
+            | 'CHF'
+            | 'CZK'
+            | 'DKK'
+            | 'EUR'
+            | 'GBP'
+            | 'HKD'
+            | 'HUF'
+            | 'IDR'
+            | 'INR'
+            | 'JPY'
+            | 'MYR'
+            | 'NOK'
+            | 'NZD'
+            | 'CNY'
+            | 'PLN'
+            | 'RON'
+            | 'TRY'
+            | 'SEK'
+            | 'SGD'
+            | 'AED'
+            | 'ARS'
+            | 'BDT'
+            | 'BWP'
+            | 'CLP'
+            | 'COP'
+            | 'CRC'
+            | 'EGP'
+            | 'FJD'
+            | 'GEL'
+            | 'GHS'
+            | 'ILS'
+            | 'KES'
+            | 'KRW'
+            | 'LKR'
+            | 'MAD'
+            | 'MXN'
+            | 'NPR'
+            | 'PHP'
+            | 'PKR'
+            | 'THB'
+            | 'UAH'
+            | 'UGX'
+            | 'UYU'
+            | 'VND'
+            | 'ZAR'
+            | 'ZMW'
+            | 'TND'
+            | 'NGN'
+            | 'RSD'
+            | 'TWD'
+            | 'GTQ'
+            | 'HNL'
+            | 'DOP'
+            | 'SAR'
+            | 'XAF'
+            | 'PEN';
           /**
            * The server-formatted display string for the amount in its currency.
            */
@@ -1654,7 +3509,68 @@ export namespace OfferAcceptedWebhookEvent {
          * @minimum 0
          */
         amount: number;
-        currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
+        currency:
+          | 'USD'
+          | 'AUD'
+          | 'BGN'
+          | 'BRL'
+          | 'CAD'
+          | 'CHF'
+          | 'CZK'
+          | 'DKK'
+          | 'EUR'
+          | 'GBP'
+          | 'HKD'
+          | 'HUF'
+          | 'IDR'
+          | 'INR'
+          | 'JPY'
+          | 'MYR'
+          | 'NOK'
+          | 'NZD'
+          | 'CNY'
+          | 'PLN'
+          | 'RON'
+          | 'TRY'
+          | 'SEK'
+          | 'SGD'
+          | 'AED'
+          | 'ARS'
+          | 'BDT'
+          | 'BWP'
+          | 'CLP'
+          | 'COP'
+          | 'CRC'
+          | 'EGP'
+          | 'FJD'
+          | 'GEL'
+          | 'GHS'
+          | 'ILS'
+          | 'KES'
+          | 'KRW'
+          | 'LKR'
+          | 'MAD'
+          | 'MXN'
+          | 'NPR'
+          | 'PHP'
+          | 'PKR'
+          | 'THB'
+          | 'UAH'
+          | 'UGX'
+          | 'UYU'
+          | 'VND'
+          | 'ZAR'
+          | 'ZMW'
+          | 'TND'
+          | 'NGN'
+          | 'RSD'
+          | 'TWD'
+          | 'GTQ'
+          | 'HNL'
+          | 'DOP'
+          | 'SAR'
+          | 'XAF'
+          | 'PEN';
         /**
          * The server-formatted display string for the amount in its currency.
          */
@@ -1667,7 +3583,68 @@ export namespace OfferAcceptedWebhookEvent {
          * @minimum 0
          */
         amount: number;
-        currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
+        currency:
+          | 'USD'
+          | 'AUD'
+          | 'BGN'
+          | 'BRL'
+          | 'CAD'
+          | 'CHF'
+          | 'CZK'
+          | 'DKK'
+          | 'EUR'
+          | 'GBP'
+          | 'HKD'
+          | 'HUF'
+          | 'IDR'
+          | 'INR'
+          | 'JPY'
+          | 'MYR'
+          | 'NOK'
+          | 'NZD'
+          | 'CNY'
+          | 'PLN'
+          | 'RON'
+          | 'TRY'
+          | 'SEK'
+          | 'SGD'
+          | 'AED'
+          | 'ARS'
+          | 'BDT'
+          | 'BWP'
+          | 'CLP'
+          | 'COP'
+          | 'CRC'
+          | 'EGP'
+          | 'FJD'
+          | 'GEL'
+          | 'GHS'
+          | 'ILS'
+          | 'KES'
+          | 'KRW'
+          | 'LKR'
+          | 'MAD'
+          | 'MXN'
+          | 'NPR'
+          | 'PHP'
+          | 'PKR'
+          | 'THB'
+          | 'UAH'
+          | 'UGX'
+          | 'UYU'
+          | 'VND'
+          | 'ZAR'
+          | 'ZMW'
+          | 'TND'
+          | 'NGN'
+          | 'RSD'
+          | 'TWD'
+          | 'GTQ'
+          | 'HNL'
+          | 'DOP'
+          | 'SAR'
+          | 'XAF'
+          | 'PEN';
         /**
          * The server-formatted display string for the amount in its currency.
          */
@@ -1701,7 +3678,7 @@ export interface OfferVoidedWebhookEvent {
   /**
    * The event type.
    */
-  event_type: "offer:voided";
+  event_type: 'offer:voided';
   payload: OfferVoidedWebhookEvent.Payload;
   /**
    * ISO 8601 timestamp of when the event was generated.
@@ -1716,8 +3693,8 @@ export namespace OfferVoidedWebhookEvent {
      * @pattern ^offr_
      */
     id: string;
-    status: "draft" | "sent" | "accepted" | "void";
-    workerType: "employee" | "us_contractor" | "global_contractor";
+    status: 'draft' | 'sent' | 'accepted' | 'void';
+    workerType: 'employee' | 'us_contractor' | 'global_contractor';
     candidate: Payload.Candidate;
     position: Payload.Position;
     department: Payload.Department | null;
@@ -1766,7 +3743,257 @@ export namespace OfferVoidedWebhookEvent {
        * @pattern ^\d{4}-\d{2}-\d{2}$
        */
       startDate: string;
-      country: "AD" | "AE" | "AF" | "AG" | "AI" | "AL" | "AM" | "AO" | "AQ" | "AR" | "AS" | "AT" | "AU" | "AW" | "AX" | "AZ" | "BA" | "BB" | "BD" | "BE" | "BF" | "BG" | "BH" | "BI" | "BJ" | "BL" | "BM" | "BN" | "BO" | "BQ" | "BR" | "BS" | "BT" | "BV" | "BW" | "BY" | "BZ" | "CA" | "CC" | "CD" | "CF" | "CG" | "CH" | "CI" | "CK" | "CL" | "CM" | "CN" | "CO" | "CR" | "CU" | "CV" | "CW" | "CX" | "CY" | "CZ" | "DE" | "DJ" | "DK" | "DM" | "DO" | "DZ" | "EC" | "EE" | "EG" | "EH" | "ER" | "ES" | "ET" | "FI" | "FJ" | "FK" | "FM" | "FO" | "FR" | "GA" | "GB" | "GD" | "GE" | "GF" | "GG" | "GH" | "GI" | "GL" | "GM" | "GN" | "GP" | "GQ" | "GR" | "GS" | "GT" | "GU" | "GW" | "GY" | "HK" | "HM" | "HN" | "HR" | "HT" | "HU" | "ID" | "IE" | "IL" | "IM" | "IN" | "IO" | "IQ" | "IR" | "IS" | "IT" | "JE" | "JM" | "JO" | "JP" | "KE" | "KG" | "KH" | "KI" | "KM" | "KN" | "KP" | "KR" | "KW" | "KY" | "KZ" | "LA" | "LB" | "LC" | "LI" | "LK" | "LR" | "LS" | "LT" | "LU" | "LV" | "LY" | "MA" | "MC" | "MD" | "ME" | "MF" | "MG" | "MH" | "MK" | "ML" | "MM" | "MN" | "MO" | "MP" | "MQ" | "MR" | "MS" | "MT" | "MU" | "MV" | "MW" | "MX" | "MY" | "MZ" | "NA" | "NC" | "NE" | "NF" | "NG" | "NI" | "NL" | "NO" | "NP" | "NR" | "NU" | "NZ" | "OM" | "PA" | "PE" | "PF" | "PG" | "PH" | "PK" | "PL" | "PM" | "PN" | "PR" | "PS" | "PT" | "PW" | "PY" | "QA" | "RE" | "RO" | "RS" | "RU" | "RW" | "SA" | "SB" | "SC" | "SD" | "SE" | "SG" | "SH" | "SI" | "SJ" | "SK" | "SL" | "SM" | "SN" | "SO" | "SR" | "SS" | "ST" | "SV" | "SX" | "SY" | "SZ" | "TC" | "TD" | "TF" | "TG" | "TH" | "TJ" | "TK" | "TL" | "TM" | "TN" | "TO" | "TR" | "TT" | "TV" | "TW" | "TZ" | "UA" | "UG" | "UM" | "US" | "UY" | "UZ" | "VA" | "VC" | "VE" | "VG" | "VI" | "VN" | "VU" | "WF" | "WS" | "XK" | "YE" | "YT" | "ZA" | "ZM" | "ZW";
+      country:
+        | 'AD'
+        | 'AE'
+        | 'AF'
+        | 'AG'
+        | 'AI'
+        | 'AL'
+        | 'AM'
+        | 'AO'
+        | 'AQ'
+        | 'AR'
+        | 'AS'
+        | 'AT'
+        | 'AU'
+        | 'AW'
+        | 'AX'
+        | 'AZ'
+        | 'BA'
+        | 'BB'
+        | 'BD'
+        | 'BE'
+        | 'BF'
+        | 'BG'
+        | 'BH'
+        | 'BI'
+        | 'BJ'
+        | 'BL'
+        | 'BM'
+        | 'BN'
+        | 'BO'
+        | 'BQ'
+        | 'BR'
+        | 'BS'
+        | 'BT'
+        | 'BV'
+        | 'BW'
+        | 'BY'
+        | 'BZ'
+        | 'CA'
+        | 'CC'
+        | 'CD'
+        | 'CF'
+        | 'CG'
+        | 'CH'
+        | 'CI'
+        | 'CK'
+        | 'CL'
+        | 'CM'
+        | 'CN'
+        | 'CO'
+        | 'CR'
+        | 'CU'
+        | 'CV'
+        | 'CW'
+        | 'CX'
+        | 'CY'
+        | 'CZ'
+        | 'DE'
+        | 'DJ'
+        | 'DK'
+        | 'DM'
+        | 'DO'
+        | 'DZ'
+        | 'EC'
+        | 'EE'
+        | 'EG'
+        | 'EH'
+        | 'ER'
+        | 'ES'
+        | 'ET'
+        | 'FI'
+        | 'FJ'
+        | 'FK'
+        | 'FM'
+        | 'FO'
+        | 'FR'
+        | 'GA'
+        | 'GB'
+        | 'GD'
+        | 'GE'
+        | 'GF'
+        | 'GG'
+        | 'GH'
+        | 'GI'
+        | 'GL'
+        | 'GM'
+        | 'GN'
+        | 'GP'
+        | 'GQ'
+        | 'GR'
+        | 'GS'
+        | 'GT'
+        | 'GU'
+        | 'GW'
+        | 'GY'
+        | 'HK'
+        | 'HM'
+        | 'HN'
+        | 'HR'
+        | 'HT'
+        | 'HU'
+        | 'ID'
+        | 'IE'
+        | 'IL'
+        | 'IM'
+        | 'IN'
+        | 'IO'
+        | 'IQ'
+        | 'IR'
+        | 'IS'
+        | 'IT'
+        | 'JE'
+        | 'JM'
+        | 'JO'
+        | 'JP'
+        | 'KE'
+        | 'KG'
+        | 'KH'
+        | 'KI'
+        | 'KM'
+        | 'KN'
+        | 'KP'
+        | 'KR'
+        | 'KW'
+        | 'KY'
+        | 'KZ'
+        | 'LA'
+        | 'LB'
+        | 'LC'
+        | 'LI'
+        | 'LK'
+        | 'LR'
+        | 'LS'
+        | 'LT'
+        | 'LU'
+        | 'LV'
+        | 'LY'
+        | 'MA'
+        | 'MC'
+        | 'MD'
+        | 'ME'
+        | 'MF'
+        | 'MG'
+        | 'MH'
+        | 'MK'
+        | 'ML'
+        | 'MM'
+        | 'MN'
+        | 'MO'
+        | 'MP'
+        | 'MQ'
+        | 'MR'
+        | 'MS'
+        | 'MT'
+        | 'MU'
+        | 'MV'
+        | 'MW'
+        | 'MX'
+        | 'MY'
+        | 'MZ'
+        | 'NA'
+        | 'NC'
+        | 'NE'
+        | 'NF'
+        | 'NG'
+        | 'NI'
+        | 'NL'
+        | 'NO'
+        | 'NP'
+        | 'NR'
+        | 'NU'
+        | 'NZ'
+        | 'OM'
+        | 'PA'
+        | 'PE'
+        | 'PF'
+        | 'PG'
+        | 'PH'
+        | 'PK'
+        | 'PL'
+        | 'PM'
+        | 'PN'
+        | 'PR'
+        | 'PS'
+        | 'PT'
+        | 'PW'
+        | 'PY'
+        | 'QA'
+        | 'RE'
+        | 'RO'
+        | 'RS'
+        | 'RU'
+        | 'RW'
+        | 'SA'
+        | 'SB'
+        | 'SC'
+        | 'SD'
+        | 'SE'
+        | 'SG'
+        | 'SH'
+        | 'SI'
+        | 'SJ'
+        | 'SK'
+        | 'SL'
+        | 'SM'
+        | 'SN'
+        | 'SO'
+        | 'SR'
+        | 'SS'
+        | 'ST'
+        | 'SV'
+        | 'SX'
+        | 'SY'
+        | 'SZ'
+        | 'TC'
+        | 'TD'
+        | 'TF'
+        | 'TG'
+        | 'TH'
+        | 'TJ'
+        | 'TK'
+        | 'TL'
+        | 'TM'
+        | 'TN'
+        | 'TO'
+        | 'TR'
+        | 'TT'
+        | 'TV'
+        | 'TW'
+        | 'TZ'
+        | 'UA'
+        | 'UG'
+        | 'UM'
+        | 'US'
+        | 'UY'
+        | 'UZ'
+        | 'VA'
+        | 'VC'
+        | 'VE'
+        | 'VG'
+        | 'VI'
+        | 'VN'
+        | 'VU'
+        | 'WF'
+        | 'WS'
+        | 'XK'
+        | 'YE'
+        | 'YT'
+        | 'ZA'
+        | 'ZM'
+        | 'ZW';
       scopeOfWork: string | null;
     }
 
@@ -1810,8 +4037,8 @@ export namespace OfferVoidedWebhookEvent {
          * A monetary amount with its currency and server-formatted display value.
          */
         amount: BasePay.Amount;
-        basis: "year" | "month" | "week" | "hour" | "variable";
-        type: "fixed" | "pay_as_you_go" | null;
+        basis: 'year' | 'month' | 'week' | 'hour' | 'variable';
+        type: 'fixed' | 'pay_as_you_go' | null;
         variableRate: BasePay.VariableRate | null;
       }
 
@@ -1822,7 +4049,68 @@ export namespace OfferVoidedWebhookEvent {
            * @minimum 0
            */
           amount: number;
-          currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
+          currency:
+            | 'USD'
+            | 'AUD'
+            | 'BGN'
+            | 'BRL'
+            | 'CAD'
+            | 'CHF'
+            | 'CZK'
+            | 'DKK'
+            | 'EUR'
+            | 'GBP'
+            | 'HKD'
+            | 'HUF'
+            | 'IDR'
+            | 'INR'
+            | 'JPY'
+            | 'MYR'
+            | 'NOK'
+            | 'NZD'
+            | 'CNY'
+            | 'PLN'
+            | 'RON'
+            | 'TRY'
+            | 'SEK'
+            | 'SGD'
+            | 'AED'
+            | 'ARS'
+            | 'BDT'
+            | 'BWP'
+            | 'CLP'
+            | 'COP'
+            | 'CRC'
+            | 'EGP'
+            | 'FJD'
+            | 'GEL'
+            | 'GHS'
+            | 'ILS'
+            | 'KES'
+            | 'KRW'
+            | 'LKR'
+            | 'MAD'
+            | 'MXN'
+            | 'NPR'
+            | 'PHP'
+            | 'PKR'
+            | 'THB'
+            | 'UAH'
+            | 'UGX'
+            | 'UYU'
+            | 'VND'
+            | 'ZAR'
+            | 'ZMW'
+            | 'TND'
+            | 'NGN'
+            | 'RSD'
+            | 'TWD'
+            | 'GTQ'
+            | 'HNL'
+            | 'DOP'
+            | 'SAR'
+            | 'XAF'
+            | 'PEN';
           /**
            * The server-formatted display string for the amount in its currency.
            */
@@ -1835,7 +4123,68 @@ export namespace OfferVoidedWebhookEvent {
            * @minimum 0
            */
           amount: number;
-          currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
+          currency:
+            | 'USD'
+            | 'AUD'
+            | 'BGN'
+            | 'BRL'
+            | 'CAD'
+            | 'CHF'
+            | 'CZK'
+            | 'DKK'
+            | 'EUR'
+            | 'GBP'
+            | 'HKD'
+            | 'HUF'
+            | 'IDR'
+            | 'INR'
+            | 'JPY'
+            | 'MYR'
+            | 'NOK'
+            | 'NZD'
+            | 'CNY'
+            | 'PLN'
+            | 'RON'
+            | 'TRY'
+            | 'SEK'
+            | 'SGD'
+            | 'AED'
+            | 'ARS'
+            | 'BDT'
+            | 'BWP'
+            | 'CLP'
+            | 'COP'
+            | 'CRC'
+            | 'EGP'
+            | 'FJD'
+            | 'GEL'
+            | 'GHS'
+            | 'ILS'
+            | 'KES'
+            | 'KRW'
+            | 'LKR'
+            | 'MAD'
+            | 'MXN'
+            | 'NPR'
+            | 'PHP'
+            | 'PKR'
+            | 'THB'
+            | 'UAH'
+            | 'UGX'
+            | 'UYU'
+            | 'VND'
+            | 'ZAR'
+            | 'ZMW'
+            | 'TND'
+            | 'NGN'
+            | 'RSD'
+            | 'TWD'
+            | 'GTQ'
+            | 'HNL'
+            | 'DOP'
+            | 'SAR'
+            | 'XAF'
+            | 'PEN';
           /**
            * The server-formatted display string for the amount in its currency.
            */
@@ -1849,7 +4198,68 @@ export namespace OfferVoidedWebhookEvent {
          * @minimum 0
          */
         amount: number;
-        currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
+        currency:
+          | 'USD'
+          | 'AUD'
+          | 'BGN'
+          | 'BRL'
+          | 'CAD'
+          | 'CHF'
+          | 'CZK'
+          | 'DKK'
+          | 'EUR'
+          | 'GBP'
+          | 'HKD'
+          | 'HUF'
+          | 'IDR'
+          | 'INR'
+          | 'JPY'
+          | 'MYR'
+          | 'NOK'
+          | 'NZD'
+          | 'CNY'
+          | 'PLN'
+          | 'RON'
+          | 'TRY'
+          | 'SEK'
+          | 'SGD'
+          | 'AED'
+          | 'ARS'
+          | 'BDT'
+          | 'BWP'
+          | 'CLP'
+          | 'COP'
+          | 'CRC'
+          | 'EGP'
+          | 'FJD'
+          | 'GEL'
+          | 'GHS'
+          | 'ILS'
+          | 'KES'
+          | 'KRW'
+          | 'LKR'
+          | 'MAD'
+          | 'MXN'
+          | 'NPR'
+          | 'PHP'
+          | 'PKR'
+          | 'THB'
+          | 'UAH'
+          | 'UGX'
+          | 'UYU'
+          | 'VND'
+          | 'ZAR'
+          | 'ZMW'
+          | 'TND'
+          | 'NGN'
+          | 'RSD'
+          | 'TWD'
+          | 'GTQ'
+          | 'HNL'
+          | 'DOP'
+          | 'SAR'
+          | 'XAF'
+          | 'PEN';
         /**
          * The server-formatted display string for the amount in its currency.
          */
@@ -1862,7 +4272,68 @@ export namespace OfferVoidedWebhookEvent {
          * @minimum 0
          */
         amount: number;
-        currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
+        currency:
+          | 'USD'
+          | 'AUD'
+          | 'BGN'
+          | 'BRL'
+          | 'CAD'
+          | 'CHF'
+          | 'CZK'
+          | 'DKK'
+          | 'EUR'
+          | 'GBP'
+          | 'HKD'
+          | 'HUF'
+          | 'IDR'
+          | 'INR'
+          | 'JPY'
+          | 'MYR'
+          | 'NOK'
+          | 'NZD'
+          | 'CNY'
+          | 'PLN'
+          | 'RON'
+          | 'TRY'
+          | 'SEK'
+          | 'SGD'
+          | 'AED'
+          | 'ARS'
+          | 'BDT'
+          | 'BWP'
+          | 'CLP'
+          | 'COP'
+          | 'CRC'
+          | 'EGP'
+          | 'FJD'
+          | 'GEL'
+          | 'GHS'
+          | 'ILS'
+          | 'KES'
+          | 'KRW'
+          | 'LKR'
+          | 'MAD'
+          | 'MXN'
+          | 'NPR'
+          | 'PHP'
+          | 'PKR'
+          | 'THB'
+          | 'UAH'
+          | 'UGX'
+          | 'UYU'
+          | 'VND'
+          | 'ZAR'
+          | 'ZMW'
+          | 'TND'
+          | 'NGN'
+          | 'RSD'
+          | 'TWD'
+          | 'GTQ'
+          | 'HNL'
+          | 'DOP'
+          | 'SAR'
+          | 'XAF'
+          | 'PEN';
         /**
          * The server-formatted display string for the amount in its currency.
          */

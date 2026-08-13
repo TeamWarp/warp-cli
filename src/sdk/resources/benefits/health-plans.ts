@@ -1,10 +1,10 @@
 // File generated from our OpenAPI spec by Scalar. See README.md for details.
 
-import { APIResource } from "../../resource";
-import { APIPromise } from "../../api-promise";
-import type { RequestOptions } from "../../internal/request-options";
-import { path as __scalarPath } from "../../internal/utils/path";
-import type * as OffersAPI from "../offers";
+import { APIResource } from '../../resource';
+import { APIPromise } from '../../api-promise';
+import type { RequestOptions } from '../../internal/request-options';
+import { path as __scalarPath } from '../../internal/utils/path';
+import type * as OffersAPI from '../offers';
 
 export class HealthPlans extends APIResource {
   /**
@@ -21,8 +21,11 @@ export class HealthPlans extends APIResource {
    * });
    * ```
    */
-  list(query: HealthPlanListParams | null | undefined = {}, options?: RequestOptions): APIPromise<HealthPlanListResponse> {
-    return this._client.get("/v1/benefits/health_plans", { query, ...options });
+  list(
+    query: HealthPlanListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<HealthPlanListResponse> {
+    return this._client.get('/v1/benefits/health_plans', { query, ...options });
   }
 
   /**
@@ -57,12 +60,12 @@ export interface HealthPlanListParams {
    * @pattern ^chpl_
    */
   beforeId?: string;
-  types?: Array<"medical" | "dental" | "vision" | "life" | "short_term_disability" | "long_term_disability">;
+  types?: Array<'medical' | 'dental' | 'vision' | 'life' | 'short_term_disability' | 'long_term_disability'>;
   /**
    * Statuses to include. Defaults to ["active"]. An elapsed effectiveEndDate is reported and filtered as "terminated".
    * @default ["active"]
    */
-  statuses?: Array<"active" | "terminated">;
+  statuses?: Array<'active' | 'terminated'>;
   carrierIds?: Array<string>;
 }
 
@@ -89,7 +92,7 @@ export namespace HealthPlanListResponse {
     /**
      * The health coverage type.
      */
-    type: "medical" | "dental" | "vision" | "life" | "short_term_disability" | "long_term_disability";
+    type: 'medical' | 'dental' | 'vision' | 'life' | 'short_term_disability' | 'long_term_disability';
     /**
      * The company-facing plan name.
      */
@@ -101,7 +104,7 @@ export namespace HealthPlanListResponse {
     /**
      * The plan network structure.
      */
-    networkType: "hmo" | "ppo" | "epo" | "pos" | "hdhp" | "indemnity" | null;
+    networkType: 'hmo' | 'ppo' | 'epo' | 'pos' | 'hdhp' | 'indemnity' | null;
     /**
      * A date string in the form YYYY-MM-DD
      * @pattern ^\d{4}-\d{2}-\d{2}$
@@ -114,7 +117,7 @@ export namespace HealthPlanListResponse {
     /**
      * The public lifecycle status of a health plan.
      */
-    status: "active" | "terminated";
+    status: 'active' | 'terminated';
     /**
      * a string to be decoded into a Date
      */
@@ -153,7 +156,7 @@ export interface HealthPlanGetResponse {
   /**
    * The health coverage type.
    */
-  type: "medical" | "dental" | "vision" | "life" | "short_term_disability" | "long_term_disability";
+  type: 'medical' | 'dental' | 'vision' | 'life' | 'short_term_disability' | 'long_term_disability';
   /**
    * The company-facing plan name.
    */
@@ -165,7 +168,7 @@ export interface HealthPlanGetResponse {
   /**
    * The plan network structure.
    */
-  networkType: "hmo" | "ppo" | "epo" | "pos" | "hdhp" | "indemnity" | null;
+  networkType: 'hmo' | 'ppo' | 'epo' | 'pos' | 'hdhp' | 'indemnity' | null;
   /**
    * A date string in the form YYYY-MM-DD
    * @pattern ^\d{4}-\d{2}-\d{2}$
@@ -178,7 +181,7 @@ export interface HealthPlanGetResponse {
   /**
    * The public lifecycle status of a health plan.
    */
-  status: "active" | "terminated";
+  status: 'active' | 'terminated';
   /**
    * a string to be decoded into a Date
    */
