@@ -1,10 +1,10 @@
 // File generated from our OpenAPI spec by Scalar. See README.md for details.
 
-import { APIResource } from "../../resource";
-import { APIPromise } from "../../api-promise";
-import type { RequestOptions } from "../../internal/request-options";
-import { path as __scalarPath } from "../../internal/utils/path";
-import type * as OffersAPI from "../offers";
+import { APIResource } from '../../resource';
+import { APIPromise } from '../../api-promise';
+import type { RequestOptions } from '../../internal/request-options';
+import { path as __scalarPath } from '../../internal/utils/path';
+import type * as OffersAPI from '../offers';
 
 export class RetirementPlans extends APIResource {
   /**
@@ -21,8 +21,11 @@ export class RetirementPlans extends APIResource {
    * });
    * ```
    */
-  list(query: RetirementPlanListParams | null | undefined = {}, options?: RequestOptions): APIPromise<RetirementPlanListResponse> {
-    return this._client.get("/v1/benefits/retirement_plans", { query, ...options });
+  list(
+    query: RetirementPlanListParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<RetirementPlanListResponse> {
+    return this._client.get('/v1/benefits/retirement_plans', { query, ...options });
   }
 
   /**
@@ -57,12 +60,14 @@ export interface RetirementPlanListParams {
    * @pattern ^crpl_
    */
   beforeId?: string;
-  types?: Array<"401k" | "roth_401k" | "403b" | "roth_403b" | "457" | "roth_457" | "simple_ira" | "roth_simple_ira">;
+  types?: Array<
+    '401k' | 'roth_401k' | '403b' | 'roth_403b' | '457' | 'roth_457' | 'simple_ira' | 'roth_simple_ira'
+  >;
   /**
    * Statuses to include. Defaults to ["active"]. An elapsed effectiveEndDate is reported and filtered as "terminated".
    * @default ["active"]
    */
-  statuses?: Array<"active" | "terminated">;
+  statuses?: Array<'active' | 'terminated'>;
 }
 
 export interface RetirementPlanListResponse {
@@ -84,7 +89,7 @@ export namespace RetirementPlanListResponse {
     /**
      * The retirement plan type.
      */
-    type: "401k" | "roth_401k" | "403b" | "roth_403b" | "457" | "roth_457" | "simple_ira" | "roth_simple_ira";
+    type: '401k' | 'roth_401k' | '403b' | 'roth_403b' | '457' | 'roth_457' | 'simple_ira' | 'roth_simple_ira';
     /**
      * The company-facing plan name.
      */
@@ -92,7 +97,7 @@ export namespace RetirementPlanListResponse {
     /**
      * The system administering the plan. Manual plans are administered by the company outside a connected provider.
      */
-    provider: "manual" | "human_interest" | "accrue";
+    provider: 'manual' | 'human_interest' | 'accrue';
     /**
      * A date string in the form YYYY-MM-DD
      * @pattern ^\d{4}-\d{2}-\d{2}$
@@ -105,7 +110,7 @@ export namespace RetirementPlanListResponse {
     /**
      * The public lifecycle status of a retirement plan.
      */
-    status: "active" | "terminated";
+    status: 'active' | 'terminated';
     /**
      * a string to be decoded into a Date
      */
@@ -126,7 +131,7 @@ export interface RetirementPlanGetResponse {
   /**
    * The retirement plan type.
    */
-  type: "401k" | "roth_401k" | "403b" | "roth_403b" | "457" | "roth_457" | "simple_ira" | "roth_simple_ira";
+  type: '401k' | 'roth_401k' | '403b' | 'roth_403b' | '457' | 'roth_457' | 'simple_ira' | 'roth_simple_ira';
   /**
    * The company-facing plan name.
    */
@@ -134,7 +139,7 @@ export interface RetirementPlanGetResponse {
   /**
    * The system administering the plan. Manual plans are administered by the company outside a connected provider.
    */
-  provider: "manual" | "human_interest" | "accrue";
+  provider: 'manual' | 'human_interest' | 'accrue';
   /**
    * A date string in the form YYYY-MM-DD
    * @pattern ^\d{4}-\d{2}-\d{2}$
@@ -147,7 +152,7 @@ export interface RetirementPlanGetResponse {
   /**
    * The public lifecycle status of a retirement plan.
    */
-  status: "active" | "terminated";
+  status: 'active' | 'terminated';
   /**
    * a string to be decoded into a Date
    */

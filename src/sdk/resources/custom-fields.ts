@@ -1,11 +1,11 @@
 // File generated from our OpenAPI spec by Scalar. See README.md for details.
 
-import { APIResource } from "../resource";
-import { APIPromise } from "../api-promise";
-import type { RequestOptions } from "../internal/request-options";
-import { buildHeaders } from "../internal/headers";
-import { path as __scalarPath } from "../internal/utils/path";
-import type * as OffersAPI from "./offers";
+import { APIResource } from '../resource';
+import { APIPromise } from '../api-promise';
+import type { RequestOptions } from '../internal/request-options';
+import { buildHeaders } from '../internal/headers';
+import { path as __scalarPath } from '../internal/utils/path';
+import type * as OffersAPI from './offers';
 
 export class CustomFields extends APIResource {
   /**
@@ -20,7 +20,7 @@ export class CustomFields extends APIResource {
    * ```
    */
   list(options?: RequestOptions): APIPromise<CustomFieldListResponse> {
-    return this._client.get("/v1/custom_fields", options);
+    return this._client.get('/v1/custom_fields', options);
   }
 
   /**
@@ -40,7 +40,7 @@ export class CustomFields extends APIResource {
    * ```
    */
   create(body: CustomFieldCreateParams, options?: RequestOptions): APIPromise<CustomFieldCreateResponse> {
-    return this._client.post("/v1/custom_fields", { body, ...options });
+    return this._client.post('/v1/custom_fields', { body, ...options });
   }
 
   /**
@@ -72,7 +72,11 @@ export class CustomFields extends APIResource {
    * const update = await client.customFields.update('cf_1234', {});
    * ```
    */
-  update(id: string, body: CustomFieldUpdateParams, options?: RequestOptions): APIPromise<CustomFieldUpdateResponse> {
+  update(
+    id: string,
+    body: CustomFieldUpdateParams,
+    options?: RequestOptions,
+  ): APIPromise<CustomFieldUpdateResponse> {
     return this._client.patch(__scalarPath`/v1/custom_fields/${id}`, { body, ...options });
   }
 
@@ -108,7 +112,11 @@ export class CustomFields extends APIResource {
    * });
    * ```
    */
-  createOption(id: string, body: CustomFieldCreateOptionParams, options?: RequestOptions): APIPromise<CustomFieldCreateOptionResponse> {
+  createOption(
+    id: string,
+    body: CustomFieldCreateOptionParams,
+    options?: RequestOptions,
+  ): APIPromise<CustomFieldCreateOptionResponse> {
     return this._client.post(__scalarPath`/v1/custom_fields/${id}/options`, { body, ...options });
   }
 
@@ -125,7 +133,11 @@ export class CustomFields extends APIResource {
    * const updateOption = await client.customFields.updateOption('cfo_1234', {});
    * ```
    */
-  updateOption(id: string, body: CustomFieldUpdateOptionParams, options?: RequestOptions): APIPromise<CustomFieldUpdateOptionResponse> {
+  updateOption(
+    id: string,
+    body: CustomFieldUpdateOptionParams,
+    options?: RequestOptions,
+  ): APIPromise<CustomFieldUpdateOptionResponse> {
     return this._client.patch(__scalarPath`/v1/custom_field_options/${id}`, { body, ...options });
   }
 
@@ -142,7 +154,10 @@ export class CustomFields extends APIResource {
    * ```
    */
   deleteOption(id: string, options?: RequestOptions): APIPromise<void> {
-    return this._client.delete(__scalarPath`/v1/custom_field_options/${id}`, { ...options, headers: buildHeaders([{ Accept: "*/*" }, options?.headers]) });
+    return this._client.delete(__scalarPath`/v1/custom_field_options/${id}`, {
+      ...options,
+      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+    });
   }
 
   /**
@@ -173,8 +188,11 @@ export class CustomFields extends APIResource {
    * const listValues = await client.customFields.listValues();
    * ```
    */
-  listValues(query: CustomFieldListValuesParams | null | undefined = {}, options?: RequestOptions): APIPromise<CustomFieldListValuesResponse> {
-    return this._client.get("/v1/custom_field_values", { query, ...options });
+  listValues(
+    query: CustomFieldListValuesParams | null | undefined = {},
+    options?: RequestOptions,
+  ): APIPromise<CustomFieldListValuesResponse> {
+    return this._client.get('/v1/custom_field_values', { query, ...options });
   }
 
   /**
@@ -196,8 +214,11 @@ export class CustomFields extends APIResource {
    * });
    * ```
    */
-  upsertValue(body: CustomFieldUpsertValueParams, options?: RequestOptions): APIPromise<CustomFieldUpsertValueResponse> {
-    return this._client.put("/v1/custom_field_values", { body, ...options });
+  upsertValue(
+    body: CustomFieldUpsertValueParams,
+    options?: RequestOptions,
+  ): APIPromise<CustomFieldUpsertValueResponse> {
+    return this._client.put('/v1/custom_field_values', { body, ...options });
   }
 
   /**
@@ -217,7 +238,11 @@ export class CustomFields extends APIResource {
    */
   clearValue(params: CustomFieldClearValueParams, options?: RequestOptions): APIPromise<void> {
     const { workerId, fieldId } = params;
-    return this._client.delete("/v1/custom_field_values", { query: { workerId, fieldId }, ...options, headers: buildHeaders([{ Accept: "*/*" }, options?.headers]) });
+    return this._client.delete('/v1/custom_field_values', {
+      query: { workerId, fieldId },
+      ...options,
+      headers: buildHeaders([{ Accept: '*/*' }, options?.headers]),
+    });
   }
 }
 
@@ -242,12 +267,12 @@ export namespace CustomFieldListResponse {
     id: string;
     name: string;
     description: string | null;
-    type: "text" | "number" | "date" | "boolean" | "currency" | "percentage" | "select" | "multi_select";
+    type: 'text' | 'number' | 'date' | 'boolean' | 'currency' | 'percentage' | 'select' | 'multi_select';
     config: Record<string, unknown>;
-    status: "active" | "archived";
-    category: "info" | "pii" | "compensation" | "banking" | "it" | "compliance";
-    accessLevel: "admins" | "manager" | "worker";
-    inputBy: "admin" | "worker";
+    status: 'active' | 'archived';
+    category: 'info' | 'pii' | 'compensation' | 'banking' | 'it' | 'compliance';
+    accessLevel: 'admins' | 'manager' | 'worker';
+    inputBy: 'admin' | 'worker';
     canWrite: boolean;
     /**
      * a string to be decoded into a Date
@@ -263,12 +288,12 @@ export interface CustomFieldCreateParams {
    * @pattern ^\S[\s\S]*\S$|^\S$|^$
    */
   name: Trimmed;
-  type: "text" | "number" | "date" | "boolean" | "currency" | "percentage" | "select" | "multi_select";
-  category: "info" | "pii" | "compensation" | "banking" | "it" | "compliance";
+  type: 'text' | 'number' | 'date' | 'boolean' | 'currency' | 'percentage' | 'select' | 'multi_select';
+  category: 'info' | 'pii' | 'compensation' | 'banking' | 'it' | 'compliance';
   description?: string | null;
   config?: Record<string, unknown>;
-  accessLevel?: "admins" | "manager" | "worker";
-  inputBy?: "admin" | "worker";
+  accessLevel?: 'admins' | 'manager' | 'worker';
+  inputBy?: 'admin' | 'worker';
   required?: boolean;
   options?: Array<CustomFieldCreateParams.Option>;
 }
@@ -299,12 +324,12 @@ export interface CustomFieldCreateResponse {
   id: string;
   name: string;
   description: string | null;
-  type: "text" | "number" | "date" | "boolean" | "currency" | "percentage" | "select" | "multi_select";
+  type: 'text' | 'number' | 'date' | 'boolean' | 'currency' | 'percentage' | 'select' | 'multi_select';
   config: Record<string, unknown>;
-  status: "active" | "archived";
-  category: "info" | "pii" | "compensation" | "banking" | "it" | "compliance";
-  accessLevel: "admins" | "manager" | "worker";
-  inputBy: "admin" | "worker";
+  status: 'active' | 'archived';
+  category: 'info' | 'pii' | 'compensation' | 'banking' | 'it' | 'compliance';
+  accessLevel: 'admins' | 'manager' | 'worker';
+  inputBy: 'admin' | 'worker';
   canWrite: boolean;
   /**
    * a string to be decoded into a Date
@@ -321,12 +346,12 @@ export interface CustomFieldRetrieveResponse {
   id: string;
   name: string;
   description: string | null;
-  type: "text" | "number" | "date" | "boolean" | "currency" | "percentage" | "select" | "multi_select";
+  type: 'text' | 'number' | 'date' | 'boolean' | 'currency' | 'percentage' | 'select' | 'multi_select';
   config: Record<string, unknown>;
-  status: "active" | "archived";
-  category: "info" | "pii" | "compensation" | "banking" | "it" | "compliance";
-  accessLevel: "admins" | "manager" | "worker";
-  inputBy: "admin" | "worker";
+  status: 'active' | 'archived';
+  category: 'info' | 'pii' | 'compensation' | 'banking' | 'it' | 'compliance';
+  accessLevel: 'admins' | 'manager' | 'worker';
+  inputBy: 'admin' | 'worker';
   canWrite: boolean;
   /**
    * a string to be decoded into a Date
@@ -346,7 +371,7 @@ export namespace CustomFieldRetrieveResponse {
     label: string;
     value: string;
     sortOrder: number;
-    status: "active" | "archived";
+    status: 'active' | 'archived';
     /**
      * a string to be decoded into a Date
      */
@@ -363,9 +388,9 @@ export interface CustomFieldUpdateParams {
   name?: NonEmptyTrimmedString;
   description?: string | null;
   config?: Record<string, unknown>;
-  category?: "info" | "pii" | "compensation" | "banking" | "it" | "compliance";
-  accessLevel?: "admins" | "manager" | "worker";
-  inputBy?: "admin" | "worker";
+  category?: 'info' | 'pii' | 'compensation' | 'banking' | 'it' | 'compliance';
+  accessLevel?: 'admins' | 'manager' | 'worker';
+  inputBy?: 'admin' | 'worker';
   required?: boolean;
 }
 
@@ -377,12 +402,12 @@ export interface CustomFieldUpdateResponse {
   id: string;
   name: string;
   description: string | null;
-  type: "text" | "number" | "date" | "boolean" | "currency" | "percentage" | "select" | "multi_select";
+  type: 'text' | 'number' | 'date' | 'boolean' | 'currency' | 'percentage' | 'select' | 'multi_select';
   config: Record<string, unknown>;
-  status: "active" | "archived";
-  category: "info" | "pii" | "compensation" | "banking" | "it" | "compliance";
-  accessLevel: "admins" | "manager" | "worker";
-  inputBy: "admin" | "worker";
+  status: 'active' | 'archived';
+  category: 'info' | 'pii' | 'compensation' | 'banking' | 'it' | 'compliance';
+  accessLevel: 'admins' | 'manager' | 'worker';
+  inputBy: 'admin' | 'worker';
   canWrite: boolean;
   /**
    * a string to be decoded into a Date
@@ -399,12 +424,12 @@ export interface CustomFieldArchiveResponse {
   id: string;
   name: string;
   description: string | null;
-  type: "text" | "number" | "date" | "boolean" | "currency" | "percentage" | "select" | "multi_select";
+  type: 'text' | 'number' | 'date' | 'boolean' | 'currency' | 'percentage' | 'select' | 'multi_select';
   config: Record<string, unknown>;
-  status: "active" | "archived";
-  category: "info" | "pii" | "compensation" | "banking" | "it" | "compliance";
-  accessLevel: "admins" | "manager" | "worker";
-  inputBy: "admin" | "worker";
+  status: 'active' | 'archived';
+  category: 'info' | 'pii' | 'compensation' | 'banking' | 'it' | 'compliance';
+  accessLevel: 'admins' | 'manager' | 'worker';
+  inputBy: 'admin' | 'worker';
   canWrite: boolean;
   /**
    * a string to be decoded into a Date
@@ -438,7 +463,7 @@ export interface CustomFieldCreateOptionResponse {
   label: string;
   value: string;
   sortOrder: number;
-  status: "active" | "archived";
+  status: 'active' | 'archived';
   /**
    * a string to be decoded into a Date
    */
@@ -464,7 +489,7 @@ export interface CustomFieldUpdateOptionResponse {
   label: string;
   value: string;
   sortOrder: number;
-  status: "active" | "archived";
+  status: 'active' | 'archived';
   /**
    * a string to be decoded into a Date
    */
@@ -480,7 +505,7 @@ export interface CustomFieldArchiveOptionResponse {
   label: string;
   value: string;
   sortOrder: number;
-  status: "active" | "archived";
+  status: 'active' | 'archived';
   /**
    * a string to be decoded into a Date
    */
@@ -492,7 +517,8 @@ export interface CustomFieldListValuesParams {
   fieldIds?: Array<string>;
 }
 
-export type CustomFieldListValuesResponse = Array<CustomFieldListValuesResponse.CustomFieldListValuesResponseItem>;
+export type CustomFieldListValuesResponse =
+  Array<CustomFieldListValuesResponse.CustomFieldListValuesResponseItem>;
 
 export namespace CustomFieldListValuesResponse {
   export interface CustomFieldListValuesResponseItem {
@@ -511,7 +537,15 @@ export namespace CustomFieldListValuesResponse {
      * @pattern ^cf_
      */
     fieldId: string;
-    value: CustomFieldListValuesResponseItem.Value | CustomFieldListValuesResponseItem.Value2 | CustomFieldListValuesResponseItem.Value3 | CustomFieldListValuesResponseItem.Value4 | CustomFieldListValuesResponseItem.Value5 | CustomFieldListValuesResponseItem.Value6 | CustomFieldListValuesResponseItem.Value7 | CustomFieldListValuesResponseItem.Value8;
+    value:
+      | CustomFieldListValuesResponseItem.Value
+      | CustomFieldListValuesResponseItem.Value2
+      | CustomFieldListValuesResponseItem.Value3
+      | CustomFieldListValuesResponseItem.Value4
+      | CustomFieldListValuesResponseItem.Value5
+      | CustomFieldListValuesResponseItem.Value6
+      | CustomFieldListValuesResponseItem.Value7
+      | CustomFieldListValuesResponseItem.Value8;
     /**
      * a string to be decoded into a Date
      */
@@ -520,17 +554,17 @@ export namespace CustomFieldListValuesResponse {
 
   export namespace CustomFieldListValuesResponseItem {
     export interface Value {
-      type: "text";
+      type: 'text';
       value: string;
     }
 
     export interface Value2 {
-      type: "number";
+      type: 'number';
       value: number;
     }
 
     export interface Value3 {
-      type: "date";
+      type: 'date';
       /**
        * A date string in the form YYYY-MM-DD
        * @pattern ^\d{4}-\d{2}-\d{2}$
@@ -539,23 +573,84 @@ export namespace CustomFieldListValuesResponse {
     }
 
     export interface Value4 {
-      type: "boolean";
+      type: 'boolean';
       value: boolean;
     }
 
     export interface Value5 {
-      type: "currency";
+      type: 'currency';
       amount: number;
-      currencyCode: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
+      currencyCode:
+        | 'USD'
+        | 'AUD'
+        | 'BGN'
+        | 'BRL'
+        | 'CAD'
+        | 'CHF'
+        | 'CZK'
+        | 'DKK'
+        | 'EUR'
+        | 'GBP'
+        | 'HKD'
+        | 'HUF'
+        | 'IDR'
+        | 'INR'
+        | 'JPY'
+        | 'MYR'
+        | 'NOK'
+        | 'NZD'
+        | 'CNY'
+        | 'PLN'
+        | 'RON'
+        | 'TRY'
+        | 'SEK'
+        | 'SGD'
+        | 'AED'
+        | 'ARS'
+        | 'BDT'
+        | 'BWP'
+        | 'CLP'
+        | 'COP'
+        | 'CRC'
+        | 'EGP'
+        | 'FJD'
+        | 'GEL'
+        | 'GHS'
+        | 'ILS'
+        | 'KES'
+        | 'KRW'
+        | 'LKR'
+        | 'MAD'
+        | 'MXN'
+        | 'NPR'
+        | 'PHP'
+        | 'PKR'
+        | 'THB'
+        | 'UAH'
+        | 'UGX'
+        | 'UYU'
+        | 'VND'
+        | 'ZAR'
+        | 'ZMW'
+        | 'TND'
+        | 'NGN'
+        | 'RSD'
+        | 'TWD'
+        | 'GTQ'
+        | 'HNL'
+        | 'DOP'
+        | 'SAR'
+        | 'XAF'
+        | 'PEN';
     }
 
     export interface Value6 {
-      type: "percentage";
+      type: 'percentage';
       value: number;
     }
 
     export interface Value7 {
-      type: "select";
+      type: 'select';
       option: Value7.Option;
     }
 
@@ -569,7 +664,7 @@ export namespace CustomFieldListValuesResponse {
         label: string;
         value: string;
         sortOrder: number;
-        status: "active" | "archived";
+        status: 'active' | 'archived';
         /**
          * a string to be decoded into a Date
          */
@@ -578,7 +673,7 @@ export namespace CustomFieldListValuesResponse {
     }
 
     export interface Value8 {
-      type: "multi_select";
+      type: 'multi_select';
       options: Array<Value8.Option>;
     }
 
@@ -592,7 +687,7 @@ export namespace CustomFieldListValuesResponse {
         label: string;
         value: string;
         sortOrder: number;
-        status: "active" | "archived";
+        status: 'active' | 'archived';
         /**
          * a string to be decoded into a Date
          */
@@ -613,22 +708,30 @@ export interface CustomFieldUpsertValueParams {
    * @pattern ^cf_
    */
   fieldId: string;
-  value: CustomFieldUpsertValueParams.Value | CustomFieldUpsertValueParams.Value2 | CustomFieldUpsertValueParams.Value3 | CustomFieldUpsertValueParams.Value4 | CustomFieldUpsertValueParams.Value5 | CustomFieldUpsertValueParams.Value6 | CustomFieldUpsertValueParams.Value7 | CustomFieldUpsertValueParams.Value8;
+  value:
+    | CustomFieldUpsertValueParams.Value
+    | CustomFieldUpsertValueParams.Value2
+    | CustomFieldUpsertValueParams.Value3
+    | CustomFieldUpsertValueParams.Value4
+    | CustomFieldUpsertValueParams.Value5
+    | CustomFieldUpsertValueParams.Value6
+    | CustomFieldUpsertValueParams.Value7
+    | CustomFieldUpsertValueParams.Value8;
 }
 
 export namespace CustomFieldUpsertValueParams {
   export interface Value {
-    type: "text";
+    type: 'text';
     value: string;
   }
 
   export interface Value2 {
-    type: "number";
+    type: 'number';
     value: number;
   }
 
   export interface Value3 {
-    type: "date";
+    type: 'date';
     /**
      * A date string in the form YYYY-MM-DD
      * @pattern ^\d{4}-\d{2}-\d{2}$
@@ -637,23 +740,84 @@ export namespace CustomFieldUpsertValueParams {
   }
 
   export interface Value4 {
-    type: "boolean";
+    type: 'boolean';
     value: boolean;
   }
 
   export interface Value5 {
-    type: "currency";
+    type: 'currency';
     amount: number;
-    currencyCode: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
+    currencyCode:
+      | 'USD'
+      | 'AUD'
+      | 'BGN'
+      | 'BRL'
+      | 'CAD'
+      | 'CHF'
+      | 'CZK'
+      | 'DKK'
+      | 'EUR'
+      | 'GBP'
+      | 'HKD'
+      | 'HUF'
+      | 'IDR'
+      | 'INR'
+      | 'JPY'
+      | 'MYR'
+      | 'NOK'
+      | 'NZD'
+      | 'CNY'
+      | 'PLN'
+      | 'RON'
+      | 'TRY'
+      | 'SEK'
+      | 'SGD'
+      | 'AED'
+      | 'ARS'
+      | 'BDT'
+      | 'BWP'
+      | 'CLP'
+      | 'COP'
+      | 'CRC'
+      | 'EGP'
+      | 'FJD'
+      | 'GEL'
+      | 'GHS'
+      | 'ILS'
+      | 'KES'
+      | 'KRW'
+      | 'LKR'
+      | 'MAD'
+      | 'MXN'
+      | 'NPR'
+      | 'PHP'
+      | 'PKR'
+      | 'THB'
+      | 'UAH'
+      | 'UGX'
+      | 'UYU'
+      | 'VND'
+      | 'ZAR'
+      | 'ZMW'
+      | 'TND'
+      | 'NGN'
+      | 'RSD'
+      | 'TWD'
+      | 'GTQ'
+      | 'HNL'
+      | 'DOP'
+      | 'SAR'
+      | 'XAF'
+      | 'PEN';
   }
 
   export interface Value6 {
-    type: "percentage";
+    type: 'percentage';
     value: number;
   }
 
   export interface Value7 {
-    type: "select";
+    type: 'select';
     /**
      * The tag of a company custom worker field option.
      * @pattern ^cfo_
@@ -662,7 +826,7 @@ export namespace CustomFieldUpsertValueParams {
   }
 
   export interface Value8 {
-    type: "multi_select";
+    type: 'multi_select';
     optionIds: Array<string>;
   }
 }
@@ -683,7 +847,15 @@ export interface CustomFieldUpsertValueResponse {
    * @pattern ^cf_
    */
   fieldId: string;
-  value: CustomFieldUpsertValueResponse.Value | CustomFieldUpsertValueResponse.Value2 | CustomFieldUpsertValueResponse.Value3 | CustomFieldUpsertValueResponse.Value4 | CustomFieldUpsertValueResponse.Value5 | CustomFieldUpsertValueResponse.Value6 | CustomFieldUpsertValueResponse.Value7 | CustomFieldUpsertValueResponse.Value8;
+  value:
+    | CustomFieldUpsertValueResponse.Value
+    | CustomFieldUpsertValueResponse.Value2
+    | CustomFieldUpsertValueResponse.Value3
+    | CustomFieldUpsertValueResponse.Value4
+    | CustomFieldUpsertValueResponse.Value5
+    | CustomFieldUpsertValueResponse.Value6
+    | CustomFieldUpsertValueResponse.Value7
+    | CustomFieldUpsertValueResponse.Value8;
   /**
    * a string to be decoded into a Date
    */
@@ -692,17 +864,17 @@ export interface CustomFieldUpsertValueResponse {
 
 export namespace CustomFieldUpsertValueResponse {
   export interface Value {
-    type: "text";
+    type: 'text';
     value: string;
   }
 
   export interface Value2 {
-    type: "number";
+    type: 'number';
     value: number;
   }
 
   export interface Value3 {
-    type: "date";
+    type: 'date';
     /**
      * A date string in the form YYYY-MM-DD
      * @pattern ^\d{4}-\d{2}-\d{2}$
@@ -711,23 +883,84 @@ export namespace CustomFieldUpsertValueResponse {
   }
 
   export interface Value4 {
-    type: "boolean";
+    type: 'boolean';
     value: boolean;
   }
 
   export interface Value5 {
-    type: "currency";
+    type: 'currency';
     amount: number;
-    currencyCode: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
+    currencyCode:
+      | 'USD'
+      | 'AUD'
+      | 'BGN'
+      | 'BRL'
+      | 'CAD'
+      | 'CHF'
+      | 'CZK'
+      | 'DKK'
+      | 'EUR'
+      | 'GBP'
+      | 'HKD'
+      | 'HUF'
+      | 'IDR'
+      | 'INR'
+      | 'JPY'
+      | 'MYR'
+      | 'NOK'
+      | 'NZD'
+      | 'CNY'
+      | 'PLN'
+      | 'RON'
+      | 'TRY'
+      | 'SEK'
+      | 'SGD'
+      | 'AED'
+      | 'ARS'
+      | 'BDT'
+      | 'BWP'
+      | 'CLP'
+      | 'COP'
+      | 'CRC'
+      | 'EGP'
+      | 'FJD'
+      | 'GEL'
+      | 'GHS'
+      | 'ILS'
+      | 'KES'
+      | 'KRW'
+      | 'LKR'
+      | 'MAD'
+      | 'MXN'
+      | 'NPR'
+      | 'PHP'
+      | 'PKR'
+      | 'THB'
+      | 'UAH'
+      | 'UGX'
+      | 'UYU'
+      | 'VND'
+      | 'ZAR'
+      | 'ZMW'
+      | 'TND'
+      | 'NGN'
+      | 'RSD'
+      | 'TWD'
+      | 'GTQ'
+      | 'HNL'
+      | 'DOP'
+      | 'SAR'
+      | 'XAF'
+      | 'PEN';
   }
 
   export interface Value6 {
-    type: "percentage";
+    type: 'percentage';
     value: number;
   }
 
   export interface Value7 {
-    type: "select";
+    type: 'select';
     option: Value7.Option;
   }
 
@@ -741,7 +974,7 @@ export namespace CustomFieldUpsertValueResponse {
       label: string;
       value: string;
       sortOrder: number;
-      status: "active" | "archived";
+      status: 'active' | 'archived';
       /**
        * a string to be decoded into a Date
        */
@@ -750,7 +983,7 @@ export namespace CustomFieldUpsertValueResponse {
   }
 
   export interface Value8 {
-    type: "multi_select";
+    type: 'multi_select';
     options: Array<Value8.Option>;
   }
 
@@ -764,7 +997,7 @@ export namespace CustomFieldUpsertValueResponse {
       label: string;
       value: string;
       sortOrder: number;
-      status: "active" | "archived";
+      status: 'active' | 'archived';
       /**
        * a string to be decoded into a Date
        */
