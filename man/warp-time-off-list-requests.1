@@ -4,13 +4,13 @@
 warp\-time\-off\-list\-requests \- List Time Off Requests
 .SH "SYNOPSIS"
 .B warp time\-off list\-requests
-[\fIoptions\fR]
+\fB\-\-limit\fR \fI<value>\fR [\fIoptions\fR]
 .SH "DESCRIPTION"
 Get the time off requests that workers in your company have made.
 .SH "OPTIONS"
 .TP
 \fB\-\-limit\fR \fI<value>\fR
-a number less than or equal to 100.
+The limit query parameter. Required.
 .TP
 \fB\-\-after\-id\fR \fI<value>\fR
 The after\-id query parameter.
@@ -18,26 +18,26 @@ The after\-id query parameter.
 \fB\-\-before\-id\fR \fI<value>\fR
 The before\-id query parameter.
 .TP
-\fB\-\-status\fR \fI<value>\fR
-The status query parameter. Repeat the flag to pass multiple values.
+\fB\-\-statuses\fR \fI<json>\fR
+The statuses query parameter.
 .TP
-\fB\-\-policy\-id\fR \fI<value>\fR
-The policy\-id query parameter. Repeat the flag to pass multiple values.
+\fB\-\-policy\-ids\fR \fI<json>\fR
+The policy\-ids query parameter.
 .TP
-\fB\-\-worker\-id\fR \fI<value>\fR
-The worker\-id query parameter. Repeat the flag to pass multiple values.
+\fB\-\-worker\-ids\fR \fI<json>\fR
+The worker\-ids query parameter.
 .TP
 \fB\-\-starts\-on\-or\-after\fR \fI<value>\fR
-a string to be decoded into a Date.
+The starts\-on\-or\-after query parameter.
 .TP
 \fB\-\-starts\-before\fR \fI<value>\fR
-a string to be decoded into a Date.
+The starts\-before query parameter.
 .TP
 \fB\-\-ends\-on\-or\-after\fR \fI<value>\fR
-a string to be decoded into a Date.
+The ends\-on\-or\-after query parameter.
 .TP
 \fB\-\-ends\-before\fR \fI<value>\fR
-a string to be decoded into a Date.
+The ends\-before query parameter.
 .TP
 \fB\-\-base\-url\fR \fI<url>\fR
 Override the base URL for API requests.
@@ -72,7 +72,7 @@ API credential. Can also be set with the WARP_API_KEY environment variable.
 .PP
 .RS 4
 .nf
-warp time\-off list\-requests \-\-api\-key "$WARP_API_KEY"
+warp time\-off list\-requests \-\-api\-key "$WARP_API_KEY" \-\-limit 'limit'
 .fi
 .RE
 .SH "ENVIRONMENT"

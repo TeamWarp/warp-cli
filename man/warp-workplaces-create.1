@@ -4,13 +4,13 @@
 warp\-workplaces\-create \- Create Workplace
 .SH "SYNOPSIS"
 .B warp workplaces create
-\fB\-\-name\fR \fI<value>\fR \fB\-\-type\fR \fI<value>\fR \fB\-\-address\fR \fI<json>\fR [\fIoptions\fR]
+\fB\-\-name\fR \fI<json>\fR \fB\-\-type\fR \fI<value>\fR \fB\-\-address\fR \fI<json>\fR [\fIoptions\fR]
 .SH "DESCRIPTION"
 Create a new workplace.
 .SH "OPTIONS"
 .TP
-\fB\-\-name\fR \fI<value>\fR
-a non empty string. Required.
+\fB\-\-name\fR \fI<json>\fR
+The name body parameter. Required.
 .TP
 \fB\-\-type\fR \fI<value>\fR
 The type body parameter. Required.
@@ -18,8 +18,8 @@ The type body parameter. Required.
 \fB\-\-address\fR \fI<json>\fR
 A valid US address. Required.
 .TP
-\fB\-\-address.line1\fR \fI<value>\fR
-a non empty string.
+\fB\-\-address.line1\fR \fI<json>\fR
+The address.line1 body parameter.
 .TP
 \fB\-\-address.line2\fR \fI<value>\fR
 The address.line2 body parameter.
@@ -69,7 +69,7 @@ API credential. Can also be set with the WARP_API_KEY environment variable.
 .PP
 .RS 4
 .nf
-warp workplaces create \-\-api\-key "$WARP_API_KEY" \-\-name 'name' \-\-type 'remote' \-\-address '{"line1":"x","city":"","postalCode":"","state":"AL","country":"US"}'
+warp workplaces create \-\-api\-key "$WARP_API_KEY" \-\-name '{}' \-\-type 'remote' \-\-address '{"line1":{},"city":"","postalCode":"","state":"AL","country":"US"}'
 .fi
 .RE
 .SH "ENVIRONMENT"

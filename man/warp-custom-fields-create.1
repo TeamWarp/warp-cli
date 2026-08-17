@@ -4,13 +4,13 @@
 warp\-custom\-fields\-create \- Create Field
 .SH "SYNOPSIS"
 .B warp custom\-fields create
-\fB\-\-name\fR \fI<value>\fR \fB\-\-type\fR \fI<value>\fR \fB\-\-category\fR \fI<value>\fR [\fIoptions\fR]
+\fB\-\-name\fR \fI<json>\fR \fB\-\-type\fR \fI<value>\fR \fB\-\-category\fR \fI<value>\fR [\fIoptions\fR]
 .SH "DESCRIPTION"
 Create a custom worker field definition. The field type is immutable after creation. Select and multi_select fields can include their initial options. Access to values derives from the field category; requires the workers:custom_fields permission.
 .SH "OPTIONS"
 .TP
-\fB\-\-name\fR \fI<value>\fR
-a non empty string. Required.
+\fB\-\-name\fR \fI<json>\fR
+The name body parameter. Required.
 .TP
 \fB\-\-description\fR \fI<value>\fR
 The description body parameter.
@@ -33,8 +33,8 @@ The input\-by body parameter.
 \fB\-\-required\fR
 The required body parameter.
 .TP
-\fB\-\-option\fR \fI<value>\fR
-The option body parameter. Repeat the flag to pass multiple values.
+\fB\-\-options\fR \fI<json>\fR
+The options body parameter.
 .TP
 \fB\-\-base\-url\fR \fI<url>\fR
 Override the base URL for API requests.
@@ -69,7 +69,7 @@ API credential. Can also be set with the WARP_API_KEY environment variable.
 .PP
 .RS 4
 .nf
-warp custom\-fields create \-\-api\-key "$WARP_API_KEY" \-\-name 'name' \-\-type 'text' \-\-category 'info'
+warp custom\-fields create \-\-api\-key "$WARP_API_KEY" \-\-name '{}' \-\-type 'text' \-\-category 'info'
 .fi
 .RE
 .SH "ENVIRONMENT"

@@ -37,42 +37,42 @@ const cases: { operation: string; method: string; path: string; args: string[] }
     operation: 'list',
     method: 'GET',
     path: '/v1/benefits/health_plans',
-    args: ['benefits:health-plans', 'list', '--status', 'active'],
+    args: ['benefits:health-plans', 'list', '--limit', 'limit', '--statuses', '["active"]'],
   },
 
   {
     operation: 'get',
     method: 'GET',
     path: '/v1/benefits/health_plans/{id}',
-    args: ['benefits:health-plans', 'get', 'chpl_1234'],
+    args: ['benefits:health-plans', 'get', 'id'],
   },
 
   {
     operation: 'list',
     method: 'GET',
     path: '/v1/benefits/retirement_plans',
-    args: ['benefits:retirement-plans', 'list', '--status', 'active'],
+    args: ['benefits:retirement-plans', 'list', '--limit', 'limit', '--statuses', '["active"]'],
   },
 
   {
     operation: 'get',
     method: 'GET',
     path: '/v1/benefits/retirement_plans/{id}',
-    args: ['benefits:retirement-plans', 'get', 'crpl_1234'],
+    args: ['benefits:retirement-plans', 'get', 'id'],
   },
 
   {
     operation: 'list',
     method: 'GET',
     path: '/v1/benefits/deductions',
-    args: ['benefits:deductions', 'list', '--status', 'active'],
+    args: ['benefits:deductions', 'list', '--limit', 'limit', '--statuses', '["active"]'],
   },
 
   {
     operation: 'get',
     method: 'GET',
     path: '/v1/benefits/deductions/{id}',
-    args: ['benefits:deductions', 'get', 'pbdg_1234'],
+    args: ['benefits:deductions', 'get', 'id'],
   },
 
   {
@@ -86,56 +86,56 @@ const cases: { operation: string; method: string; path: string; args: string[] }
     operation: 'create',
     method: 'POST',
     path: '/v1/custom_fields',
-    args: ['custom-fields', 'create', '--name', 'name', '--type', 'text', '--category', 'info'],
+    args: ['custom-fields', 'create', '--name', '{}', '--type', 'text', '--category', 'info'],
   },
 
   {
     operation: 'retrieve',
     method: 'GET',
     path: '/v1/custom_fields/{id}',
-    args: ['custom-fields', 'retrieve', 'cf_1234'],
+    args: ['custom-fields', 'retrieve', 'id'],
   },
 
   {
     operation: 'update',
     method: 'PATCH',
     path: '/v1/custom_fields/{id}',
-    args: ['custom-fields', 'update', 'cf_1234'],
+    args: ['custom-fields', 'update', 'id'],
   },
 
   {
     operation: 'archive',
     method: 'POST',
     path: '/v1/custom_fields/{id}/archive',
-    args: ['custom-fields', 'archive', 'cf_1234'],
+    args: ['custom-fields', 'archive', 'id'],
   },
 
   {
     operation: 'createOption',
     method: 'POST',
     path: '/v1/custom_fields/{id}/options',
-    args: ['custom-fields', 'create-option', 'cf_1234', '--label', 'label', '--value', 'value'],
+    args: ['custom-fields', 'create-option', 'id', '--label', '{}', '--value', '{}'],
   },
 
   {
     operation: 'updateOption',
     method: 'PATCH',
     path: '/v1/custom_field_options/{id}',
-    args: ['custom-fields', 'update-option', 'cfo_1234'],
+    args: ['custom-fields', 'update-option', 'id'],
   },
 
   {
     operation: 'deleteOption',
     method: 'DELETE',
     path: '/v1/custom_field_options/{id}',
-    args: ['custom-fields', 'delete-option', 'cfo_1234'],
+    args: ['custom-fields', 'delete-option', 'id'],
   },
 
   {
     operation: 'archiveOption',
     method: 'POST',
     path: '/v1/custom_field_options/{id}/archive',
-    args: ['custom-fields', 'archive-option', 'cfo_1234'],
+    args: ['custom-fields', 'archive-option', 'id'],
   },
 
   {
@@ -153,9 +153,9 @@ const cases: { operation: string; method: string; path: string; args: string[] }
       'custom-fields',
       'upsert-value',
       '--worker-id',
-      'wrk_1234',
+      '{}',
       '--field-id',
-      'cf_1234',
+      '{}',
       '--value',
       '{"type":"text","value":""}',
     ],
@@ -165,35 +165,35 @@ const cases: { operation: string; method: string; path: string; args: string[] }
     operation: 'clearValue',
     method: 'DELETE',
     path: '/v1/custom_field_values',
-    args: ['custom-fields', 'clear-value', '--worker-id', 'wrk_1234', '--field-id', 'cf_1234'],
+    args: ['custom-fields', 'clear-value', '--worker-id', '{}', '--field-id', '{}'],
   },
 
   {
     operation: 'list',
     method: 'GET',
     path: '/v1/departments',
-    args: ['departments', 'list'],
+    args: ['departments', 'list', '--limit', 'limit'],
   },
 
   {
     operation: 'create',
     method: 'POST',
     path: '/v1/departments',
-    args: ['departments', 'create', '--name', 'name'],
+    args: ['departments', 'create', '--name', '{}'],
   },
 
   {
     operation: 'update',
     method: 'PATCH',
     path: '/v1/departments/{id}',
-    args: ['departments', 'update', 'dpt_1234'],
+    args: ['departments', 'update', 'id'],
   },
 
   {
     operation: 'list',
     method: 'GET',
     path: '/v1/offers',
-    args: ['offers', 'list'],
+    args: ['offers', 'list', '--limit', 'limit'],
   },
 
   {
@@ -204,13 +204,13 @@ const cases: { operation: string; method: string; path: string; args: string[] }
       'offers',
       'create',
       '--candidate',
-      '{"firstName":"x","lastName":"x","email":"john@joinwarp.com"}',
+      '{"firstName":{},"lastName":{},"email":{}}',
       '--position',
-      '{"title":"x","startDate":"2000-01-01"}',
+      '{"title":{},"startDate":{}}',
       '--worker-type',
       'employee',
       '--compensation',
-      '{"payBasis":"year","payCurrency":"USD","payRate":0}',
+      '{"payBasis":"year","payCurrency":"USD","payRate":{}}',
     ],
   },
 
@@ -218,77 +218,77 @@ const cases: { operation: string; method: string; path: string; args: string[] }
     operation: 'void',
     method: 'POST',
     path: '/v1/offers/{id}/void',
-    args: ['offers', 'void', 'offr_1234'],
+    args: ['offers', 'void', 'id'],
   },
 
   {
     operation: 'extendDeadline',
     method: 'POST',
     path: '/v1/offers/{id}/extend-deadline',
-    args: ['offers', 'extend-deadline', 'offr_1234', '--expiration-time', 'expirationTime'],
+    args: ['offers', 'extend-deadline', 'id', '--expiration-time', 'expirationTime'],
   },
 
   {
     operation: 'resend',
     method: 'POST',
     path: '/v1/offers/{id}/resend',
-    args: ['offers', 'resend', 'offr_1234'],
+    args: ['offers', 'resend', 'id'],
   },
 
   {
     operation: 'listAssignments',
     method: 'GET',
     path: '/v1/time_off/assignments',
-    args: ['time-off', 'list-assignments'],
+    args: ['time-off', 'list-assignments', '--limit', 'limit'],
   },
 
   {
     operation: 'listBalances',
     method: 'GET',
     path: '/v1/time_off/balances',
-    args: ['time-off', 'list-balances'],
+    args: ['time-off', 'list-balances', '--limit', 'limit'],
   },
 
   {
     operation: 'listRequests',
     method: 'GET',
     path: '/v1/time_off/requests',
-    args: ['time-off', 'list-requests'],
+    args: ['time-off', 'list-requests', '--limit', 'limit'],
   },
 
   {
     operation: 'timeOffGet',
     method: 'GET',
     path: '/v1/time_off/policies',
-    args: ['time-off:policies', 'time-off-get'],
+    args: ['time-off:policies', 'time-off-get', '--limit', 'limit'],
   },
 
   {
     operation: 'timeOffGet2',
     method: 'GET',
     path: '/v1/time_off/policies/{id}',
-    args: ['time-off:policies', 'time-off-get2', 'top_1234'],
+    args: ['time-off:policies', 'time-off-get2', 'id'],
   },
 
   {
     operation: 'list',
     method: 'GET',
     path: '/v1/workers',
-    args: ['workers', 'list'],
+    args: ['workers', 'list', '--limit', 'limit'],
   },
 
   {
     operation: 'retrieve',
     method: 'GET',
     path: '/v1/workers/{id}',
-    args: ['workers', 'retrieve', 'wrk_1234'],
+    args: ['workers', 'retrieve', 'id'],
   },
 
   {
     operation: 'delete',
     method: 'DELETE',
     path: '/v1/workers/{id}',
-    args: ['workers', 'delete', 'wrk_1234'],
+    args: ['workers', 'delete', 'id'],
   },
 
   {
@@ -299,23 +299,23 @@ const cases: { operation: string; method: string; path: string; args: string[] }
       'workers',
       'create-employee',
       '--first-name',
-      'firstName',
+      '{}',
       '--last-name',
-      'lastName',
+      '{}',
       '--position',
-      'position',
+      '{}',
       '--start-date',
-      '2000-01-01',
+      '{}',
       '--email',
-      'john@joinwarp.com',
+      '{}',
       '--department-id',
-      'dpt_1234',
+      '{}',
       '--manager-id',
-      'wrk_1234',
+      '{}',
       '--work-location',
-      '{"type":"office","workplaceId":"wkp_1234"}',
+      '{"type":"office","workplaceId":{}}',
       '--compensation',
-      '{"amount":0,"per":"hour"}',
+      '{"amount":{},"per":"hour"}',
     ],
   },
 
@@ -329,19 +329,19 @@ const cases: { operation: string; method: string; path: string; args: string[] }
       '--entity-type',
       'individual',
       '--first-name',
-      'firstName',
+      '{}',
       '--last-name',
-      'lastName',
+      '{}',
       '--position',
-      'position',
+      '{}',
       '--start-date',
-      '2000-01-01',
+      '{}',
       '--email',
-      'john@joinwarp.com',
+      '{}',
       '--department-id',
-      'dpt_1234',
+      '{}',
       '--manager-id',
-      'wrk_1234',
+      '{}',
       '--work-country',
       'AD',
     ],
@@ -351,14 +351,14 @@ const cases: { operation: string; method: string; path: string; args: string[] }
     operation: 'invite',
     method: 'POST',
     path: '/v1/workers/{id}/invite',
-    args: ['workers', 'invite', 'wrk_1234'],
+    args: ['workers', 'invite', 'id'],
   },
 
   {
     operation: 'list',
     method: 'GET',
     path: '/v1/workplaces',
-    args: ['workplaces', 'list'],
+    args: ['workplaces', 'list', '--limit', 'limit'],
   },
 
   {
@@ -369,11 +369,11 @@ const cases: { operation: string; method: string; path: string; args: string[] }
       'workplaces',
       'create',
       '--name',
-      'name',
+      '{}',
       '--type',
       'remote',
       '--address',
-      '{"line1":"x","city":"","postalCode":"","state":"AL","country":"US"}',
+      '{"line1":{},"city":"","postalCode":"","state":"AL","country":"US"}',
     ],
   },
 
@@ -381,7 +381,7 @@ const cases: { operation: string; method: string; path: string; args: string[] }
     operation: 'update',
     method: 'PATCH',
     path: '/v1/workplaces/{id}',
-    args: ['workplaces', 'update', 'wkp_1234'],
+    args: ['workplaces', 'update', 'id'],
   },
 ];
 

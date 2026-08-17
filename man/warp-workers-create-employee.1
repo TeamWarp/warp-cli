@@ -4,43 +4,43 @@
 warp\-workers\-create\-employee \- Create Employee
 .SH "SYNOPSIS"
 .B warp workers create\-employee
-\fB\-\-first\-name\fR \fI<value>\fR \fB\-\-last\-name\fR \fI<value>\fR \fB\-\-position\fR \fI<value>\fR \fB\-\-start\-date\fR \fI<value>\fR \fB\-\-email\fR \fI<value>\fR \fB\-\-department\-id\fR \fI<value>\fR \fB\-\-manager\-id\fR \fI<value>\fR \fB\-\-work\-location\fR \fI<value>\fR \fB\-\-compensation\fR \fI<json>\fR [\fIoptions\fR]
+\fB\-\-first\-name\fR \fI<json>\fR \fB\-\-last\-name\fR \fI<json>\fR \fB\-\-position\fR \fI<json>\fR \fB\-\-start\-date\fR \fI<json>\fR \fB\-\-email\fR \fI<json>\fR \fB\-\-department\-id\fR \fI<json>\fR \fB\-\-manager\-id\fR \fI<json>\fR \fB\-\-work\-location\fR \fI<value>\fR \fB\-\-compensation\fR \fI<json>\fR [\fIoptions\fR]
 .SH "DESCRIPTION"
 Create a new US employee. The worker will be created in draft status and must be invited separately via the invite endpoint. If hiring in a state without an existing tax registration, you must specify the stateRegistration field.
 .SH "OPTIONS"
 .TP
-\fB\-\-first\-name\fR \fI<value>\fR
-a non empty string. Required.
+\fB\-\-first\-name\fR \fI<json>\fR
+The first\-name body parameter. Required.
 .TP
-\fB\-\-last\-name\fR \fI<value>\fR
-a non empty string. Required.
+\fB\-\-last\-name\fR \fI<json>\fR
+The last\-name body parameter. Required.
 .TP
-\fB\-\-position\fR \fI<value>\fR
-The employee's job title. Required.
+\fB\-\-position\fR \fI<json>\fR
+The position body parameter. Required.
 .TP
-\fB\-\-start\-date\fR \fI<value>\fR
-A date string in the form YYYY\-MM\-DD. Required.
+\fB\-\-start\-date\fR \fI<json>\fR
+The start\-date body parameter. Required.
 .TP
-\fB\-\-email\fR \fI<value>\fR
-Personal email address. The invite will be sent here. Required.
+\fB\-\-email\fR \fI<json>\fR
+The email body parameter. Required.
 .TP
-\fB\-\-work\-email\fR \fI<value>\fR
-Company\-issued email address, if applicable.
+\fB\-\-work\-email\fR \fI<json>\fR
+The work\-email body parameter.
 .TP
 \fB\-\-require\-i9\fR
-Whether the employee is required to complete I\-9 work authorization. Set to false if the employee has already been verified off\-platform. Defaults to true.
+The require\-i9 body parameter.
 .TP
 \fB\-\-state\-registration\fR \fI<value>\fR
-How state tax registration is handled for this employee's work state. Required when hiring in a state where your company doesn't have an existing registration. Use 'self_managed' if you've already registered in this state, or 'warp_managed' for Warp to handle registration on your behalf.
+The state\-registration body parameter.
 .TP
-\fB\-\-department\-id\fR \fI<value>\fR
-The department to assign this employee to. Required.
+\fB\-\-department\-id\fR \fI<json>\fR
+The department\-id body parameter. Required.
 .TP
-\fB\-\-manager\-id\fR \fI<value>\fR
-The worker id of this employee's direct manager. Required.
+\fB\-\-manager\-id\fR \fI<json>\fR
+The manager\-id body parameter. Required.
 .TP
-\fB\-\-stock\-options\fR \fI<number>\fR
-Number of stock options granted to this employee.
+\fB\-\-stock\-options\fR \fI<value>\fR
+The stock\-options body parameter.
 .TP
 \fB\-\-work\-location\fR \fI<value>\fR
 Where the employee will work. Either an existing company workplace or a remote US state. Required.
@@ -48,14 +48,14 @@ Where the employee will work. Either an existing company workplace or a remote U
 \fB\-\-compensation\fR \fI<json>\fR
 The employee's base compensation. Required.
 .TP
-\fB\-\-compensation.amount\fR \fI<number>\fR
-a positive number.
+\fB\-\-compensation.amount\fR \fI<json>\fR
+The compensation.amount body parameter.
 .TP
 \fB\-\-compensation.per\fR \fI<value>\fR
 Whether the amount is per hour or per year.
 .TP
 \fB\-\-pay\-schedule\fR \fI<value>\fR
-The employee's pay schedule. Must be a pay schedule that the company has configured.
+The pay\-schedule body parameter.
 .TP
 \fB\-\-base\-url\fR \fI<url>\fR
 Override the base URL for API requests.
@@ -90,7 +90,7 @@ API credential. Can also be set with the WARP_API_KEY environment variable.
 .PP
 .RS 4
 .nf
-warp workers create\-employee \-\-api\-key "$WARP_API_KEY" \-\-first\-name 'firstName' \-\-last\-name 'lastName' \-\-position 'position' \-\-start\-date '2000\-01\-01' \-\-email 'john@joinwarp.com' \-\-department\-id 'dpt_1234' \-\-manager\-id 'wrk_1234' \-\-work\-location '{"type":"office","workplaceId":"wkp_1234"}' \-\-compensation '{"amount":0,"per":"hour"}'
+warp workers create\-employee \-\-api\-key "$WARP_API_KEY" \-\-first\-name '{}' \-\-last\-name '{}' \-\-position '{}' \-\-start\-date '{}' \-\-email '{}' \-\-department\-id '{}' \-\-manager\-id '{}' \-\-work\-location '{"type":"office","workplaceId":{}}' \-\-compensation '{"amount":{},"per":"hour"}'
 .fi
 .RE
 .SH "ENVIRONMENT"

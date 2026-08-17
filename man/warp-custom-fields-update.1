@@ -10,11 +10,11 @@ Update a custom worker field definition. The field type cannot be changed; creat
 .SH "ARGUMENTS"
 .TP
 \fIid\fR, \fB\-\-id\fR \fI<value>\fR
-The tag of a company custom worker field. Required. Can also be supplied as \-\-id.
+The id path parameter. Required. Can also be supplied as \-\-id.
 .SH "OPTIONS"
 .TP
-\fB\-\-name\fR \fI<value>\fR
-a non empty string.
+\fB\-\-name\fR \fI<json>\fR
+The name body parameter.
 .TP
 \fB\-\-description\fR \fI<value>\fR
 The description body parameter.
@@ -67,7 +67,7 @@ API credential. Can also be set with the WARP_API_KEY environment variable.
 .PP
 .RS 4
 .nf
-warp custom\-fields update 'cf_1234' \-\-api\-key "$WARP_API_KEY"
+warp custom\-fields update 'id' \-\-api\-key "$WARP_API_KEY"
 .fi
 .RE
 .SH "ENVIRONMENT"

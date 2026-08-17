@@ -4,19 +4,19 @@
 warp\-departments\-list \- List Departments
 .SH "SYNOPSIS"
 .B warp departments list
-[\fIoptions\fR]
+\fB\-\-limit\fR \fI<value>\fR [\fIoptions\fR]
 .SH "DESCRIPTION"
 List all departments for your company.
 .SH "OPTIONS"
 .TP
 \fB\-\-limit\fR \fI<value>\fR
-a number less than or equal to 100.
+The limit query parameter. Required.
 .TP
-\fB\-\-after\-id\fR \fI<value>\fR
-The unique public id of the department.
+\fB\-\-after\-id\fR \fI<json>\fR
+The after\-id query parameter.
 .TP
-\fB\-\-before\-id\fR \fI<value>\fR
-The unique public id of the department.
+\fB\-\-before\-id\fR \fI<json>\fR
+The before\-id query parameter.
 .TP
 \fB\-\-base\-url\fR \fI<url>\fR
 Override the base URL for API requests.
@@ -51,7 +51,7 @@ API credential. Can also be set with the WARP_API_KEY environment variable.
 .PP
 .RS 4
 .nf
-warp departments list \-\-api\-key "$WARP_API_KEY"
+warp departments list \-\-api\-key "$WARP_API_KEY" \-\-limit 'limit'
 .fi
 .RE
 .SH "ENVIRONMENT"

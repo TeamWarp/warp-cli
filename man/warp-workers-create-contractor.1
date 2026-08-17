@@ -4,7 +4,7 @@
 warp\-workers\-create\-contractor \- Create Contractor
 .SH "SYNOPSIS"
 .B warp workers create\-contractor
-\fB\-\-entity\-type\fR \fI<value>\fR \fB\-\-first\-name\fR \fI<value>\fR \fB\-\-last\-name\fR \fI<value>\fR \fB\-\-position\fR \fI<value>\fR \fB\-\-start\-date\fR \fI<value>\fR \fB\-\-email\fR \fI<value>\fR \fB\-\-department\-id\fR \fI<value>\fR \fB\-\-manager\-id\fR \fI<value>\fR \fB\-\-work\-country\fR \fI<value>\fR [\fIoptions\fR]
+\fB\-\-entity\-type\fR \fI<value>\fR \fB\-\-first\-name\fR \fI<json>\fR \fB\-\-last\-name\fR \fI<json>\fR \fB\-\-position\fR \fI<json>\fR \fB\-\-start\-date\fR \fI<json>\fR \fB\-\-email\fR \fI<json>\fR \fB\-\-department\-id\fR \fI<json>\fR \fB\-\-manager\-id\fR \fI<json>\fR \fB\-\-work\-country\fR \fI<value>\fR [\fIoptions\fR]
 .SH "DESCRIPTION"
 Create a new contractor. The worker will be created in draft status and must be invited separately via the invite endpoint. For business contractors, the businessName field is required.
 .SH "OPTIONS"
@@ -12,53 +12,53 @@ Create a new contractor. The worker will be created in draft status and must be 
 \fB\-\-entity\-type\fR \fI<value>\fR
 Whether the contractor is an individual person or a business entity. Required.
 .TP
-\fB\-\-first\-name\fR \fI<value>\fR
-a non empty string. Required.
+\fB\-\-first\-name\fR \fI<json>\fR
+The first\-name body parameter. Required.
 .TP
-\fB\-\-last\-name\fR \fI<value>\fR
-a non empty string. Required.
+\fB\-\-last\-name\fR \fI<json>\fR
+The last\-name body parameter. Required.
 .TP
-\fB\-\-position\fR \fI<value>\fR
-The contractor's role or job title. Required.
+\fB\-\-position\fR \fI<json>\fR
+The position body parameter. Required.
 .TP
-\fB\-\-business\-name\fR \fI<value>\fR
-Required when entityType is "business". The legal name of the contractor's business.
+\fB\-\-business\-name\fR \fI<json>\fR
+The business\-name body parameter.
 .TP
 \fB\-\-scope\-of\-work\fR \fI<value>\fR
-A description of the work the contractor will perform.
+The scope\-of\-work body parameter.
 .TP
-\fB\-\-start\-date\fR \fI<value>\fR
-A date string in the form YYYY\-MM\-DD. Required.
+\fB\-\-start\-date\fR \fI<json>\fR
+The start\-date body parameter. Required.
 .TP
-\fB\-\-email\fR \fI<value>\fR
-Personal email address. The invite will be sent here. Required.
+\fB\-\-email\fR \fI<json>\fR
+The email body parameter. Required.
 .TP
-\fB\-\-work\-email\fR \fI<value>\fR
-Company\-issued email address, if applicable.
+\fB\-\-work\-email\fR \fI<json>\fR
+The work\-email body parameter.
 .TP
-\fB\-\-department\-id\fR \fI<value>\fR
-The department to assign this contractor to. Required.
+\fB\-\-department\-id\fR \fI<json>\fR
+The department\-id body parameter. Required.
 .TP
-\fB\-\-manager\-id\fR \fI<value>\fR
-The worker id of this contractor's direct manager. Required.
+\fB\-\-manager\-id\fR \fI<json>\fR
+The manager\-id body parameter. Required.
 .TP
 \fB\-\-work\-country\fR \fI<value>\fR
 The work\-country body parameter. Required.
 .TP
 \fB\-\-compensation\fR \fI<json>\fR
-The contractor's pay rate. Omit if you'd like to pay on\-demand or via invoicing.
+The compensation body parameter.
 .TP
 \fB\-\-compensation.currency\fR \fI<value>\fR
 The compensation.currency body parameter.
 .TP
-\fB\-\-compensation.amount\fR \fI<number>\fR
-a positive number.
+\fB\-\-compensation.amount\fR \fI<json>\fR
+The compensation.amount body parameter.
 .TP
 \fB\-\-compensation.per\fR \fI<value>\fR
 The pay period for the compensation amount.
 .TP
 \fB\-\-pay\-schedule\fR \fI<value>\fR
-The contractor's pay schedule. Must be a pay schedule that the company has configured.
+The pay\-schedule body parameter.
 .TP
 \fB\-\-base\-url\fR \fI<url>\fR
 Override the base URL for API requests.
@@ -93,7 +93,7 @@ API credential. Can also be set with the WARP_API_KEY environment variable.
 .PP
 .RS 4
 .nf
-warp workers create\-contractor \-\-api\-key "$WARP_API_KEY" \-\-entity\-type 'individual' \-\-first\-name 'firstName' \-\-last\-name 'lastName' \-\-position 'position' \-\-start\-date '2000\-01\-01' \-\-email 'john@joinwarp.com' \-\-department\-id 'dpt_1234' \-\-manager\-id 'wrk_1234' \-\-work\-country 'AD'
+warp workers create\-contractor \-\-api\-key "$WARP_API_KEY" \-\-entity\-type 'individual' \-\-first\-name '{}' \-\-last\-name '{}' \-\-position '{}' \-\-start\-date '{}' \-\-email '{}' \-\-department\-id '{}' \-\-manager\-id '{}' \-\-work\-country 'AD'
 .fi
 .RE
 .SH "ENVIRONMENT"

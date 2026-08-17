@@ -4,16 +4,16 @@
 warp\-custom\-fields\-clear\-value \- Clear Field Value
 .SH "SYNOPSIS"
 .B warp custom\-fields clear\-value
-\fB\-\-worker\-id\fR \fI<value>\fR \fB\-\-field\-id\fR \fI<value>\fR [\fIoptions\fR]
+\fB\-\-worker\-id\fR \fI<json>\fR \fB\-\-field\-id\fR \fI<json>\fR [\fIoptions\fR]
 .SH "DESCRIPTION"
 Remove a worker's value for a custom field. Your API key must hold write on the field's category.
 .SH "OPTIONS"
 .TP
-\fB\-\-worker\-id\fR \fI<value>\fR
-The id of the worker. Required.
+\fB\-\-worker\-id\fR \fI<json>\fR
+The worker\-id query parameter. Required.
 .TP
-\fB\-\-field\-id\fR \fI<value>\fR
-The tag of a company custom worker field. Required.
+\fB\-\-field\-id\fR \fI<json>\fR
+The field\-id query parameter. Required.
 .TP
 \fB\-\-base\-url\fR \fI<url>\fR
 Override the base URL for API requests.
@@ -48,7 +48,7 @@ API credential. Can also be set with the WARP_API_KEY environment variable.
 .PP
 .RS 4
 .nf
-warp custom\-fields clear\-value \-\-api\-key "$WARP_API_KEY" \-\-worker\-id 'wrk_1234' \-\-field\-id 'cf_1234'
+warp custom\-fields clear\-value \-\-api\-key "$WARP_API_KEY" \-\-worker\-id '{}' \-\-field\-id '{}'
 .fi
 .RE
 .SH "ENVIRONMENT"

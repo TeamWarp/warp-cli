@@ -10,13 +10,13 @@ Update the label or sort order of a custom worker field option. Options of archi
 .SH "ARGUMENTS"
 .TP
 \fIid\fR, \fB\-\-id\fR \fI<value>\fR
-The tag of a company custom worker field option. Required. Can also be supplied as \-\-id.
+The id path parameter. Required. Can also be supplied as \-\-id.
 .SH "OPTIONS"
 .TP
-\fB\-\-label\fR \fI<value>\fR
-a non empty string.
+\fB\-\-label\fR \fI<json>\fR
+The label body parameter.
 .TP
-\fB\-\-sort\-order\fR \fI<number>\fR
+\fB\-\-sort\-order\fR \fI<value>\fR
 The sort\-order body parameter.
 .TP
 \fB\-\-base\-url\fR \fI<url>\fR
@@ -52,7 +52,7 @@ API credential. Can also be set with the WARP_API_KEY environment variable.
 .PP
 .RS 4
 .nf
-warp custom\-fields update\-option 'cfo_1234' \-\-api\-key "$WARP_API_KEY"
+warp custom\-fields update\-option 'id' \-\-api\-key "$WARP_API_KEY"
 .fi
 .RE
 .SH "ENVIRONMENT"
