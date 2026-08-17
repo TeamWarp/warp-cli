@@ -4,13 +4,13 @@
 warp\-departments\-create \- Create Department
 .SH "SYNOPSIS"
 .B warp departments create
-\fB\-\-name\fR \fI<value>\fR [\fIoptions\fR]
+\fB\-\-name\fR \fI<json>\fR [\fIoptions\fR]
 .SH "DESCRIPTION"
 Create a new department.
 .SH "OPTIONS"
 .TP
-\fB\-\-name\fR \fI<value>\fR
-a non empty string. Required.
+\fB\-\-name\fR \fI<json>\fR
+The name body parameter. Required.
 .TP
 \fB\-\-base\-url\fR \fI<url>\fR
 Override the base URL for API requests.
@@ -45,7 +45,7 @@ API credential. Can also be set with the WARP_API_KEY environment variable.
 .PP
 .RS 4
 .nf
-warp departments create \-\-api\-key "$WARP_API_KEY" \-\-name 'name'
+warp departments create \-\-api\-key "$WARP_API_KEY" \-\-name '{}'
 .fi
 .RE
 .SH "ENVIRONMENT"

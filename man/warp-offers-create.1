@@ -12,14 +12,14 @@ Create and send a candidate offer. The candidate receives an email with a link t
 \fB\-\-candidate\fR \fI<json>\fR
 The candidate body parameter. Required.
 .TP
-\fB\-\-candidate.first\-name\fR \fI<value>\fR
-a non empty string.
+\fB\-\-candidate.first\-name\fR \fI<json>\fR
+The candidate.first\-name body parameter.
 .TP
-\fB\-\-candidate.last\-name\fR \fI<value>\fR
-a non empty string.
+\fB\-\-candidate.last\-name\fR \fI<json>\fR
+The candidate.last\-name body parameter.
 .TP
-\fB\-\-candidate.email\fR \fI<value>\fR
-An email with a reasonably valid regex (based on RFC 5321 atext characters).
+\fB\-\-candidate.email\fR \fI<json>\fR
+The candidate.email body parameter.
 .TP
 \fB\-\-candidate.contractor\-details\fR \fI<json>\fR
 The candidate.contractor\-details body parameter.
@@ -33,25 +33,25 @@ The candidate.contractor\-details.legal\-business\-name body parameter.
 \fB\-\-position\fR \fI<json>\fR
 The position body parameter. Required.
 .TP
-\fB\-\-position.title\fR \fI<value>\fR
-a non empty string.
+\fB\-\-position.title\fR \fI<json>\fR
+The position.title body parameter.
 .TP
-\fB\-\-position.start\-date\fR \fI<value>\fR
-A date string in the form YYYY\-MM\-DD.
+\fB\-\-position.start\-date\fR \fI<json>\fR
+The position.start\-date body parameter.
 .TP
 \fB\-\-position.country\fR \fI<value>\fR
-Required when workerType is global_contractor. Ignored for employee and us_contractor offers.
+The position.country body parameter.
 .TP
 \fB\-\-position.scope\-of\-work\fR \fI<value>\fR
 The position.scope\-of\-work body parameter.
 .TP
-\fB\-\-department\-id\fR \fI<value>\fR
+\fB\-\-department\-id\fR \fI<json>\fR
 The department\-id body parameter.
 .TP
-\fB\-\-workplace\-id\fR \fI<value>\fR
+\fB\-\-workplace\-id\fR \fI<json>\fR
 The workplace\-id body parameter.
 .TP
-\fB\-\-manager\-id\fR \fI<value>\fR
+\fB\-\-manager\-id\fR \fI<json>\fR
 The manager\-id body parameter.
 .TP
 \fB\-\-worker\-type\fR \fI<value>\fR
@@ -66,28 +66,28 @@ The compensation.pay\-basis body parameter.
 \fB\-\-compensation.pay\-currency\fR \fI<value>\fR
 The compensation.pay\-currency body parameter.
 .TP
-\fB\-\-compensation.pay\-rate\fR \fI<number>\fR
-a positive number.
+\fB\-\-compensation.pay\-rate\fR \fI<json>\fR
+The compensation.pay\-rate body parameter.
 .TP
 \fB\-\-compensation.pay\-type\fR \fI<value>\fR
 The compensation.pay\-type body parameter.
 .TP
-\fB\-\-compensation.pay\-variable\-rate\fR \fI<number>\fR
+\fB\-\-compensation.pay\-variable\-rate\fR \fI<json>\fR
 The compensation.pay\-variable\-rate body parameter.
 .TP
-\fB\-\-compensation.sign\-on\-bonus\fR \fI<number>\fR
+\fB\-\-compensation.sign\-on\-bonus\fR \fI<json>\fR
 The compensation.sign\-on\-bonus body parameter.
 .TP
-\fB\-\-compensation.relocation\-bonus\fR \fI<number>\fR
+\fB\-\-compensation.relocation\-bonus\fR \fI<json>\fR
 The compensation.relocation\-bonus body parameter.
 .TP
-\fB\-\-compensation.stock\-options\fR \fI<number>\fR
+\fB\-\-compensation.stock\-options\fR \fI<json>\fR
 The compensation.stock\-options body parameter.
 .TP
-\fB\-\-compensation.vesting\-schedule\-months\fR \fI<number>\fR
+\fB\-\-compensation.vesting\-schedule\-months\fR \fI<json>\fR
 The compensation.vesting\-schedule\-months body parameter.
 .TP
-\fB\-\-compensation.cliff\-months\fR \fI<number>\fR
+\fB\-\-compensation.cliff\-months\fR \fI<json>\fR
 The compensation.cliff\-months body parameter.
 .TP
 \fB\-\-expiration\-time\fR \fI<value>\fR
@@ -126,7 +126,7 @@ API credential. Can also be set with the WARP_API_KEY environment variable.
 .PP
 .RS 4
 .nf
-warp offers create \-\-api\-key "$WARP_API_KEY" \-\-candidate '{"firstName":"x","lastName":"x","email":"john@joinwarp.com"}' \-\-position '{"title":"x","startDate":"2000\-01\-01"}' \-\-worker\-type 'employee' \-\-compensation '{"payBasis":"year","payCurrency":"USD","payRate":0}'
+warp offers create \-\-api\-key "$WARP_API_KEY" \-\-candidate '{"firstName":{},"lastName":{},"email":{}}' \-\-position '{"title":{},"startDate":{}}' \-\-worker\-type 'employee' \-\-compensation '{"payBasis":"year","payCurrency":"USD","payRate":{}}'
 .fi
 .RE
 .SH "ENVIRONMENT"

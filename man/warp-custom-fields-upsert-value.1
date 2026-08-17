@@ -4,16 +4,16 @@
 warp\-custom\-fields\-upsert\-value \- Set Field Value
 .SH "SYNOPSIS"
 .B warp custom\-fields upsert\-value
-\fB\-\-worker\-id\fR \fI<value>\fR \fB\-\-field\-id\fR \fI<value>\fR \fB\-\-value\fR \fI<value>\fR [\fIoptions\fR]
+\fB\-\-worker\-id\fR \fI<json>\fR \fB\-\-field\-id\fR \fI<json>\fR \fB\-\-value\fR \fI<value>\fR [\fIoptions\fR]
 .SH "DESCRIPTION"
 Create or replace a worker's value for a custom field. The value shape must match the field type, and your API key must hold write on the field's category.
 .SH "OPTIONS"
 .TP
-\fB\-\-worker\-id\fR \fI<value>\fR
-The id of the worker. Required.
+\fB\-\-worker\-id\fR \fI<json>\fR
+The worker\-id body parameter. Required.
 .TP
-\fB\-\-field\-id\fR \fI<value>\fR
-The tag of a company custom worker field. Required.
+\fB\-\-field\-id\fR \fI<json>\fR
+The field\-id body parameter. Required.
 .TP
 \fB\-\-value\fR \fI<value>\fR
 The value body parameter. Required.
@@ -51,7 +51,7 @@ API credential. Can also be set with the WARP_API_KEY environment variable.
 .PP
 .RS 4
 .nf
-warp custom\-fields upsert\-value \-\-api\-key "$WARP_API_KEY" \-\-worker\-id 'wrk_1234' \-\-field\-id 'cf_1234' \-\-value '{"type":"text","value":""}'
+warp custom\-fields upsert\-value \-\-api\-key "$WARP_API_KEY" \-\-worker\-id '{}' \-\-field\-id '{}' \-\-value '{"type":"text","value":""}'
 .fi
 .RE
 .SH "ENVIRONMENT"

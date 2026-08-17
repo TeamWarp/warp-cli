@@ -4,13 +4,13 @@
 warp\-time\-off\-list\-assignments \- List Time Off Assignments
 .SH "SYNOPSIS"
 .B warp time\-off list\-assignments
-[\fIoptions\fR]
+\fB\-\-limit\fR \fI<value>\fR [\fIoptions\fR]
 .SH "DESCRIPTION"
 Time off assignments are mappings between workers and time off policies. Useful for finding out which policies a worker is assigned to, or which workers are assigned to a given policy.
 .SH "OPTIONS"
 .TP
 \fB\-\-limit\fR \fI<value>\fR
-a number less than or equal to 100.
+The limit query parameter. Required.
 .TP
 \fB\-\-after\-id\fR \fI<value>\fR
 The after\-id query parameter.
@@ -18,11 +18,11 @@ The after\-id query parameter.
 \fB\-\-before\-id\fR \fI<value>\fR
 The before\-id query parameter.
 .TP
-\fB\-\-policy\-id\fR \fI<value>\fR
-The policy\-id query parameter. Repeat the flag to pass multiple values.
+\fB\-\-policy\-ids\fR \fI<json>\fR
+The policy\-ids query parameter.
 .TP
-\fB\-\-worker\-id\fR \fI<value>\fR
-The worker\-id query parameter. Repeat the flag to pass multiple values.
+\fB\-\-worker\-ids\fR \fI<json>\fR
+The worker\-ids query parameter.
 .TP
 \fB\-\-base\-url\fR \fI<url>\fR
 Override the base URL for API requests.
@@ -57,7 +57,7 @@ API credential. Can also be set with the WARP_API_KEY environment variable.
 .PP
 .RS 4
 .nf
-warp time\-off list\-assignments \-\-api\-key "$WARP_API_KEY"
+warp time\-off list\-assignments \-\-api\-key "$WARP_API_KEY" \-\-limit 'limit'
 .fi
 .RE
 .SH "ENVIRONMENT"

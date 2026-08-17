@@ -10,7 +10,7 @@ Get a specific worker by id.
 .SH "ARGUMENTS"
 .TP
 \fIid\fR, \fB\-\-id\fR \fI<value>\fR
-The id of the worker. Required. Can also be supplied as \-\-id.
+The id path parameter. Required. Can also be supplied as \-\-id.
 .SH "OPTIONS"
 .TP
 \fB\-\-base\-url\fR \fI<url>\fR
@@ -46,7 +46,7 @@ API credential. Can also be set with the WARP_API_KEY environment variable.
 .PP
 .RS 4
 .nf
-warp workers retrieve 'wrk_1234' \-\-api\-key "$WARP_API_KEY"
+warp workers retrieve 'id' \-\-api\-key "$WARP_API_KEY"
 .fi
 .RE
 .SH "ENVIRONMENT"

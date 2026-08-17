@@ -10,11 +10,11 @@ Extend the expiration deadline of a sent offer.
 .SH "ARGUMENTS"
 .TP
 \fIid\fR, \fB\-\-id\fR \fI<value>\fR
-The tag of the offer. Required. Can also be supplied as \-\-id.
+The id path parameter. Required. Can also be supplied as \-\-id.
 .SH "OPTIONS"
 .TP
 \fB\-\-expiration\-time\fR \fI<value>\fR
-a string to be decoded into a Date. Required.
+The expiration\-time body parameter. Required.
 .TP
 \fB\-\-base\-url\fR \fI<url>\fR
 Override the base URL for API requests.
@@ -49,7 +49,7 @@ API credential. Can also be set with the WARP_API_KEY environment variable.
 .PP
 .RS 4
 .nf
-warp offers extend\-deadline 'offr_1234' \-\-api\-key "$WARP_API_KEY" \-\-expiration\-time 'expirationTime'
+warp offers extend\-deadline 'id' \-\-api\-key "$WARP_API_KEY" \-\-expiration\-time 'expirationTime'
 .fi
 .RE
 .SH "ENVIRONMENT"

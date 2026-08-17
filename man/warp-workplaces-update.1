@@ -10,7 +10,7 @@ Update an existing workplace.
 .SH "ARGUMENTS"
 .TP
 \fIid\fR, \fB\-\-id\fR \fI<value>\fR
-Public workplace identifier. Required. Can also be supplied as \-\-id.
+The id path parameter. Required. Can also be supplied as \-\-id.
 .SH "OPTIONS"
 .TP
 \fB\-\-name\fR \fI<value>\fR
@@ -49,7 +49,7 @@ API credential. Can also be set with the WARP_API_KEY environment variable.
 .PP
 .RS 4
 .nf
-warp workplaces update 'wkp_1234' \-\-api\-key "$WARP_API_KEY"
+warp workplaces update 'id' \-\-api\-key "$WARP_API_KEY"
 .fi
 .RE
 .SH "ENVIRONMENT"

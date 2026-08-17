@@ -4,37 +4,37 @@
 warp\-benefits\-deductions\-list \- List Benefit Deductions
 .SH "SYNOPSIS"
 .B warp benefits:deductions list
-[\fIoptions\fR]
+\fB\-\-limit\fR \fI<value>\fR \fB\-\-statuses\fR \fI<json>\fR [\fIoptions\fR]
 .SH "DESCRIPTION"
 List current payroll benefit deductions. Defaults to active deductions. A deduction whose effectiveEndDate has elapsed is reported and filtered as terminated.
 .SH "OPTIONS"
 .TP
 \fB\-\-limit\fR \fI<value>\fR
-a number less than or equal to 100.
+The limit query parameter. Required.
 .TP
-\fB\-\-after\-id\fR \fI<value>\fR
-The version\-group tag of a payroll benefit deduction. Stable across edits.
+\fB\-\-after\-id\fR \fI<json>\fR
+The after\-id query parameter.
 .TP
-\fB\-\-before\-id\fR \fI<value>\fR
-The version\-group tag of a payroll benefit deduction. Stable across edits.
+\fB\-\-before\-id\fR \fI<json>\fR
+The before\-id query parameter.
 .TP
-\fB\-\-worker\-id\fR \fI<value>\fR
-The worker\-id query parameter. Repeat the flag to pass multiple values.
+\fB\-\-worker\-ids\fR \fI<json>\fR
+The worker\-ids query parameter.
 .TP
-\fB\-\-category\fR \fI<value>\fR
-The category query parameter. Repeat the flag to pass multiple values.
+\fB\-\-categories\fR \fI<json>\fR
+The categories query parameter.
 .TP
-\fB\-\-type\fR \fI<value>\fR
-The type query parameter. Repeat the flag to pass multiple values.
+\fB\-\-types\fR \fI<json>\fR
+The types query parameter.
 .TP
-\fB\-\-status\fR \fI<value>\fR
-Statuses to include. Defaults to ["active"]. An elapsed effectiveEndDate is reported and filtered as "terminated". Repeat the flag to pass multiple values.
+\fB\-\-statuses\fR \fI<json>\fR
+The statuses query parameter. Required.
 .TP
-\fB\-\-health\-plan\-id\fR \fI<value>\fR
-The health\-plan\-id query parameter. Repeat the flag to pass multiple values.
+\fB\-\-health\-plan\-ids\fR \fI<json>\fR
+The health\-plan\-ids query parameter.
 .TP
-\fB\-\-retirement\-plan\-id\fR \fI<value>\fR
-The retirement\-plan\-id query parameter. Repeat the flag to pass multiple values.
+\fB\-\-retirement\-plan\-ids\fR \fI<json>\fR
+The retirement\-plan\-ids query parameter.
 .TP
 \fB\-\-base\-url\fR \fI<url>\fR
 Override the base URL for API requests.
@@ -69,7 +69,7 @@ API credential. Can also be set with the WARP_API_KEY environment variable.
 .PP
 .RS 4
 .nf
-warp benefits:deductions list \-\-api\-key "$WARP_API_KEY" \-\-status 'active'
+warp benefits:deductions list \-\-api\-key "$WARP_API_KEY" \-\-limit 'limit' \-\-statuses '["active"]'
 .fi
 .RE
 .SH "ENVIRONMENT"
