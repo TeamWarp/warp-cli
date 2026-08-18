@@ -37,6 +37,9 @@ Complete reference of every operation, grouped by resource. See [the README](./R
   - [Void Offer](#void-offer)
   - [Extend Offer Deadline](#extend-offer-deadline)
   - [Resend Offer](#resend-offer)
+- [`PayRates`](#payrates)
+  - [List Pay Rates](#list-pay-rates)
+  - [Get Pay Rate](#get-pay-rate)
 - [`TimeOff`](#timeoff)
   - [List Time Off Assignments](#list-time-off-assignments)
   - [List Time Off Balances](#list-time-off-balances)
@@ -55,9 +58,6 @@ Complete reference of every operation, grouped by resource. See [the README](./R
   - [List Workplaces](#list-workplaces)
   - [Create Workplace](#create-workplace)
   - [Update Workplace](#update-workplace)
-- [`PayRates`](#payrates)
-  - [List Pay Rates](#list-pay-rates)
-  - [Get Pay Rate](#get-pay-rate)
 
 ## `Benefits`
 
@@ -281,6 +281,24 @@ Resend the offer email to the candidate for a sent offer.
 warp offers resend 'id' --api-key "$WARP_API_KEY"
 ```
 
+## `PayRates`
+
+### List Pay Rates
+
+List pay rates visible to the API key. Results may be filtered by worker, effective start date, or regular/additional type. US and global worker rates require their corresponding compensation read scopes.
+
+```sh
+warp pay-rates list --api-key "$WARP_API_KEY" --limit 'limit'
+```
+
+### Get Pay Rate
+
+Get a specific pay rate by id. The API key must have the compensation read scope corresponding to the worker.
+
+```sh
+warp pay-rates get 'id' --api-key "$WARP_API_KEY"
+```
+
 ## `TimeOff`
 
 ### List Time Off Assignments
@@ -399,22 +417,4 @@ Update an existing workplace.
 
 ```sh
 warp workplaces update 'id' --api-key "$WARP_API_KEY"
-```
-
-## `PayRates`
-
-### List Pay Rates
-
-List pay rates visible to the API key. Results may be filtered by worker, effective start date, or regular/additional type. US and global worker rates require their corresponding compensation read scopes.
-
-```sh
-warp pay-rates list --api-key "$WARP_API_KEY" --limit 'limit'
-```
-
-### Get Pay Rate
-
-Get a specific pay rate by id. The API key must have the compensation read scope corresponding to the worker.
-
-```sh
-warp pay-rates get 'id' --api-key "$WARP_API_KEY"
 ```

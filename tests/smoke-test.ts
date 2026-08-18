@@ -236,6 +236,20 @@ const cases: { operation: string; method: string; path: string; args: string[] }
   },
 
   {
+    operation: 'list',
+    method: 'GET',
+    path: '/v1/pay_rates',
+    args: ['pay-rates', 'list', '--limit', 'limit'],
+  },
+
+  {
+    operation: 'get',
+    method: 'GET',
+    path: '/v1/pay_rates/{id}',
+    args: ['pay-rates', 'get', 'id'],
+  },
+
+  {
     operation: 'listAssignments',
     method: 'GET',
     path: '/v1/time_off/assignments',
@@ -382,20 +396,6 @@ const cases: { operation: string; method: string; path: string; args: string[] }
     method: 'PATCH',
     path: '/v1/workplaces/{id}',
     args: ['workplaces', 'update', 'id'],
-  },
-
-  {
-    operation: 'list',
-    method: 'GET',
-    path: '/v1/pay_rates',
-    args: ['pay-rates', 'list', '--limit', 'limit'],
-  },
-
-  {
-    operation: 'get',
-    method: 'GET',
-    path: '/v1/pay_rates/{id}',
-    args: ['pay-rates', 'get', 'id'],
   },
 ];
 
