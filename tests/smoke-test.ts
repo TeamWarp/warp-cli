@@ -236,6 +236,20 @@ const cases: { operation: string; method: string; path: string; args: string[] }
   },
 
   {
+    operation: 'list',
+    method: 'GET',
+    path: '/v1/pay_rates',
+    args: ['pay-rates', 'list', '--limit', 'limit'],
+  },
+
+  {
+    operation: 'retrieve',
+    method: 'GET',
+    path: '/v1/pay_rates/{id}',
+    args: ['pay-rates', 'retrieve', 'id'],
+  },
+
+  {
     operation: 'listAssignments',
     method: 'GET',
     path: '/v1/time_off/assignments',
@@ -257,17 +271,17 @@ const cases: { operation: string; method: string; path: string; args: string[] }
   },
 
   {
-    operation: 'timeOffGet',
+    operation: 'list',
     method: 'GET',
     path: '/v1/time_off/policies',
-    args: ['time-off:policies', 'time-off-get', '--limit', 'limit'],
+    args: ['time-off:policies', 'list', '--limit', 'limit'],
   },
 
   {
-    operation: 'timeOffGet2',
+    operation: 'get',
     method: 'GET',
     path: '/v1/time_off/policies/{id}',
-    args: ['time-off:policies', 'time-off-get2', 'id'],
+    args: ['time-off:policies', 'get', 'id'],
   },
 
   {
