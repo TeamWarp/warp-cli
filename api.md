@@ -37,9 +37,6 @@ Complete reference of every operation, grouped by resource. See [the README](./R
   - [Void Offer](#void-offer)
   - [Extend Offer Deadline](#extend-offer-deadline)
   - [Resend Offer](#resend-offer)
-- [`PayRates`](#payrates)
-  - [List Pay Rates](#list-pay-rates)
-  - [Get Pay Rate](#get-pay-rate)
 - [`TimeOff`](#timeoff)
   - [List Time Off Assignments](#list-time-off-assignments)
   - [List Time Off Balances](#list-time-off-balances)
@@ -281,24 +278,6 @@ Resend the offer email to the candidate for a sent offer.
 warp offers resend 'id' --api-key "$WARP_API_KEY"
 ```
 
-## `PayRates`
-
-### List Pay Rates
-
-List pay rates visible to the API key. Results may be filtered by worker, effective start date, or regular/additional type. US and global worker rates require their corresponding compensation read scopes.
-
-```sh
-warp pay-rates list --api-key "$WARP_API_KEY" --limit 'limit'
-```
-
-### Get Pay Rate
-
-Get a specific pay rate by id. The API key must have the compensation read scope corresponding to the worker.
-
-```sh
-warp pay-rates retrieve 'id' --api-key "$WARP_API_KEY"
-```
-
 ## `TimeOff`
 
 ### List Time Off Assignments
@@ -332,7 +311,7 @@ warp time-off list-requests --api-key "$WARP_API_KEY" --limit 'limit'
 Get the time off policies for your company
 
 ```sh
-warp time-off:policies list --api-key "$WARP_API_KEY" --limit 'limit'
+warp time-off:policies time-off-get --api-key "$WARP_API_KEY" --limit 'limit'
 ```
 
 #### Get Time Off Policy
@@ -340,7 +319,7 @@ warp time-off:policies list --api-key "$WARP_API_KEY" --limit 'limit'
 Get a specific time off policy by id
 
 ```sh
-warp time-off:policies get 'id' --api-key "$WARP_API_KEY"
+warp time-off:policies time-off-get2 'id' --api-key "$WARP_API_KEY"
 ```
 
 ## `Workers`
