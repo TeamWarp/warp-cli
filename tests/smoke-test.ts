@@ -383,6 +383,20 @@ const cases: { operation: string; method: string; path: string; args: string[] }
     path: '/v1/workplaces/{id}',
     args: ['workplaces', 'update', 'id'],
   },
+
+  {
+    operation: 'list',
+    method: 'GET',
+    path: '/v1/pay_rates',
+    args: ['pay-rates', 'list', '--limit', 'limit'],
+  },
+
+  {
+    operation: 'get',
+    method: 'GET',
+    path: '/v1/pay_rates/{id}',
+    args: ['pay-rates', 'get', 'id'],
+  },
 ];
 
 // Each command gets its own budget so one hanging command fails on its own instead of stalling
