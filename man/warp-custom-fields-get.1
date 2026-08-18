@@ -1,9 +1,9 @@
 .\" File generated from our OpenAPI spec by Scalar. Do not edit.
-.TH "WARP\-CUSTOM\-FIELDS\-RETRIEVE" "1" "" "warp" "Warp Manual"
+.TH "WARP\-CUSTOM\-FIELDS\-GET" "1" "" "warp" "Warp Manual"
 .SH "NAME"
-warp\-custom\-fields\-retrieve \- Get Field
+warp\-custom\-fields\-get \- Get Field
 .SH "SYNOPSIS"
-.B warp custom\-fields retrieve
+.B warp custom\-fields get
 \fIid\fR [\fIoptions\fR]
 .SH "DESCRIPTION"
 Get a custom worker field definition, including its select options. Archived options may appear on existing worker values but cannot be newly selected.
@@ -46,7 +46,7 @@ API credential. Can also be set with the WARP_API_KEY environment variable.
 .PP
 .RS 4
 .nf
-warp custom\-fields retrieve 'id' \-\-api\-key "$WARP_API_KEY"
+warp custom\-fields get 'id' \-\-api\-key "$WARP_API_KEY"
 .fi
 .RE
 .SH "ENVIRONMENT"

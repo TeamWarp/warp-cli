@@ -138,7 +138,7 @@ warp custom-fields create --api-key "$WARP_API_KEY" --name '{}' --type 'text' --
 Get a custom worker field definition, including its select options. Archived options may appear on existing worker values but cannot be newly selected.
 
 ```sh
-warp custom-fields retrieve 'id' --api-key "$WARP_API_KEY"
+warp custom-fields get 'id' --api-key "$WARP_API_KEY"
 ```
 
 ### Update Field
@@ -314,7 +314,7 @@ warp time-off list-requests --api-key "$WARP_API_KEY" --limit 'limit'
 Get the time off policies for your company
 
 ```sh
-warp time-off:policies time-off-get --api-key "$WARP_API_KEY" --limit 'limit'
+warp time-off:policies list --api-key "$WARP_API_KEY" --limit 'limit'
 ```
 
 #### Get Time Off Policy
@@ -322,7 +322,7 @@ warp time-off:policies time-off-get --api-key "$WARP_API_KEY" --limit 'limit'
 Get a specific time off policy by id
 
 ```sh
-warp time-off:policies time-off-get2 'id' --api-key "$WARP_API_KEY"
+warp time-off:policies get 'id' --api-key "$WARP_API_KEY"
 ```
 
 ## `Workers`
@@ -340,7 +340,7 @@ warp workers list --api-key "$WARP_API_KEY" --limit 'limit'
 Get a specific worker by id.
 
 ```sh
-warp workers retrieve 'id' --api-key "$WARP_API_KEY"
+warp workers get 'id' --api-key "$WARP_API_KEY"
 ```
 
 ### Delete Worker

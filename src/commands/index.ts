@@ -383,8 +383,8 @@ const commands = [
   },
   {
     resourcePath: ['customFields'],
-    commandPath: ['custom-fields', 'retrieve'],
-    methodName: 'retrieve',
+    commandPath: ['custom-fields', 'get'],
+    methodName: 'get',
     summary: 'Get Field',
     description:
       'Get a custom worker field definition, including its select options. Archived options may appear on existing worker values but cannot be newly selected.',
@@ -1429,8 +1429,8 @@ const commands = [
   },
   {
     resourcePath: ['timeOff', 'policies'],
-    commandPath: ['time-off:policies', 'time-off-get'],
-    methodName: 'timeOffGet',
+    commandPath: ['time-off:policies', 'list'],
+    methodName: 'list',
     summary: 'List Time Off Policies',
     description: 'Get the time off policies for your company',
     transport: 'http',
@@ -1466,8 +1466,8 @@ const commands = [
   },
   {
     resourcePath: ['timeOff', 'policies'],
-    commandPath: ['time-off:policies', 'time-off-get2'],
-    methodName: 'timeOffGet2',
+    commandPath: ['time-off:policies', 'get'],
+    methodName: 'get',
     summary: 'Get Time Off Policy',
     description: 'Get a specific time off policy by id',
     transport: 'http',
@@ -1549,8 +1549,8 @@ const commands = [
   },
   {
     resourcePath: ['workers'],
-    commandPath: ['workers', 'retrieve'],
-    methodName: 'retrieve',
+    commandPath: ['workers', 'get'],
+    methodName: 'get',
     summary: 'Get Worker',
     description: 'Get a specific worker by id.',
     transport: 'http',

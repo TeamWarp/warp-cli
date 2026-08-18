@@ -90,10 +90,10 @@ const cases: { operation: string; method: string; path: string; args: string[] }
   },
 
   {
-    operation: 'retrieve',
+    operation: 'get',
     method: 'GET',
     path: '/v1/custom_fields/{id}',
-    args: ['custom-fields', 'retrieve', 'id'],
+    args: ['custom-fields', 'get', 'id'],
   },
 
   {
@@ -257,17 +257,17 @@ const cases: { operation: string; method: string; path: string; args: string[] }
   },
 
   {
-    operation: 'timeOffGet',
+    operation: 'list',
     method: 'GET',
     path: '/v1/time_off/policies',
-    args: ['time-off:policies', 'time-off-get', '--limit', 'limit'],
+    args: ['time-off:policies', 'list', '--limit', 'limit'],
   },
 
   {
-    operation: 'timeOffGet2',
+    operation: 'get',
     method: 'GET',
     path: '/v1/time_off/policies/{id}',
-    args: ['time-off:policies', 'time-off-get2', 'id'],
+    args: ['time-off:policies', 'get', 'id'],
   },
 
   {
@@ -278,10 +278,10 @@ const cases: { operation: string; method: string; path: string; args: string[] }
   },
 
   {
-    operation: 'retrieve',
+    operation: 'get',
     method: 'GET',
     path: '/v1/workers/{id}',
-    args: ['workers', 'retrieve', 'id'],
+    args: ['workers', 'get', 'id'],
   },
 
   {
