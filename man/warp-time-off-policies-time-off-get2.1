@@ -1,22 +1,17 @@
 .\" File generated from our OpenAPI spec by Scalar. Do not edit.
-.TH "WARP\-TIME\-OFF\-POLICIES\-LIST" "1" "" "warp" "Warp Manual"
+.TH "WARP\-TIME\-OFF\-POLICIES\-TIME\-OFF\-GET2" "1" "" "warp" "Warp Manual"
 .SH "NAME"
-warp\-time\-off\-policies\-list \- List Time Off Policies
+warp\-time\-off\-policies\-time\-off\-get2 \- Get Time Off Policy
 .SH "SYNOPSIS"
-.B warp time\-off:policies list
-\fB\-\-limit\fR \fI<value>\fR [\fIoptions\fR]
+.B warp time\-off:policies time\-off\-get2
+\fIid\fR [\fIoptions\fR]
 .SH "DESCRIPTION"
-Get the time off policies for your company
+Get a specific time off policy by id
+.SH "ARGUMENTS"
+.TP
+\fIid\fR, \fB\-\-id\fR \fI<value>\fR
+The id path parameter. Required. Can also be supplied as \-\-id.
 .SH "OPTIONS"
-.TP
-\fB\-\-limit\fR \fI<value>\fR
-The limit query parameter. Required.
-.TP
-\fB\-\-after\-id\fR \fI<json>\fR
-The after\-id query parameter.
-.TP
-\fB\-\-before\-id\fR \fI<json>\fR
-The before\-id query parameter.
 .TP
 \fB\-\-base\-url\fR \fI<url>\fR
 Override the base URL for API requests.
@@ -51,7 +46,7 @@ API credential. Can also be set with the WARP_API_KEY environment variable.
 .PP
 .RS 4
 .nf
-warp time\-off:policies list \-\-api\-key "$WARP_API_KEY" \-\-limit 'limit'
+warp time\-off:policies time\-off\-get2 'id' \-\-api\-key "$WARP_API_KEY"
 .fi
 .RE
 .SH "ENVIRONMENT"
