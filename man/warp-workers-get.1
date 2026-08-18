@@ -1,9 +1,9 @@
 .\" File generated from our OpenAPI spec by Scalar. Do not edit.
-.TH "WARP\-WORKERS\-RETRIEVE" "1" "" "warp" "Warp Manual"
+.TH "WARP\-WORKERS\-GET" "1" "" "warp" "Warp Manual"
 .SH "NAME"
-warp\-workers\-retrieve \- Get Worker
+warp\-workers\-get \- Get Worker
 .SH "SYNOPSIS"
-.B warp workers retrieve
+.B warp workers get
 \fIid\fR [\fIoptions\fR]
 .SH "DESCRIPTION"
 Get a specific worker by id.
@@ -46,7 +46,7 @@ API credential. Can also be set with the WARP_API_KEY environment variable.
 .PP
 .RS 4
 .nf
-warp workers retrieve 'id' \-\-api\-key "$WARP_API_KEY"
+warp workers get 'id' \-\-api\-key "$WARP_API_KEY"
 .fi
 .RE
 .SH "ENVIRONMENT"
