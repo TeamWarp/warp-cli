@@ -32,7 +32,7 @@
     "./man/warp-benefits-retirement-plans-list.1",
     "./man/warp-benefits-retirement-plans-get.1",
     "./man/warp-benefits-deductions-list.1",
-    "./man/warp-benefits-deductions-get.1",
+    "./man/warp-benefits-deductions-retrieve.1",
     "./man/warp-custom-fields-list.1",
     "./man/warp-custom-fields-create.1",
     "./man/warp-custom-fields-get.1",
