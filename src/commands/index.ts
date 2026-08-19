@@ -263,8 +263,8 @@ const commands = [
   },
   {
     resourcePath: ['benefits', 'deductions'],
-    commandPath: ['benefits:deductions', 'get'],
-    methodName: 'get',
+    commandPath: ['benefits:deductions', 'retrieve'],
+    methodName: 'retrieve',
     summary: 'Get Benefit Deduction',
     description: 'Get the current version of a company benefit deduction by id.',
     transport: 'http',

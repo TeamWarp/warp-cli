@@ -112,7 +112,7 @@ warp benefits:deductions list --api-key "$WARP_API_KEY" --limit 'limit' --status
 Get the current version of a company benefit deduction by id.
 
 ```sh
-warp benefits:deductions get 'id' --api-key "$WARP_API_KEY"
+warp benefits:deductions retrieve 'id' --api-key "$WARP_API_KEY"
 ```
 
 ## `CustomFields`
