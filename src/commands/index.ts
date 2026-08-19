@@ -1147,7 +1147,7 @@ const commands = [
     description: 'Void a previously sent offer. Only sent offers can be voided.',
     transport: 'http',
     iterable: false,
-    callShape: 'options',
+    callShape: 'body',
     positional: [
       {
         name: 'id',
@@ -1158,7 +1158,24 @@ const commands = [
         valueKind: 'object',
       },
     ],
-    flags: [],
+    flags: [
+      {
+        name: 'void-reason',
+        optionKey: 'voidReason',
+        paramKey: 'voidReason',
+        location: 'body',
+        required: true,
+        valueKind: 'string',
+      },
+      {
+        name: 'void-notes',
+        optionKey: 'voidNotes',
+        paramKey: 'voidNotes',
+        location: 'body',
+        required: false,
+        valueKind: 'string',
+      },
+    ],
   },
   {
     resourcePath: ['offers'],

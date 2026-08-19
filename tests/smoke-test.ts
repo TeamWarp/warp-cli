@@ -218,7 +218,7 @@ const cases: { operation: string; method: string; path: string; args: string[] }
     operation: 'void',
     method: 'POST',
     path: '/v1/offers/{id}/void',
-    args: ['offers', 'void', 'id'],
+    args: ['offers', 'void', 'id', '--void-reason', 'candidate_declined'],
   },
 
   {
