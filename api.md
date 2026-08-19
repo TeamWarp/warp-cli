@@ -262,7 +262,7 @@ warpapi offers create --api-key "$WARP_API_KEY" --candidate '{"firstName":{},"la
 Void a previously sent offer. Only sent offers can be voided.
 
 ```sh
-warpapi offers void 'id' --api-key "$WARP_API_KEY"
+warpapi offers void 'id' --api-key "$WARP_API_KEY" --void-reason 'candidate_declined'
 ```
 
 ### Extend Offer Deadline
