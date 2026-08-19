@@ -1,6 +1,6 @@
-# Warp
+# Warp API
 
-This library provides convenient access to the Warp REST API from the command line.
+This library provides convenient access to the Warp API from the command line.
 
 The full API of this library can be found in [api.md](./api.md).
 
@@ -27,7 +27,7 @@ The full API of this library can be found in [api.md](./api.md).
 
 ```sh
 # Homebrew — standalone binary, no Node.js required
-brew install TeamWarp/tap/warp
+brew install TeamWarp/tap/warpapi
 ```
 
 <br />
@@ -35,9 +35,9 @@ brew install TeamWarp/tap/warp
 ## Usage
 
 ```sh
-warp [resource] [command] [flags]
+warpapi [resource] [command] [flags]
 
-warp benefits:health-plans list --api-key "$WARP_API_KEY" --limit 'limit' --statuses '["active"]'
+warpapi benefits:health-plans list --api-key "$WARP_API_KEY" --limit 'limit' --statuses '["active"]'
 ```
 
 The examples in the following sections assume a `client` configured as shown above.
@@ -48,28 +48,28 @@ See the [API reference](./api.md) for every available operation.
 
 ## Shell Completion
 
-`warp completion <shell>` prints a completion script for bash, zsh, and fish. Add the matching line to your shell startup file to complete commands, subcommands, and flags with Tab.
+`warpapi completion <shell>` prints a completion script for bash, zsh, and fish. Add the matching line to your shell startup file to complete commands, subcommands, and flags with Tab.
 
 ```sh
 # bash (~/.bashrc)
-eval "$(warp completion bash)"
+eval "$(warpapi completion bash)"
 
 # zsh (~/.zshrc)
-eval "$(warp completion zsh)"
+eval "$(warpapi completion zsh)"
 
 # fish (~/.config/fish/config.fish)
-warp completion fish | source
+warpapi completion fish | source
 ```
 
 <br />
 
 ## Manual Pages
 
-Installing the package globally also installs man pages. `man warp` lists every command, and each command has its own page named after the command with spaces and `:` replaced by `-`.
+Installing the package globally also installs man pages. `man warpapi` lists every command, and each command has its own page named after the command with spaces and `:` replaced by `-`.
 
 ```sh
-man warp
-man warp-<resource>-<command>
+man warpapi
+man warpapi-<resource>-<command>
 ```
 
 <br />

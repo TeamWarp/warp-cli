@@ -259,12 +259,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst list = await client.benefits.healthPlans.list({\n  limit: 'limit',\n  statuses: ['active'],\n});\n\nconsole.log(list);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst list = await client.benefits.healthPlans.list({\n  limit: 'limit',\n  statuses: ['active'],\n});\n\nconsole.log(list);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nhealth_plan = client.benefits.health_plans.list(\n    limit=\"limit\",\n    statuses=[\"active\"],\n)\n\nprint(health_plan)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nhealth_plan = client.benefits.health_plans.list(\n    limit=\"limit\",\n    statuses=[\"active\"],\n)\n\nprint(health_plan)"
           },
           {
             "lang": "Go",
@@ -274,7 +274,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp benefits:health-plans list --api-key \"$WARP_API_KEY\" --limit 'limit' --statuses '[\"active\"]'"
+            "source": "warpapi benefits:health-plans list --api-key \"$WARP_API_KEY\" --limit 'limit' --statuses '[\"active\"]'"
           }
         ]
       }
@@ -391,12 +391,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst get_ = await client.benefits.healthPlans.get('id');\n\nconsole.log(get_);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst get_ = await client.benefits.healthPlans.get('id');\n\nconsole.log(get_);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nhealth_plan = client.benefits.health_plans.get(\n    id=\"id\",\n)\n\nprint(health_plan)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nhealth_plan = client.benefits.health_plans.get(\n    id=\"id\",\n)\n\nprint(health_plan)"
           },
           {
             "lang": "Go",
@@ -406,7 +406,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp benefits:health-plans get 'id' --api-key \"$WARP_API_KEY\""
+            "source": "warpapi benefits:health-plans get 'id' --api-key \"$WARP_API_KEY\""
           }
         ]
       }
@@ -625,12 +625,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst list = await client.benefits.retirementPlans.list({\n  limit: 'limit',\n  statuses: ['active'],\n});\n\nconsole.log(list);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst list = await client.benefits.retirementPlans.list({\n  limit: 'limit',\n  statuses: ['active'],\n});\n\nconsole.log(list);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nretirement_plan = client.benefits.retirement_plans.list(\n    limit=\"limit\",\n    statuses=[\"active\"],\n)\n\nprint(retirement_plan)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nretirement_plan = client.benefits.retirement_plans.list(\n    limit=\"limit\",\n    statuses=[\"active\"],\n)\n\nprint(retirement_plan)"
           },
           {
             "lang": "Go",
@@ -640,7 +640,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp benefits:retirement-plans list --api-key \"$WARP_API_KEY\" --limit 'limit' --statuses '[\"active\"]'"
+            "source": "warpapi benefits:retirement-plans list --api-key \"$WARP_API_KEY\" --limit 'limit' --statuses '[\"active\"]'"
           }
         ]
       }
@@ -757,12 +757,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst get_ = await client.benefits.retirementPlans.get('id');\n\nconsole.log(get_);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst get_ = await client.benefits.retirementPlans.get('id');\n\nconsole.log(get_);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nretirement_plan = client.benefits.retirement_plans.get(\n    id=\"id\",\n)\n\nprint(retirement_plan)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nretirement_plan = client.benefits.retirement_plans.get(\n    id=\"id\",\n)\n\nprint(retirement_plan)"
           },
           {
             "lang": "Go",
@@ -772,7 +772,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp benefits:retirement-plans get 'id' --api-key \"$WARP_API_KEY\""
+            "source": "warpapi benefits:retirement-plans get 'id' --api-key \"$WARP_API_KEY\""
           }
         ]
       }
@@ -1112,12 +1112,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst list = await client.benefits.deductions.list({\n  limit: 'limit',\n  statuses: ['active'],\n});\n\nconsole.log(list);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst list = await client.benefits.deductions.list({\n  limit: 'limit',\n  statuses: ['active'],\n});\n\nconsole.log(list);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ndeduction = client.benefits.deductions.list(\n    limit=\"limit\",\n    statuses=[\"active\"],\n)\n\nprint(deduction)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ndeduction = client.benefits.deductions.list(\n    limit=\"limit\",\n    statuses=[\"active\"],\n)\n\nprint(deduction)"
           },
           {
             "lang": "Go",
@@ -1127,7 +1127,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp benefits:deductions list --api-key \"$WARP_API_KEY\" --limit 'limit' --statuses '[\"active\"]'"
+            "source": "warpapi benefits:deductions list --api-key \"$WARP_API_KEY\" --limit 'limit' --statuses '[\"active\"]'"
           }
         ]
       }
@@ -1244,12 +1244,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst retrieve = await client.benefits.deductions.retrieve('id');\n\nconsole.log(retrieve);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst get_ = await client.benefits.deductions.get('id');\n\nconsole.log(get_);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ndeduction = client.benefits.deductions.retrieve(\n    id=\"id\",\n)\n\nprint(deduction)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ndeduction = client.benefits.deductions.get(\n    id=\"id\",\n)\n\nprint(deduction)"
           },
           {
             "lang": "Go",
@@ -1259,7 +1259,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp benefits:deductions retrieve 'id' --api-key \"$WARP_API_KEY\""
+            "source": "warpapi benefits:deductions get 'id' --api-key \"$WARP_API_KEY\""
           }
         ]
       }
@@ -1351,12 +1351,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst list = await client.customFields.list();\n\nconsole.log(list);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst list = await client.customFields.list();\n\nconsole.log(list);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ncustom_field = client.custom_fields.list()\n\nprint(custom_field)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ncustom_field = client.custom_fields.list()\n\nprint(custom_field)"
           },
           {
             "lang": "Go",
@@ -1366,7 +1366,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp custom-fields list --api-key \"$WARP_API_KEY\""
+            "source": "warpapi custom-fields list --api-key \"$WARP_API_KEY\""
           }
         ]
       },
@@ -1666,12 +1666,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst create = await client.customFields.create({\n  name: {},\n  type: 'text',\n  category: 'info',\n});\n\nconsole.log(create);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst create = await client.customFields.create({\n  name: {},\n  type: 'text',\n  category: 'info',\n});\n\nconsole.log(create);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ncustom_field = client.custom_fields.create(\n    name={},\n    type=\"text\",\n    category=\"info\",\n)\n\nprint(custom_field)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ncustom_field = client.custom_fields.create(\n    name={},\n    type=\"text\",\n    category=\"info\",\n)\n\nprint(custom_field)"
           },
           {
             "lang": "Go",
@@ -1681,7 +1681,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp custom-fields create --api-key \"$WARP_API_KEY\" --name '{}' --type 'text' --category 'info'"
+            "source": "warpapi custom-fields create --api-key \"$WARP_API_KEY\" --name '{}' --type 'text' --category 'info'"
           }
         ]
       }
@@ -1866,12 +1866,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst get_ = await client.customFields.get('id');\n\nconsole.log(get_);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst get_ = await client.customFields.get('id');\n\nconsole.log(get_);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ncustom_field = client.custom_fields.get(\n    id=\"id\",\n)\n\nprint(custom_field)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ncustom_field = client.custom_fields.get(\n    id=\"id\",\n)\n\nprint(custom_field)"
           },
           {
             "lang": "Go",
@@ -1881,7 +1881,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp custom-fields get 'id' --api-key \"$WARP_API_KEY\""
+            "source": "warpapi custom-fields get 'id' --api-key \"$WARP_API_KEY\""
           }
         ]
       },
@@ -2124,12 +2124,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst objects = await client.customFields.update('id', {});\n\nconsole.log(objects);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst objects = await client.customFields.update('id', {});\n\nconsole.log(objects);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ncustom_field = client.custom_fields.update(\n    id=\"id\",\n)\n\nprint(custom_field)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ncustom_field = client.custom_fields.update(\n    id=\"id\",\n)\n\nprint(custom_field)"
           },
           {
             "lang": "Go",
@@ -2139,7 +2139,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp custom-fields update 'id' --api-key \"$WARP_API_KEY\""
+            "source": "warpapi custom-fields update 'id' --api-key \"$WARP_API_KEY\""
           }
         ]
       }
@@ -2256,12 +2256,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst objects = await client.customFields.archive('id');\n\nconsole.log(objects);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst objects = await client.customFields.archive('id');\n\nconsole.log(objects);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ncustom_field = client.custom_fields.archive(\n    id=\"id\",\n)\n\nprint(custom_field)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ncustom_field = client.custom_fields.archive(\n    id=\"id\",\n)\n\nprint(custom_field)"
           },
           {
             "lang": "Go",
@@ -2271,7 +2271,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp custom-fields archive 'id' --api-key \"$WARP_API_KEY\""
+            "source": "warpapi custom-fields archive 'id' --api-key \"$WARP_API_KEY\""
           }
         ]
       }
@@ -2460,12 +2460,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst createOption = await client.customFields.createOption('id', {\n  label: {},\n  value: {},\n});\n\nconsole.log(createOption);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst createOption = await client.customFields.createOption('id', {\n  label: {},\n  value: {},\n});\n\nconsole.log(createOption);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ncustom_field = client.custom_fields.create_option(\n    id=\"id\",\n    label={},\n    value={},\n)\n\nprint(custom_field)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ncustom_field = client.custom_fields.create_option(\n    id=\"id\",\n    label={},\n    value={},\n)\n\nprint(custom_field)"
           },
           {
             "lang": "Go",
@@ -2475,7 +2475,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp custom-fields create-option 'id' --api-key \"$WARP_API_KEY\" --label '{}' --value '{}'"
+            "source": "warpapi custom-fields create-option 'id' --api-key \"$WARP_API_KEY\" --label '{}' --value '{}'"
           }
         ]
       }
@@ -2660,12 +2660,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst objects3 = await client.customFields.updateOption('id', {});\n\nconsole.log(objects3);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst objects3 = await client.customFields.updateOption('id', {});\n\nconsole.log(objects3);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ncustom_field = client.custom_fields.update_option(\n    id=\"id\",\n)\n\nprint(custom_field)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ncustom_field = client.custom_fields.update_option(\n    id=\"id\",\n)\n\nprint(custom_field)"
           },
           {
             "lang": "Go",
@@ -2675,7 +2675,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp custom-fields update-option 'id' --api-key \"$WARP_API_KEY\""
+            "source": "warpapi custom-fields update-option 'id' --api-key \"$WARP_API_KEY\""
           }
         ]
       },
@@ -2793,12 +2793,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nawait client.customFields.deleteOption('id');"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nawait client.customFields.deleteOption('id');"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nclient.custom_fields.delete_option(\n    id=\"id\",\n)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nclient.custom_fields.delete_option(\n    id=\"id\",\n)"
           },
           {
             "lang": "Go",
@@ -2808,7 +2808,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp custom-fields delete-option 'id' --api-key \"$WARP_API_KEY\""
+            "source": "warpapi custom-fields delete-option 'id' --api-key \"$WARP_API_KEY\""
           }
         ]
       }
@@ -2925,12 +2925,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst objects3 = await client.customFields.archiveOption('id');\n\nconsole.log(objects3);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst objects3 = await client.customFields.archiveOption('id');\n\nconsole.log(objects3);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ncustom_field = client.custom_fields.archive_option(\n    id=\"id\",\n)\n\nprint(custom_field)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ncustom_field = client.custom_fields.archive_option(\n    id=\"id\",\n)\n\nprint(custom_field)"
           },
           {
             "lang": "Go",
@@ -2940,7 +2940,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp custom-fields archive-option 'id' --api-key \"$WARP_API_KEY\""
+            "source": "warpapi custom-fields archive-option 'id' --api-key \"$WARP_API_KEY\""
           }
         ]
       }
@@ -3087,12 +3087,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst listValues = await client.customFields.listValues();\n\nconsole.log(listValues);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst listValues = await client.customFields.listValues();\n\nconsole.log(listValues);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ncustom_field = client.custom_fields.list_values()\n\nprint(custom_field)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ncustom_field = client.custom_fields.list_values()\n\nprint(custom_field)"
           },
           {
             "lang": "Go",
@@ -3102,7 +3102,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp custom-fields list-values --api-key \"$WARP_API_KEY\""
+            "source": "warpapi custom-fields list-values --api-key \"$WARP_API_KEY\""
           }
         ]
       },
@@ -3535,12 +3535,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst upsertValue = await client.customFields.upsertValue({\n  workerId: {},\n  fieldId: {},\n  value: {\n    type: 'text',\n    value: '',\n  },\n});\n\nconsole.log(upsertValue);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst upsertValue = await client.customFields.upsertValue({\n  workerId: {},\n  fieldId: {},\n  value: {\n    type: 'text',\n    value: '',\n  },\n});\n\nconsole.log(upsertValue);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ncustom_field = client.custom_fields.upsert_value(\n    worker_id={},\n    field_id={},\n    value={\"type\": \"text\", \"value\": \"\"},\n)\n\nprint(custom_field)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ncustom_field = client.custom_fields.upsert_value(\n    worker_id={},\n    field_id={},\n    value={\"type\": \"text\", \"value\": \"\"},\n)\n\nprint(custom_field)"
           },
           {
             "lang": "Go",
@@ -3550,7 +3550,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp custom-fields upsert-value --api-key \"$WARP_API_KEY\" --worker-id '{}' --field-id '{}' --value '{\"type\":\"text\",\"value\":\"\"}'"
+            "source": "warpapi custom-fields upsert-value --api-key \"$WARP_API_KEY\" --worker-id '{}' --field-id '{}' --value '{\"type\":\"text\",\"value\":\"\"}'"
           }
         ]
       },
@@ -3682,12 +3682,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nawait client.customFields.clearValue({\n  workerId: {},\n  fieldId: {},\n});"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nawait client.customFields.clearValue({\n  workerId: {},\n  fieldId: {},\n});"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nclient.custom_fields.clear_value(\n    worker_id={},\n    field_id={},\n)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nclient.custom_fields.clear_value(\n    worker_id={},\n    field_id={},\n)"
           },
           {
             "lang": "Go",
@@ -3697,7 +3697,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp custom-fields clear-value --api-key \"$WARP_API_KEY\" --worker-id '{}' --field-id '{}'"
+            "source": "warpapi custom-fields clear-value --api-key \"$WARP_API_KEY\" --worker-id '{}' --field-id '{}'"
           }
         ]
       }
@@ -3869,12 +3869,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst list = await client.departments.list({\n  limit: 'limit',\n});\n\nconsole.log(list);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst list = await client.departments.list({\n  limit: 'limit',\n});\n\nconsole.log(list);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ndepartment = client.departments.list(\n    limit=\"limit\",\n)\n\nprint(department)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ndepartment = client.departments.list(\n    limit=\"limit\",\n)\n\nprint(department)"
           },
           {
             "lang": "Go",
@@ -3884,7 +3884,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp departments list --api-key \"$WARP_API_KEY\" --limit 'limit'"
+            "source": "warpapi departments list --api-key \"$WARP_API_KEY\" --limit 'limit'"
           }
         ]
       },
@@ -4039,12 +4039,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst create = await client.departments.create({\n  name: {},\n});\n\nconsole.log(create);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst create = await client.departments.create({\n  name: {},\n});\n\nconsole.log(create);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ndepartment = client.departments.create(\n    name={},\n)\n\nprint(department)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ndepartment = client.departments.create(\n    name={},\n)\n\nprint(department)"
           },
           {
             "lang": "Go",
@@ -4054,7 +4054,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp departments create --api-key \"$WARP_API_KEY\" --name '{}'"
+            "source": "warpapi departments create --api-key \"$WARP_API_KEY\" --name '{}'"
           }
         ]
       }
@@ -4235,12 +4235,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst update = await client.departments.update('id', {});\n\nconsole.log(update);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst update = await client.departments.update('id', {});\n\nconsole.log(update);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ndepartment = client.departments.update(\n    id=\"id\",\n)\n\nprint(department)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ndepartment = client.departments.update(\n    id=\"id\",\n)\n\nprint(department)"
           },
           {
             "lang": "Go",
@@ -4250,7 +4250,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp departments update 'id' --api-key \"$WARP_API_KEY\""
+            "source": "warpapi departments update 'id' --api-key \"$WARP_API_KEY\""
           }
         ]
       }
@@ -4484,12 +4484,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst list = await client.offers.list({\n  limit: 'limit',\n});\n\nconsole.log(list);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst list = await client.offers.list({\n  limit: 'limit',\n});\n\nconsole.log(list);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\noffer = client.offers.list(\n    limit=\"limit\",\n)\n\nprint(offer)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\noffer = client.offers.list(\n    limit=\"limit\",\n)\n\nprint(offer)"
           },
           {
             "lang": "Go",
@@ -4499,7 +4499,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp offers list --api-key \"$WARP_API_KEY\" --limit 'limit'"
+            "source": "warpapi offers list --api-key \"$WARP_API_KEY\" --limit 'limit'"
           }
         ]
       },
@@ -5490,12 +5490,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst create = await client.offers.create({\n  candidate: {\n    firstName: {},\n    lastName: {},\n    email: {},\n  },\n  position: {\n    title: {},\n    startDate: {},\n  },\n  workerType: 'employee',\n  compensation: {\n    payBasis: 'year',\n    payCurrency: 'USD',\n    payRate: {},\n  },\n});\n\nconsole.log(create);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst create = await client.offers.create({\n  candidate: {\n    firstName: {},\n    lastName: {},\n    email: {},\n  },\n  position: {\n    title: {},\n    startDate: {},\n  },\n  workerType: 'employee',\n  compensation: {\n    payBasis: 'year',\n    payCurrency: 'USD',\n    payRate: {},\n  },\n});\n\nconsole.log(create);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\noffer = client.offers.create(\n    candidate={\"first_name\": {}, \"last_name\": {}, \"email\": {}},\n    position={\"title\": {}, \"start_date\": {}},\n    worker_type=\"employee\",\n    compensation={\"pay_basis\": \"year\", \"pay_currency\": \"USD\", \"pay_rate\": {}},\n)\n\nprint(offer)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\noffer = client.offers.create(\n    candidate={\"first_name\": {}, \"last_name\": {}, \"email\": {}},\n    position={\"title\": {}, \"start_date\": {}},\n    worker_type=\"employee\",\n    compensation={\"pay_basis\": \"year\", \"pay_currency\": \"USD\", \"pay_rate\": {}},\n)\n\nprint(offer)"
           },
           {
             "lang": "Go",
@@ -5505,7 +5505,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp offers create --api-key \"$WARP_API_KEY\" --candidate '{\"firstName\":{},\"lastName\":{},\"email\":{}}' --position '{\"title\":{},\"startDate\":{}}' --worker-type 'employee' --compensation '{\"payBasis\":\"year\",\"payCurrency\":\"USD\",\"payRate\":{}}'"
+            "source": "warpapi offers create --api-key \"$WARP_API_KEY\" --candidate '{\"firstName\":{},\"lastName\":{},\"email\":{}}' --position '{\"title\":{},\"startDate\":{}}' --worker-type 'employee' --compensation '{\"payBasis\":\"year\",\"payCurrency\":\"USD\",\"payRate\":{}}'"
           }
         ]
       }
@@ -5632,12 +5632,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst objects5 = await client.offers.void('id');\n\nconsole.log(objects5);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst objects5 = await client.offers.void('id');\n\nconsole.log(objects5);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\noffer = client.offers.void(\n    id=\"id\",\n)\n\nprint(offer)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\noffer = client.offers.void(\n    id=\"id\",\n)\n\nprint(offer)"
           },
           {
             "lang": "Go",
@@ -5647,7 +5647,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp offers void 'id' --api-key \"$WARP_API_KEY\""
+            "source": "warpapi offers void 'id' --api-key \"$WARP_API_KEY\""
           }
         ]
       }
@@ -5803,12 +5803,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst objects5 = await client.offers.extendDeadline('id', {\n  expirationTime: '',\n});\n\nconsole.log(objects5);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst objects5 = await client.offers.extendDeadline('id', {\n  expirationTime: '',\n});\n\nconsole.log(objects5);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\noffer = client.offers.extend_deadline(\n    id=\"id\",\n    expiration_time=\"\",\n)\n\nprint(offer)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\noffer = client.offers.extend_deadline(\n    id=\"id\",\n    expiration_time=\"\",\n)\n\nprint(offer)"
           },
           {
             "lang": "Go",
@@ -5818,7 +5818,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp offers extend-deadline 'id' --api-key \"$WARP_API_KEY\" --expiration-time 'expirationTime'"
+            "source": "warpapi offers extend-deadline 'id' --api-key \"$WARP_API_KEY\" --expiration-time 'expirationTime'"
           }
         ]
       }
@@ -5945,12 +5945,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst objects5 = await client.offers.resend('id');\n\nconsole.log(objects5);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst objects5 = await client.offers.resend('id');\n\nconsole.log(objects5);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\noffer = client.offers.resend(\n    id=\"id\",\n)\n\nprint(offer)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\noffer = client.offers.resend(\n    id=\"id\",\n)\n\nprint(offer)"
           },
           {
             "lang": "Go",
@@ -5960,7 +5960,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp offers resend 'id' --api-key \"$WARP_API_KEY\""
+            "source": "warpapi offers resend 'id' --api-key \"$WARP_API_KEY\""
           }
         ]
       }
@@ -6216,12 +6216,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst list = await client.payRates.list({\n  limit: 'limit',\n});\n\nconsole.log(list);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst list = await client.payRates.list({\n  limit: 'limit',\n});\n\nconsole.log(list);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\npay_rate = client.pay_rates.list(\n    limit=\"limit\",\n)\n\nprint(pay_rate)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\npay_rate = client.pay_rates.list(\n    limit=\"limit\",\n)\n\nprint(pay_rate)"
           },
           {
             "lang": "Go",
@@ -6231,7 +6231,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp pay-rates list --api-key \"$WARP_API_KEY\" --limit 'limit'"
+            "source": "warpapi pay-rates list --api-key \"$WARP_API_KEY\" --limit 'limit'"
           }
         ]
       }
@@ -6348,12 +6348,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst get_ = await client.payRates.get('id');\n\nconsole.log(get_);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst get_ = await client.payRates.get('id');\n\nconsole.log(get_);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\npay_rate = client.pay_rates.get(\n    id=\"id\",\n)\n\nprint(pay_rate)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\npay_rate = client.pay_rates.get(\n    id=\"id\",\n)\n\nprint(pay_rate)"
           },
           {
             "lang": "Go",
@@ -6363,7 +6363,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp pay-rates get 'id' --api-key \"$WARP_API_KEY\""
+            "source": "warpapi pay-rates get 'id' --api-key \"$WARP_API_KEY\""
           }
         ]
       }
@@ -6544,12 +6544,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst list = await client.timeOff.policies.list({\n  limit: 'limit',\n});\n\nconsole.log(list);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst list = await client.timeOff.policies.list({\n  limit: 'limit',\n});\n\nconsole.log(list);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\npolicy = client.time_off.policies.list(\n    limit=\"limit\",\n)\n\nprint(policy)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\npolicy = client.time_off.policies.list(\n    limit=\"limit\",\n)\n\nprint(policy)"
           },
           {
             "lang": "Go",
@@ -6559,7 +6559,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp time-off:policies list --api-key \"$WARP_API_KEY\" --limit 'limit'"
+            "source": "warpapi time-off:policies list --api-key \"$WARP_API_KEY\" --limit 'limit'"
           }
         ]
       }
@@ -6675,12 +6675,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst get_ = await client.timeOff.policies.get('id');\n\nconsole.log(get_);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst get_ = await client.timeOff.policies.get('id');\n\nconsole.log(get_);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\npolicy = client.time_off.policies.get(\n    id=\"id\",\n)\n\nprint(policy)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\npolicy = client.time_off.policies.get(\n    id=\"id\",\n)\n\nprint(policy)"
           },
           {
             "lang": "Go",
@@ -6690,7 +6690,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp time-off:policies get 'id' --api-key \"$WARP_API_KEY\""
+            "source": "warpapi time-off:policies get 'id' --api-key \"$WARP_API_KEY\""
           }
         ]
       }
@@ -6922,12 +6922,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst listAssignments = await client.timeOff.listAssignments({\n  limit: 'limit',\n});\n\nconsole.log(listAssignments);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst listAssignments = await client.timeOff.listAssignments({\n  limit: 'limit',\n});\n\nconsole.log(listAssignments);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ntime_off = client.time_off.list_assignments(\n    limit=\"limit\",\n)\n\nprint(time_off)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ntime_off = client.time_off.list_assignments(\n    limit=\"limit\",\n)\n\nprint(time_off)"
           },
           {
             "lang": "Go",
@@ -6937,7 +6937,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp time-off list-assignments --api-key \"$WARP_API_KEY\" --limit 'limit'"
+            "source": "warpapi time-off list-assignments --api-key \"$WARP_API_KEY\" --limit 'limit'"
           }
         ]
       }
@@ -7202,12 +7202,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst listBalances = await client.timeOff.listBalances({\n  limit: 'limit',\n});\n\nconsole.log(listBalances);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst listBalances = await client.timeOff.listBalances({\n  limit: 'limit',\n});\n\nconsole.log(listBalances);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ntime_off = client.time_off.list_balances(\n    limit=\"limit\",\n)\n\nprint(time_off)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ntime_off = client.time_off.list_balances(\n    limit=\"limit\",\n)\n\nprint(time_off)"
           },
           {
             "lang": "Go",
@@ -7217,7 +7217,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp time-off list-balances --api-key \"$WARP_API_KEY\" --limit 'limit'"
+            "source": "warpapi time-off list-balances --api-key \"$WARP_API_KEY\" --limit 'limit'"
           }
         ]
       }
@@ -7581,12 +7581,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst listRequests = await client.timeOff.listRequests({\n  limit: 'limit',\n});\n\nconsole.log(listRequests);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst listRequests = await client.timeOff.listRequests({\n  limit: 'limit',\n});\n\nconsole.log(listRequests);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ntime_off = client.time_off.list_requests(\n    limit=\"limit\",\n)\n\nprint(time_off)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\ntime_off = client.time_off.list_requests(\n    limit=\"limit\",\n)\n\nprint(time_off)"
           },
           {
             "lang": "Go",
@@ -7596,7 +7596,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp time-off list-requests --api-key \"$WARP_API_KEY\" --limit 'limit'"
+            "source": "warpapi time-off list-requests --api-key \"$WARP_API_KEY\" --limit 'limit'"
           }
         ]
       }
@@ -7820,12 +7820,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst list = await client.workers.list({\n  limit: 'limit',\n});\n\nconsole.log(list);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst list = await client.workers.list({\n  limit: 'limit',\n});\n\nconsole.log(list);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nworker = client.workers.list(\n    limit=\"limit\",\n)\n\nprint(worker)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nworker = client.workers.list(\n    limit=\"limit\",\n)\n\nprint(worker)"
           },
           {
             "lang": "Go",
@@ -7835,7 +7835,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp workers list --api-key \"$WARP_API_KEY\" --limit 'limit'"
+            "source": "warpapi workers list --api-key \"$WARP_API_KEY\" --limit 'limit'"
           }
         ]
       }
@@ -7952,12 +7952,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst get_ = await client.workers.get('id');\n\nconsole.log(get_);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst get_ = await client.workers.get('id');\n\nconsole.log(get_);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nworker = client.workers.get(\n    id=\"id\",\n)\n\nprint(worker)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nworker = client.workers.get(\n    id=\"id\",\n)\n\nprint(worker)"
           },
           {
             "lang": "Go",
@@ -7967,7 +7967,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp workers get 'id' --api-key \"$WARP_API_KEY\""
+            "source": "warpapi workers get 'id' --api-key \"$WARP_API_KEY\""
           }
         ]
       },
@@ -8085,12 +8085,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nawait client.workers.delete('id');"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nawait client.workers.delete('id');"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nclient.workers.delete(\n    id=\"id\",\n)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nclient.workers.delete(\n    id=\"id\",\n)"
           },
           {
             "lang": "Go",
@@ -8100,7 +8100,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp workers delete 'id' --api-key \"$WARP_API_KEY\""
+            "source": "warpapi workers delete 'id' --api-key \"$WARP_API_KEY\""
           }
         ]
       }
@@ -8598,12 +8598,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst createEmployee = await client.workers.createEmployee({\n  firstName: {},\n  lastName: {},\n  position: {},\n  startDate: {},\n  email: {},\n  departmentId: {},\n  managerId: {},\n  workLocation: {\n    type: 'office',\n    workplaceId: {},\n  },\n  compensation: {\n    amount: {},\n    per: 'hour',\n  },\n});\n\nconsole.log(createEmployee);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst createEmployee = await client.workers.createEmployee({\n  firstName: {},\n  lastName: {},\n  position: {},\n  startDate: {},\n  email: {},\n  departmentId: {},\n  managerId: {},\n  workLocation: {\n    type: 'office',\n    workplaceId: {},\n  },\n  compensation: {\n    amount: {},\n    per: 'hour',\n  },\n});\n\nconsole.log(createEmployee);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nworker = client.workers.create_employee(\n    first_name={},\n    last_name={},\n    position={},\n    start_date={},\n    email={},\n    department_id={},\n    manager_id={},\n    work_location={\"type\": \"office\", \"workplace_id\": {}},\n    compensation={\"amount\": {}, \"per\": \"hour\"},\n)\n\nprint(worker)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nworker = client.workers.create_employee(\n    first_name={},\n    last_name={},\n    position={},\n    start_date={},\n    email={},\n    department_id={},\n    manager_id={},\n    work_location={\"type\": \"office\", \"workplace_id\": {}},\n    compensation={\"amount\": {}, \"per\": \"hour\"},\n)\n\nprint(worker)"
           },
           {
             "lang": "Go",
@@ -8613,7 +8613,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp workers create-employee --api-key \"$WARP_API_KEY\" --first-name '{}' --last-name '{}' --position '{}' --start-date '{}' --email '{}' --department-id '{}' --manager-id '{}' --work-location '{\"type\":\"office\",\"workplaceId\":{}}' --compensation '{\"amount\":{},\"per\":\"hour\"}'"
+            "source": "warpapi workers create-employee --api-key \"$WARP_API_KEY\" --first-name '{}' --last-name '{}' --position '{}' --start-date '{}' --email '{}' --department-id '{}' --manager-id '{}' --work-location '{\"type\":\"office\",\"workplaceId\":{}}' --compensation '{\"amount\":{},\"per\":\"hour\"}'"
           }
         ]
       }
@@ -9418,12 +9418,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst createContractor = await client.workers.createContractor({\n  entityType: 'individual',\n  firstName: {},\n  lastName: {},\n  position: {},\n  startDate: {},\n  email: {},\n  departmentId: {},\n  managerId: {},\n  workCountry: 'AD',\n});\n\nconsole.log(createContractor);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst createContractor = await client.workers.createContractor({\n  entityType: 'individual',\n  firstName: {},\n  lastName: {},\n  position: {},\n  startDate: {},\n  email: {},\n  departmentId: {},\n  managerId: {},\n  workCountry: 'AD',\n});\n\nconsole.log(createContractor);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nworker = client.workers.create_contractor(\n    entity_type=\"individual\",\n    first_name={},\n    last_name={},\n    position={},\n    start_date={},\n    email={},\n    department_id={},\n    manager_id={},\n    work_country=\"AD\",\n)\n\nprint(worker)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nworker = client.workers.create_contractor(\n    entity_type=\"individual\",\n    first_name={},\n    last_name={},\n    position={},\n    start_date={},\n    email={},\n    department_id={},\n    manager_id={},\n    work_country=\"AD\",\n)\n\nprint(worker)"
           },
           {
             "lang": "Go",
@@ -9433,7 +9433,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp workers create-contractor --api-key \"$WARP_API_KEY\" --entity-type 'individual' --first-name '{}' --last-name '{}' --position '{}' --start-date '{}' --email '{}' --department-id '{}' --manager-id '{}' --work-country 'AD'"
+            "source": "warpapi workers create-contractor --api-key \"$WARP_API_KEY\" --entity-type 'individual' --first-name '{}' --last-name '{}' --position '{}' --start-date '{}' --email '{}' --department-id '{}' --manager-id '{}' --work-country 'AD'"
           }
         ]
       }
@@ -9682,12 +9682,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst invite = await client.workers.invite('id');\n\nconsole.log(invite);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst invite = await client.workers.invite('id');\n\nconsole.log(invite);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nworker = client.workers.invite(\n    id=\"id\",\n)\n\nprint(worker)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nworker = client.workers.invite(\n    id=\"id\",\n)\n\nprint(worker)"
           },
           {
             "lang": "Go",
@@ -9697,7 +9697,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp workers invite 'id' --api-key \"$WARP_API_KEY\""
+            "source": "warpapi workers invite 'id' --api-key \"$WARP_API_KEY\""
           }
         ]
       }
@@ -9880,12 +9880,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst list = await client.workplaces.list({\n  limit: 'limit',\n});\n\nconsole.log(list);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst list = await client.workplaces.list({\n  limit: 'limit',\n});\n\nconsole.log(list);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nworkplace = client.workplaces.list(\n    limit=\"limit\",\n)\n\nprint(workplace)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nworkplace = client.workplaces.list(\n    limit=\"limit\",\n)\n\nprint(workplace)"
           },
           {
             "lang": "Go",
@@ -9895,7 +9895,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp workplaces list --api-key \"$WARP_API_KEY\" --limit 'limit'"
+            "source": "warpapi workplaces list --api-key \"$WARP_API_KEY\" --limit 'limit'"
           }
         ]
       },
@@ -10083,12 +10083,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst create = await client.workplaces.create({\n  name: {},\n  type: 'remote',\n  address: {\n    line1: {},\n    city: '',\n    postalCode: '',\n    state: 'AL',\n    country: 'US',\n  },\n});\n\nconsole.log(create);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst create = await client.workplaces.create({\n  name: {},\n  type: 'remote',\n  address: {\n    line1: {},\n    city: '',\n    postalCode: '',\n    state: 'AL',\n    country: 'US',\n  },\n});\n\nconsole.log(create);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nworkplace = client.workplaces.create(\n    name={},\n    type=\"remote\",\n    address={\"line1\": {}, \"city\": \"\", \"postal_code\": \"\", \"state\": \"AL\", \"country\": \"US\"},\n)\n\nprint(workplace)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nworkplace = client.workplaces.create(\n    name={},\n    type=\"remote\",\n    address={\"line1\": {}, \"city\": \"\", \"postal_code\": \"\", \"state\": \"AL\", \"country\": \"US\"},\n)\n\nprint(workplace)"
           },
           {
             "lang": "Go",
@@ -10098,7 +10098,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp workplaces create --api-key \"$WARP_API_KEY\" --name '{}' --type 'remote' --address '{\"line1\":{},\"city\":\"\",\"postalCode\":\"\",\"state\":\"AL\",\"country\":\"US\"}'"
+            "source": "warpapi workplaces create --api-key \"$WARP_API_KEY\" --name '{}' --type 'remote' --address '{\"line1\":{},\"city\":\"\",\"postalCode\":\"\",\"state\":\"AL\",\"country\":\"US\"}'"
           }
         ]
       }
@@ -10290,12 +10290,12 @@
           {
             "lang": "TypeScript",
             "label": "TypeScript",
-            "source": "import Warp from 'warp-hr';\n\nconst client = new Warp({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst update = await client.workplaces.update('id', {});\n\nconsole.log(update);"
+            "source": "import WarpAPI from 'warp-hr';\n\nconst client = new WarpAPI({\n  apiKey: process.env['WARP_API_KEY'], // defaults to the WARP_API_KEY env var\n});\n\nconst update = await client.workplaces.update('id', {});\n\nconsole.log(update);"
           },
           {
             "lang": "Python",
             "label": "Python",
-            "source": "import os\n\nfrom warp_hr import Warp\n\nclient = Warp(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nworkplace = client.workplaces.update(\n    id=\"id\",\n)\n\nprint(workplace)"
+            "source": "import os\n\nfrom warp_hr import WarpAPI\n\nclient = WarpAPI(\n    api_key=os.environ.get(\"WARP_API_KEY\"),\n)\n\nworkplace = client.workplaces.update(\n    id=\"id\",\n)\n\nprint(workplace)"
           },
           {
             "lang": "Go",
@@ -10305,7 +10305,7 @@
           {
             "lang": "Shell",
             "label": "CLI",
-            "source": "warp workplaces update 'id' --api-key \"$WARP_API_KEY\""
+            "source": "warpapi workplaces update 'id' --api-key \"$WARP_API_KEY\""
           }
         ]
       }

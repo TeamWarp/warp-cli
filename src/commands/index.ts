@@ -263,8 +263,8 @@ const commands = [
   },
   {
     resourcePath: ['benefits', 'deductions'],
-    commandPath: ['benefits:deductions', 'retrieve'],
-    methodName: 'retrieve',
+    commandPath: ['benefits:deductions', 'get'],
+    methodName: 'get',
     summary: 'Get Benefit Deduction',
     description: 'Get the current version of a company benefit deduction by id.',
     transport: 'http',
@@ -2175,9 +2175,9 @@ const commands = [
 export const getProgram = (): Command =>
   createProgram({
     SDK,
-    binaryName: 'warp',
+    binaryName: 'warpapi',
     version: '0.1.0', // x-release-please-version
-    description: 'CLI for Warp',
+    description: 'CLI for Warp API',
     defaultFormat: 'auto',
     defaultErrorFormat: 'auto',
     clientOptions,
