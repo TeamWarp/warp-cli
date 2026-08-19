@@ -56,12 +56,12 @@ jobs:
             rm -rf compile-out && mkdir -p compile-out
             case "$target" in
               windows-*)
-                bun build src/bin.ts --compile --minify --target="bun-${target}" --outfile "compile-out/warp.exe"
-                (cd compile-out && zip -q "$ROOT/release-binaries/warp-${target}.zip" "warp.exe")
+                bun build src/bin.ts --compile --minify --target="bun-${target}" --outfile "compile-out/warpapi.exe"
+                (cd compile-out && zip -q "$ROOT/release-binaries/warpapi-${target}.zip" "warpapi.exe")
                 ;;
               *)
-                bun build src/bin.ts --compile --minify --target="bun-${target}" --outfile "compile-out/warp"
-                tar -czf "release-binaries/warp-${target}.tar.gz" -C compile-out "warp"
+                bun build src/bin.ts --compile --minify --target="bun-${target}" --outfile "compile-out/warpapi"
+                tar -czf "release-binaries/warpapi-${target}.tar.gz" -C compile-out "warpapi"
                 ;;
             esac
           done
@@ -90,9 +90,9 @@ jobs:
           # The formula file is lowercase even when the command it installs is not: Homebrew resolves
           # `brew install <owner>/<tap>/<name>` to `Formula/<name>.rb`, and that lookup is case-sensitive
           # on Linux. The `bin.install` below still installs the command under its own spelling.
-          cat > "tap/Formula/warp.rb" <<'EOF'
-          class Warp < Formula
-            desc "warp command-line interface"
+          cat > "tap/Formula/warpapi.rb" <<'EOF'
+          class Warpapi < Formula
+            desc "warpapi command-line interface"
             homepage "https://github.com/TeamWarp/warp-cli"
             version "__VERSION__"
 
@@ -119,19 +119,19 @@ jobs:
             end
 
             def install
-              bin.install "warp"
+              bin.install "warpapi"
             end
 
             test do
-              system "#{bin}/warp", "--help"
+              system "#{bin}/warpapi", "--help"
             end
           end
           EOF
-          FORMULA="tap/Formula/warp.rb"
+          FORMULA="tap/Formula/warpapi.rb"
           # Homebrew resolves one url/sha256 pair per platform at install time, but the formula is a
           # single file, so every platform the tap supports has to be pinned on every release.
           for target in linux-x64 linux-arm64 darwin-x64 darwin-arm64; do
-            ASSET="warp-${target}.tar.gz"
+            ASSET="warpapi-${target}.tar.gz"
             curl -fsSL "$BASE_URL/$ASSET" -o "$ASSET"
             SHA256="$(shasum -a 256 "$ASSET" | cut -d" " -f1)"
             # `darwin-arm64` names the `__URL_DARWIN_ARM64__`/`__SHA_DARWIN_ARM64__` placeholder
@@ -144,6 +144,6 @@ jobs:
           cd tap
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add "Formula/warp.rb"
-          git commit -m "warp ${PKG_VERSION}" || { echo "formula unchanged, skipping"; exit 0; }
+          git add "Formula/warpapi.rb"
+          git commit -m "warpapi ${PKG_VERSION}" || { echo "formula unchanged, skipping"; exit 0; }
           git push

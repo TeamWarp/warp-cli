@@ -69,10 +69,10 @@ const cases: { operation: string; method: string; path: string; args: string[] }
   },
 
   {
-    operation: 'retrieve',
+    operation: 'get',
     method: 'GET',
     path: '/v1/benefits/deductions/{id}',
-    args: ['benefits:deductions', 'retrieve', 'id'],
+    args: ['benefits:deductions', 'get', 'id'],
   },
 
   {
