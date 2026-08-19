@@ -1333,7 +1333,7 @@ const commands = [
         paramKey: 'afterId',
         location: 'query',
         required: false,
-        valueKind: 'string',
+        valueKind: 'object',
       },
       {
         name: 'before-id',
@@ -1341,7 +1341,7 @@ const commands = [
         paramKey: 'beforeId',
         location: 'query',
         required: false,
-        valueKind: 'string',
+        valueKind: 'object',
       },
       {
         name: 'policy-ids',
@@ -1386,7 +1386,7 @@ const commands = [
         paramKey: 'afterId',
         location: 'query',
         required: false,
-        valueKind: 'string',
+        valueKind: 'object',
       },
       {
         name: 'before-id',
@@ -1394,7 +1394,7 @@ const commands = [
         paramKey: 'beforeId',
         location: 'query',
         required: false,
-        valueKind: 'string',
+        valueKind: 'object',
       },
       {
         name: 'policy-ids',
