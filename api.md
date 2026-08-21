@@ -63,6 +63,8 @@ Complete reference of every operation, grouped by resource. See [the README](./R
 
 ### `Benefits HealthPlans`
 
+Read-only health plans, retirement plans, and payroll benefit deductions.
+
 #### List Health Plans
 
 List company health plans. Defaults to active plans. A plan whose effectiveEndDate has elapsed is reported and filtered as terminated.
@@ -80,6 +82,8 @@ warpapi benefits:health-plans get 'id' --api-key "$WARP_API_KEY"
 ```
 
 ### `Benefits RetirementPlans`
+
+Read-only health plans, retirement plans, and payroll benefit deductions.
 
 #### List Retirement Plans
 
@@ -99,6 +103,8 @@ warpapi benefits:retirement-plans get 'id' --api-key "$WARP_API_KEY"
 
 ### `Benefits Deductions`
 
+Read-only health plans, retirement plans, and payroll benefit deductions.
+
 #### List Benefit Deductions
 
 List current payroll benefit deductions. Defaults to active deductions. A deduction whose effectiveEndDate has elapsed is reported and filtered as terminated.
@@ -116,6 +122,8 @@ warpapi benefits:deductions get 'id' --api-key "$WARP_API_KEY"
 ```
 
 ## `CustomFields`
+
+Company-defined custom fields for workers. Field definitions are administered with the workers:custom_fields permission; each field belongs to a worker-data category whose read/write grants govern its values.
 
 ### List Fields
 
@@ -215,6 +223,8 @@ warpapi custom-fields clear-value --api-key "$WARP_API_KEY" --worker-id '{}' --f
 
 ## `Departments`
 
+Endpoints for department management. Create, list, and update departments within your company.
+
 ### List Departments
 
 List all departments for your company.
@@ -240,6 +250,8 @@ warpapi departments update 'id' --api-key "$WARP_API_KEY"
 ```
 
 ## `Offers`
+
+Endpoints for managing candidate offers. Create and send offers, list existing offers, and manage their lifecycle.
 
 ### List Offers
 
@@ -283,6 +295,8 @@ warpapi offers resend 'id' --api-key "$WARP_API_KEY"
 
 ## `PayRates`
 
+Read regular and additional worker pay rates.
+
 ### List Pay Rates
 
 List pay rates visible to the API key. Results may be filtered by worker, effective start date, or regular/additional type. US and global worker rates require their corresponding compensation read scopes.
@@ -300,6 +314,8 @@ warpapi pay-rates get 'id' --api-key "$WARP_API_KEY"
 ```
 
 ## `TimeOff`
+
+Endpoints for worker time off management. See time off requests, which workers are assigned to which policies, or worker remaining balances.
 
 ### List Time Off Assignments
 
@@ -327,6 +343,8 @@ warpapi time-off list-requests --api-key "$WARP_API_KEY" --limit 'limit'
 
 ### `TimeOff Policies`
 
+Endpoints for worker time off management. See time off requests, which workers are assigned to which policies, or worker remaining balances.
+
 #### List Time Off Policies
 
 Get the time off policies for your company
@@ -344,6 +362,8 @@ warpapi time-off:policies get 'id' --api-key "$WARP_API_KEY"
 ```
 
 ## `Workers`
+
+Endpoints for worker management. "Workers" include anyone employed by your company, whether US or international, full-time employees or contractors.
 
 ### List Workers
 
@@ -394,6 +414,8 @@ warpapi workers invite 'id' --api-key "$WARP_API_KEY"
 ```
 
 ## `Workplaces`
+
+Endpoints for workplace management. Create, list, and update workplaces within your company.
 
 ### List Workplaces
 
