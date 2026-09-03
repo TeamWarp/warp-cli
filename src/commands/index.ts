@@ -2228,7 +2228,7 @@ export const getProgram = (): Command =>
   createProgram({
     SDK,
     binaryName: 'warpapi',
-    version: '0.2.0', // x-release-please-version
+    version: '0.4.0', // x-release-please-version
     description: 'CLI for Warp API',
     defaultFormat: 'auto',
     defaultErrorFormat: 'auto',
