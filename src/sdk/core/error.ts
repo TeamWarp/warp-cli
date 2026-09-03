@@ -2,13 +2,13 @@
 
 import { castToError } from '../internal/errors';
 
-export class WarpAPIError extends Error {}
+export class WarpError extends Error {}
 
 export class APIError<
   TStatus extends number | undefined = number | undefined,
   THeaders extends Headers | undefined = Headers | undefined,
   TError extends Object | undefined = Object | undefined,
-> extends WarpAPIError {
+> extends WarpError {
   /** HTTP status for the response that caused the error */
   readonly status: TStatus;
   /** HTTP headers for the response that caused the error */
@@ -24,13 +24,13 @@ export class APIError<
   }
 
   private static makeMessage(status: number | undefined, error: any, message: string | undefined) {
-    const msg =
-      error?.message ?
-        typeof error.message === 'string' ?
-          error.message
+    const msg = error?.message
+      ? typeof error.message === 'string'
+        ? error.message
         : JSON.stringify(error.message)
-      : error ? JSON.stringify(error)
-      : message;
+      : error
+        ? JSON.stringify(error)
+        : message;
 
     if (status && msg) {
       return `${status} ${msg}`;

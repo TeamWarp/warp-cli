@@ -1,4 +1,4 @@
-import { WarpAPIError } from '../../core/error';
+import { WarpError } from '../../core/error';
 
 /**
  * Percent-encode everything that isn't safe to have in a path without encoding safe chars.
@@ -60,7 +60,9 @@ export const createPathTagFunction = (pathEncoder = encodeURIPath) =>
       // Reserved params keep `/` (file-path-like values); everything else uses the default encoder.
       const isReserved = param instanceof ReservedPathParam;
       const value = isReserved ? param.value : param;
-      let encoded = (postPath ? encodeURIComponent : isReserved ? encodeURIPathReserved : pathEncoder)('' + value);
+      let encoded = (postPath ? encodeURIComponent : isReserved ? encodeURIPathReserved : pathEncoder)(
+        '' + value,
+      );
       if (
         index !== params.length &&
         (value == null ||
@@ -106,7 +108,7 @@ export const createPathTagFunction = (pathEncoder = encodeURIPath) =>
         return acc + spaces + arrows;
       }, '');
 
-      throw new WarpAPIError(
+      throw new WarpError(
         `Path parameters result in path with invalid segments:\n${invalidSegments
           .map((e) => e.error)
           .join('\n')}\n${path}\n${underline}`,

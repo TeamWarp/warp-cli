@@ -1,6 +1,6 @@
 import { type RequestOptions } from './request-options';
 import type { FilePropertyBag, Fetch } from './builtin-types';
-import type { WarpAPI } from '../client';
+import type { Warp } from '../client';
 import { ReadableStreamFrom } from './shims';
 
 export type BlobPart = string | ArrayBuffer | ArrayBufferView | Blob | DataView;
@@ -18,9 +18,9 @@ export const checkFileSupport = () => {
       typeof process?.versions?.node === 'string' && parseInt(process.versions.node.split('.')) < 20;
     throw new Error(
       '`File` is not defined as a global, which is required for file uploads.' +
-        (isOldNode ?
-          " Update to Node 20 LTS or newer, or set `globalThis.File` to `import('node:buffer').File`."
-        : ''),
+        (isOldNode
+          ? " Update to Node 20 LTS or newer, or set `globalThis.File` to `import('node:buffer').File`."
+          : ''),
     );
   }
 };
@@ -74,7 +74,7 @@ export const isAsyncIterable = (value: any): value is AsyncIterable<any> =>
  */
 export const maybeMultipartFormRequestOptions = async (
   opts: RequestOptions,
-  fetch: WarpAPI | Fetch,
+  fetch: Warp | Fetch,
 ): Promise<RequestOptions> => {
   if (!hasUploadableValue(opts.body)) return opts;
 
@@ -85,7 +85,7 @@ type MultipartFormRequestOptions = Omit<RequestOptions, 'body'> & { body: unknow
 
 export const multipartFormRequestOptions = async (
   opts: MultipartFormRequestOptions,
-  fetch: WarpAPI | Fetch,
+  fetch: Warp | Fetch,
 ): Promise<RequestOptions> => {
   return { ...opts, body: await createForm(opts.body, fetch) };
 };
@@ -98,7 +98,7 @@ const supportsFormDataMap = /* @__PURE__ */ new WeakMap<Fetch, Promise<boolean>>
  * This function detects if the fetch function provided supports the global FormData object to avoid
  * confusing error messages later on.
  */
-function supportsFormData(fetchObject: WarpAPI | Fetch): Promise<boolean> {
+function supportsFormData(fetchObject: Warp | Fetch): Promise<boolean> {
   const fetch: Fetch = typeof fetchObject === 'function' ? fetchObject : (fetchObject as any).fetch;
   const cached = supportsFormDataMap.get(fetch);
   if (cached) return cached;
@@ -109,9 +109,12 @@ function supportsFormData(fetchObject: WarpAPI | Fetch): Promise<boolean> {
       // exists, so serializing an already-provided File/Blob never triggers an extra fetch (which would
       // otherwise show up as a spurious request to `data:,` before the real API call).
       const FetchResponse = (
-        'Response' in fetch ? fetch.Response
-        : typeof Response !== 'undefined' ? Response
-        : (await fetch('data:,')).constructor) as typeof Response;
+        'Response' in fetch
+          ? fetch.Response
+          : typeof Response !== 'undefined'
+            ? Response
+            : (await fetch('data:,')).constructor
+      ) as typeof Response;
       const data = new FormData();
       if (data.toString() === (await new FetchResponse(data).text())) {
         return false;
@@ -128,7 +131,7 @@ function supportsFormData(fetchObject: WarpAPI | Fetch): Promise<boolean> {
 
 export const createForm = async <T = Record<string, unknown>>(
   body: T | undefined,
-  fetch: WarpAPI | Fetch,
+  fetch: Warp | Fetch,
 ): Promise<FormData> => {
   if (!(await supportsFormData(fetch))) {
     throw new TypeError(

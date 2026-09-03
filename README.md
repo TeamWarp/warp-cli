@@ -1,6 +1,6 @@
-# Warp API
+# warp
 
-This library provides convenient access to the Warp API from the command line.
+This library provides convenient access to the warp REST API from the command line.
 
 The full API of this library can be found in [api.md](./api.md).
 
@@ -11,6 +11,7 @@ The full API of this library can be found in [api.md](./api.md).
 - [Installation](#installation)
 - [Usage](#usage)
 - [API Reference](./api.md)
+- [Shell Completion](#shell-completion)
 - [Manual Pages](#manual-pages)
 - [Authentication](#authentication)
 - [Errors](#errors)
@@ -25,7 +26,8 @@ The full API of this library can be found in [api.md](./api.md).
 ## Installation
 
 ```sh
-npm install -g warpapi-cli
+# Homebrew — standalone binary, no Node.js required
+brew install TeamWarp/tap/warp
 ```
 
 <br />
@@ -33,9 +35,9 @@ npm install -g warpapi-cli
 ## Usage
 
 ```sh
-warpapi [resource] [command] [flags]
+warp [resource] [command] [flags]
 
-warpapi custom-fields list --api-key "$WARP_API_KEY"
+warp benefits:health-plans list --api-key "$WARP_API_KEY" --limit 'limit' --statuses '["active"]'
 ```
 
 The examples in the following sections assume a `client` configured as shown above.
@@ -44,13 +46,30 @@ See the [API reference](./api.md) for every available operation.
 
 <br />
 
-## Manual Pages
+## Shell Completion
 
-Installing the package globally also installs man pages. `man warpapi` lists every command, and each command has its own page named after the command with spaces and `:` replaced by `-`.
+`warp completion <shell>` prints a completion script for bash, zsh, and fish. Add the matching line to your shell startup file to complete commands, subcommands, and flags with Tab.
 
 ```sh
-man warpapi
-man warpapi-<resource>-<command>
+# bash (~/.bashrc)
+eval "$(warp completion bash)"
+
+# zsh (~/.zshrc)
+eval "$(warp completion zsh)"
+
+# fish (~/.config/fish/config.fish)
+warp completion fish | source
+```
+
+<br />
+
+## Manual Pages
+
+Installing the package globally also installs man pages. `man warp` lists every command, and each command has its own page named after the command with spaces and `:` replaced by `-`.
+
+```sh
+man warp
+man warp-<resource>-<command>
 ```
 
 <br />
@@ -71,7 +90,7 @@ Declared schemes:
 
 ## Errors
 
-Non-success responses throw generated API errors. Error objects expose status, headers, response body, and request metadata where the target runtime supports it.
+Failed requests print a structured error to standard error and exit with a status that identifies the failure class. The error body carries the API's own `message` plus a stable `code`, the HTTP `status`, the `requestId`, and — where one applies — an actionable `hint`. Usage errors (exit `2`) are reported as a plain message instead, since no request was made. Exit statuses: `0` success, `1` `error`, `2` `usage`, `10` `auth-failed`, `11` `not-found`, `12` `rate-limited`, `13` `client-error`, `14` `server-error`, `15` `connection-error`.
 
 Documented error statuses: `400`, `401`, `403`, `404`, `409`, `422`, `429`, `500`.
 
@@ -98,11 +117,13 @@ Generated clients support request timeouts and retry temporary failures such as 
 
 ## Helpers
 
-- `--format <format>` — output format: `auto`, `json`, `jsonl`, `pretty`, `raw`, or `yaml`.
-- `--format-error <format>` — error output format: `auto`, `json`, `jsonl`, `pretty`, `raw`, or `yaml`.
+- `--format <format>` — output format: `auto`, `json`, `jsonl`, `pretty`, `raw`, `toon`, or `yaml`.
+- `--format-error <format>` — error output format: `auto`, `json`, `jsonl`, `pretty`, `raw`, `toon`, or `yaml`.
+- `--format toon` — token-efficient structured output for AI agents; uniform lists collapse into one header plus a row per item, with a definitive item count.
 - `--transform <path>` and `--transform-error <path>` — dot-path transform for data/error output.
 - `--raw-output`, `-r` — print transformed string values without JSON quotes.
 - `--max-items <count>` — bound iterator, streaming, and WebSocket command output.
+- Errors carry a stable `code` and an actionable `hint` beside the API's own message, and each failure class exits with its own status: `1` `error`, `2` `usage`, `10` `auth-failed`, `11` `not-found`, `12` `rate-limited`, `13` `client-error`, `14` `server-error`, `15` `connection-error`.
 
 <br />
 
@@ -114,6 +135,6 @@ Generated clients support request timeouts and retry temporary failures such as 
 
 ## Requirements
 
-- Node.js 20 or newer
+- None — the standalone binaries bundle their own runtime.
 
 Powered by Scalar.

@@ -1,16 +1,192 @@
 // File generated from our OpenAPI spec by Scalar. See README.md for details.
 
-export { CustomFields } from "./custom-fields";
-export type { Trimmed, NonEmptyTrimmedString, CustomFieldListResponse, CustomFieldCreateParams, CustomFieldCreateResponse, CustomFieldRetrieveResponse, CustomFieldUpdateParams, CustomFieldUpdateResponse, CustomFieldArchiveResponse, CustomFieldCreateOptionParams, CustomFieldCreateOptionResponse, CustomFieldUpdateOptionParams, CustomFieldUpdateOptionResponse, CustomFieldArchiveOptionResponse, CustomFieldListValuesParams, CustomFieldListValuesResponse, CustomFieldUpsertValueParams, CustomFieldUpsertValueResponse, CustomFieldClearValueParams } from "./custom-fields";
-export { Departments } from "./departments";
-export type { DepartmentListParams, DepartmentListResponse, DepartmentCreateParams, DepartmentCreateResponse, DepartmentUpdateParams, DepartmentUpdateResponse } from "./departments";
-export { Offers } from "./offers";
-export type { Date, OfferListParams, OfferListResponse, OfferCreateParams, OfferCreateResponse, OfferVoidResponse, OfferExtendDeadlineParams, OfferExtendDeadlineResponse, OfferResendResponse } from "./offers";
-export { TimeOff } from "./time-off/time-off";
-export type { TimeOffListAssignmentsParams, TimeOffListAssignmentsResponse, TimeOffListBalancesParams, TimeOffListBalancesResponse, TimeOffListRequestsParams, TimeOffListRequestsResponse } from "./time-off/time-off";
-export { Workers } from "./workers";
-export type { OfficeWorkLocation, RemoteWorkLocation, WorkerListParams, WorkerListResponse, WorkerRetrieveResponse, WorkerCreateEmployeeParams, WorkerCreateEmployeeResponse, WorkerCreateContractorParams, WorkerCreateContractorResponse, WorkerInviteResponse } from "./workers";
-export { Workplaces } from "./workplaces";
-export type { WorkplaceListParams, WorkplaceListResponse, WorkplaceCreateParams, WorkplaceCreateResponse, WorkplaceUpdateParams, WorkplaceUpdateResponse } from "./workplaces";
-export { Webhooks } from "./webhooks";
-export type { TimeOffRequestCreatedWebhookEvent, TimeOffRequestReviewedWebhookEvent, TimeOffRequestDeletedWebhookEvent, TimeOffBalanceAdjustedWebhookEvent, WorkerCreatedWebhookEvent, WorkerUpdatedWebhookEvent, WorkerDeletedWebhookEvent, WorkerInviteSentWebhookEvent, WorkerInviteAcceptedWebhookEvent, WorkerOnboardingCompletedWebhookEvent, WorkerOffboardingStartedWebhookEvent, WorkerOffboardedWebhookEvent, WorkerReactivatedWebhookEvent, OfferCreatedWebhookEvent, OfferSentWebhookEvent, OfferViewedWebhookEvent, OfferAcceptedWebhookEvent, OfferVoidedWebhookEvent, ParsedWebhookEvent } from "./webhooks";
+export { Benefits } from './benefits/benefits';
+export { CustomFields } from './custom-fields';
+export type {
+  PublicCustomFieldValueOutput,
+  TextCustomFieldValue,
+  NumberCustomFieldValue,
+  DateCustomFieldValue,
+  BooleanCustomFieldValue,
+  CurrencyCustomFieldValue,
+  PercentageCustomFieldValue,
+  SelectCustomFieldValue,
+  MultiSelectCustomFieldValue,
+  CustomFieldListResponse,
+  CustomFieldCreateParams,
+  CustomFieldCreateResponse,
+  CustomFieldGetResponse,
+  CustomFieldUpdateParams,
+  CustomFieldUpdateResponse,
+  CustomFieldArchiveResponse,
+  CustomFieldCreateOptionParams,
+  CustomFieldCreateOptionResponse,
+  CustomFieldUpdateOptionParams,
+  CustomFieldUpdateOptionResponse,
+  CustomFieldArchiveOptionResponse,
+  CustomFieldListValuesParams,
+  CustomFieldListValuesResponse,
+  CustomFieldUpsertValueParams,
+  CustomFieldUpsertValueResponse,
+  CustomFieldClearValueParams,
+} from './custom-fields';
+export { Departments } from './departments';
+export type {
+  DepartmentListParams,
+  DepartmentListResponse,
+  DepartmentCreateParams,
+  DepartmentCreateResponse,
+  DepartmentUpdateParams,
+  DepartmentUpdateResponse,
+} from './departments';
+export { Levels } from './levels';
+export type { LevelListResponse } from './levels';
+export { Offers } from './offers';
+export type {
+  PublicMoneyAmount,
+  OfferListParams,
+  OfferListResponse,
+  OfferCreateParams,
+  OfferCreateResponse,
+  OfferVoidParams,
+  OfferVoidResponse,
+  OfferExtendDeadlineParams,
+  OfferExtendDeadlineResponse,
+  OfferResendResponse,
+} from './offers';
+export { PayRates } from './pay-rates';
+export type {
+  PublicPayRate,
+  PublicPayRateType,
+  PublicPayRatePer,
+  PayRateListParams,
+  PayRateListResponse,
+} from './pay-rates';
+export { Payroll } from './payroll';
+export type {
+  PublicPayrollList,
+  PublicPayrollDetail,
+  PublicPaycheckList,
+  PublicPaycheckDetail,
+  PublicPayrollSummary,
+  PublicPayrollType,
+  PublicPayrollSubtype,
+  PublicPayrollStatus,
+  PublicPayrollCurrency,
+  PublicPayPeriod,
+  PublicPayFrequency,
+  PublicPayrollDetailTotals,
+  PublicPayrollFundingMethod,
+  PublicPayrollTimeline,
+  PublicPaycheckSummary,
+  PublicPaycheckPayroll,
+  PublicPaycheckWorker,
+  PublicPaycheckStatus,
+  PublicPaycheckPaymentMethod,
+  PublicPaycheckDetailTotals,
+  PublicExchangeRate,
+  PublicPaycheckEarning,
+  PublicPaycheckReimbursement,
+  PublicPaycheckDeduction,
+  PublicPaycheckBenefit,
+  PublicPaycheckTax,
+  PublicFundingPayrollTotals,
+  PublicCurrencyMoneyAmount11,
+  PublicCurrencyMoneyAmount,
+  PublicCurrencyMoneyAmount1,
+  PublicCurrencyMoneyAmount2,
+  PublicCurrencyMoneyAmount3,
+  PublicCurrencyMoneyAmount4,
+  PublicCurrencyMoneyAmount5,
+  PublicCurrencyMoneyAmount6,
+  PublicCurrencyMoneyAmount7,
+  PublicCurrencyMoneyAmount8,
+  PublicCurrencyMoneyAmount9,
+  PublicCurrencyMoneyAmount10,
+  PublicPaycheckSummaryTotals,
+  PublicPaycheckCurrencyTotals,
+  PublicExchangeRateValue,
+  PublicPayrollMoneyAmount,
+  PublicHourlyRate,
+  PublicPayrollMoneyAmount1,
+  PublicPaycheckDeductionTaxTreatment,
+  PublicPayrollMoneyAmount2,
+  PublicPayrollMoneyAmount3,
+  PublicPayrollMoneyAmount4,
+  PublicTaxPayer,
+  PublicPayrollMoneyAmount5,
+  PublicPaycheckSummaryCurrencyTotals,
+  PublicCurrencyMoneyAmount13,
+  PublicCurrencyMoneyAmount12,
+  PublicCurrencyMoneyAmount14,
+  PublicCurrencyMoneyAmount15,
+  PublicCurrencyMoneyAmount16,
+  PublicCurrencyMoneyAmount17,
+  PublicCurrencyMoneyAmount18,
+  PublicCurrencyMoneyAmount19,
+  PublicCurrencyMoneyAmount20,
+  PublicHourlyRateAmount,
+  PayrollListParams,
+  PayrollListPaychecksParams,
+} from './payroll';
+export { TimeOff } from './time-off/time-off';
+export type {
+  TimeOffListAssignmentsParams,
+  TimeOffListAssignmentsResponse,
+  TimeOffListBalancesParams,
+  TimeOffListBalancesResponse,
+  TimeOffListRequestsParams,
+  TimeOffListRequestsResponse,
+} from './time-off/time-off';
+export { Workers } from './workers';
+export type {
+  PublicWorkerCompensation,
+  PublicWorkerCustomField,
+  PublicTextWorkerCustomField,
+  PublicNumberWorkerCustomField,
+  PublicDateWorkerCustomField,
+  PublicBooleanWorkerCustomField,
+  PublicCurrencyWorkerCustomField,
+  PublicPercentageWorkerCustomField,
+  PublicSelectWorkerCustomField,
+  PublicMultiSelectWorkerCustomField,
+  WorkerListParams,
+  WorkerListResponse,
+  WorkerGetResponse,
+  WorkerCreateEmployeeParams,
+  WorkerCreateEmployeeResponse,
+  WorkerCreateContractorParams,
+  WorkerCreateContractorResponse,
+  WorkerInviteResponse,
+} from './workers';
+export { Workplaces } from './workplaces';
+export type {
+  WorkplaceListParams,
+  WorkplaceListResponse,
+  WorkplaceCreateParams,
+  WorkplaceCreateResponse,
+  WorkplaceUpdateParams,
+  WorkplaceUpdateResponse,
+} from './workplaces';
+export { Webhooks } from './webhooks';
+export type {
+  OfferAcceptedWebhookEvent,
+  OfferCreatedWebhookEvent,
+  OfferSentWebhookEvent,
+  OfferViewedWebhookEvent,
+  OfferVoidedWebhookEvent,
+  TimeOffBalanceAdjustedWebhookEvent,
+  TimeOffRequestCreatedWebhookEvent,
+  TimeOffRequestDeletedWebhookEvent,
+  TimeOffRequestReviewedWebhookEvent,
+  WorkerCreatedWebhookEvent,
+  WorkerDeletedWebhookEvent,
+  WorkerInviteAcceptedWebhookEvent,
+  WorkerInviteSentWebhookEvent,
+  WorkerOffboardedWebhookEvent,
+  WorkerOffboardingStartedWebhookEvent,
+  WorkerOnboardingCompletedWebhookEvent,
+  WorkerReactivatedWebhookEvent,
+  WorkerUpdatedWebhookEvent,
+  ParsedWebhookEvent,
+} from './webhooks';

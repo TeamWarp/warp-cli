@@ -1,26 +1,27 @@
 // File generated from our OpenAPI spec by Scalar. See README.md for details.
 
-import { APIResource } from "../resource";
-import { APIPromise } from "../api-promise";
-import type { RequestOptions } from "../internal/request-options";
-import { path as __scalarPath } from "../internal/utils/path";
-import type * as CustomFieldsAPI from "./custom-fields";
+import { APIResource } from '../resource';
+import { APIPromise } from '../api-promise';
+import type { RequestOptions } from '../internal/request-options';
+import { path as __scalarPath } from '../internal/utils/path';
 
 export class Offers extends APIResource {
   /**
    * List the candidate offers for your company.
    *
-   * @param {OfferListParams} [query] - The parameters to send with the request.
+   * @param {OfferListParams} query - The parameters to send with the request.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
    * @returns {APIPromise<OfferListResponse>} Success
    *
    * @example
    * ```ts
-   * const list = await client.offers.list();
+   * const offer = await client.offers.list({
+   *   limit: 'limit',
+   * });
    * ```
    */
-  list(query: OfferListParams | null | undefined = {}, options?: RequestOptions): APIPromise<OfferListResponse> {
-    return this._client.get("/v1/offers", { query, ...options });
+  list(query: OfferListParams, options?: RequestOptions): APIPromise<OfferListResponse> {
+    return this._client.get('/v1/offers', { query, ...options });
   }
 
   /**
@@ -32,43 +33,46 @@ export class Offers extends APIResource {
    *
    * @example
    * ```ts
-   * const create = await client.offers.create({
+   * const offer = await client.offers.create({
    *   candidate: {
-   *     firstName: "x",
-   *     lastName: "x",
-   *     email: "john@joinwarp.com",
+   *     firstName: 'x',
+   *     lastName: 'x',
+   *     email: 'john@joinwarp.com',
    *   },
    *   position: {
-   *     title: "x",
-   *     startDate: "2000-01-01",
+   *     title: 'x',
+   *     startDate: '',
    *   },
-   *   workerType: "employee",
+   *   workerType: 'employee',
    *   compensation: {
-   *     payBasis: "year",
-   *     payCurrency: "USD",
+   *     payBasis: 'year',
+   *     payCurrency: 'USD',
    *     payRate: 0,
    *   },
    * });
    * ```
    */
   create(body: OfferCreateParams, options?: RequestOptions): APIPromise<OfferCreateResponse> {
-    return this._client.post("/v1/offers", { body, ...options });
+    return this._client.post('/v1/offers', { body, ...options });
   }
 
   /**
    * Void a previously sent offer. Only sent offers can be voided.
    *
    * @param {string} id - The tag of the offer.
+   * @param {OfferVoidParams} body - The request body to send.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
    * @returns {APIPromise<OfferVoidResponse>} Success
    *
    * @example
    * ```ts
-   * const void_ = await client.offers.void("offr_1234");
+   * const offer = await client.offers.void('offr_1234', {
+   *   voidReason: 'candidate_declined',
+   * });
    * ```
    */
-  void(id: string, options?: RequestOptions): APIPromise<OfferVoidResponse> {
-    return this._client.post(__scalarPath`/v1/offers/${id}/void`, options);
+  void(id: string, body: OfferVoidParams, options?: RequestOptions): APIPromise<OfferVoidResponse> {
+    return this._client.post(__scalarPath`/v1/offers/${id}/void`, { body, ...options });
   }
 
   /**
@@ -81,12 +85,16 @@ export class Offers extends APIResource {
    *
    * @example
    * ```ts
-   * const extendDeadline = await client.offers.extendDeadline("offr_1234", {
-   *   expirationTime: "",
+   * const offer = await client.offers.extendDeadline('offr_1234', {
+   *   expirationTime: '',
    * });
    * ```
    */
-  extendDeadline(id: string, body: OfferExtendDeadlineParams, options?: RequestOptions): APIPromise<OfferExtendDeadlineResponse> {
+  extendDeadline(
+    id: string,
+    body: OfferExtendDeadlineParams,
+    options?: RequestOptions,
+  ): APIPromise<OfferExtendDeadlineResponse> {
     return this._client.post(__scalarPath`/v1/offers/${id}/extend-deadline`, { body, ...options });
   }
 
@@ -99,7 +107,7 @@ export class Offers extends APIResource {
    *
    * @example
    * ```ts
-   * const resend = await client.offers.resend("offr_1234");
+   * const offer = await client.offers.resend('offr_1234');
    * ```
    */
   resend(id: string, options?: RequestOptions): APIPromise<OfferResendResponse> {
@@ -108,39 +116,102 @@ export class Offers extends APIResource {
 }
 
 /**
- * a string to be decoded into a Date
+ * A monetary amount with its currency and server-formatted display value.
  */
-export type Date = string;
+export interface PublicMoneyAmount {
+  /**
+   * Amount in the currency base unit, e.g. cents for USD.
+   * @minimum 0
+   */
+  amount: number;
+  currency:
+    | 'USD'
+    | 'AUD'
+    | 'BGN'
+    | 'BRL'
+    | 'CAD'
+    | 'CHF'
+    | 'CZK'
+    | 'DKK'
+    | 'EUR'
+    | 'GBP'
+    | 'HKD'
+    | 'HUF'
+    | 'IDR'
+    | 'INR'
+    | 'JPY'
+    | 'MYR'
+    | 'NOK'
+    | 'NZD'
+    | 'CNY'
+    | 'PLN'
+    | 'RON'
+    | 'TRY'
+    | 'SEK'
+    | 'SGD'
+    | 'AED'
+    | 'ARS'
+    | 'BDT'
+    | 'BWP'
+    | 'CLP'
+    | 'COP'
+    | 'CRC'
+    | 'EGP'
+    | 'FJD'
+    | 'GEL'
+    | 'GHS'
+    | 'ILS'
+    | 'KES'
+    | 'KRW'
+    | 'LKR'
+    | 'MAD'
+    | 'MXN'
+    | 'NPR'
+    | 'PHP'
+    | 'PKR'
+    | 'THB'
+    | 'UAH'
+    | 'UGX'
+    | 'UYU'
+    | 'VND'
+    | 'ZAR'
+    | 'ZMW'
+    | 'TND'
+    | 'NGN'
+    | 'RSD'
+    | 'TWD'
+    | 'GTQ'
+    | 'HNL'
+    | 'DOP'
+    | 'SAR'
+    | 'XAF'
+    | 'PEN';
+  /**
+   * The server-formatted display string for the amount in its currency.
+   */
+  display: string;
+}
 
 export interface OfferListParams {
+  limit: string | null;
   /**
-   * a number less than or equal to 100
-   */
-  limit?: string;
-  /**
-   * The tag of the offer.
    * @pattern ^offr_
    */
-  afterId?: string;
+  afterId?: string | null;
   /**
-   * The tag of the offer.
    * @pattern ^offr_
    */
-  beforeId?: string;
-  statuses?: Array<"draft" | "sent" | "accepted" | "void">;
-  workerTypes?: Array<"employee" | "us_contractor" | "global_contractor">;
+  beforeId?: string | null;
+  statuses?: Array<'draft' | 'sent' | 'accepted' | 'void'> | null;
+  workerTypes?: Array<'employee' | 'us_contractor' | 'global_contractor'> | null;
   /**
-   * An email with a reasonably valid regex (based on RFC 5321 atext characters)
-   * @pattern ^(?!\.)(?!.*\.\.)([a-z0-9!#$%&'*+/=?^_`{|}~\-.]*)[a-z0-9!#$%&'*+/=?^_`{|}~-]@([a-z0-9][a-z0-9-]*\.)+[a-z]{2,}$
+   * @format email
    */
-  candidateEmail?: string;
+  candidateEmail?: string | null;
 }
 
 export interface OfferListResponse {
   hasMore: boolean;
-  /**
-   * an integer
-   */
   count: number;
   data: Array<OfferListResponse.Data>;
 }
@@ -152,11 +223,12 @@ export namespace OfferListResponse {
      * @pattern ^offr_
      */
     id: string;
-    status: "draft" | "sent" | "accepted" | "void";
-    workerType: "employee" | "us_contractor" | "global_contractor";
+    status: 'draft' | 'sent' | 'accepted' | 'void';
+    workerType: 'employee' | 'us_contractor' | 'global_contractor';
     candidate: Data.Candidate;
     position: Data.Position;
     department: Data.Department | null;
+    workplace: Data.Workplace | null;
     manager: Data.Manager | null;
     /**
      * Display name of the person or company that sent the offer. Null for offers not yet sent.
@@ -167,12 +239,13 @@ export namespace OfferListResponse {
      * The candidate-facing offer portal URL. Null for offers that have not been sent.
      */
     offerUrl: string | null;
-    expirationTime: Date | null;
-    lastViewedAt: Date | null;
+    expirationTime: string | null;
+    lastViewedAt: string | null;
+    createdAt: string;
     /**
-     * a string to be decoded into a Date
+     * The offer's job level, or null if unassigned. Omitted when job levels are not enabled.
      */
-    createdAt: Date;
+    level?: Data.Level | null;
   }
 
   export namespace Data {
@@ -181,7 +254,7 @@ export namespace OfferListResponse {
       lastName: string;
       /**
        * An email with a reasonably valid regex (based on RFC 5321 atext characters)
-       * @pattern ^(?!\.)(?!.*\.\.)([a-z0-9!#$%&'*+/=?^_`{|}~\-.]*)[a-z0-9!#$%&'*+/=?^_`{|}~-]@([a-z0-9][a-z0-9-]*\.)+[a-z]{2,}$
+       * @format email
        */
       email: string;
       contractorDetails: Candidate.ContractorDetails | null;
@@ -197,11 +270,260 @@ export namespace OfferListResponse {
     export interface Position {
       title: string;
       /**
-       * A date string in the form YYYY-MM-DD
        * @pattern ^\d{4}-\d{2}-\d{2}$
        */
       startDate: string;
-      country: "AD" | "AE" | "AF" | "AG" | "AI" | "AL" | "AM" | "AO" | "AQ" | "AR" | "AS" | "AT" | "AU" | "AW" | "AX" | "AZ" | "BA" | "BB" | "BD" | "BE" | "BF" | "BG" | "BH" | "BI" | "BJ" | "BL" | "BM" | "BN" | "BO" | "BQ" | "BR" | "BS" | "BT" | "BV" | "BW" | "BY" | "BZ" | "CA" | "CC" | "CD" | "CF" | "CG" | "CH" | "CI" | "CK" | "CL" | "CM" | "CN" | "CO" | "CR" | "CU" | "CV" | "CW" | "CX" | "CY" | "CZ" | "DE" | "DJ" | "DK" | "DM" | "DO" | "DZ" | "EC" | "EE" | "EG" | "EH" | "ER" | "ES" | "ET" | "FI" | "FJ" | "FK" | "FM" | "FO" | "FR" | "GA" | "GB" | "GD" | "GE" | "GF" | "GG" | "GH" | "GI" | "GL" | "GM" | "GN" | "GP" | "GQ" | "GR" | "GS" | "GT" | "GU" | "GW" | "GY" | "HK" | "HM" | "HN" | "HR" | "HT" | "HU" | "ID" | "IE" | "IL" | "IM" | "IN" | "IO" | "IQ" | "IR" | "IS" | "IT" | "JE" | "JM" | "JO" | "JP" | "KE" | "KG" | "KH" | "KI" | "KM" | "KN" | "KP" | "KR" | "KW" | "KY" | "KZ" | "LA" | "LB" | "LC" | "LI" | "LK" | "LR" | "LS" | "LT" | "LU" | "LV" | "LY" | "MA" | "MC" | "MD" | "ME" | "MF" | "MG" | "MH" | "MK" | "ML" | "MM" | "MN" | "MO" | "MP" | "MQ" | "MR" | "MS" | "MT" | "MU" | "MV" | "MW" | "MX" | "MY" | "MZ" | "NA" | "NC" | "NE" | "NF" | "NG" | "NI" | "NL" | "NO" | "NP" | "NR" | "NU" | "NZ" | "OM" | "PA" | "PE" | "PF" | "PG" | "PH" | "PK" | "PL" | "PM" | "PN" | "PR" | "PS" | "PT" | "PW" | "PY" | "QA" | "RE" | "RO" | "RS" | "RU" | "RW" | "SA" | "SB" | "SC" | "SD" | "SE" | "SG" | "SH" | "SI" | "SJ" | "SK" | "SL" | "SM" | "SN" | "SO" | "SR" | "SS" | "ST" | "SV" | "SX" | "SY" | "SZ" | "TC" | "TD" | "TF" | "TG" | "TH" | "TJ" | "TK" | "TL" | "TM" | "TN" | "TO" | "TR" | "TT" | "TV" | "TW" | "TZ" | "UA" | "UG" | "UM" | "US" | "UY" | "UZ" | "VA" | "VC" | "VE" | "VG" | "VI" | "VN" | "VU" | "WF" | "WS" | "XK" | "YE" | "YT" | "ZA" | "ZM" | "ZW";
+      country:
+        | 'AD'
+        | 'AE'
+        | 'AF'
+        | 'AG'
+        | 'AI'
+        | 'AL'
+        | 'AM'
+        | 'AO'
+        | 'AQ'
+        | 'AR'
+        | 'AS'
+        | 'AT'
+        | 'AU'
+        | 'AW'
+        | 'AX'
+        | 'AZ'
+        | 'BA'
+        | 'BB'
+        | 'BD'
+        | 'BE'
+        | 'BF'
+        | 'BG'
+        | 'BH'
+        | 'BI'
+        | 'BJ'
+        | 'BL'
+        | 'BM'
+        | 'BN'
+        | 'BO'
+        | 'BQ'
+        | 'BR'
+        | 'BS'
+        | 'BT'
+        | 'BV'
+        | 'BW'
+        | 'BY'
+        | 'BZ'
+        | 'CA'
+        | 'CC'
+        | 'CD'
+        | 'CF'
+        | 'CG'
+        | 'CH'
+        | 'CI'
+        | 'CK'
+        | 'CL'
+        | 'CM'
+        | 'CN'
+        | 'CO'
+        | 'CR'
+        | 'CU'
+        | 'CV'
+        | 'CW'
+        | 'CX'
+        | 'CY'
+        | 'CZ'
+        | 'DE'
+        | 'DJ'
+        | 'DK'
+        | 'DM'
+        | 'DO'
+        | 'DZ'
+        | 'EC'
+        | 'EE'
+        | 'EG'
+        | 'EH'
+        | 'ER'
+        | 'ES'
+        | 'ET'
+        | 'FI'
+        | 'FJ'
+        | 'FK'
+        | 'FM'
+        | 'FO'
+        | 'FR'
+        | 'GA'
+        | 'GB'
+        | 'GD'
+        | 'GE'
+        | 'GF'
+        | 'GG'
+        | 'GH'
+        | 'GI'
+        | 'GL'
+        | 'GM'
+        | 'GN'
+        | 'GP'
+        | 'GQ'
+        | 'GR'
+        | 'GS'
+        | 'GT'
+        | 'GU'
+        | 'GW'
+        | 'GY'
+        | 'HK'
+        | 'HM'
+        | 'HN'
+        | 'HR'
+        | 'HT'
+        | 'HU'
+        | 'ID'
+        | 'IE'
+        | 'IL'
+        | 'IM'
+        | 'IN'
+        | 'IO'
+        | 'IQ'
+        | 'IR'
+        | 'IS'
+        | 'IT'
+        | 'JE'
+        | 'JM'
+        | 'JO'
+        | 'JP'
+        | 'KE'
+        | 'KG'
+        | 'KH'
+        | 'KI'
+        | 'KM'
+        | 'KN'
+        | 'KP'
+        | 'KR'
+        | 'KW'
+        | 'KY'
+        | 'KZ'
+        | 'LA'
+        | 'LB'
+        | 'LC'
+        | 'LI'
+        | 'LK'
+        | 'LR'
+        | 'LS'
+        | 'LT'
+        | 'LU'
+        | 'LV'
+        | 'LY'
+        | 'MA'
+        | 'MC'
+        | 'MD'
+        | 'ME'
+        | 'MF'
+        | 'MG'
+        | 'MH'
+        | 'MK'
+        | 'ML'
+        | 'MM'
+        | 'MN'
+        | 'MO'
+        | 'MP'
+        | 'MQ'
+        | 'MR'
+        | 'MS'
+        | 'MT'
+        | 'MU'
+        | 'MV'
+        | 'MW'
+        | 'MX'
+        | 'MY'
+        | 'MZ'
+        | 'NA'
+        | 'NC'
+        | 'NE'
+        | 'NF'
+        | 'NG'
+        | 'NI'
+        | 'NL'
+        | 'NO'
+        | 'NP'
+        | 'NR'
+        | 'NU'
+        | 'NZ'
+        | 'OM'
+        | 'PA'
+        | 'PE'
+        | 'PF'
+        | 'PG'
+        | 'PH'
+        | 'PK'
+        | 'PL'
+        | 'PM'
+        | 'PN'
+        | 'PR'
+        | 'PS'
+        | 'PT'
+        | 'PW'
+        | 'PY'
+        | 'QA'
+        | 'RE'
+        | 'RO'
+        | 'RS'
+        | 'RU'
+        | 'RW'
+        | 'SA'
+        | 'SB'
+        | 'SC'
+        | 'SD'
+        | 'SE'
+        | 'SG'
+        | 'SH'
+        | 'SI'
+        | 'SJ'
+        | 'SK'
+        | 'SL'
+        | 'SM'
+        | 'SN'
+        | 'SO'
+        | 'SR'
+        | 'SS'
+        | 'ST'
+        | 'SV'
+        | 'SX'
+        | 'SY'
+        | 'SZ'
+        | 'TC'
+        | 'TD'
+        | 'TF'
+        | 'TG'
+        | 'TH'
+        | 'TJ'
+        | 'TK'
+        | 'TL'
+        | 'TM'
+        | 'TN'
+        | 'TO'
+        | 'TR'
+        | 'TT'
+        | 'TV'
+        | 'TW'
+        | 'TZ'
+        | 'UA'
+        | 'UG'
+        | 'UM'
+        | 'US'
+        | 'UY'
+        | 'UZ'
+        | 'VA'
+        | 'VC'
+        | 'VE'
+        | 'VG'
+        | 'VI'
+        | 'VN'
+        | 'VU'
+        | 'WF'
+        | 'WS'
+        | 'XK'
+        | 'YE'
+        | 'YT'
+        | 'ZA'
+        | 'ZM'
+        | 'ZW';
       scopeOfWork: string | null;
     }
 
@@ -209,6 +531,15 @@ export namespace OfferListResponse {
       /**
        * The unique public id of the department
        * @pattern ^dpt_
+       */
+      id: string;
+      name: string;
+    }
+
+    export interface Workplace {
+      /**
+       * Public workplace identifier
+       * @pattern ^wkp_
        */
       id: string;
       name: string;
@@ -225,76 +556,24 @@ export namespace OfferListResponse {
 
     export interface Compensation {
       basePay: Compensation.BasePay;
-      signOnBonus: Compensation.SignOnBonus | null;
-      relocationBonus: Compensation.RelocationBonus | null;
+      signOnBonus: PublicMoneyAmount | null;
+      relocationBonus: PublicMoneyAmount | null;
       stock: Compensation.Stock | null;
     }
 
     export namespace Compensation {
       export interface BasePay {
-        amount: BasePay.Amount;
-        basis: "year" | "month" | "week" | "hour" | "variable";
-        type: "fixed" | "pay_as_you_go" | null;
-        variableRate: BasePay.VariableRate | null;
-      }
-
-      export namespace BasePay {
-        export interface Amount {
-          /**
-           * Amount in the currency base unit, e.g. cents for USD.
-           * @minimum 0
-           */
-          amount: number;
-          currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
-          /**
-           * The server-formatted display string for the amount in its currency.
-           */
-          display: string;
-        }
-
-        export interface VariableRate {
-          /**
-           * Amount in the currency base unit, e.g. cents for USD.
-           * @minimum 0
-           */
-          amount: number;
-          currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
-          /**
-           * The server-formatted display string for the amount in its currency.
-           */
-          display: string;
-        }
-      }
-
-      export interface SignOnBonus {
         /**
-         * Amount in the currency base unit, e.g. cents for USD.
-         * @minimum 0
+         * A monetary amount with its currency and server-formatted display value.
          */
-        amount: number;
-        currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
-        /**
-         * The server-formatted display string for the amount in its currency.
-         */
-        display: string;
-      }
-
-      export interface RelocationBonus {
-        /**
-         * Amount in the currency base unit, e.g. cents for USD.
-         * @minimum 0
-         */
-        amount: number;
-        currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
-        /**
-         * The server-formatted display string for the amount in its currency.
-         */
-        display: string;
+        amount: PublicMoneyAmount;
+        basis: 'year' | 'month' | 'week' | 'hour' | 'variable';
+        type: 'fixed' | 'pay_as_you_go' | null;
+        variableRate: PublicMoneyAmount | null;
       }
 
       export interface Stock {
         /**
-         * a non-negative number
          * @minimum 0
          */
         options: number;
@@ -308,42 +587,60 @@ export namespace OfferListResponse {
         cliffMonths: number | null;
       }
     }
+
+    export interface Level {
+      /**
+       * The unique public id of the job level
+       * @pattern ^jlvl_
+       */
+      id: string;
+      code: string;
+      name: string;
+      track: 'ic' | 'manager' | 'executive';
+    }
   }
 }
 
 export interface OfferCreateParams {
   candidate: OfferCreateParams.Candidate;
   position: OfferCreateParams.Position;
-  workerType: "employee" | "us_contractor" | "global_contractor";
+  workerType: 'employee' | 'us_contractor' | 'global_contractor';
   compensation: OfferCreateParams.Compensation;
   /**
    * @pattern ^dpt_
    */
   departmentId?: string | null;
   /**
+   * @pattern ^wkp_
+   */
+  workplaceId?: string | null;
+  /**
    * @pattern ^wrk_
    */
   managerId?: string | null;
-  expirationTime?: Date | null;
+  /**
+   * @pattern ^jlvl_
+   */
+  levelId?: string | null;
+  expirationTime?: string | null;
+  backgroundCheckWorkLocation?: OfferCreateParams.BackgroundCheckWorkLocation | null;
 }
 
 export namespace OfferCreateParams {
   export interface Candidate {
     /**
-     * a non empty string
      * @minLength 1
      * @pattern ^\S[\s\S]*\S$|^\S$|^$
      */
-    firstName: CustomFieldsAPI.NonEmptyTrimmedString;
+    firstName: string;
     /**
-     * a non empty string
      * @minLength 1
      * @pattern ^\S[\s\S]*\S$|^\S$|^$
      */
-    lastName: CustomFieldsAPI.NonEmptyTrimmedString;
+    lastName: string;
     /**
      * An email with a reasonably valid regex (based on RFC 5321 atext characters)
-     * @pattern ^(?!\.)(?!.*\.\.)([a-z0-9!#$%&'*+/=?^_`{|}~\-.]*)[a-z0-9!#$%&'*+/=?^_`{|}~-]@([a-z0-9][a-z0-9-]*\.)+[a-z]{2,}$
+     * @format email
      */
     email: string;
     contractorDetails?: Candidate.ContractorDetails | null;
@@ -358,31 +655,335 @@ export namespace OfferCreateParams {
 
   export interface Position {
     /**
-     * a non empty string
      * @minLength 1
      * @pattern ^\S[\s\S]*\S$|^\S$|^$
      */
-    title: CustomFieldsAPI.NonEmptyTrimmedString;
+    title: string;
     /**
-     * A date string in the form YYYY-MM-DD
      * @pattern ^\d{4}-\d{2}-\d{2}$
      */
     startDate: string;
-    /**
-     * Required when workerType is global_contractor. Ignored for employee and us_contractor offers.
-     */
-    country?: "AD" | "AE" | "AF" | "AG" | "AI" | "AL" | "AM" | "AO" | "AQ" | "AR" | "AS" | "AT" | "AU" | "AW" | "AX" | "AZ" | "BA" | "BB" | "BD" | "BE" | "BF" | "BG" | "BH" | "BI" | "BJ" | "BL" | "BM" | "BN" | "BO" | "BQ" | "BR" | "BS" | "BT" | "BV" | "BW" | "BY" | "BZ" | "CA" | "CC" | "CD" | "CF" | "CG" | "CH" | "CI" | "CK" | "CL" | "CM" | "CN" | "CO" | "CR" | "CU" | "CV" | "CW" | "CX" | "CY" | "CZ" | "DE" | "DJ" | "DK" | "DM" | "DO" | "DZ" | "EC" | "EE" | "EG" | "EH" | "ER" | "ES" | "ET" | "FI" | "FJ" | "FK" | "FM" | "FO" | "FR" | "GA" | "GB" | "GD" | "GE" | "GF" | "GG" | "GH" | "GI" | "GL" | "GM" | "GN" | "GP" | "GQ" | "GR" | "GS" | "GT" | "GU" | "GW" | "GY" | "HK" | "HM" | "HN" | "HR" | "HT" | "HU" | "ID" | "IE" | "IL" | "IM" | "IN" | "IO" | "IQ" | "IR" | "IS" | "IT" | "JE" | "JM" | "JO" | "JP" | "KE" | "KG" | "KH" | "KI" | "KM" | "KN" | "KP" | "KR" | "KW" | "KY" | "KZ" | "LA" | "LB" | "LC" | "LI" | "LK" | "LR" | "LS" | "LT" | "LU" | "LV" | "LY" | "MA" | "MC" | "MD" | "ME" | "MF" | "MG" | "MH" | "MK" | "ML" | "MM" | "MN" | "MO" | "MP" | "MQ" | "MR" | "MS" | "MT" | "MU" | "MV" | "MW" | "MX" | "MY" | "MZ" | "NA" | "NC" | "NE" | "NF" | "NG" | "NI" | "NL" | "NO" | "NP" | "NR" | "NU" | "NZ" | "OM" | "PA" | "PE" | "PF" | "PG" | "PH" | "PK" | "PL" | "PM" | "PN" | "PR" | "PS" | "PT" | "PW" | "PY" | "QA" | "RE" | "RO" | "RS" | "RU" | "RW" | "SA" | "SB" | "SC" | "SD" | "SE" | "SG" | "SH" | "SI" | "SJ" | "SK" | "SL" | "SM" | "SN" | "SO" | "SR" | "SS" | "ST" | "SV" | "SX" | "SY" | "SZ" | "TC" | "TD" | "TF" | "TG" | "TH" | "TJ" | "TK" | "TL" | "TM" | "TN" | "TO" | "TR" | "TT" | "TV" | "TW" | "TZ" | "UA" | "UG" | "UM" | "US" | "UY" | "UZ" | "VA" | "VC" | "VE" | "VG" | "VI" | "VN" | "VU" | "WF" | "WS" | "XK" | "YE" | "YT" | "ZA" | "ZM" | "ZW" | null;
+    country?:
+      | 'AD'
+      | 'AE'
+      | 'AF'
+      | 'AG'
+      | 'AI'
+      | 'AL'
+      | 'AM'
+      | 'AO'
+      | 'AQ'
+      | 'AR'
+      | 'AS'
+      | 'AT'
+      | 'AU'
+      | 'AW'
+      | 'AX'
+      | 'AZ'
+      | 'BA'
+      | 'BB'
+      | 'BD'
+      | 'BE'
+      | 'BF'
+      | 'BG'
+      | 'BH'
+      | 'BI'
+      | 'BJ'
+      | 'BL'
+      | 'BM'
+      | 'BN'
+      | 'BO'
+      | 'BQ'
+      | 'BR'
+      | 'BS'
+      | 'BT'
+      | 'BV'
+      | 'BW'
+      | 'BY'
+      | 'BZ'
+      | 'CA'
+      | 'CC'
+      | 'CD'
+      | 'CF'
+      | 'CG'
+      | 'CH'
+      | 'CI'
+      | 'CK'
+      | 'CL'
+      | 'CM'
+      | 'CN'
+      | 'CO'
+      | 'CR'
+      | 'CU'
+      | 'CV'
+      | 'CW'
+      | 'CX'
+      | 'CY'
+      | 'CZ'
+      | 'DE'
+      | 'DJ'
+      | 'DK'
+      | 'DM'
+      | 'DO'
+      | 'DZ'
+      | 'EC'
+      | 'EE'
+      | 'EG'
+      | 'EH'
+      | 'ER'
+      | 'ES'
+      | 'ET'
+      | 'FI'
+      | 'FJ'
+      | 'FK'
+      | 'FM'
+      | 'FO'
+      | 'FR'
+      | 'GA'
+      | 'GB'
+      | 'GD'
+      | 'GE'
+      | 'GF'
+      | 'GG'
+      | 'GH'
+      | 'GI'
+      | 'GL'
+      | 'GM'
+      | 'GN'
+      | 'GP'
+      | 'GQ'
+      | 'GR'
+      | 'GS'
+      | 'GT'
+      | 'GU'
+      | 'GW'
+      | 'GY'
+      | 'HK'
+      | 'HM'
+      | 'HN'
+      | 'HR'
+      | 'HT'
+      | 'HU'
+      | 'ID'
+      | 'IE'
+      | 'IL'
+      | 'IM'
+      | 'IN'
+      | 'IO'
+      | 'IQ'
+      | 'IR'
+      | 'IS'
+      | 'IT'
+      | 'JE'
+      | 'JM'
+      | 'JO'
+      | 'JP'
+      | 'KE'
+      | 'KG'
+      | 'KH'
+      | 'KI'
+      | 'KM'
+      | 'KN'
+      | 'KP'
+      | 'KR'
+      | 'KW'
+      | 'KY'
+      | 'KZ'
+      | 'LA'
+      | 'LB'
+      | 'LC'
+      | 'LI'
+      | 'LK'
+      | 'LR'
+      | 'LS'
+      | 'LT'
+      | 'LU'
+      | 'LV'
+      | 'LY'
+      | 'MA'
+      | 'MC'
+      | 'MD'
+      | 'ME'
+      | 'MF'
+      | 'MG'
+      | 'MH'
+      | 'MK'
+      | 'ML'
+      | 'MM'
+      | 'MN'
+      | 'MO'
+      | 'MP'
+      | 'MQ'
+      | 'MR'
+      | 'MS'
+      | 'MT'
+      | 'MU'
+      | 'MV'
+      | 'MW'
+      | 'MX'
+      | 'MY'
+      | 'MZ'
+      | 'NA'
+      | 'NC'
+      | 'NE'
+      | 'NF'
+      | 'NG'
+      | 'NI'
+      | 'NL'
+      | 'NO'
+      | 'NP'
+      | 'NR'
+      | 'NU'
+      | 'NZ'
+      | 'OM'
+      | 'PA'
+      | 'PE'
+      | 'PF'
+      | 'PG'
+      | 'PH'
+      | 'PK'
+      | 'PL'
+      | 'PM'
+      | 'PN'
+      | 'PR'
+      | 'PS'
+      | 'PT'
+      | 'PW'
+      | 'PY'
+      | 'QA'
+      | 'RE'
+      | 'RO'
+      | 'RS'
+      | 'RU'
+      | 'RW'
+      | 'SA'
+      | 'SB'
+      | 'SC'
+      | 'SD'
+      | 'SE'
+      | 'SG'
+      | 'SH'
+      | 'SI'
+      | 'SJ'
+      | 'SK'
+      | 'SL'
+      | 'SM'
+      | 'SN'
+      | 'SO'
+      | 'SR'
+      | 'SS'
+      | 'ST'
+      | 'SV'
+      | 'SX'
+      | 'SY'
+      | 'SZ'
+      | 'TC'
+      | 'TD'
+      | 'TF'
+      | 'TG'
+      | 'TH'
+      | 'TJ'
+      | 'TK'
+      | 'TL'
+      | 'TM'
+      | 'TN'
+      | 'TO'
+      | 'TR'
+      | 'TT'
+      | 'TV'
+      | 'TW'
+      | 'TZ'
+      | 'UA'
+      | 'UG'
+      | 'UM'
+      | 'US'
+      | 'UY'
+      | 'UZ'
+      | 'VA'
+      | 'VC'
+      | 'VE'
+      | 'VG'
+      | 'VI'
+      | 'VN'
+      | 'VU'
+      | 'WF'
+      | 'WS'
+      | 'XK'
+      | 'YE'
+      | 'YT'
+      | 'ZA'
+      | 'ZM'
+      | 'ZW'
+      | null;
     scopeOfWork?: string | null;
   }
 
   export interface Compensation {
-    payBasis: "year" | "month" | "week" | "hour" | "variable";
-    payCurrency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
-    /**
-     * a positive number
-     */
+    payBasis: 'year' | 'month' | 'week' | 'hour' | 'variable';
+    payCurrency:
+      | 'USD'
+      | 'AUD'
+      | 'BGN'
+      | 'BRL'
+      | 'CAD'
+      | 'CHF'
+      | 'CZK'
+      | 'DKK'
+      | 'EUR'
+      | 'GBP'
+      | 'HKD'
+      | 'HUF'
+      | 'IDR'
+      | 'INR'
+      | 'JPY'
+      | 'MYR'
+      | 'NOK'
+      | 'NZD'
+      | 'CNY'
+      | 'PLN'
+      | 'RON'
+      | 'TRY'
+      | 'SEK'
+      | 'SGD'
+      | 'AED'
+      | 'ARS'
+      | 'BDT'
+      | 'BWP'
+      | 'CLP'
+      | 'COP'
+      | 'CRC'
+      | 'EGP'
+      | 'FJD'
+      | 'GEL'
+      | 'GHS'
+      | 'ILS'
+      | 'KES'
+      | 'KRW'
+      | 'LKR'
+      | 'MAD'
+      | 'MXN'
+      | 'NPR'
+      | 'PHP'
+      | 'PKR'
+      | 'THB'
+      | 'UAH'
+      | 'UGX'
+      | 'UYU'
+      | 'VND'
+      | 'ZAR'
+      | 'ZMW'
+      | 'TND'
+      | 'NGN'
+      | 'RSD'
+      | 'TWD'
+      | 'GTQ'
+      | 'HNL'
+      | 'DOP'
+      | 'SAR'
+      | 'XAF'
+      | 'PEN';
     payRate: number;
-    payType?: "fixed" | "pay_as_you_go" | null;
+    payType?: 'fixed' | 'pay_as_you_go' | null;
     payVariableRate?: number | null;
     signOnBonus?: number | null;
     relocationBonus?: number | null;
@@ -399,6 +1000,12 @@ export namespace OfferCreateParams {
      */
     cliffMonths?: number | null;
   }
+
+  export interface BackgroundCheckWorkLocation {
+    country: string;
+    state: string;
+    city: string;
+  }
 }
 
 export interface OfferCreateResponse {
@@ -407,11 +1014,12 @@ export interface OfferCreateResponse {
    * @pattern ^offr_
    */
   id: string;
-  status: "draft" | "sent" | "accepted" | "void";
-  workerType: "employee" | "us_contractor" | "global_contractor";
+  status: 'draft' | 'sent' | 'accepted' | 'void';
+  workerType: 'employee' | 'us_contractor' | 'global_contractor';
   candidate: OfferCreateResponse.Candidate;
   position: OfferCreateResponse.Position;
   department: OfferCreateResponse.Department | null;
+  workplace: OfferCreateResponse.Workplace | null;
   manager: OfferCreateResponse.Manager | null;
   /**
    * Display name of the person or company that sent the offer. Null for offers not yet sent.
@@ -422,12 +1030,13 @@ export interface OfferCreateResponse {
    * The candidate-facing offer portal URL. Null for offers that have not been sent.
    */
   offerUrl: string | null;
-  expirationTime: Date | null;
-  lastViewedAt: Date | null;
+  expirationTime: string | null;
+  lastViewedAt: string | null;
+  createdAt: string;
   /**
-   * a string to be decoded into a Date
+   * The offer's job level, or null if unassigned. Omitted when job levels are not enabled.
    */
-  createdAt: Date;
+  level?: OfferCreateResponse.Level | null;
 }
 
 export namespace OfferCreateResponse {
@@ -436,7 +1045,7 @@ export namespace OfferCreateResponse {
     lastName: string;
     /**
      * An email with a reasonably valid regex (based on RFC 5321 atext characters)
-     * @pattern ^(?!\.)(?!.*\.\.)([a-z0-9!#$%&'*+/=?^_`{|}~\-.]*)[a-z0-9!#$%&'*+/=?^_`{|}~-]@([a-z0-9][a-z0-9-]*\.)+[a-z]{2,}$
+     * @format email
      */
     email: string;
     contractorDetails: Candidate.ContractorDetails | null;
@@ -452,11 +1061,260 @@ export namespace OfferCreateResponse {
   export interface Position {
     title: string;
     /**
-     * A date string in the form YYYY-MM-DD
      * @pattern ^\d{4}-\d{2}-\d{2}$
      */
     startDate: string;
-    country: "AD" | "AE" | "AF" | "AG" | "AI" | "AL" | "AM" | "AO" | "AQ" | "AR" | "AS" | "AT" | "AU" | "AW" | "AX" | "AZ" | "BA" | "BB" | "BD" | "BE" | "BF" | "BG" | "BH" | "BI" | "BJ" | "BL" | "BM" | "BN" | "BO" | "BQ" | "BR" | "BS" | "BT" | "BV" | "BW" | "BY" | "BZ" | "CA" | "CC" | "CD" | "CF" | "CG" | "CH" | "CI" | "CK" | "CL" | "CM" | "CN" | "CO" | "CR" | "CU" | "CV" | "CW" | "CX" | "CY" | "CZ" | "DE" | "DJ" | "DK" | "DM" | "DO" | "DZ" | "EC" | "EE" | "EG" | "EH" | "ER" | "ES" | "ET" | "FI" | "FJ" | "FK" | "FM" | "FO" | "FR" | "GA" | "GB" | "GD" | "GE" | "GF" | "GG" | "GH" | "GI" | "GL" | "GM" | "GN" | "GP" | "GQ" | "GR" | "GS" | "GT" | "GU" | "GW" | "GY" | "HK" | "HM" | "HN" | "HR" | "HT" | "HU" | "ID" | "IE" | "IL" | "IM" | "IN" | "IO" | "IQ" | "IR" | "IS" | "IT" | "JE" | "JM" | "JO" | "JP" | "KE" | "KG" | "KH" | "KI" | "KM" | "KN" | "KP" | "KR" | "KW" | "KY" | "KZ" | "LA" | "LB" | "LC" | "LI" | "LK" | "LR" | "LS" | "LT" | "LU" | "LV" | "LY" | "MA" | "MC" | "MD" | "ME" | "MF" | "MG" | "MH" | "MK" | "ML" | "MM" | "MN" | "MO" | "MP" | "MQ" | "MR" | "MS" | "MT" | "MU" | "MV" | "MW" | "MX" | "MY" | "MZ" | "NA" | "NC" | "NE" | "NF" | "NG" | "NI" | "NL" | "NO" | "NP" | "NR" | "NU" | "NZ" | "OM" | "PA" | "PE" | "PF" | "PG" | "PH" | "PK" | "PL" | "PM" | "PN" | "PR" | "PS" | "PT" | "PW" | "PY" | "QA" | "RE" | "RO" | "RS" | "RU" | "RW" | "SA" | "SB" | "SC" | "SD" | "SE" | "SG" | "SH" | "SI" | "SJ" | "SK" | "SL" | "SM" | "SN" | "SO" | "SR" | "SS" | "ST" | "SV" | "SX" | "SY" | "SZ" | "TC" | "TD" | "TF" | "TG" | "TH" | "TJ" | "TK" | "TL" | "TM" | "TN" | "TO" | "TR" | "TT" | "TV" | "TW" | "TZ" | "UA" | "UG" | "UM" | "US" | "UY" | "UZ" | "VA" | "VC" | "VE" | "VG" | "VI" | "VN" | "VU" | "WF" | "WS" | "XK" | "YE" | "YT" | "ZA" | "ZM" | "ZW";
+    country:
+      | 'AD'
+      | 'AE'
+      | 'AF'
+      | 'AG'
+      | 'AI'
+      | 'AL'
+      | 'AM'
+      | 'AO'
+      | 'AQ'
+      | 'AR'
+      | 'AS'
+      | 'AT'
+      | 'AU'
+      | 'AW'
+      | 'AX'
+      | 'AZ'
+      | 'BA'
+      | 'BB'
+      | 'BD'
+      | 'BE'
+      | 'BF'
+      | 'BG'
+      | 'BH'
+      | 'BI'
+      | 'BJ'
+      | 'BL'
+      | 'BM'
+      | 'BN'
+      | 'BO'
+      | 'BQ'
+      | 'BR'
+      | 'BS'
+      | 'BT'
+      | 'BV'
+      | 'BW'
+      | 'BY'
+      | 'BZ'
+      | 'CA'
+      | 'CC'
+      | 'CD'
+      | 'CF'
+      | 'CG'
+      | 'CH'
+      | 'CI'
+      | 'CK'
+      | 'CL'
+      | 'CM'
+      | 'CN'
+      | 'CO'
+      | 'CR'
+      | 'CU'
+      | 'CV'
+      | 'CW'
+      | 'CX'
+      | 'CY'
+      | 'CZ'
+      | 'DE'
+      | 'DJ'
+      | 'DK'
+      | 'DM'
+      | 'DO'
+      | 'DZ'
+      | 'EC'
+      | 'EE'
+      | 'EG'
+      | 'EH'
+      | 'ER'
+      | 'ES'
+      | 'ET'
+      | 'FI'
+      | 'FJ'
+      | 'FK'
+      | 'FM'
+      | 'FO'
+      | 'FR'
+      | 'GA'
+      | 'GB'
+      | 'GD'
+      | 'GE'
+      | 'GF'
+      | 'GG'
+      | 'GH'
+      | 'GI'
+      | 'GL'
+      | 'GM'
+      | 'GN'
+      | 'GP'
+      | 'GQ'
+      | 'GR'
+      | 'GS'
+      | 'GT'
+      | 'GU'
+      | 'GW'
+      | 'GY'
+      | 'HK'
+      | 'HM'
+      | 'HN'
+      | 'HR'
+      | 'HT'
+      | 'HU'
+      | 'ID'
+      | 'IE'
+      | 'IL'
+      | 'IM'
+      | 'IN'
+      | 'IO'
+      | 'IQ'
+      | 'IR'
+      | 'IS'
+      | 'IT'
+      | 'JE'
+      | 'JM'
+      | 'JO'
+      | 'JP'
+      | 'KE'
+      | 'KG'
+      | 'KH'
+      | 'KI'
+      | 'KM'
+      | 'KN'
+      | 'KP'
+      | 'KR'
+      | 'KW'
+      | 'KY'
+      | 'KZ'
+      | 'LA'
+      | 'LB'
+      | 'LC'
+      | 'LI'
+      | 'LK'
+      | 'LR'
+      | 'LS'
+      | 'LT'
+      | 'LU'
+      | 'LV'
+      | 'LY'
+      | 'MA'
+      | 'MC'
+      | 'MD'
+      | 'ME'
+      | 'MF'
+      | 'MG'
+      | 'MH'
+      | 'MK'
+      | 'ML'
+      | 'MM'
+      | 'MN'
+      | 'MO'
+      | 'MP'
+      | 'MQ'
+      | 'MR'
+      | 'MS'
+      | 'MT'
+      | 'MU'
+      | 'MV'
+      | 'MW'
+      | 'MX'
+      | 'MY'
+      | 'MZ'
+      | 'NA'
+      | 'NC'
+      | 'NE'
+      | 'NF'
+      | 'NG'
+      | 'NI'
+      | 'NL'
+      | 'NO'
+      | 'NP'
+      | 'NR'
+      | 'NU'
+      | 'NZ'
+      | 'OM'
+      | 'PA'
+      | 'PE'
+      | 'PF'
+      | 'PG'
+      | 'PH'
+      | 'PK'
+      | 'PL'
+      | 'PM'
+      | 'PN'
+      | 'PR'
+      | 'PS'
+      | 'PT'
+      | 'PW'
+      | 'PY'
+      | 'QA'
+      | 'RE'
+      | 'RO'
+      | 'RS'
+      | 'RU'
+      | 'RW'
+      | 'SA'
+      | 'SB'
+      | 'SC'
+      | 'SD'
+      | 'SE'
+      | 'SG'
+      | 'SH'
+      | 'SI'
+      | 'SJ'
+      | 'SK'
+      | 'SL'
+      | 'SM'
+      | 'SN'
+      | 'SO'
+      | 'SR'
+      | 'SS'
+      | 'ST'
+      | 'SV'
+      | 'SX'
+      | 'SY'
+      | 'SZ'
+      | 'TC'
+      | 'TD'
+      | 'TF'
+      | 'TG'
+      | 'TH'
+      | 'TJ'
+      | 'TK'
+      | 'TL'
+      | 'TM'
+      | 'TN'
+      | 'TO'
+      | 'TR'
+      | 'TT'
+      | 'TV'
+      | 'TW'
+      | 'TZ'
+      | 'UA'
+      | 'UG'
+      | 'UM'
+      | 'US'
+      | 'UY'
+      | 'UZ'
+      | 'VA'
+      | 'VC'
+      | 'VE'
+      | 'VG'
+      | 'VI'
+      | 'VN'
+      | 'VU'
+      | 'WF'
+      | 'WS'
+      | 'XK'
+      | 'YE'
+      | 'YT'
+      | 'ZA'
+      | 'ZM'
+      | 'ZW';
     scopeOfWork: string | null;
   }
 
@@ -464,6 +1322,15 @@ export namespace OfferCreateResponse {
     /**
      * The unique public id of the department
      * @pattern ^dpt_
+     */
+    id: string;
+    name: string;
+  }
+
+  export interface Workplace {
+    /**
+     * Public workplace identifier
+     * @pattern ^wkp_
      */
     id: string;
     name: string;
@@ -480,76 +1347,24 @@ export namespace OfferCreateResponse {
 
   export interface Compensation {
     basePay: Compensation.BasePay;
-    signOnBonus: Compensation.SignOnBonus | null;
-    relocationBonus: Compensation.RelocationBonus | null;
+    signOnBonus: PublicMoneyAmount | null;
+    relocationBonus: PublicMoneyAmount | null;
     stock: Compensation.Stock | null;
   }
 
   export namespace Compensation {
     export interface BasePay {
-      amount: BasePay.Amount;
-      basis: "year" | "month" | "week" | "hour" | "variable";
-      type: "fixed" | "pay_as_you_go" | null;
-      variableRate: BasePay.VariableRate | null;
-    }
-
-    export namespace BasePay {
-      export interface Amount {
-        /**
-         * Amount in the currency base unit, e.g. cents for USD.
-         * @minimum 0
-         */
-        amount: number;
-        currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
-        /**
-         * The server-formatted display string for the amount in its currency.
-         */
-        display: string;
-      }
-
-      export interface VariableRate {
-        /**
-         * Amount in the currency base unit, e.g. cents for USD.
-         * @minimum 0
-         */
-        amount: number;
-        currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
-        /**
-         * The server-formatted display string for the amount in its currency.
-         */
-        display: string;
-      }
-    }
-
-    export interface SignOnBonus {
       /**
-       * Amount in the currency base unit, e.g. cents for USD.
-       * @minimum 0
+       * A monetary amount with its currency and server-formatted display value.
        */
-      amount: number;
-      currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
-      /**
-       * The server-formatted display string for the amount in its currency.
-       */
-      display: string;
-    }
-
-    export interface RelocationBonus {
-      /**
-       * Amount in the currency base unit, e.g. cents for USD.
-       * @minimum 0
-       */
-      amount: number;
-      currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
-      /**
-       * The server-formatted display string for the amount in its currency.
-       */
-      display: string;
+      amount: PublicMoneyAmount;
+      basis: 'year' | 'month' | 'week' | 'hour' | 'variable';
+      type: 'fixed' | 'pay_as_you_go' | null;
+      variableRate: PublicMoneyAmount | null;
     }
 
     export interface Stock {
       /**
-       * a non-negative number
        * @minimum 0
        */
       options: number;
@@ -563,6 +1378,22 @@ export namespace OfferCreateResponse {
       cliffMonths: number | null;
     }
   }
+
+  export interface Level {
+    /**
+     * The unique public id of the job level
+     * @pattern ^jlvl_
+     */
+    id: string;
+    code: string;
+    name: string;
+    track: 'ic' | 'manager' | 'executive';
+  }
+}
+
+export interface OfferVoidParams {
+  voidReason: 'candidate_declined' | 'other';
+  voidNotes?: string | null;
 }
 
 export interface OfferVoidResponse {
@@ -571,11 +1402,12 @@ export interface OfferVoidResponse {
    * @pattern ^offr_
    */
   id: string;
-  status: "draft" | "sent" | "accepted" | "void";
-  workerType: "employee" | "us_contractor" | "global_contractor";
+  status: 'draft' | 'sent' | 'accepted' | 'void';
+  workerType: 'employee' | 'us_contractor' | 'global_contractor';
   candidate: OfferVoidResponse.Candidate;
   position: OfferVoidResponse.Position;
   department: OfferVoidResponse.Department | null;
+  workplace: OfferVoidResponse.Workplace | null;
   manager: OfferVoidResponse.Manager | null;
   /**
    * Display name of the person or company that sent the offer. Null for offers not yet sent.
@@ -586,12 +1418,13 @@ export interface OfferVoidResponse {
    * The candidate-facing offer portal URL. Null for offers that have not been sent.
    */
   offerUrl: string | null;
-  expirationTime: Date | null;
-  lastViewedAt: Date | null;
+  expirationTime: string | null;
+  lastViewedAt: string | null;
+  createdAt: string;
   /**
-   * a string to be decoded into a Date
+   * The offer's job level, or null if unassigned. Omitted when job levels are not enabled.
    */
-  createdAt: Date;
+  level?: OfferVoidResponse.Level | null;
 }
 
 export namespace OfferVoidResponse {
@@ -600,7 +1433,7 @@ export namespace OfferVoidResponse {
     lastName: string;
     /**
      * An email with a reasonably valid regex (based on RFC 5321 atext characters)
-     * @pattern ^(?!\.)(?!.*\.\.)([a-z0-9!#$%&'*+/=?^_`{|}~\-.]*)[a-z0-9!#$%&'*+/=?^_`{|}~-]@([a-z0-9][a-z0-9-]*\.)+[a-z]{2,}$
+     * @format email
      */
     email: string;
     contractorDetails: Candidate.ContractorDetails | null;
@@ -616,11 +1449,260 @@ export namespace OfferVoidResponse {
   export interface Position {
     title: string;
     /**
-     * A date string in the form YYYY-MM-DD
      * @pattern ^\d{4}-\d{2}-\d{2}$
      */
     startDate: string;
-    country: "AD" | "AE" | "AF" | "AG" | "AI" | "AL" | "AM" | "AO" | "AQ" | "AR" | "AS" | "AT" | "AU" | "AW" | "AX" | "AZ" | "BA" | "BB" | "BD" | "BE" | "BF" | "BG" | "BH" | "BI" | "BJ" | "BL" | "BM" | "BN" | "BO" | "BQ" | "BR" | "BS" | "BT" | "BV" | "BW" | "BY" | "BZ" | "CA" | "CC" | "CD" | "CF" | "CG" | "CH" | "CI" | "CK" | "CL" | "CM" | "CN" | "CO" | "CR" | "CU" | "CV" | "CW" | "CX" | "CY" | "CZ" | "DE" | "DJ" | "DK" | "DM" | "DO" | "DZ" | "EC" | "EE" | "EG" | "EH" | "ER" | "ES" | "ET" | "FI" | "FJ" | "FK" | "FM" | "FO" | "FR" | "GA" | "GB" | "GD" | "GE" | "GF" | "GG" | "GH" | "GI" | "GL" | "GM" | "GN" | "GP" | "GQ" | "GR" | "GS" | "GT" | "GU" | "GW" | "GY" | "HK" | "HM" | "HN" | "HR" | "HT" | "HU" | "ID" | "IE" | "IL" | "IM" | "IN" | "IO" | "IQ" | "IR" | "IS" | "IT" | "JE" | "JM" | "JO" | "JP" | "KE" | "KG" | "KH" | "KI" | "KM" | "KN" | "KP" | "KR" | "KW" | "KY" | "KZ" | "LA" | "LB" | "LC" | "LI" | "LK" | "LR" | "LS" | "LT" | "LU" | "LV" | "LY" | "MA" | "MC" | "MD" | "ME" | "MF" | "MG" | "MH" | "MK" | "ML" | "MM" | "MN" | "MO" | "MP" | "MQ" | "MR" | "MS" | "MT" | "MU" | "MV" | "MW" | "MX" | "MY" | "MZ" | "NA" | "NC" | "NE" | "NF" | "NG" | "NI" | "NL" | "NO" | "NP" | "NR" | "NU" | "NZ" | "OM" | "PA" | "PE" | "PF" | "PG" | "PH" | "PK" | "PL" | "PM" | "PN" | "PR" | "PS" | "PT" | "PW" | "PY" | "QA" | "RE" | "RO" | "RS" | "RU" | "RW" | "SA" | "SB" | "SC" | "SD" | "SE" | "SG" | "SH" | "SI" | "SJ" | "SK" | "SL" | "SM" | "SN" | "SO" | "SR" | "SS" | "ST" | "SV" | "SX" | "SY" | "SZ" | "TC" | "TD" | "TF" | "TG" | "TH" | "TJ" | "TK" | "TL" | "TM" | "TN" | "TO" | "TR" | "TT" | "TV" | "TW" | "TZ" | "UA" | "UG" | "UM" | "US" | "UY" | "UZ" | "VA" | "VC" | "VE" | "VG" | "VI" | "VN" | "VU" | "WF" | "WS" | "XK" | "YE" | "YT" | "ZA" | "ZM" | "ZW";
+    country:
+      | 'AD'
+      | 'AE'
+      | 'AF'
+      | 'AG'
+      | 'AI'
+      | 'AL'
+      | 'AM'
+      | 'AO'
+      | 'AQ'
+      | 'AR'
+      | 'AS'
+      | 'AT'
+      | 'AU'
+      | 'AW'
+      | 'AX'
+      | 'AZ'
+      | 'BA'
+      | 'BB'
+      | 'BD'
+      | 'BE'
+      | 'BF'
+      | 'BG'
+      | 'BH'
+      | 'BI'
+      | 'BJ'
+      | 'BL'
+      | 'BM'
+      | 'BN'
+      | 'BO'
+      | 'BQ'
+      | 'BR'
+      | 'BS'
+      | 'BT'
+      | 'BV'
+      | 'BW'
+      | 'BY'
+      | 'BZ'
+      | 'CA'
+      | 'CC'
+      | 'CD'
+      | 'CF'
+      | 'CG'
+      | 'CH'
+      | 'CI'
+      | 'CK'
+      | 'CL'
+      | 'CM'
+      | 'CN'
+      | 'CO'
+      | 'CR'
+      | 'CU'
+      | 'CV'
+      | 'CW'
+      | 'CX'
+      | 'CY'
+      | 'CZ'
+      | 'DE'
+      | 'DJ'
+      | 'DK'
+      | 'DM'
+      | 'DO'
+      | 'DZ'
+      | 'EC'
+      | 'EE'
+      | 'EG'
+      | 'EH'
+      | 'ER'
+      | 'ES'
+      | 'ET'
+      | 'FI'
+      | 'FJ'
+      | 'FK'
+      | 'FM'
+      | 'FO'
+      | 'FR'
+      | 'GA'
+      | 'GB'
+      | 'GD'
+      | 'GE'
+      | 'GF'
+      | 'GG'
+      | 'GH'
+      | 'GI'
+      | 'GL'
+      | 'GM'
+      | 'GN'
+      | 'GP'
+      | 'GQ'
+      | 'GR'
+      | 'GS'
+      | 'GT'
+      | 'GU'
+      | 'GW'
+      | 'GY'
+      | 'HK'
+      | 'HM'
+      | 'HN'
+      | 'HR'
+      | 'HT'
+      | 'HU'
+      | 'ID'
+      | 'IE'
+      | 'IL'
+      | 'IM'
+      | 'IN'
+      | 'IO'
+      | 'IQ'
+      | 'IR'
+      | 'IS'
+      | 'IT'
+      | 'JE'
+      | 'JM'
+      | 'JO'
+      | 'JP'
+      | 'KE'
+      | 'KG'
+      | 'KH'
+      | 'KI'
+      | 'KM'
+      | 'KN'
+      | 'KP'
+      | 'KR'
+      | 'KW'
+      | 'KY'
+      | 'KZ'
+      | 'LA'
+      | 'LB'
+      | 'LC'
+      | 'LI'
+      | 'LK'
+      | 'LR'
+      | 'LS'
+      | 'LT'
+      | 'LU'
+      | 'LV'
+      | 'LY'
+      | 'MA'
+      | 'MC'
+      | 'MD'
+      | 'ME'
+      | 'MF'
+      | 'MG'
+      | 'MH'
+      | 'MK'
+      | 'ML'
+      | 'MM'
+      | 'MN'
+      | 'MO'
+      | 'MP'
+      | 'MQ'
+      | 'MR'
+      | 'MS'
+      | 'MT'
+      | 'MU'
+      | 'MV'
+      | 'MW'
+      | 'MX'
+      | 'MY'
+      | 'MZ'
+      | 'NA'
+      | 'NC'
+      | 'NE'
+      | 'NF'
+      | 'NG'
+      | 'NI'
+      | 'NL'
+      | 'NO'
+      | 'NP'
+      | 'NR'
+      | 'NU'
+      | 'NZ'
+      | 'OM'
+      | 'PA'
+      | 'PE'
+      | 'PF'
+      | 'PG'
+      | 'PH'
+      | 'PK'
+      | 'PL'
+      | 'PM'
+      | 'PN'
+      | 'PR'
+      | 'PS'
+      | 'PT'
+      | 'PW'
+      | 'PY'
+      | 'QA'
+      | 'RE'
+      | 'RO'
+      | 'RS'
+      | 'RU'
+      | 'RW'
+      | 'SA'
+      | 'SB'
+      | 'SC'
+      | 'SD'
+      | 'SE'
+      | 'SG'
+      | 'SH'
+      | 'SI'
+      | 'SJ'
+      | 'SK'
+      | 'SL'
+      | 'SM'
+      | 'SN'
+      | 'SO'
+      | 'SR'
+      | 'SS'
+      | 'ST'
+      | 'SV'
+      | 'SX'
+      | 'SY'
+      | 'SZ'
+      | 'TC'
+      | 'TD'
+      | 'TF'
+      | 'TG'
+      | 'TH'
+      | 'TJ'
+      | 'TK'
+      | 'TL'
+      | 'TM'
+      | 'TN'
+      | 'TO'
+      | 'TR'
+      | 'TT'
+      | 'TV'
+      | 'TW'
+      | 'TZ'
+      | 'UA'
+      | 'UG'
+      | 'UM'
+      | 'US'
+      | 'UY'
+      | 'UZ'
+      | 'VA'
+      | 'VC'
+      | 'VE'
+      | 'VG'
+      | 'VI'
+      | 'VN'
+      | 'VU'
+      | 'WF'
+      | 'WS'
+      | 'XK'
+      | 'YE'
+      | 'YT'
+      | 'ZA'
+      | 'ZM'
+      | 'ZW';
     scopeOfWork: string | null;
   }
 
@@ -628,6 +1710,15 @@ export namespace OfferVoidResponse {
     /**
      * The unique public id of the department
      * @pattern ^dpt_
+     */
+    id: string;
+    name: string;
+  }
+
+  export interface Workplace {
+    /**
+     * Public workplace identifier
+     * @pattern ^wkp_
      */
     id: string;
     name: string;
@@ -644,76 +1735,24 @@ export namespace OfferVoidResponse {
 
   export interface Compensation {
     basePay: Compensation.BasePay;
-    signOnBonus: Compensation.SignOnBonus | null;
-    relocationBonus: Compensation.RelocationBonus | null;
+    signOnBonus: PublicMoneyAmount | null;
+    relocationBonus: PublicMoneyAmount | null;
     stock: Compensation.Stock | null;
   }
 
   export namespace Compensation {
     export interface BasePay {
-      amount: BasePay.Amount;
-      basis: "year" | "month" | "week" | "hour" | "variable";
-      type: "fixed" | "pay_as_you_go" | null;
-      variableRate: BasePay.VariableRate | null;
-    }
-
-    export namespace BasePay {
-      export interface Amount {
-        /**
-         * Amount in the currency base unit, e.g. cents for USD.
-         * @minimum 0
-         */
-        amount: number;
-        currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
-        /**
-         * The server-formatted display string for the amount in its currency.
-         */
-        display: string;
-      }
-
-      export interface VariableRate {
-        /**
-         * Amount in the currency base unit, e.g. cents for USD.
-         * @minimum 0
-         */
-        amount: number;
-        currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
-        /**
-         * The server-formatted display string for the amount in its currency.
-         */
-        display: string;
-      }
-    }
-
-    export interface SignOnBonus {
       /**
-       * Amount in the currency base unit, e.g. cents for USD.
-       * @minimum 0
+       * A monetary amount with its currency and server-formatted display value.
        */
-      amount: number;
-      currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
-      /**
-       * The server-formatted display string for the amount in its currency.
-       */
-      display: string;
-    }
-
-    export interface RelocationBonus {
-      /**
-       * Amount in the currency base unit, e.g. cents for USD.
-       * @minimum 0
-       */
-      amount: number;
-      currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
-      /**
-       * The server-formatted display string for the amount in its currency.
-       */
-      display: string;
+      amount: PublicMoneyAmount;
+      basis: 'year' | 'month' | 'week' | 'hour' | 'variable';
+      type: 'fixed' | 'pay_as_you_go' | null;
+      variableRate: PublicMoneyAmount | null;
     }
 
     export interface Stock {
       /**
-       * a non-negative number
        * @minimum 0
        */
       options: number;
@@ -727,13 +1766,21 @@ export namespace OfferVoidResponse {
       cliffMonths: number | null;
     }
   }
+
+  export interface Level {
+    /**
+     * The unique public id of the job level
+     * @pattern ^jlvl_
+     */
+    id: string;
+    code: string;
+    name: string;
+    track: 'ic' | 'manager' | 'executive';
+  }
 }
 
 export interface OfferExtendDeadlineParams {
-  /**
-   * a string to be decoded into a Date
-   */
-  expirationTime: Date;
+  expirationTime: string;
 }
 
 export interface OfferExtendDeadlineResponse {
@@ -742,11 +1789,12 @@ export interface OfferExtendDeadlineResponse {
    * @pattern ^offr_
    */
   id: string;
-  status: "draft" | "sent" | "accepted" | "void";
-  workerType: "employee" | "us_contractor" | "global_contractor";
+  status: 'draft' | 'sent' | 'accepted' | 'void';
+  workerType: 'employee' | 'us_contractor' | 'global_contractor';
   candidate: OfferExtendDeadlineResponse.Candidate;
   position: OfferExtendDeadlineResponse.Position;
   department: OfferExtendDeadlineResponse.Department | null;
+  workplace: OfferExtendDeadlineResponse.Workplace | null;
   manager: OfferExtendDeadlineResponse.Manager | null;
   /**
    * Display name of the person or company that sent the offer. Null for offers not yet sent.
@@ -757,12 +1805,13 @@ export interface OfferExtendDeadlineResponse {
    * The candidate-facing offer portal URL. Null for offers that have not been sent.
    */
   offerUrl: string | null;
-  expirationTime: Date | null;
-  lastViewedAt: Date | null;
+  expirationTime: string | null;
+  lastViewedAt: string | null;
+  createdAt: string;
   /**
-   * a string to be decoded into a Date
+   * The offer's job level, or null if unassigned. Omitted when job levels are not enabled.
    */
-  createdAt: Date;
+  level?: OfferExtendDeadlineResponse.Level | null;
 }
 
 export namespace OfferExtendDeadlineResponse {
@@ -771,7 +1820,7 @@ export namespace OfferExtendDeadlineResponse {
     lastName: string;
     /**
      * An email with a reasonably valid regex (based on RFC 5321 atext characters)
-     * @pattern ^(?!\.)(?!.*\.\.)([a-z0-9!#$%&'*+/=?^_`{|}~\-.]*)[a-z0-9!#$%&'*+/=?^_`{|}~-]@([a-z0-9][a-z0-9-]*\.)+[a-z]{2,}$
+     * @format email
      */
     email: string;
     contractorDetails: Candidate.ContractorDetails | null;
@@ -787,11 +1836,260 @@ export namespace OfferExtendDeadlineResponse {
   export interface Position {
     title: string;
     /**
-     * A date string in the form YYYY-MM-DD
      * @pattern ^\d{4}-\d{2}-\d{2}$
      */
     startDate: string;
-    country: "AD" | "AE" | "AF" | "AG" | "AI" | "AL" | "AM" | "AO" | "AQ" | "AR" | "AS" | "AT" | "AU" | "AW" | "AX" | "AZ" | "BA" | "BB" | "BD" | "BE" | "BF" | "BG" | "BH" | "BI" | "BJ" | "BL" | "BM" | "BN" | "BO" | "BQ" | "BR" | "BS" | "BT" | "BV" | "BW" | "BY" | "BZ" | "CA" | "CC" | "CD" | "CF" | "CG" | "CH" | "CI" | "CK" | "CL" | "CM" | "CN" | "CO" | "CR" | "CU" | "CV" | "CW" | "CX" | "CY" | "CZ" | "DE" | "DJ" | "DK" | "DM" | "DO" | "DZ" | "EC" | "EE" | "EG" | "EH" | "ER" | "ES" | "ET" | "FI" | "FJ" | "FK" | "FM" | "FO" | "FR" | "GA" | "GB" | "GD" | "GE" | "GF" | "GG" | "GH" | "GI" | "GL" | "GM" | "GN" | "GP" | "GQ" | "GR" | "GS" | "GT" | "GU" | "GW" | "GY" | "HK" | "HM" | "HN" | "HR" | "HT" | "HU" | "ID" | "IE" | "IL" | "IM" | "IN" | "IO" | "IQ" | "IR" | "IS" | "IT" | "JE" | "JM" | "JO" | "JP" | "KE" | "KG" | "KH" | "KI" | "KM" | "KN" | "KP" | "KR" | "KW" | "KY" | "KZ" | "LA" | "LB" | "LC" | "LI" | "LK" | "LR" | "LS" | "LT" | "LU" | "LV" | "LY" | "MA" | "MC" | "MD" | "ME" | "MF" | "MG" | "MH" | "MK" | "ML" | "MM" | "MN" | "MO" | "MP" | "MQ" | "MR" | "MS" | "MT" | "MU" | "MV" | "MW" | "MX" | "MY" | "MZ" | "NA" | "NC" | "NE" | "NF" | "NG" | "NI" | "NL" | "NO" | "NP" | "NR" | "NU" | "NZ" | "OM" | "PA" | "PE" | "PF" | "PG" | "PH" | "PK" | "PL" | "PM" | "PN" | "PR" | "PS" | "PT" | "PW" | "PY" | "QA" | "RE" | "RO" | "RS" | "RU" | "RW" | "SA" | "SB" | "SC" | "SD" | "SE" | "SG" | "SH" | "SI" | "SJ" | "SK" | "SL" | "SM" | "SN" | "SO" | "SR" | "SS" | "ST" | "SV" | "SX" | "SY" | "SZ" | "TC" | "TD" | "TF" | "TG" | "TH" | "TJ" | "TK" | "TL" | "TM" | "TN" | "TO" | "TR" | "TT" | "TV" | "TW" | "TZ" | "UA" | "UG" | "UM" | "US" | "UY" | "UZ" | "VA" | "VC" | "VE" | "VG" | "VI" | "VN" | "VU" | "WF" | "WS" | "XK" | "YE" | "YT" | "ZA" | "ZM" | "ZW";
+    country:
+      | 'AD'
+      | 'AE'
+      | 'AF'
+      | 'AG'
+      | 'AI'
+      | 'AL'
+      | 'AM'
+      | 'AO'
+      | 'AQ'
+      | 'AR'
+      | 'AS'
+      | 'AT'
+      | 'AU'
+      | 'AW'
+      | 'AX'
+      | 'AZ'
+      | 'BA'
+      | 'BB'
+      | 'BD'
+      | 'BE'
+      | 'BF'
+      | 'BG'
+      | 'BH'
+      | 'BI'
+      | 'BJ'
+      | 'BL'
+      | 'BM'
+      | 'BN'
+      | 'BO'
+      | 'BQ'
+      | 'BR'
+      | 'BS'
+      | 'BT'
+      | 'BV'
+      | 'BW'
+      | 'BY'
+      | 'BZ'
+      | 'CA'
+      | 'CC'
+      | 'CD'
+      | 'CF'
+      | 'CG'
+      | 'CH'
+      | 'CI'
+      | 'CK'
+      | 'CL'
+      | 'CM'
+      | 'CN'
+      | 'CO'
+      | 'CR'
+      | 'CU'
+      | 'CV'
+      | 'CW'
+      | 'CX'
+      | 'CY'
+      | 'CZ'
+      | 'DE'
+      | 'DJ'
+      | 'DK'
+      | 'DM'
+      | 'DO'
+      | 'DZ'
+      | 'EC'
+      | 'EE'
+      | 'EG'
+      | 'EH'
+      | 'ER'
+      | 'ES'
+      | 'ET'
+      | 'FI'
+      | 'FJ'
+      | 'FK'
+      | 'FM'
+      | 'FO'
+      | 'FR'
+      | 'GA'
+      | 'GB'
+      | 'GD'
+      | 'GE'
+      | 'GF'
+      | 'GG'
+      | 'GH'
+      | 'GI'
+      | 'GL'
+      | 'GM'
+      | 'GN'
+      | 'GP'
+      | 'GQ'
+      | 'GR'
+      | 'GS'
+      | 'GT'
+      | 'GU'
+      | 'GW'
+      | 'GY'
+      | 'HK'
+      | 'HM'
+      | 'HN'
+      | 'HR'
+      | 'HT'
+      | 'HU'
+      | 'ID'
+      | 'IE'
+      | 'IL'
+      | 'IM'
+      | 'IN'
+      | 'IO'
+      | 'IQ'
+      | 'IR'
+      | 'IS'
+      | 'IT'
+      | 'JE'
+      | 'JM'
+      | 'JO'
+      | 'JP'
+      | 'KE'
+      | 'KG'
+      | 'KH'
+      | 'KI'
+      | 'KM'
+      | 'KN'
+      | 'KP'
+      | 'KR'
+      | 'KW'
+      | 'KY'
+      | 'KZ'
+      | 'LA'
+      | 'LB'
+      | 'LC'
+      | 'LI'
+      | 'LK'
+      | 'LR'
+      | 'LS'
+      | 'LT'
+      | 'LU'
+      | 'LV'
+      | 'LY'
+      | 'MA'
+      | 'MC'
+      | 'MD'
+      | 'ME'
+      | 'MF'
+      | 'MG'
+      | 'MH'
+      | 'MK'
+      | 'ML'
+      | 'MM'
+      | 'MN'
+      | 'MO'
+      | 'MP'
+      | 'MQ'
+      | 'MR'
+      | 'MS'
+      | 'MT'
+      | 'MU'
+      | 'MV'
+      | 'MW'
+      | 'MX'
+      | 'MY'
+      | 'MZ'
+      | 'NA'
+      | 'NC'
+      | 'NE'
+      | 'NF'
+      | 'NG'
+      | 'NI'
+      | 'NL'
+      | 'NO'
+      | 'NP'
+      | 'NR'
+      | 'NU'
+      | 'NZ'
+      | 'OM'
+      | 'PA'
+      | 'PE'
+      | 'PF'
+      | 'PG'
+      | 'PH'
+      | 'PK'
+      | 'PL'
+      | 'PM'
+      | 'PN'
+      | 'PR'
+      | 'PS'
+      | 'PT'
+      | 'PW'
+      | 'PY'
+      | 'QA'
+      | 'RE'
+      | 'RO'
+      | 'RS'
+      | 'RU'
+      | 'RW'
+      | 'SA'
+      | 'SB'
+      | 'SC'
+      | 'SD'
+      | 'SE'
+      | 'SG'
+      | 'SH'
+      | 'SI'
+      | 'SJ'
+      | 'SK'
+      | 'SL'
+      | 'SM'
+      | 'SN'
+      | 'SO'
+      | 'SR'
+      | 'SS'
+      | 'ST'
+      | 'SV'
+      | 'SX'
+      | 'SY'
+      | 'SZ'
+      | 'TC'
+      | 'TD'
+      | 'TF'
+      | 'TG'
+      | 'TH'
+      | 'TJ'
+      | 'TK'
+      | 'TL'
+      | 'TM'
+      | 'TN'
+      | 'TO'
+      | 'TR'
+      | 'TT'
+      | 'TV'
+      | 'TW'
+      | 'TZ'
+      | 'UA'
+      | 'UG'
+      | 'UM'
+      | 'US'
+      | 'UY'
+      | 'UZ'
+      | 'VA'
+      | 'VC'
+      | 'VE'
+      | 'VG'
+      | 'VI'
+      | 'VN'
+      | 'VU'
+      | 'WF'
+      | 'WS'
+      | 'XK'
+      | 'YE'
+      | 'YT'
+      | 'ZA'
+      | 'ZM'
+      | 'ZW';
     scopeOfWork: string | null;
   }
 
@@ -799,6 +2097,15 @@ export namespace OfferExtendDeadlineResponse {
     /**
      * The unique public id of the department
      * @pattern ^dpt_
+     */
+    id: string;
+    name: string;
+  }
+
+  export interface Workplace {
+    /**
+     * Public workplace identifier
+     * @pattern ^wkp_
      */
     id: string;
     name: string;
@@ -815,76 +2122,24 @@ export namespace OfferExtendDeadlineResponse {
 
   export interface Compensation {
     basePay: Compensation.BasePay;
-    signOnBonus: Compensation.SignOnBonus | null;
-    relocationBonus: Compensation.RelocationBonus | null;
+    signOnBonus: PublicMoneyAmount | null;
+    relocationBonus: PublicMoneyAmount | null;
     stock: Compensation.Stock | null;
   }
 
   export namespace Compensation {
     export interface BasePay {
-      amount: BasePay.Amount;
-      basis: "year" | "month" | "week" | "hour" | "variable";
-      type: "fixed" | "pay_as_you_go" | null;
-      variableRate: BasePay.VariableRate | null;
-    }
-
-    export namespace BasePay {
-      export interface Amount {
-        /**
-         * Amount in the currency base unit, e.g. cents for USD.
-         * @minimum 0
-         */
-        amount: number;
-        currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
-        /**
-         * The server-formatted display string for the amount in its currency.
-         */
-        display: string;
-      }
-
-      export interface VariableRate {
-        /**
-         * Amount in the currency base unit, e.g. cents for USD.
-         * @minimum 0
-         */
-        amount: number;
-        currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
-        /**
-         * The server-formatted display string for the amount in its currency.
-         */
-        display: string;
-      }
-    }
-
-    export interface SignOnBonus {
       /**
-       * Amount in the currency base unit, e.g. cents for USD.
-       * @minimum 0
+       * A monetary amount with its currency and server-formatted display value.
        */
-      amount: number;
-      currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
-      /**
-       * The server-formatted display string for the amount in its currency.
-       */
-      display: string;
-    }
-
-    export interface RelocationBonus {
-      /**
-       * Amount in the currency base unit, e.g. cents for USD.
-       * @minimum 0
-       */
-      amount: number;
-      currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
-      /**
-       * The server-formatted display string for the amount in its currency.
-       */
-      display: string;
+      amount: PublicMoneyAmount;
+      basis: 'year' | 'month' | 'week' | 'hour' | 'variable';
+      type: 'fixed' | 'pay_as_you_go' | null;
+      variableRate: PublicMoneyAmount | null;
     }
 
     export interface Stock {
       /**
-       * a non-negative number
        * @minimum 0
        */
       options: number;
@@ -898,6 +2153,17 @@ export namespace OfferExtendDeadlineResponse {
       cliffMonths: number | null;
     }
   }
+
+  export interface Level {
+    /**
+     * The unique public id of the job level
+     * @pattern ^jlvl_
+     */
+    id: string;
+    code: string;
+    name: string;
+    track: 'ic' | 'manager' | 'executive';
+  }
 }
 
 export interface OfferResendResponse {
@@ -906,11 +2172,12 @@ export interface OfferResendResponse {
    * @pattern ^offr_
    */
   id: string;
-  status: "draft" | "sent" | "accepted" | "void";
-  workerType: "employee" | "us_contractor" | "global_contractor";
+  status: 'draft' | 'sent' | 'accepted' | 'void';
+  workerType: 'employee' | 'us_contractor' | 'global_contractor';
   candidate: OfferResendResponse.Candidate;
   position: OfferResendResponse.Position;
   department: OfferResendResponse.Department | null;
+  workplace: OfferResendResponse.Workplace | null;
   manager: OfferResendResponse.Manager | null;
   /**
    * Display name of the person or company that sent the offer. Null for offers not yet sent.
@@ -921,12 +2188,13 @@ export interface OfferResendResponse {
    * The candidate-facing offer portal URL. Null for offers that have not been sent.
    */
   offerUrl: string | null;
-  expirationTime: Date | null;
-  lastViewedAt: Date | null;
+  expirationTime: string | null;
+  lastViewedAt: string | null;
+  createdAt: string;
   /**
-   * a string to be decoded into a Date
+   * The offer's job level, or null if unassigned. Omitted when job levels are not enabled.
    */
-  createdAt: Date;
+  level?: OfferResendResponse.Level | null;
 }
 
 export namespace OfferResendResponse {
@@ -935,7 +2203,7 @@ export namespace OfferResendResponse {
     lastName: string;
     /**
      * An email with a reasonably valid regex (based on RFC 5321 atext characters)
-     * @pattern ^(?!\.)(?!.*\.\.)([a-z0-9!#$%&'*+/=?^_`{|}~\-.]*)[a-z0-9!#$%&'*+/=?^_`{|}~-]@([a-z0-9][a-z0-9-]*\.)+[a-z]{2,}$
+     * @format email
      */
     email: string;
     contractorDetails: Candidate.ContractorDetails | null;
@@ -951,11 +2219,260 @@ export namespace OfferResendResponse {
   export interface Position {
     title: string;
     /**
-     * A date string in the form YYYY-MM-DD
      * @pattern ^\d{4}-\d{2}-\d{2}$
      */
     startDate: string;
-    country: "AD" | "AE" | "AF" | "AG" | "AI" | "AL" | "AM" | "AO" | "AQ" | "AR" | "AS" | "AT" | "AU" | "AW" | "AX" | "AZ" | "BA" | "BB" | "BD" | "BE" | "BF" | "BG" | "BH" | "BI" | "BJ" | "BL" | "BM" | "BN" | "BO" | "BQ" | "BR" | "BS" | "BT" | "BV" | "BW" | "BY" | "BZ" | "CA" | "CC" | "CD" | "CF" | "CG" | "CH" | "CI" | "CK" | "CL" | "CM" | "CN" | "CO" | "CR" | "CU" | "CV" | "CW" | "CX" | "CY" | "CZ" | "DE" | "DJ" | "DK" | "DM" | "DO" | "DZ" | "EC" | "EE" | "EG" | "EH" | "ER" | "ES" | "ET" | "FI" | "FJ" | "FK" | "FM" | "FO" | "FR" | "GA" | "GB" | "GD" | "GE" | "GF" | "GG" | "GH" | "GI" | "GL" | "GM" | "GN" | "GP" | "GQ" | "GR" | "GS" | "GT" | "GU" | "GW" | "GY" | "HK" | "HM" | "HN" | "HR" | "HT" | "HU" | "ID" | "IE" | "IL" | "IM" | "IN" | "IO" | "IQ" | "IR" | "IS" | "IT" | "JE" | "JM" | "JO" | "JP" | "KE" | "KG" | "KH" | "KI" | "KM" | "KN" | "KP" | "KR" | "KW" | "KY" | "KZ" | "LA" | "LB" | "LC" | "LI" | "LK" | "LR" | "LS" | "LT" | "LU" | "LV" | "LY" | "MA" | "MC" | "MD" | "ME" | "MF" | "MG" | "MH" | "MK" | "ML" | "MM" | "MN" | "MO" | "MP" | "MQ" | "MR" | "MS" | "MT" | "MU" | "MV" | "MW" | "MX" | "MY" | "MZ" | "NA" | "NC" | "NE" | "NF" | "NG" | "NI" | "NL" | "NO" | "NP" | "NR" | "NU" | "NZ" | "OM" | "PA" | "PE" | "PF" | "PG" | "PH" | "PK" | "PL" | "PM" | "PN" | "PR" | "PS" | "PT" | "PW" | "PY" | "QA" | "RE" | "RO" | "RS" | "RU" | "RW" | "SA" | "SB" | "SC" | "SD" | "SE" | "SG" | "SH" | "SI" | "SJ" | "SK" | "SL" | "SM" | "SN" | "SO" | "SR" | "SS" | "ST" | "SV" | "SX" | "SY" | "SZ" | "TC" | "TD" | "TF" | "TG" | "TH" | "TJ" | "TK" | "TL" | "TM" | "TN" | "TO" | "TR" | "TT" | "TV" | "TW" | "TZ" | "UA" | "UG" | "UM" | "US" | "UY" | "UZ" | "VA" | "VC" | "VE" | "VG" | "VI" | "VN" | "VU" | "WF" | "WS" | "XK" | "YE" | "YT" | "ZA" | "ZM" | "ZW";
+    country:
+      | 'AD'
+      | 'AE'
+      | 'AF'
+      | 'AG'
+      | 'AI'
+      | 'AL'
+      | 'AM'
+      | 'AO'
+      | 'AQ'
+      | 'AR'
+      | 'AS'
+      | 'AT'
+      | 'AU'
+      | 'AW'
+      | 'AX'
+      | 'AZ'
+      | 'BA'
+      | 'BB'
+      | 'BD'
+      | 'BE'
+      | 'BF'
+      | 'BG'
+      | 'BH'
+      | 'BI'
+      | 'BJ'
+      | 'BL'
+      | 'BM'
+      | 'BN'
+      | 'BO'
+      | 'BQ'
+      | 'BR'
+      | 'BS'
+      | 'BT'
+      | 'BV'
+      | 'BW'
+      | 'BY'
+      | 'BZ'
+      | 'CA'
+      | 'CC'
+      | 'CD'
+      | 'CF'
+      | 'CG'
+      | 'CH'
+      | 'CI'
+      | 'CK'
+      | 'CL'
+      | 'CM'
+      | 'CN'
+      | 'CO'
+      | 'CR'
+      | 'CU'
+      | 'CV'
+      | 'CW'
+      | 'CX'
+      | 'CY'
+      | 'CZ'
+      | 'DE'
+      | 'DJ'
+      | 'DK'
+      | 'DM'
+      | 'DO'
+      | 'DZ'
+      | 'EC'
+      | 'EE'
+      | 'EG'
+      | 'EH'
+      | 'ER'
+      | 'ES'
+      | 'ET'
+      | 'FI'
+      | 'FJ'
+      | 'FK'
+      | 'FM'
+      | 'FO'
+      | 'FR'
+      | 'GA'
+      | 'GB'
+      | 'GD'
+      | 'GE'
+      | 'GF'
+      | 'GG'
+      | 'GH'
+      | 'GI'
+      | 'GL'
+      | 'GM'
+      | 'GN'
+      | 'GP'
+      | 'GQ'
+      | 'GR'
+      | 'GS'
+      | 'GT'
+      | 'GU'
+      | 'GW'
+      | 'GY'
+      | 'HK'
+      | 'HM'
+      | 'HN'
+      | 'HR'
+      | 'HT'
+      | 'HU'
+      | 'ID'
+      | 'IE'
+      | 'IL'
+      | 'IM'
+      | 'IN'
+      | 'IO'
+      | 'IQ'
+      | 'IR'
+      | 'IS'
+      | 'IT'
+      | 'JE'
+      | 'JM'
+      | 'JO'
+      | 'JP'
+      | 'KE'
+      | 'KG'
+      | 'KH'
+      | 'KI'
+      | 'KM'
+      | 'KN'
+      | 'KP'
+      | 'KR'
+      | 'KW'
+      | 'KY'
+      | 'KZ'
+      | 'LA'
+      | 'LB'
+      | 'LC'
+      | 'LI'
+      | 'LK'
+      | 'LR'
+      | 'LS'
+      | 'LT'
+      | 'LU'
+      | 'LV'
+      | 'LY'
+      | 'MA'
+      | 'MC'
+      | 'MD'
+      | 'ME'
+      | 'MF'
+      | 'MG'
+      | 'MH'
+      | 'MK'
+      | 'ML'
+      | 'MM'
+      | 'MN'
+      | 'MO'
+      | 'MP'
+      | 'MQ'
+      | 'MR'
+      | 'MS'
+      | 'MT'
+      | 'MU'
+      | 'MV'
+      | 'MW'
+      | 'MX'
+      | 'MY'
+      | 'MZ'
+      | 'NA'
+      | 'NC'
+      | 'NE'
+      | 'NF'
+      | 'NG'
+      | 'NI'
+      | 'NL'
+      | 'NO'
+      | 'NP'
+      | 'NR'
+      | 'NU'
+      | 'NZ'
+      | 'OM'
+      | 'PA'
+      | 'PE'
+      | 'PF'
+      | 'PG'
+      | 'PH'
+      | 'PK'
+      | 'PL'
+      | 'PM'
+      | 'PN'
+      | 'PR'
+      | 'PS'
+      | 'PT'
+      | 'PW'
+      | 'PY'
+      | 'QA'
+      | 'RE'
+      | 'RO'
+      | 'RS'
+      | 'RU'
+      | 'RW'
+      | 'SA'
+      | 'SB'
+      | 'SC'
+      | 'SD'
+      | 'SE'
+      | 'SG'
+      | 'SH'
+      | 'SI'
+      | 'SJ'
+      | 'SK'
+      | 'SL'
+      | 'SM'
+      | 'SN'
+      | 'SO'
+      | 'SR'
+      | 'SS'
+      | 'ST'
+      | 'SV'
+      | 'SX'
+      | 'SY'
+      | 'SZ'
+      | 'TC'
+      | 'TD'
+      | 'TF'
+      | 'TG'
+      | 'TH'
+      | 'TJ'
+      | 'TK'
+      | 'TL'
+      | 'TM'
+      | 'TN'
+      | 'TO'
+      | 'TR'
+      | 'TT'
+      | 'TV'
+      | 'TW'
+      | 'TZ'
+      | 'UA'
+      | 'UG'
+      | 'UM'
+      | 'US'
+      | 'UY'
+      | 'UZ'
+      | 'VA'
+      | 'VC'
+      | 'VE'
+      | 'VG'
+      | 'VI'
+      | 'VN'
+      | 'VU'
+      | 'WF'
+      | 'WS'
+      | 'XK'
+      | 'YE'
+      | 'YT'
+      | 'ZA'
+      | 'ZM'
+      | 'ZW';
     scopeOfWork: string | null;
   }
 
@@ -963,6 +2480,15 @@ export namespace OfferResendResponse {
     /**
      * The unique public id of the department
      * @pattern ^dpt_
+     */
+    id: string;
+    name: string;
+  }
+
+  export interface Workplace {
+    /**
+     * Public workplace identifier
+     * @pattern ^wkp_
      */
     id: string;
     name: string;
@@ -979,76 +2505,24 @@ export namespace OfferResendResponse {
 
   export interface Compensation {
     basePay: Compensation.BasePay;
-    signOnBonus: Compensation.SignOnBonus | null;
-    relocationBonus: Compensation.RelocationBonus | null;
+    signOnBonus: PublicMoneyAmount | null;
+    relocationBonus: PublicMoneyAmount | null;
     stock: Compensation.Stock | null;
   }
 
   export namespace Compensation {
     export interface BasePay {
-      amount: BasePay.Amount;
-      basis: "year" | "month" | "week" | "hour" | "variable";
-      type: "fixed" | "pay_as_you_go" | null;
-      variableRate: BasePay.VariableRate | null;
-    }
-
-    export namespace BasePay {
-      export interface Amount {
-        /**
-         * Amount in the currency base unit, e.g. cents for USD.
-         * @minimum 0
-         */
-        amount: number;
-        currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
-        /**
-         * The server-formatted display string for the amount in its currency.
-         */
-        display: string;
-      }
-
-      export interface VariableRate {
-        /**
-         * Amount in the currency base unit, e.g. cents for USD.
-         * @minimum 0
-         */
-        amount: number;
-        currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
-        /**
-         * The server-formatted display string for the amount in its currency.
-         */
-        display: string;
-      }
-    }
-
-    export interface SignOnBonus {
       /**
-       * Amount in the currency base unit, e.g. cents for USD.
-       * @minimum 0
+       * A monetary amount with its currency and server-formatted display value.
        */
-      amount: number;
-      currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
-      /**
-       * The server-formatted display string for the amount in its currency.
-       */
-      display: string;
-    }
-
-    export interface RelocationBonus {
-      /**
-       * Amount in the currency base unit, e.g. cents for USD.
-       * @minimum 0
-       */
-      amount: number;
-      currency: "USD" | "AUD" | "BGN" | "BRL" | "CAD" | "CHF" | "CZK" | "DKK" | "EUR" | "GBP" | "HKD" | "HUF" | "IDR" | "INR" | "JPY" | "MYR" | "NOK" | "NZD" | "CNY" | "PLN" | "RON" | "TRY" | "SEK" | "SGD" | "AED" | "ARS" | "BDT" | "BWP" | "CLP" | "COP" | "CRC" | "EGP" | "FJD" | "GEL" | "GHS" | "ILS" | "KES" | "KRW" | "LKR" | "MAD" | "MXN" | "NPR" | "PHP" | "PKR" | "THB" | "UAH" | "UGX" | "UYU" | "VND" | "ZAR" | "ZMW" | "TND" | "NGN" | "RSD" | "TWD" | "GTQ" | "HNL" | "DOP" | "SAR" | "XAF" | "PEN";
-      /**
-       * The server-formatted display string for the amount in its currency.
-       */
-      display: string;
+      amount: PublicMoneyAmount;
+      basis: 'year' | 'month' | 'week' | 'hour' | 'variable';
+      type: 'fixed' | 'pay_as_you_go' | null;
+      variableRate: PublicMoneyAmount | null;
     }
 
     export interface Stock {
       /**
-       * a non-negative number
        * @minimum 0
        */
       options: number;
@@ -1062,10 +2536,21 @@ export namespace OfferResendResponse {
       cliffMonths: number | null;
     }
   }
+
+  export interface Level {
+    /**
+     * The unique public id of the job level
+     * @pattern ^jlvl_
+     */
+    id: string;
+    code: string;
+    name: string;
+    track: 'ic' | 'manager' | 'executive';
+  }
 }
 export declare namespace Offers {
   export {
-    type Date as Date,
+    type PublicMoneyAmount as PublicMoneyAmount,
     type OfferListResponse as OfferListResponse,
     type OfferCreateResponse as OfferCreateResponse,
     type OfferVoidResponse as OfferVoidResponse,
@@ -1073,6 +2558,7 @@ export declare namespace Offers {
     type OfferResendResponse as OfferResendResponse,
     type OfferListParams as OfferListParams,
     type OfferCreateParams as OfferCreateParams,
+    type OfferVoidParams as OfferVoidParams,
     type OfferExtendDeadlineParams as OfferExtendDeadlineParams,
   };
 }
