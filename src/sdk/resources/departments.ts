@@ -4,7 +4,6 @@ import { APIResource } from '../resource';
 import { APIPromise } from '../api-promise';
 import type { RequestOptions } from '../internal/request-options';
 import { path as __scalarPath } from '../internal/utils/path';
-import type * as Shared from './shared';
 
 export class Departments extends APIResource {
   /**
@@ -16,7 +15,7 @@ export class Departments extends APIResource {
    *
    * @example
    * ```ts
-   * const list = await client.departments.list({
+   * const department = await client.departments.list({
    *   limit: 'limit',
    * });
    * ```
@@ -34,8 +33,8 @@ export class Departments extends APIResource {
    *
    * @example
    * ```ts
-   * const create = await client.departments.create({
-   *   name: {},
+   * const department = await client.departments.create({
+   *   name: 'x',
    * });
    * ```
    */
@@ -46,14 +45,14 @@ export class Departments extends APIResource {
   /**
    * Update an existing department.
    *
-   * @param {string} id
+   * @param {string} id - The unique public id of the department
    * @param {DepartmentUpdateParams} body - The request body to send.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
    * @returns {APIPromise<DepartmentUpdateResponse>} Success
    *
    * @example
    * ```ts
-   * const update = await client.departments.update('id', {});
+   * const department = await client.departments.update('dpt_1234', {});
    * ```
    */
   update(
@@ -67,8 +66,14 @@ export class Departments extends APIResource {
 
 export interface DepartmentListParams {
   limit: string | null;
-  afterId?: Shared.Union11 | null;
-  beforeId?: Shared.Union11 | null;
+  /**
+   * @pattern ^dpt_
+   */
+  afterId?: string | null;
+  /**
+   * @pattern ^dpt_
+   */
+  beforeId?: string | null;
 }
 
 export interface DepartmentListResponse {
@@ -79,6 +84,10 @@ export interface DepartmentListResponse {
 
 export namespace DepartmentListResponse {
   export interface Data {
+    /**
+     * The unique public id of the department
+     * @pattern ^dpt_
+     */
     id: string;
     name: string;
     createdAt: string;
@@ -86,10 +95,18 @@ export namespace DepartmentListResponse {
 }
 
 export interface DepartmentCreateParams {
+  /**
+   * @minLength 1
+   * @pattern ^\S[\s\S]*\S$|^\S$|^$
+   */
   name: string;
 }
 
 export interface DepartmentCreateResponse {
+  /**
+   * The unique public id of the department
+   * @pattern ^dpt_
+   */
   id: string;
   name: string;
   createdAt: string;
@@ -100,6 +117,10 @@ export interface DepartmentUpdateParams {
 }
 
 export interface DepartmentUpdateResponse {
+  /**
+   * The unique public id of the department
+   * @pattern ^dpt_
+   */
   id: string;
   name: string;
   createdAt: string;
