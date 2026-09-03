@@ -4,7 +4,6 @@ import { APIResource } from '../resource';
 import { APIPromise } from '../api-promise';
 import type { RequestOptions } from '../internal/request-options';
 import { path as __scalarPath } from '../internal/utils/path';
-import type * as Shared from './shared';
 
 export class Workplaces extends APIResource {
   /**
@@ -16,7 +15,7 @@ export class Workplaces extends APIResource {
    *
    * @example
    * ```ts
-   * const list = await client.workplaces.list({
+   * const workplace = await client.workplaces.list({
    *   limit: 'limit',
    * });
    * ```
@@ -34,11 +33,11 @@ export class Workplaces extends APIResource {
    *
    * @example
    * ```ts
-   * const create = await client.workplaces.create({
-   *   name: {},
+   * const workplace = await client.workplaces.create({
+   *   name: 'x',
    *   type: 'remote',
    *   address: {
-   *     line1: {},
+   *     line1: 'x',
    *     city: '',
    *     postalCode: '',
    *     state: 'AL',
@@ -54,14 +53,14 @@ export class Workplaces extends APIResource {
   /**
    * Update an existing workplace.
    *
-   * @param {string} id
+   * @param {string} id - Public workplace identifier
    * @param {WorkplaceUpdateParams} body - The request body to send.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
    * @returns {APIPromise<WorkplaceUpdateResponse>} Success
    *
    * @example
    * ```ts
-   * const update = await client.workplaces.update('id', {});
+   * const workplace = await client.workplaces.update('wkp_1234', {});
    * ```
    */
   update(
@@ -73,73 +72,16 @@ export class Workplaces extends APIResource {
   }
 }
 
-/**
- * A valid US address
- */
-export interface Objects11 {
-  line1: string;
-  city: string;
-  postalCode: string;
-  state:
-    | 'AL'
-    | 'AK'
-    | 'AZ'
-    | 'AR'
-    | 'CA'
-    | 'CO'
-    | 'CT'
-    | 'DC'
-    | 'DE'
-    | 'FL'
-    | 'GA'
-    | 'HI'
-    | 'ID'
-    | 'IL'
-    | 'IN'
-    | 'IA'
-    | 'KS'
-    | 'KY'
-    | 'LA'
-    | 'ME'
-    | 'MD'
-    | 'MA'
-    | 'MI'
-    | 'MN'
-    | 'MS'
-    | 'MO'
-    | 'MT'
-    | 'NE'
-    | 'NV'
-    | 'NH'
-    | 'NJ'
-    | 'NM'
-    | 'NY'
-    | 'NC'
-    | 'ND'
-    | 'OH'
-    | 'OK'
-    | 'OR'
-    | 'PA'
-    | 'RI'
-    | 'SC'
-    | 'SD'
-    | 'TN'
-    | 'TX'
-    | 'UT'
-    | 'VT'
-    | 'VA'
-    | 'WA'
-    | 'WV'
-    | 'WI'
-    | 'WY';
-  country: 'US';
-  line2?: string | null;
-}
-
 export interface WorkplaceListParams {
   limit: string | null;
-  afterId?: Shared.Union33 | null;
-  beforeId?: Shared.Union33 | null;
+  /**
+   * @pattern ^wkp_
+   */
+  afterId?: string | null;
+  /**
+   * @pattern ^wkp_
+   */
+  beforeId?: string | null;
 }
 
 export interface WorkplaceListResponse {
@@ -150,37 +92,244 @@ export interface WorkplaceListResponse {
 
 export namespace WorkplaceListResponse {
   export interface Data {
+    /**
+     * Public workplace identifier
+     * @pattern ^wkp_
+     */
     id: string;
     name: string;
-    type: Shared.Union34;
-    status: Shared.Union35;
+    type: 'remote' | 'office';
+    status: 'active' | 'archived';
     /**
      * A valid US address
      */
-    address: Objects11;
+    address: Data.Address;
     createdAt: string;
+  }
+
+  export namespace Data {
+    export interface Address {
+      /**
+       * @minLength 1
+       */
+      line1: string;
+      city: string;
+      postalCode: string;
+      state:
+        | 'AL'
+        | 'AK'
+        | 'AZ'
+        | 'AR'
+        | 'CA'
+        | 'CO'
+        | 'CT'
+        | 'DC'
+        | 'DE'
+        | 'FL'
+        | 'GA'
+        | 'HI'
+        | 'ID'
+        | 'IL'
+        | 'IN'
+        | 'IA'
+        | 'KS'
+        | 'KY'
+        | 'LA'
+        | 'ME'
+        | 'MD'
+        | 'MA'
+        | 'MI'
+        | 'MN'
+        | 'MS'
+        | 'MO'
+        | 'MT'
+        | 'NE'
+        | 'NV'
+        | 'NH'
+        | 'NJ'
+        | 'NM'
+        | 'NY'
+        | 'NC'
+        | 'ND'
+        | 'OH'
+        | 'OK'
+        | 'OR'
+        | 'PA'
+        | 'RI'
+        | 'SC'
+        | 'SD'
+        | 'TN'
+        | 'TX'
+        | 'UT'
+        | 'VT'
+        | 'VA'
+        | 'WA'
+        | 'WV'
+        | 'WI'
+        | 'WY';
+      country: 'US';
+      line2?: string | null;
+    }
   }
 }
 
 export interface WorkplaceCreateParams {
+  /**
+   * @minLength 1
+   * @pattern ^\S[\s\S]*\S$|^\S$|^$
+   */
   name: string;
   type: 'remote' | 'office';
   /**
    * A valid US address
    */
-  address: Objects11;
+  address: WorkplaceCreateParams.Address;
+}
+
+export namespace WorkplaceCreateParams {
+  export interface Address {
+    /**
+     * @minLength 1
+     */
+    line1: string;
+    city: string;
+    postalCode: string;
+    state:
+      | 'AL'
+      | 'AK'
+      | 'AZ'
+      | 'AR'
+      | 'CA'
+      | 'CO'
+      | 'CT'
+      | 'DC'
+      | 'DE'
+      | 'FL'
+      | 'GA'
+      | 'HI'
+      | 'ID'
+      | 'IL'
+      | 'IN'
+      | 'IA'
+      | 'KS'
+      | 'KY'
+      | 'LA'
+      | 'ME'
+      | 'MD'
+      | 'MA'
+      | 'MI'
+      | 'MN'
+      | 'MS'
+      | 'MO'
+      | 'MT'
+      | 'NE'
+      | 'NV'
+      | 'NH'
+      | 'NJ'
+      | 'NM'
+      | 'NY'
+      | 'NC'
+      | 'ND'
+      | 'OH'
+      | 'OK'
+      | 'OR'
+      | 'PA'
+      | 'RI'
+      | 'SC'
+      | 'SD'
+      | 'TN'
+      | 'TX'
+      | 'UT'
+      | 'VT'
+      | 'VA'
+      | 'WA'
+      | 'WV'
+      | 'WI'
+      | 'WY';
+    country: 'US';
+    line2?: string | null;
+  }
 }
 
 export interface WorkplaceCreateResponse {
+  /**
+   * Public workplace identifier
+   * @pattern ^wkp_
+   */
   id: string;
   name: string;
-  type: Shared.Union34;
-  status: Shared.Union35;
+  type: 'remote' | 'office';
+  status: 'active' | 'archived';
   /**
    * A valid US address
    */
-  address: Objects11;
+  address: WorkplaceCreateResponse.Address;
   createdAt: string;
+}
+
+export namespace WorkplaceCreateResponse {
+  export interface Address {
+    /**
+     * @minLength 1
+     */
+    line1: string;
+    city: string;
+    postalCode: string;
+    state:
+      | 'AL'
+      | 'AK'
+      | 'AZ'
+      | 'AR'
+      | 'CA'
+      | 'CO'
+      | 'CT'
+      | 'DC'
+      | 'DE'
+      | 'FL'
+      | 'GA'
+      | 'HI'
+      | 'ID'
+      | 'IL'
+      | 'IN'
+      | 'IA'
+      | 'KS'
+      | 'KY'
+      | 'LA'
+      | 'ME'
+      | 'MD'
+      | 'MA'
+      | 'MI'
+      | 'MN'
+      | 'MS'
+      | 'MO'
+      | 'MT'
+      | 'NE'
+      | 'NV'
+      | 'NH'
+      | 'NJ'
+      | 'NM'
+      | 'NY'
+      | 'NC'
+      | 'ND'
+      | 'OH'
+      | 'OK'
+      | 'OR'
+      | 'PA'
+      | 'RI'
+      | 'SC'
+      | 'SD'
+      | 'TN'
+      | 'TX'
+      | 'UT'
+      | 'VT'
+      | 'VA'
+      | 'WA'
+      | 'WV'
+      | 'WI'
+      | 'WY';
+    country: 'US';
+    line2?: string | null;
+  }
 }
 
 export interface WorkplaceUpdateParams {
@@ -188,19 +337,87 @@ export interface WorkplaceUpdateParams {
 }
 
 export interface WorkplaceUpdateResponse {
+  /**
+   * Public workplace identifier
+   * @pattern ^wkp_
+   */
   id: string;
   name: string;
-  type: Shared.Union34;
-  status: Shared.Union35;
+  type: 'remote' | 'office';
+  status: 'active' | 'archived';
   /**
    * A valid US address
    */
-  address: Objects11;
+  address: WorkplaceUpdateResponse.Address;
   createdAt: string;
+}
+
+export namespace WorkplaceUpdateResponse {
+  export interface Address {
+    /**
+     * @minLength 1
+     */
+    line1: string;
+    city: string;
+    postalCode: string;
+    state:
+      | 'AL'
+      | 'AK'
+      | 'AZ'
+      | 'AR'
+      | 'CA'
+      | 'CO'
+      | 'CT'
+      | 'DC'
+      | 'DE'
+      | 'FL'
+      | 'GA'
+      | 'HI'
+      | 'ID'
+      | 'IL'
+      | 'IN'
+      | 'IA'
+      | 'KS'
+      | 'KY'
+      | 'LA'
+      | 'ME'
+      | 'MD'
+      | 'MA'
+      | 'MI'
+      | 'MN'
+      | 'MS'
+      | 'MO'
+      | 'MT'
+      | 'NE'
+      | 'NV'
+      | 'NH'
+      | 'NJ'
+      | 'NM'
+      | 'NY'
+      | 'NC'
+      | 'ND'
+      | 'OH'
+      | 'OK'
+      | 'OR'
+      | 'PA'
+      | 'RI'
+      | 'SC'
+      | 'SD'
+      | 'TN'
+      | 'TX'
+      | 'UT'
+      | 'VT'
+      | 'VA'
+      | 'WA'
+      | 'WV'
+      | 'WI'
+      | 'WY';
+    country: 'US';
+    line2?: string | null;
+  }
 }
 export declare namespace Workplaces {
   export {
-    type Objects11 as Objects11,
     type WorkplaceListResponse as WorkplaceListResponse,
     type WorkplaceCreateResponse as WorkplaceCreateResponse,
     type WorkplaceUpdateResponse as WorkplaceUpdateResponse,

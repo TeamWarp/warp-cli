@@ -1,4 +1,4 @@
-# Warp CLI API
+# warp CLI API
 
 Complete reference of every operation, grouped by resource. See [the README](./README.md) for usage and configuration.
 
@@ -31,6 +31,8 @@ Complete reference of every operation, grouped by resource. See [the README](./R
   - [List Departments](#list-departments)
   - [Create Department](#create-department)
   - [Update Department](#update-department)
+- [`Levels`](#levels)
+  - [List Job Levels](#list-job-levels)
 - [`Offers`](#offers)
   - [List Offers](#list-offers)
   - [Create Offer](#create-offer)
@@ -40,6 +42,11 @@ Complete reference of every operation, grouped by resource. See [the README](./R
 - [`PayRates`](#payrates)
   - [List Pay Rates](#list-pay-rates)
   - [Get Pay Rate](#get-pay-rate)
+- [`Payroll`](#payroll)
+  - [List Payrolls](#list-payrolls)
+  - [Get Payroll](#get-payroll)
+  - [List Paychecks](#list-paychecks)
+  - [Get Paycheck](#get-paycheck)
 - [`TimeOff`](#timeoff)
   - [List Time Off Assignments](#list-time-off-assignments)
   - [List Time Off Balances](#list-time-off-balances)
@@ -70,7 +77,7 @@ Read-only health plans, retirement plans, and payroll benefit deductions.
 List company health plans. Defaults to active plans. A plan whose effectiveEndDate has elapsed is reported and filtered as terminated.
 
 ```sh
-warpapi benefits:health-plans list --api-key "$WARP_API_KEY" --limit 'limit' --statuses '["active"]'
+warp benefits:health-plans list --api-key "$WARP_API_KEY" --limit 'limit' --statuses '["active"]'
 ```
 
 #### Get Health Plan
@@ -78,7 +85,7 @@ warpapi benefits:health-plans list --api-key "$WARP_API_KEY" --limit 'limit' --s
 Get a publicly visible company health plan by id.
 
 ```sh
-warpapi benefits:health-plans get 'id' --api-key "$WARP_API_KEY"
+warp benefits:health-plans get 'chpl_1234' --api-key "$WARP_API_KEY"
 ```
 
 ### `Benefits RetirementPlans`
@@ -90,7 +97,7 @@ Read-only health plans, retirement plans, and payroll benefit deductions.
 List company retirement plans. Defaults to active plans. A plan whose effectiveEndDate has elapsed is reported and filtered as terminated.
 
 ```sh
-warpapi benefits:retirement-plans list --api-key "$WARP_API_KEY" --limit 'limit' --statuses '["active"]'
+warp benefits:retirement-plans list --api-key "$WARP_API_KEY" --limit 'limit' --statuses '["active"]'
 ```
 
 #### Get Retirement Plan
@@ -98,7 +105,7 @@ warpapi benefits:retirement-plans list --api-key "$WARP_API_KEY" --limit 'limit'
 Get a company retirement plan by id, regardless of status.
 
 ```sh
-warpapi benefits:retirement-plans get 'id' --api-key "$WARP_API_KEY"
+warp benefits:retirement-plans get 'crpl_1234' --api-key "$WARP_API_KEY"
 ```
 
 ### `Benefits Deductions`
@@ -110,7 +117,7 @@ Read-only health plans, retirement plans, and payroll benefit deductions.
 List current payroll benefit deductions. Defaults to active deductions. A deduction whose effectiveEndDate has elapsed is reported and filtered as terminated.
 
 ```sh
-warpapi benefits:deductions list --api-key "$WARP_API_KEY" --limit 'limit' --statuses '["active"]'
+warp benefits:deductions list --api-key "$WARP_API_KEY" --limit 'limit' --statuses '["active"]'
 ```
 
 #### Get Benefit Deduction
@@ -118,7 +125,7 @@ warpapi benefits:deductions list --api-key "$WARP_API_KEY" --limit 'limit' --sta
 Get the current version of a company benefit deduction by id.
 
 ```sh
-warpapi benefits:deductions get 'id' --api-key "$WARP_API_KEY"
+warp benefits:deductions get 'pbdg_1234' --api-key "$WARP_API_KEY"
 ```
 
 ## `CustomFields`
@@ -130,7 +137,7 @@ Company-defined custom fields for workers. Field definitions are administered wi
 List the custom worker field definitions your API key can read. Each field belongs to a worker-data category; fields whose category your key cannot read are omitted unless the key holds workers:custom_fields.
 
 ```sh
-warpapi custom-fields list --api-key "$WARP_API_KEY"
+warp custom-fields list --api-key "$WARP_API_KEY"
 ```
 
 ### Create Field
@@ -138,7 +145,7 @@ warpapi custom-fields list --api-key "$WARP_API_KEY"
 Create a custom worker field definition. The field type is immutable after creation. Select and multi_select fields can include their initial options. Access to values derives from the field category; requires the workers:custom_fields permission.
 
 ```sh
-warpapi custom-fields create --api-key "$WARP_API_KEY" --name '{}' --type 'text' --category 'info'
+warp custom-fields create --api-key "$WARP_API_KEY" --name 'name' --type 'text' --category 'info'
 ```
 
 ### Get Field
@@ -146,7 +153,7 @@ warpapi custom-fields create --api-key "$WARP_API_KEY" --name '{}' --type 'text'
 Get a custom worker field definition, including its select options. Archived options may appear on existing worker values but cannot be newly selected.
 
 ```sh
-warpapi custom-fields get 'id' --api-key "$WARP_API_KEY"
+warp custom-fields get 'cf_1234' --api-key "$WARP_API_KEY"
 ```
 
 ### Update Field
@@ -154,7 +161,7 @@ warpapi custom-fields get 'id' --api-key "$WARP_API_KEY"
 Update a custom worker field definition. The field type cannot be changed; create a new field instead. Requires the workers:custom_fields permission; changing the category, access level, or input source requires the manage level.
 
 ```sh
-warpapi custom-fields update 'id' --api-key "$WARP_API_KEY"
+warp custom-fields update 'cf_1234' --api-key "$WARP_API_KEY"
 ```
 
 ### Archive Field
@@ -162,7 +169,7 @@ warpapi custom-fields update 'id' --api-key "$WARP_API_KEY"
 Archive a custom worker field. Archived fields keep their existing worker values but cannot receive new ones. Requires the workers:custom_fields permission at the manage level.
 
 ```sh
-warpapi custom-fields archive 'id' --api-key "$WARP_API_KEY"
+warp custom-fields archive 'cf_1234' --api-key "$WARP_API_KEY"
 ```
 
 ### Create Field Option
@@ -170,7 +177,7 @@ warpapi custom-fields archive 'id' --api-key "$WARP_API_KEY"
 Add an option to a select or multi_select custom worker field. The option value should be treated as stable; the label can change. Requires the workers:custom_fields permission.
 
 ```sh
-warpapi custom-fields create-option 'id' --api-key "$WARP_API_KEY" --label '{}' --value '{}'
+warp custom-fields create-option 'cf_1234' --api-key "$WARP_API_KEY" --label 'label' --value 'value'
 ```
 
 ### Update Field Option
@@ -178,7 +185,7 @@ warpapi custom-fields create-option 'id' --api-key "$WARP_API_KEY" --label '{}' 
 Update the label or sort order of a custom worker field option. Options of archived fields cannot be edited. Requires the workers:custom_fields permission.
 
 ```sh
-warpapi custom-fields update-option 'id' --api-key "$WARP_API_KEY"
+warp custom-fields update-option 'cfo_1234' --api-key "$WARP_API_KEY"
 ```
 
 ### Delete Unused Field Option
@@ -186,7 +193,7 @@ warpapi custom-fields update-option 'id' --api-key "$WARP_API_KEY"
 Delete a custom worker field option that is not applied to any worker. Options in use must be archived instead. Requires the workers:custom_fields permission at the manage level.
 
 ```sh
-warpapi custom-fields delete-option 'id' --api-key "$WARP_API_KEY"
+warp custom-fields delete-option 'cfo_1234' --api-key "$WARP_API_KEY"
 ```
 
 ### Archive Field Option
@@ -194,7 +201,7 @@ warpapi custom-fields delete-option 'id' --api-key "$WARP_API_KEY"
 Archive a custom worker field option. Archived options remain on existing worker values but cannot be newly selected. Requires the workers:custom_fields permission at the manage level.
 
 ```sh
-warpapi custom-fields archive-option 'id' --api-key "$WARP_API_KEY"
+warp custom-fields archive-option 'cfo_1234' --api-key "$WARP_API_KEY"
 ```
 
 ### List Field Values
@@ -202,7 +209,7 @@ warpapi custom-fields archive-option 'id' --api-key "$WARP_API_KEY"
 List custom field values for workers, optionally filtered by worker or field. Values are returned only for fields whose category your API key can read.
 
 ```sh
-warpapi custom-fields list-values --api-key "$WARP_API_KEY"
+warp custom-fields list-values --api-key "$WARP_API_KEY"
 ```
 
 ### Set Field Value
@@ -210,7 +217,7 @@ warpapi custom-fields list-values --api-key "$WARP_API_KEY"
 Create or replace a worker's value for a custom field. The value shape must match the field type, and your API key must hold write on the field's category.
 
 ```sh
-warpapi custom-fields upsert-value --api-key "$WARP_API_KEY" --worker-id '{}' --field-id '{}' --value '{"type":"text","value":""}'
+warp custom-fields upsert-value --api-key "$WARP_API_KEY" --worker-id 'wrk_1234' --field-id 'cf_1234' --value '{"type":"text","value":""}'
 ```
 
 ### Clear Field Value
@@ -218,7 +225,7 @@ warpapi custom-fields upsert-value --api-key "$WARP_API_KEY" --worker-id '{}' --
 Remove a worker's value for a custom field. Your API key must hold write on the field's category.
 
 ```sh
-warpapi custom-fields clear-value --api-key "$WARP_API_KEY" --worker-id '{}' --field-id '{}'
+warp custom-fields clear-value --api-key "$WARP_API_KEY" --worker-id 'wrk_1234' --field-id 'cf_1234'
 ```
 
 ## `Departments`
@@ -230,7 +237,7 @@ Endpoints for department management. Create, list, and update departments within
 List all departments for your company.
 
 ```sh
-warpapi departments list --api-key "$WARP_API_KEY" --limit 'limit'
+warp departments list --api-key "$WARP_API_KEY" --limit 'limit'
 ```
 
 ### Create Department
@@ -238,7 +245,7 @@ warpapi departments list --api-key "$WARP_API_KEY" --limit 'limit'
 Create a new department.
 
 ```sh
-warpapi departments create --api-key "$WARP_API_KEY" --name '{}'
+warp departments create --api-key "$WARP_API_KEY" --name 'name'
 ```
 
 ### Update Department
@@ -246,7 +253,19 @@ warpapi departments create --api-key "$WARP_API_KEY" --name '{}'
 Update an existing department.
 
 ```sh
-warpapi departments update 'id' --api-key "$WARP_API_KEY"
+warp departments update 'dpt_1234' --api-key "$WARP_API_KEY"
+```
+
+## `Levels`
+
+Endpoints for reading the job-level framework configured for your company.
+
+### List Job Levels
+
+List the active standard job levels available to your company.
+
+```sh
+warp levels list --api-key "$WARP_API_KEY"
 ```
 
 ## `Offers`
@@ -258,7 +277,7 @@ Endpoints for managing candidate offers. Create and send offers, list existing o
 List the candidate offers for your company.
 
 ```sh
-warpapi offers list --api-key "$WARP_API_KEY" --limit 'limit'
+warp offers list --api-key "$WARP_API_KEY" --limit 'limit'
 ```
 
 ### Create Offer
@@ -266,7 +285,7 @@ warpapi offers list --api-key "$WARP_API_KEY" --limit 'limit'
 Create and send a candidate offer. The candidate receives an email with a link to the offer portal.
 
 ```sh
-warpapi offers create --api-key "$WARP_API_KEY" --candidate '{"firstName":{},"lastName":{},"email":{}}' --position '{"title":{},"startDate":{}}' --worker-type 'employee' --compensation '{"payBasis":"year","payCurrency":"USD","payRate":{}}'
+warp offers create --api-key "$WARP_API_KEY" --candidate '{"firstName":"x","lastName":"x","email":"john@joinwarp.com"}' --position '{"title":"x","startDate":""}' --worker-type 'employee' --compensation '{"payBasis":"year","payCurrency":"USD","payRate":0}'
 ```
 
 ### Void Offer
@@ -274,7 +293,7 @@ warpapi offers create --api-key "$WARP_API_KEY" --candidate '{"firstName":{},"la
 Void a previously sent offer. Only sent offers can be voided.
 
 ```sh
-warpapi offers void 'id' --api-key "$WARP_API_KEY" --void-reason 'candidate_declined'
+warp offers void 'offr_1234' --api-key "$WARP_API_KEY" --void-reason 'candidate_declined'
 ```
 
 ### Extend Offer Deadline
@@ -282,7 +301,7 @@ warpapi offers void 'id' --api-key "$WARP_API_KEY" --void-reason 'candidate_decl
 Extend the expiration deadline of a sent offer.
 
 ```sh
-warpapi offers extend-deadline 'id' --api-key "$WARP_API_KEY" --expiration-time 'expirationTime'
+warp offers extend-deadline 'offr_1234' --api-key "$WARP_API_KEY" --expiration-time 'expirationTime'
 ```
 
 ### Resend Offer
@@ -290,7 +309,7 @@ warpapi offers extend-deadline 'id' --api-key "$WARP_API_KEY" --expiration-time 
 Resend the offer email to the candidate for a sent offer.
 
 ```sh
-warpapi offers resend 'id' --api-key "$WARP_API_KEY"
+warp offers resend 'offr_1234' --api-key "$WARP_API_KEY"
 ```
 
 ## `PayRates`
@@ -302,7 +321,7 @@ Read regular and additional worker pay rates.
 List pay rates visible to the API key. Results may be filtered by worker, effective start date, or regular/additional type. US and global worker rates require their corresponding compensation read scopes.
 
 ```sh
-warpapi pay-rates list --api-key "$WARP_API_KEY" --limit 'limit'
+warp pay-rates list --api-key "$WARP_API_KEY" --limit 'limit'
 ```
 
 ### Get Pay Rate
@@ -310,7 +329,43 @@ warpapi pay-rates list --api-key "$WARP_API_KEY" --limit 'limit'
 Get a specific pay rate by id. The API key must have the compensation read scope corresponding to the worker.
 
 ```sh
-warpapi pay-rates get 'id' --api-key "$WARP_API_KEY"
+warp pay-rates get 'pyr_1234' --api-key "$WARP_API_KEY"
+```
+
+## `Payroll`
+
+Read-only payrolls and worker-level payroll calculations. Paycheck endpoints use one consistent resource for every worker type; payment execution is outside this API.
+
+### List Payrolls
+
+List payroll summaries newest first with stable cursor ordering. Every amount in totals is expressed in fundingCurrency, the currency the employer uses to fund the payroll. Line-derived categories are converted and rounded per paycheck before aggregation, while netPay remains provider-authoritative. Payroll type visibility follows the API key permissions. All lifecycle statuses are included unless statuses are provided.
+
+```sh
+warp payroll list --api-key "$WARP_API_KEY" --limit 'limit'
+```
+
+### Get Payroll
+
+Get a payroll by id. Every amount in totals is expressed in fundingCurrency, the currency the employer uses to fund the payroll. Line-derived categories are converted and rounded per paycheck before aggregation, while netPay remains provider-authoritative. Missing, foreign, unauthorized, or unavailable payrolls return 404.
+
+```sh
+warp payroll get 'pay_1234' --api-key "$WARP_API_KEY"
+```
+
+### List Paychecks
+
+List per-worker paycheck summaries newest first with stable cursor ordering. By default, the response includes every worker type visible to the API key, including US W-2 employees, US 1099 contractors, and global contractors; use workerTypes to narrow the results. Payroll type visibility follows the API key permissions. All lifecycle statuses are included unless statuses are provided.
+
+```sh
+warp payroll list-paychecks --api-key "$WARP_API_KEY" --limit 'limit'
+```
+
+### Get Paycheck
+
+Get a paycheck by id. All worker types use the same paycheck schema. Categories that do not apply to a worker are represented by zero-valued totals and empty line-item arrays. For example, a US 1099 contractor with no applicable payroll taxes returns zero `workerTaxes` and `employerTaxes` totals and an empty `taxes` array. Missing, foreign, unauthorized, or unavailable paychecks return 404.
+
+```sh
+warp payroll get-paycheck 'pyc_1234' --api-key "$WARP_API_KEY"
 ```
 
 ## `TimeOff`
@@ -322,7 +377,7 @@ Endpoints for worker time off management. See time off requests, which workers a
 Time off assignments are mappings between workers and time off policies. Useful for finding out which policies a worker is assigned to, or which workers are assigned to a given policy.
 
 ```sh
-warpapi time-off list-assignments --api-key "$WARP_API_KEY" --limit 'limit'
+warp time-off list-assignments --api-key "$WARP_API_KEY" --limit 'limit'
 ```
 
 ### List Time Off Balances
@@ -330,7 +385,7 @@ warpapi time-off list-assignments --api-key "$WARP_API_KEY" --limit 'limit'
 Get worker remaining time-off balances.
 
 ```sh
-warpapi time-off list-balances --api-key "$WARP_API_KEY" --limit 'limit'
+warp time-off list-balances --api-key "$WARP_API_KEY" --limit 'limit'
 ```
 
 ### List Time Off Requests
@@ -338,7 +393,7 @@ warpapi time-off list-balances --api-key "$WARP_API_KEY" --limit 'limit'
 Get the time off requests that workers in your company have made.
 
 ```sh
-warpapi time-off list-requests --api-key "$WARP_API_KEY" --limit 'limit'
+warp time-off list-requests --api-key "$WARP_API_KEY" --limit 'limit'
 ```
 
 ### `TimeOff Policies`
@@ -350,7 +405,7 @@ Endpoints for worker time off management. See time off requests, which workers a
 Get the time off policies for your company
 
 ```sh
-warpapi time-off:policies list --api-key "$WARP_API_KEY" --limit 'limit'
+warp time-off:policies list --api-key "$WARP_API_KEY" --limit 'limit'
 ```
 
 #### Get Time Off Policy
@@ -358,7 +413,7 @@ warpapi time-off:policies list --api-key "$WARP_API_KEY" --limit 'limit'
 Get a specific time off policy by id
 
 ```sh
-warpapi time-off:policies get 'id' --api-key "$WARP_API_KEY"
+warp time-off:policies get 'top_1234' --api-key "$WARP_API_KEY"
 ```
 
 ## `Workers`
@@ -370,15 +425,15 @@ Endpoints for worker management. "Workers" include anyone employed by your compa
 List all workers. Workers include anyone employed by the company, whether US or international, full-time employees or contractors.
 
 ```sh
-warpapi workers list --api-key "$WARP_API_KEY" --limit 'limit'
+warp workers list --api-key "$WARP_API_KEY" --limit 'limit'
 ```
 
 ### Get Worker
 
-Get a specific worker by id.
+Get a specific worker by ID.
 
 ```sh
-warpapi workers get 'id' --api-key "$WARP_API_KEY"
+warp workers get 'wrk_1234' --api-key "$WARP_API_KEY"
 ```
 
 ### Delete Worker
@@ -386,7 +441,7 @@ warpapi workers get 'id' --api-key "$WARP_API_KEY"
 Delete a worker. Only workers who have not yet completed onboarding can be deleted. Active workers must be properly offboarded.
 
 ```sh
-warpapi workers delete 'id' --api-key "$WARP_API_KEY"
+warp workers delete 'wrk_1234' --api-key "$WARP_API_KEY"
 ```
 
 ### Create Employee
@@ -394,7 +449,7 @@ warpapi workers delete 'id' --api-key "$WARP_API_KEY"
 Create a new US employee. The worker will be created in draft status and must be invited separately via the invite endpoint. If hiring in a state without an existing tax registration, you must specify the stateRegistration field.
 
 ```sh
-warpapi workers create-employee --api-key "$WARP_API_KEY" --first-name '{}' --last-name '{}' --position '{}' --start-date '{}' --email '{}' --department-id '{}' --manager-id '{}' --work-location '{"type":"office","workplaceId":{}}' --compensation '{"amount":{},"per":"hour"}'
+warp workers create-employee --api-key "$WARP_API_KEY" --first-name 'Jonathan' --last-name 'Galt' --position 'Software Engineer' --start-date 'startDate' --email 'john@joinwarp.com' --department-id 'dpt_1234' --manager-id 'wrk_1234' --work-location '{"type":"office","workplaceId":"wkp_1234"}' --compensation '{"amount":0,"per":"hour"}'
 ```
 
 ### Create Contractor
@@ -402,7 +457,7 @@ warpapi workers create-employee --api-key "$WARP_API_KEY" --first-name '{}' --la
 Create a new contractor. The worker will be created in draft status and must be invited separately via the invite endpoint. For business contractors, the businessName field is required.
 
 ```sh
-warpapi workers create-contractor --api-key "$WARP_API_KEY" --entity-type 'individual' --first-name '{}' --last-name '{}' --position '{}' --start-date '{}' --email '{}' --department-id '{}' --manager-id '{}' --work-country 'AD'
+warp workers create-contractor --api-key "$WARP_API_KEY" --entity-type 'individual' --first-name 'Melissa' --last-name 'Jones' --position 'Design Consultant' --start-date 'startDate' --email 'john@joinwarp.com' --department-id 'dpt_1234' --manager-id 'wrk_1234' --work-country 'AD'
 ```
 
 ### Invite Worker
@@ -410,7 +465,7 @@ warpapi workers create-contractor --api-key "$WARP_API_KEY" --entity-type 'indiv
 Send or resend the worker invite so they can accept and complete onboarding to Warp. If the worker has already been invited, the invite will be resent with extended validity.
 
 ```sh
-warpapi workers invite 'id' --api-key "$WARP_API_KEY"
+warp workers invite 'wrk_1234' --api-key "$WARP_API_KEY"
 ```
 
 ## `Workplaces`
@@ -422,7 +477,7 @@ Endpoints for workplace management. Create, list, and update workplaces within y
 List all workplaces for your company.
 
 ```sh
-warpapi workplaces list --api-key "$WARP_API_KEY" --limit 'limit'
+warp workplaces list --api-key "$WARP_API_KEY" --limit 'limit'
 ```
 
 ### Create Workplace
@@ -430,7 +485,7 @@ warpapi workplaces list --api-key "$WARP_API_KEY" --limit 'limit'
 Create a new workplace.
 
 ```sh
-warpapi workplaces create --api-key "$WARP_API_KEY" --name '{}' --type 'remote' --address '{"line1":{},"city":"","postalCode":"","state":"AL","country":"US"}'
+warp workplaces create --api-key "$WARP_API_KEY" --name 'name' --type 'remote' --address '{"line1":"x","city":"","postalCode":"","state":"AL","country":"US"}'
 ```
 
 ### Update Workplace
@@ -438,5 +493,5 @@ warpapi workplaces create --api-key "$WARP_API_KEY" --name '{}' --type 'remote' 
 Update an existing workplace.
 
 ```sh
-warpapi workplaces update 'id' --api-key "$WARP_API_KEY"
+warp workplaces update 'wkp_1234' --api-key "$WARP_API_KEY"
 ```

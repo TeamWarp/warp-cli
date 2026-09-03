@@ -28,13 +28,23 @@ import { VERSION } from './version';
 import { Benefits } from './resources/benefits/benefits';
 import {
   CustomFields,
-  type Union9,
-  type Objects2,
-  type Union1,
+  type PublicCustomFieldValueOutput,
+  type TextCustomFieldValue,
+  type NumberCustomFieldValue,
+  type DateCustomFieldValue,
+  type BooleanCustomFieldValue,
+  type CurrencyCustomFieldValue,
+  type PercentageCustomFieldValue,
+  type SelectCustomFieldValue,
+  type MultiSelectCustomFieldValue,
   type CustomFieldListResponse,
   type CustomFieldCreateResponse,
   type CustomFieldGetResponse,
+  type CustomFieldUpdateResponse,
+  type CustomFieldArchiveResponse,
   type CustomFieldCreateOptionResponse,
+  type CustomFieldUpdateOptionResponse,
+  type CustomFieldArchiveOptionResponse,
   type CustomFieldListValuesResponse,
   type CustomFieldUpsertValueResponse,
   type CustomFieldCreateParams,
@@ -54,10 +64,15 @@ import {
   type DepartmentCreateParams,
   type DepartmentUpdateParams,
 } from './resources/departments';
+import { Levels, type LevelListResponse } from './resources/levels';
 import {
   Offers,
+  type PublicMoneyAmount,
   type OfferListResponse,
   type OfferCreateResponse,
+  type OfferVoidResponse,
+  type OfferExtendDeadlineResponse,
+  type OfferResendResponse,
   type OfferListParams,
   type OfferCreateParams,
   type OfferVoidParams,
@@ -65,10 +80,79 @@ import {
 } from './resources/offers';
 import {
   PayRates,
+  type PublicPayRate,
+  type PublicPayRateType,
+  type PublicPayRatePer,
   type PayRateListResponse,
-  type PayRateGetResponse,
   type PayRateListParams,
 } from './resources/pay-rates';
+import {
+  Payroll,
+  type PublicPayrollList,
+  type PublicPayrollDetail,
+  type PublicPaycheckList,
+  type PublicPaycheckDetail,
+  type PublicPayrollSummary,
+  type PublicPayrollType,
+  type PublicPayrollSubtype,
+  type PublicPayrollStatus,
+  type PublicPayrollCurrency,
+  type PublicPayPeriod,
+  type PublicPayFrequency,
+  type PublicPayrollDetailTotals,
+  type PublicPayrollFundingMethod,
+  type PublicPayrollTimeline,
+  type PublicPaycheckSummary,
+  type PublicPaycheckPayroll,
+  type PublicPaycheckWorker,
+  type PublicPaycheckStatus,
+  type PublicPaycheckPaymentMethod,
+  type PublicPaycheckDetailTotals,
+  type PublicExchangeRate,
+  type PublicPaycheckEarning,
+  type PublicPaycheckReimbursement,
+  type PublicPaycheckDeduction,
+  type PublicPaycheckBenefit,
+  type PublicPaycheckTax,
+  type PublicFundingPayrollTotals,
+  type PublicCurrencyMoneyAmount11,
+  type PublicCurrencyMoneyAmount,
+  type PublicCurrencyMoneyAmount1,
+  type PublicCurrencyMoneyAmount2,
+  type PublicCurrencyMoneyAmount3,
+  type PublicCurrencyMoneyAmount4,
+  type PublicCurrencyMoneyAmount5,
+  type PublicCurrencyMoneyAmount6,
+  type PublicCurrencyMoneyAmount7,
+  type PublicCurrencyMoneyAmount8,
+  type PublicCurrencyMoneyAmount9,
+  type PublicCurrencyMoneyAmount10,
+  type PublicPaycheckSummaryTotals,
+  type PublicPaycheckCurrencyTotals,
+  type PublicExchangeRateValue,
+  type PublicPayrollMoneyAmount,
+  type PublicHourlyRate,
+  type PublicPayrollMoneyAmount1,
+  type PublicPaycheckDeductionTaxTreatment,
+  type PublicPayrollMoneyAmount2,
+  type PublicPayrollMoneyAmount3,
+  type PublicPayrollMoneyAmount4,
+  type PublicTaxPayer,
+  type PublicPayrollMoneyAmount5,
+  type PublicPaycheckSummaryCurrencyTotals,
+  type PublicCurrencyMoneyAmount13,
+  type PublicCurrencyMoneyAmount12,
+  type PublicCurrencyMoneyAmount14,
+  type PublicCurrencyMoneyAmount15,
+  type PublicCurrencyMoneyAmount16,
+  type PublicCurrencyMoneyAmount17,
+  type PublicCurrencyMoneyAmount18,
+  type PublicCurrencyMoneyAmount19,
+  type PublicCurrencyMoneyAmount20,
+  type PublicHourlyRateAmount,
+  type PayrollListParams,
+  type PayrollListPaychecksParams,
+} from './resources/payroll';
 import {
   TimeOff,
   type TimeOffListAssignmentsResponse,
@@ -80,8 +164,16 @@ import {
 } from './resources/time-off/time-off';
 import {
   Workers,
-  type OfficeWorkLocation,
-  type RemoteWorkLocation,
+  type PublicWorkerCompensation,
+  type PublicWorkerCustomField,
+  type PublicTextWorkerCustomField,
+  type PublicNumberWorkerCustomField,
+  type PublicDateWorkerCustomField,
+  type PublicBooleanWorkerCustomField,
+  type PublicCurrencyWorkerCustomField,
+  type PublicPercentageWorkerCustomField,
+  type PublicSelectWorkerCustomField,
+  type PublicMultiSelectWorkerCustomField,
   type WorkerListResponse,
   type WorkerGetResponse,
   type WorkerCreateEmployeeResponse,
@@ -93,7 +185,6 @@ import {
 } from './resources/workers';
 import {
   Workplaces,
-  type Objects11,
   type WorkplaceListResponse,
   type WorkplaceCreateResponse,
   type WorkplaceUpdateResponse,
@@ -103,27 +194,26 @@ import {
 } from './resources/workplaces';
 import {
   Webhooks,
-  type TimeOffRequestCreatedWebhookEvent,
-  type TimeOffRequestReviewedWebhookEvent,
-  type TimeOffRequestDeletedWebhookEvent,
-  type TimeOffBalanceAdjustedWebhookEvent,
-  type WorkerCreatedWebhookEvent,
-  type WorkerUpdatedWebhookEvent,
-  type WorkerDeletedWebhookEvent,
-  type WorkerInviteSentWebhookEvent,
-  type WorkerInviteAcceptedWebhookEvent,
-  type WorkerOnboardingCompletedWebhookEvent,
-  type WorkerOffboardingStartedWebhookEvent,
-  type WorkerOffboardedWebhookEvent,
-  type WorkerReactivatedWebhookEvent,
+  type OfferAcceptedWebhookEvent,
   type OfferCreatedWebhookEvent,
   type OfferSentWebhookEvent,
   type OfferViewedWebhookEvent,
-  type OfferAcceptedWebhookEvent,
   type OfferVoidedWebhookEvent,
+  type TimeOffBalanceAdjustedWebhookEvent,
+  type TimeOffRequestCreatedWebhookEvent,
+  type TimeOffRequestDeletedWebhookEvent,
+  type TimeOffRequestReviewedWebhookEvent,
+  type WorkerCreatedWebhookEvent,
+  type WorkerDeletedWebhookEvent,
+  type WorkerInviteAcceptedWebhookEvent,
+  type WorkerInviteSentWebhookEvent,
+  type WorkerOffboardedWebhookEvent,
+  type WorkerOffboardingStartedWebhookEvent,
+  type WorkerOnboardingCompletedWebhookEvent,
+  type WorkerReactivatedWebhookEvent,
+  type WorkerUpdatedWebhookEvent,
   type ParsedWebhookEvent,
 } from './resources/webhooks';
-import * as SharedAPI from './resources/shared';
 
 export type AuthTokenProvider = () => string | Promise<string>;
 
@@ -208,12 +298,12 @@ export interface ClientOptions {
   logger?: Logger | undefined;
 }
 
-export type WarpAPIOptions = ClientOptions;
+export type WarpOptions = ClientOptions;
 
 /**
- * API Client for interfacing with the WarpApi API.
+ * API Client for interfacing with the Warp API.
  */
-export class WarpAPI {
+export class Warp {
   apiKey: string | AuthTokenProvider;
   webhookSecret: string | null;
 
@@ -231,11 +321,11 @@ export class WarpAPI {
   private _options: ClientOptions;
 
   /**
-   * API Client for interfacing with the WarpApi API.
+   * API Client for interfacing with the Warp API.
    *
    * @param {string | AuthTokenProvider | undefined} [opts.apiKey=process.env["WARP_API_KEY"] ?? undefined]
    * @param {string | null | undefined} [opts.webhookSecret=process.env["WARP_WEBHOOK_SECRET"] ?? null]
-   * @param {string} [opts.baseURL=process.env["WARP_BASE_URL"] ?? https://api.joinwarp.com] - Override the default base URL for the API.
+   * @param {string} [opts.baseURL=process.env["WARP_BASE_URL"] ?? https://api.joinwarp.com/public] - Override the default base URL for the API.
    * @param {number} [opts.timeout=1 minute] - The maximum amount of time (in milliseconds) the client will wait for a response before timing out.
    * @param {MergedRequestInit} [opts.fetchOptions] - Additional `RequestInit` options to be passed to `fetch` calls.
    * @param {Fetch} [opts.fetch] - Specify a custom `fetch` function implementation.
@@ -250,8 +340,8 @@ export class WarpAPI {
     ...opts
   }: ClientOptions = {}) {
     if (apiKey === undefined) {
-      throw new Errors.WarpAPIError(
-        "The WARP_API_KEY environment variable is missing or empty; either provide it, or instantiate the WarpAPI client with an apiKey option, like new WarpAPI({ apiKey: 'My API Key' }).",
+      throw new Errors.WarpError(
+        "The WARP_API_KEY environment variable is missing or empty; either provide it, or instantiate the Warp client with an apiKey option, like new Warp({ apiKey: 'My API Key' }).",
       );
     }
 
@@ -259,12 +349,12 @@ export class WarpAPI {
       apiKey,
       webhookSecret,
       ...opts,
-      baseURL: baseURL || 'https://api.joinwarp.com',
+      baseURL: baseURL || 'https://api.joinwarp.com/public',
     };
     const baseURLOverridden = baseURL !== null && baseURL !== undefined && baseURL !== '';
-    const defaultBaseURL = 'https://api.joinwarp.com';
+    const defaultBaseURL = 'https://api.joinwarp.com/public';
     this.baseURL = options.baseURL || defaultBaseURL;
-    this.timeout = options.timeout ?? WarpAPI.DEFAULT_TIMEOUT /* 1 minute */;
+    this.timeout = options.timeout ?? Warp.DEFAULT_TIMEOUT /* 1 minute */;
     this.logger = options.logger ?? console;
     const defaultLogLevel = 'warn';
     // Set default logLevel early so that we can log a warning in parseLogLevel.
@@ -889,7 +979,7 @@ export class WarpAPI {
   ): Promise<string | undefined> {
     if (value == null) return undefined;
     const token = typeof value === 'function' ? await value() : value;
-    if (!token) throw new Errors.WarpAPIError(`Expected '${optionName}' to resolve to a non-empty string.`);
+    if (!token) throw new Errors.WarpError(`Expected '${optionName}' to resolve to a non-empty string.`);
     return token;
   }
 
@@ -900,14 +990,14 @@ export class WarpAPI {
     if (value == null) return undefined;
     const token = typeof value === 'function' ? value() : value;
     if (typeof token !== 'string' || !token)
-      throw new Errors.WarpAPIError(`Expected '${optionName}' to resolve to a non-empty string.`);
+      throw new Errors.WarpError(`Expected '${optionName}' to resolve to a non-empty string.`);
     return token;
   }
 
-  static WarpAPI = this;
+  static Warp = this;
   static DEFAULT_TIMEOUT = 60000; // 1 minute
 
-  static WarpAPIError = Errors.WarpAPIError;
+  static WarpError = Errors.WarpError;
   static APIError = Errors.APIError;
   static APIConnectionError = Errors.APIConnectionError;
   static APIConnectionTimeoutError = Errors.APIConnectionTimeoutError;
@@ -926,37 +1016,51 @@ export class WarpAPI {
   benefits: Benefits = new Benefits(this);
   customFields: CustomFields = new CustomFields(this);
   departments: Departments = new Departments(this);
+  levels: Levels = new Levels(this);
   offers: Offers = new Offers(this);
   payRates: PayRates = new PayRates(this);
+  payroll: Payroll = new Payroll(this);
   timeOff: TimeOff = new TimeOff(this);
   workers: Workers = new Workers(this);
   workplaces: Workplaces = new Workplaces(this);
   webhooks: Webhooks = new Webhooks(this);
 }
 
-WarpAPI.Benefits = Benefits;
-WarpAPI.CustomFields = CustomFields;
-WarpAPI.Departments = Departments;
-WarpAPI.Offers = Offers;
-WarpAPI.PayRates = PayRates;
-WarpAPI.TimeOff = TimeOff;
-WarpAPI.Workers = Workers;
-WarpAPI.Workplaces = Workplaces;
-WarpAPI.Webhooks = Webhooks;
+Warp.Benefits = Benefits;
+Warp.CustomFields = CustomFields;
+Warp.Departments = Departments;
+Warp.Levels = Levels;
+Warp.Offers = Offers;
+Warp.PayRates = PayRates;
+Warp.Payroll = Payroll;
+Warp.TimeOff = TimeOff;
+Warp.Workers = Workers;
+Warp.Workplaces = Workplaces;
+Warp.Webhooks = Webhooks;
 
-export declare namespace WarpAPI {
+export declare namespace Warp {
   export type RequestOptions = Opts.RequestOptions;
   export { Benefits as Benefits };
 
   export {
     CustomFields as CustomFields,
-    type Union9 as Union9,
-    type Objects2 as Objects2,
-    type Union1 as Union1,
+    type PublicCustomFieldValueOutput as PublicCustomFieldValueOutput,
+    type TextCustomFieldValue as TextCustomFieldValue,
+    type NumberCustomFieldValue as NumberCustomFieldValue,
+    type DateCustomFieldValue as DateCustomFieldValue,
+    type BooleanCustomFieldValue as BooleanCustomFieldValue,
+    type CurrencyCustomFieldValue as CurrencyCustomFieldValue,
+    type PercentageCustomFieldValue as PercentageCustomFieldValue,
+    type SelectCustomFieldValue as SelectCustomFieldValue,
+    type MultiSelectCustomFieldValue as MultiSelectCustomFieldValue,
     type CustomFieldListResponse as CustomFieldListResponse,
     type CustomFieldCreateResponse as CustomFieldCreateResponse,
     type CustomFieldGetResponse as CustomFieldGetResponse,
+    type CustomFieldUpdateResponse as CustomFieldUpdateResponse,
+    type CustomFieldArchiveResponse as CustomFieldArchiveResponse,
     type CustomFieldCreateOptionResponse as CustomFieldCreateOptionResponse,
+    type CustomFieldUpdateOptionResponse as CustomFieldUpdateOptionResponse,
+    type CustomFieldArchiveOptionResponse as CustomFieldArchiveOptionResponse,
     type CustomFieldListValuesResponse as CustomFieldListValuesResponse,
     type CustomFieldUpsertValueResponse as CustomFieldUpsertValueResponse,
     type CustomFieldCreateParams as CustomFieldCreateParams,
@@ -978,10 +1082,16 @@ export declare namespace WarpAPI {
     type DepartmentUpdateParams as DepartmentUpdateParams,
   };
 
+  export { Levels as Levels, type LevelListResponse as LevelListResponse };
+
   export {
     Offers as Offers,
+    type PublicMoneyAmount as PublicMoneyAmount,
     type OfferListResponse as OfferListResponse,
     type OfferCreateResponse as OfferCreateResponse,
+    type OfferVoidResponse as OfferVoidResponse,
+    type OfferExtendDeadlineResponse as OfferExtendDeadlineResponse,
+    type OfferResendResponse as OfferResendResponse,
     type OfferListParams as OfferListParams,
     type OfferCreateParams as OfferCreateParams,
     type OfferVoidParams as OfferVoidParams,
@@ -990,9 +1100,79 @@ export declare namespace WarpAPI {
 
   export {
     PayRates as PayRates,
+    type PublicPayRate as PublicPayRate,
+    type PublicPayRateType as PublicPayRateType,
+    type PublicPayRatePer as PublicPayRatePer,
     type PayRateListResponse as PayRateListResponse,
-    type PayRateGetResponse as PayRateGetResponse,
     type PayRateListParams as PayRateListParams,
+  };
+
+  export {
+    Payroll as Payroll,
+    type PublicPayrollList as PublicPayrollList,
+    type PublicPayrollDetail as PublicPayrollDetail,
+    type PublicPaycheckList as PublicPaycheckList,
+    type PublicPaycheckDetail as PublicPaycheckDetail,
+    type PublicPayrollSummary as PublicPayrollSummary,
+    type PublicPayrollType as PublicPayrollType,
+    type PublicPayrollSubtype as PublicPayrollSubtype,
+    type PublicPayrollStatus as PublicPayrollStatus,
+    type PublicPayrollCurrency as PublicPayrollCurrency,
+    type PublicPayPeriod as PublicPayPeriod,
+    type PublicPayFrequency as PublicPayFrequency,
+    type PublicPayrollDetailTotals as PublicPayrollDetailTotals,
+    type PublicPayrollFundingMethod as PublicPayrollFundingMethod,
+    type PublicPayrollTimeline as PublicPayrollTimeline,
+    type PublicPaycheckSummary as PublicPaycheckSummary,
+    type PublicPaycheckPayroll as PublicPaycheckPayroll,
+    type PublicPaycheckWorker as PublicPaycheckWorker,
+    type PublicPaycheckStatus as PublicPaycheckStatus,
+    type PublicPaycheckPaymentMethod as PublicPaycheckPaymentMethod,
+    type PublicPaycheckDetailTotals as PublicPaycheckDetailTotals,
+    type PublicExchangeRate as PublicExchangeRate,
+    type PublicPaycheckEarning as PublicPaycheckEarning,
+    type PublicPaycheckReimbursement as PublicPaycheckReimbursement,
+    type PublicPaycheckDeduction as PublicPaycheckDeduction,
+    type PublicPaycheckBenefit as PublicPaycheckBenefit,
+    type PublicPaycheckTax as PublicPaycheckTax,
+    type PublicFundingPayrollTotals as PublicFundingPayrollTotals,
+    type PublicCurrencyMoneyAmount11 as PublicCurrencyMoneyAmount11,
+    type PublicCurrencyMoneyAmount as PublicCurrencyMoneyAmount,
+    type PublicCurrencyMoneyAmount1 as PublicCurrencyMoneyAmount1,
+    type PublicCurrencyMoneyAmount2 as PublicCurrencyMoneyAmount2,
+    type PublicCurrencyMoneyAmount3 as PublicCurrencyMoneyAmount3,
+    type PublicCurrencyMoneyAmount4 as PublicCurrencyMoneyAmount4,
+    type PublicCurrencyMoneyAmount5 as PublicCurrencyMoneyAmount5,
+    type PublicCurrencyMoneyAmount6 as PublicCurrencyMoneyAmount6,
+    type PublicCurrencyMoneyAmount7 as PublicCurrencyMoneyAmount7,
+    type PublicCurrencyMoneyAmount8 as PublicCurrencyMoneyAmount8,
+    type PublicCurrencyMoneyAmount9 as PublicCurrencyMoneyAmount9,
+    type PublicCurrencyMoneyAmount10 as PublicCurrencyMoneyAmount10,
+    type PublicPaycheckSummaryTotals as PublicPaycheckSummaryTotals,
+    type PublicPaycheckCurrencyTotals as PublicPaycheckCurrencyTotals,
+    type PublicExchangeRateValue as PublicExchangeRateValue,
+    type PublicPayrollMoneyAmount as PublicPayrollMoneyAmount,
+    type PublicHourlyRate as PublicHourlyRate,
+    type PublicPayrollMoneyAmount1 as PublicPayrollMoneyAmount1,
+    type PublicPaycheckDeductionTaxTreatment as PublicPaycheckDeductionTaxTreatment,
+    type PublicPayrollMoneyAmount2 as PublicPayrollMoneyAmount2,
+    type PublicPayrollMoneyAmount3 as PublicPayrollMoneyAmount3,
+    type PublicPayrollMoneyAmount4 as PublicPayrollMoneyAmount4,
+    type PublicTaxPayer as PublicTaxPayer,
+    type PublicPayrollMoneyAmount5 as PublicPayrollMoneyAmount5,
+    type PublicPaycheckSummaryCurrencyTotals as PublicPaycheckSummaryCurrencyTotals,
+    type PublicCurrencyMoneyAmount13 as PublicCurrencyMoneyAmount13,
+    type PublicCurrencyMoneyAmount12 as PublicCurrencyMoneyAmount12,
+    type PublicCurrencyMoneyAmount14 as PublicCurrencyMoneyAmount14,
+    type PublicCurrencyMoneyAmount15 as PublicCurrencyMoneyAmount15,
+    type PublicCurrencyMoneyAmount16 as PublicCurrencyMoneyAmount16,
+    type PublicCurrencyMoneyAmount17 as PublicCurrencyMoneyAmount17,
+    type PublicCurrencyMoneyAmount18 as PublicCurrencyMoneyAmount18,
+    type PublicCurrencyMoneyAmount19 as PublicCurrencyMoneyAmount19,
+    type PublicCurrencyMoneyAmount20 as PublicCurrencyMoneyAmount20,
+    type PublicHourlyRateAmount as PublicHourlyRateAmount,
+    type PayrollListParams as PayrollListParams,
+    type PayrollListPaychecksParams as PayrollListPaychecksParams,
   };
 
   export {
@@ -1007,8 +1187,16 @@ export declare namespace WarpAPI {
 
   export {
     Workers as Workers,
-    type OfficeWorkLocation as OfficeWorkLocation,
-    type RemoteWorkLocation as RemoteWorkLocation,
+    type PublicWorkerCompensation as PublicWorkerCompensation,
+    type PublicWorkerCustomField as PublicWorkerCustomField,
+    type PublicTextWorkerCustomField as PublicTextWorkerCustomField,
+    type PublicNumberWorkerCustomField as PublicNumberWorkerCustomField,
+    type PublicDateWorkerCustomField as PublicDateWorkerCustomField,
+    type PublicBooleanWorkerCustomField as PublicBooleanWorkerCustomField,
+    type PublicCurrencyWorkerCustomField as PublicCurrencyWorkerCustomField,
+    type PublicPercentageWorkerCustomField as PublicPercentageWorkerCustomField,
+    type PublicSelectWorkerCustomField as PublicSelectWorkerCustomField,
+    type PublicMultiSelectWorkerCustomField as PublicMultiSelectWorkerCustomField,
     type WorkerListResponse as WorkerListResponse,
     type WorkerGetResponse as WorkerGetResponse,
     type WorkerCreateEmployeeResponse as WorkerCreateEmployeeResponse,
@@ -1021,7 +1209,6 @@ export declare namespace WarpAPI {
 
   export {
     Workplaces as Workplaces,
-    type Objects11 as Objects11,
     type WorkplaceListResponse as WorkplaceListResponse,
     type WorkplaceCreateResponse as WorkplaceCreateResponse,
     type WorkplaceUpdateResponse as WorkplaceUpdateResponse,
@@ -1032,79 +1219,26 @@ export declare namespace WarpAPI {
 
   export {
     Webhooks as Webhooks,
-    type TimeOffRequestCreatedWebhookEvent as TimeOffRequestCreatedWebhookEvent,
-    type TimeOffRequestReviewedWebhookEvent as TimeOffRequestReviewedWebhookEvent,
-    type TimeOffRequestDeletedWebhookEvent as TimeOffRequestDeletedWebhookEvent,
-    type TimeOffBalanceAdjustedWebhookEvent as TimeOffBalanceAdjustedWebhookEvent,
-    type WorkerCreatedWebhookEvent as WorkerCreatedWebhookEvent,
-    type WorkerUpdatedWebhookEvent as WorkerUpdatedWebhookEvent,
-    type WorkerDeletedWebhookEvent as WorkerDeletedWebhookEvent,
-    type WorkerInviteSentWebhookEvent as WorkerInviteSentWebhookEvent,
-    type WorkerInviteAcceptedWebhookEvent as WorkerInviteAcceptedWebhookEvent,
-    type WorkerOnboardingCompletedWebhookEvent as WorkerOnboardingCompletedWebhookEvent,
-    type WorkerOffboardingStartedWebhookEvent as WorkerOffboardingStartedWebhookEvent,
-    type WorkerOffboardedWebhookEvent as WorkerOffboardedWebhookEvent,
-    type WorkerReactivatedWebhookEvent as WorkerReactivatedWebhookEvent,
+    type OfferAcceptedWebhookEvent as OfferAcceptedWebhookEvent,
     type OfferCreatedWebhookEvent as OfferCreatedWebhookEvent,
     type OfferSentWebhookEvent as OfferSentWebhookEvent,
     type OfferViewedWebhookEvent as OfferViewedWebhookEvent,
-    type OfferAcceptedWebhookEvent as OfferAcceptedWebhookEvent,
     type OfferVoidedWebhookEvent as OfferVoidedWebhookEvent,
+    type TimeOffBalanceAdjustedWebhookEvent as TimeOffBalanceAdjustedWebhookEvent,
+    type TimeOffRequestCreatedWebhookEvent as TimeOffRequestCreatedWebhookEvent,
+    type TimeOffRequestDeletedWebhookEvent as TimeOffRequestDeletedWebhookEvent,
+    type TimeOffRequestReviewedWebhookEvent as TimeOffRequestReviewedWebhookEvent,
+    type WorkerCreatedWebhookEvent as WorkerCreatedWebhookEvent,
+    type WorkerDeletedWebhookEvent as WorkerDeletedWebhookEvent,
+    type WorkerInviteAcceptedWebhookEvent as WorkerInviteAcceptedWebhookEvent,
+    type WorkerInviteSentWebhookEvent as WorkerInviteSentWebhookEvent,
+    type WorkerOffboardedWebhookEvent as WorkerOffboardedWebhookEvent,
+    type WorkerOffboardingStartedWebhookEvent as WorkerOffboardingStartedWebhookEvent,
+    type WorkerOnboardingCompletedWebhookEvent as WorkerOnboardingCompletedWebhookEvent,
+    type WorkerReactivatedWebhookEvent as WorkerReactivatedWebhookEvent,
+    type WorkerUpdatedWebhookEvent as WorkerUpdatedWebhookEvent,
     type ParsedWebhookEvent as ParsedWebhookEvent,
   };
-
-  export type APIKeyUnauthorizedEncoded = SharedAPI.APIKeyUnauthorizedEncoded;
-  export type APINotEnabledEncoded = SharedAPI.APINotEnabledEncoded;
-  export type CustomFieldNotFoundErrorEncoded = SharedAPI.CustomFieldNotFoundErrorEncoded;
-  export type CustomFieldOptionAlreadyExistsErrorEncoded =
-    SharedAPI.CustomFieldOptionAlreadyExistsErrorEncoded;
-  export type CustomFieldOptionNotFoundErrorEncoded = SharedAPI.CustomFieldOptionNotFoundErrorEncoded;
-  export type DepartmentNotFoundEncoded = SharedAPI.DepartmentNotFoundEncoded;
-  export type EffectHTTPAPIErrorInternalServerErrorEncoded =
-    SharedAPI.EffectHTTPAPIErrorInternalServerErrorEncoded;
-  export type InvalidCustomFieldOperationErrorEncoded = SharedAPI.InvalidCustomFieldOperationErrorEncoded;
-  export type InvalidOfferStatusErrorEncoded = SharedAPI.InvalidOfferStatusErrorEncoded;
-  export type ManagerNotFoundErrorEncoded = SharedAPI.ManagerNotFoundErrorEncoded;
-  export type MissingRequiredCompanyPermissionsEncoded = SharedAPI.MissingRequiredCompanyPermissionsEncoded;
-  export type Objects = SharedAPI.Objects;
-  export type Objects1 = SharedAPI.Objects1;
-  export type Objects3 = SharedAPI.Objects3;
-  export type Objects5 = SharedAPI.Objects5;
-  export type OfferNotFoundErrorEncoded = SharedAPI.OfferNotFoundErrorEncoded;
-  export type PublicMoneyAmount = SharedAPI.PublicMoneyAmount;
-  export type PublicWorkerCompensation = SharedAPI.PublicWorkerCompensation;
-  export type RateLimitExceededEncoded = SharedAPI.RateLimitExceededEncoded;
-  export type TimeOffPolicyNotFoundEncoded = SharedAPI.TimeOffPolicyNotFoundEncoded;
-  export type Union = SharedAPI.Union;
-  export type Union10 = SharedAPI.Union10;
-  export type Union11 = SharedAPI.Union11;
-  export type Union12 = SharedAPI.Union12;
-  export type Union13 = SharedAPI.Union13;
-  export type Union18 = SharedAPI.Union18;
-  export type Union2 = SharedAPI.Union2;
-  export type Union20 = SharedAPI.Union20;
-  export type Union21 = SharedAPI.Union21;
-  export type Union23 = SharedAPI.Union23;
-  export type Union24 = SharedAPI.Union24;
-  export type Union25 = SharedAPI.Union25;
-  export type Union26 = SharedAPI.Union26;
-  export type Union27 = SharedAPI.Union27;
-  export type Union28 = SharedAPI.Union28;
-  export type Union29 = SharedAPI.Union29;
-  export type Union3 = SharedAPI.Union3;
-  export type Union30 = SharedAPI.Union30;
-  export type Union31 = SharedAPI.Union31;
-  export type Union32 = SharedAPI.Union32;
-  export type Union33 = SharedAPI.Union33;
-  export type Union34 = SharedAPI.Union34;
-  export type Union35 = SharedAPI.Union35;
-  export type Union4 = SharedAPI.Union4;
-  export type Union5 = SharedAPI.Union5;
-  export type Union6 = SharedAPI.Union6;
-  export type Union7 = SharedAPI.Union7;
-  export type Union8 = SharedAPI.Union8;
-  export type WorkerNotFoundErrorEncoded = SharedAPI.WorkerNotFoundErrorEncoded;
-  export type WorkplaceNotFoundEncoded = SharedAPI.WorkplaceNotFoundEncoded;
 }
 
 const headerExplicitlyOmitted = (source: HeadersLike | undefined, name: string): boolean => {

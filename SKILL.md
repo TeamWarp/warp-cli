@@ -1,17 +1,17 @@
 ---
-name: warp-api-cli-sdk
-description: "CLI SDK for Warp API. Use when writing CLI code that calls Warp API with the warpapi-cli package: installing it, constructing and authenticating the client, and calling API operations."
+name: warp-cli-sdk
+description: "CLI SDK for warp API. Use when writing CLI code that calls warp API with the warp-cli package: installing it, constructing and authenticating the client, and calling API operations."
 ---
 
-# Warp API CLI SDK
+# warp CLI SDK
 
-Generated CLI client for Warp API, published as `warpapi-cli`. Use the generated client instead of hand-writing HTTP requests.
+Generated CLI client for warp API, published as `warp-cli`. Use the generated client instead of hand-writing HTTP requests.
 
 ## Install
 
 ```sh
 # Homebrew — standalone binary, no Node.js required
-brew install TeamWarp/tap/warpapi
+brew install TeamWarp/tap/warp
 ```
 
 ## Client setup and authentication
@@ -23,9 +23,9 @@ Provide credentials using the options below. Environment variables are read auto
 ## Calling operations
 
 ```sh
-warpapi [resource] [command] [flags]
+warp [resource] [command] [flags]
 
-warpapi benefits:health-plans list --api-key "$WARP_API_KEY" --limit 'limit' --statuses '["active"]'
+warp benefits:health-plans list --api-key "$WARP_API_KEY" --limit 'limit' --statuses '["active"]'
 ```
 
 Method names, parameter shapes, and response types are generated from the API description — do not guess them. Look up the exact call signature in [api.md](./api.md) before writing a call.
@@ -40,7 +40,7 @@ Failed requests print a structured error to standard error and exit with a statu
 - Use `--max-items <count>` to bound paginated, streaming, and WebSocket commands before they fill the context, and `--transform <dot.path>` to keep only the field you need.
 - Commands never prompt, so they are safe to run non-interactively. Credentials come from the documented environment variables or their flags.
 - Branch on the exit status rather than on stderr text: `0` success, `1` `error`, `2` `usage`, `10` `auth-failed`, `11` `not-found`, `12` `rate-limited`, `13` `client-error`, `14` `server-error`, `15` `connection-error`. A failed request repeats its class on stderr as a stable `code`, with a `hint` when there is a concrete next step; exit `2` is a plain message with no structured body, because the command never ran.
-- Run `warpapi --help` or `warpapi <resource> --help` to discover commands and flags, and `man warpapi` for the full reference.
+- Run `warp --help` or `warp <resource> --help` to discover commands and flags, and `man warp` for the full reference.
 
 ## Requirements
 

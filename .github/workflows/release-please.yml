@@ -84,17 +84,17 @@ jobs:
           ref: ${{ needs.release-please.outputs.tag_name }}
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
-          node-version: "20"
+          node-version: "24"
       - run: npm install
       - run: npm run build
       # The version is owned by release tooling in this repository, never by the SDK generator,
-      # so every release step reads it from package.json at run time.
+      # so the asset and Homebrew steps read it from package.json at run time.
       - name: Read package version
         run: echo "PKG_VERSION=$(node -p 'require("./package.json").version')" >> "$GITHUB_ENV"
       - name: Set up Bun
         uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
         with:
-          bun-version: "1.3.9"
+          bun-version: "1.4.0"
       # `bun build --compile` embeds the Bun runtime and every dependency in the executable, so the
       # published artifacts run on a machine with no Node, no Bun, and no `node_modules` — unlike the
       # npm package, which stays a normal Node CLI. Bun cross-compiles every target from this one
@@ -115,12 +115,12 @@ jobs:
             rm -rf compile-out && mkdir -p compile-out
             case "$target" in
               windows-*)
-                bun build src/bin.ts --compile --minify --target="bun-${target}" --outfile "compile-out/warpapi.exe"
-                (cd compile-out && zip -q "$ROOT/release-binaries/warpapi-${target}.zip" "warpapi.exe")
+                bun build src/bin.ts --compile --minify --target="bun-${target}" --outfile "compile-out/warp.exe"
+                (cd compile-out && zip -q "$ROOT/release-binaries/warp-${target}.zip" "warp.exe")
                 ;;
               *)
-                bun build src/bin.ts --compile --minify --target="bun-${target}" --outfile "compile-out/warpapi"
-                tar -czf "release-binaries/warpapi-${target}.tar.gz" -C compile-out "warpapi"
+                bun build src/bin.ts --compile --minify --target="bun-${target}" --outfile "compile-out/warp"
+                tar -czf "release-binaries/warp-${target}.tar.gz" -C compile-out "warp"
                 ;;
             esac
           done
@@ -149,9 +149,9 @@ jobs:
           # The formula file is lowercase even when the command it installs is not: Homebrew resolves
           # `brew install <owner>/<tap>/<name>` to `Formula/<name>.rb`, and that lookup is case-sensitive
           # on Linux. The `bin.install` below still installs the command under its own spelling.
-          cat > "tap/Formula/warpapi.rb" <<'EOF'
-          class Warpapi < Formula
-            desc "warpapi command-line interface"
+          cat > "tap/Formula/warp.rb" <<'EOF'
+          class Warp < Formula
+            desc "warp command-line interface"
             homepage "https://github.com/TeamWarp/warp-cli"
             version "__VERSION__"
 
@@ -178,19 +178,19 @@ jobs:
             end
 
             def install
-              bin.install "warpapi"
+              bin.install "warp"
             end
 
             test do
-              system "#{bin}/warpapi", "--help"
+              system "#{bin}/warp", "--help"
             end
           end
           EOF
-          FORMULA="tap/Formula/warpapi.rb"
+          FORMULA="tap/Formula/warp.rb"
           # Homebrew resolves one url/sha256 pair per platform at install time, but the formula is a
           # single file, so every platform the tap supports has to be pinned on every release.
           for target in linux-x64 linux-arm64 darwin-x64 darwin-arm64; do
-            ASSET="warpapi-${target}.tar.gz"
+            ASSET="warp-${target}.tar.gz"
             curl -fsSL "$BASE_URL/$ASSET" -o "$ASSET"
             SHA256="$(shasum -a 256 "$ASSET" | cut -d" " -f1)"
             # `darwin-arm64` names the `__URL_DARWIN_ARM64__`/`__SHA_DARWIN_ARM64__` placeholder
@@ -203,6 +203,6 @@ jobs:
           cd tap
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add "Formula/warpapi.rb"
-          git commit -m "warpapi ${PKG_VERSION}" || { echo "formula unchanged, skipping"; exit 0; }
+          git add "Formula/warp.rb"
+          git commit -m "warp ${PKG_VERSION}" || { echo "formula unchanged, skipping"; exit 0; }
           git push

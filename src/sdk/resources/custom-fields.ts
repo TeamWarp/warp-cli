@@ -5,7 +5,6 @@ import { APIPromise } from '../api-promise';
 import type { RequestOptions } from '../internal/request-options';
 import { buildHeaders } from '../internal/headers';
 import { path as __scalarPath } from '../internal/utils/path';
-import type * as Shared from './shared';
 
 export class CustomFields extends APIResource {
   /**
@@ -16,7 +15,7 @@ export class CustomFields extends APIResource {
    *
    * @example
    * ```ts
-   * const list = await client.customFields.list();
+   * const customField = await client.customFields.list();
    * ```
    */
   list(options?: RequestOptions): APIPromise<CustomFieldListResponse> {
@@ -32,8 +31,8 @@ export class CustomFields extends APIResource {
    *
    * @example
    * ```ts
-   * const create = await client.customFields.create({
-   *   name: {},
+   * const customField = await client.customFields.create({
+   *   name: 'x',
    *   type: 'text',
    *   category: 'info',
    * });
@@ -46,13 +45,13 @@ export class CustomFields extends APIResource {
   /**
    * Get a custom worker field definition, including its select options. Archived options may appear on existing worker values but cannot be newly selected.
    *
-   * @param {string} id
+   * @param {string} id - The tag of a company custom worker field.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
    * @returns {APIPromise<CustomFieldGetResponse>} Success
    *
    * @example
    * ```ts
-   * const get_ = await client.customFields.get('id');
+   * const customField = await client.customFields.get('cf_1234');
    * ```
    */
   get(id: string, options?: RequestOptions): APIPromise<CustomFieldGetResponse> {
@@ -62,49 +61,53 @@ export class CustomFields extends APIResource {
   /**
    * Update a custom worker field definition. The field type cannot be changed; create a new field instead. Requires the workers:custom_fields permission; changing the category, access level, or input source requires the manage level.
    *
-   * @param {string} id
+   * @param {string} id - The tag of a company custom worker field.
    * @param {CustomFieldUpdateParams} body - The request body to send.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
-   * @returns {APIPromise<Shared.Objects>} Success
+   * @returns {APIPromise<CustomFieldUpdateResponse>} Success
    *
    * @example
    * ```ts
-   * const objects = await client.customFields.update('id', {});
+   * const customField = await client.customFields.update('cf_1234', {});
    * ```
    */
-  update(id: string, body: CustomFieldUpdateParams, options?: RequestOptions): APIPromise<Shared.Objects> {
+  update(
+    id: string,
+    body: CustomFieldUpdateParams,
+    options?: RequestOptions,
+  ): APIPromise<CustomFieldUpdateResponse> {
     return this._client.patch(__scalarPath`/v1/custom_fields/${id}`, { body, ...options });
   }
 
   /**
    * Archive a custom worker field. Archived fields keep their existing worker values but cannot receive new ones. Requires the workers:custom_fields permission at the manage level.
    *
-   * @param {string} id
+   * @param {string} id - The tag of a company custom worker field.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
-   * @returns {APIPromise<Shared.Objects>} Success
+   * @returns {APIPromise<CustomFieldArchiveResponse>} Success
    *
    * @example
    * ```ts
-   * const objects = await client.customFields.archive('id');
+   * const customField = await client.customFields.archive('cf_1234');
    * ```
    */
-  archive(id: string, options?: RequestOptions): APIPromise<Shared.Objects> {
+  archive(id: string, options?: RequestOptions): APIPromise<CustomFieldArchiveResponse> {
     return this._client.post(__scalarPath`/v1/custom_fields/${id}/archive`, options);
   }
 
   /**
    * Add an option to a select or multi_select custom worker field. The option value should be treated as stable; the label can change. Requires the workers:custom_fields permission.
    *
-   * @param {string} id
+   * @param {string} id - The tag of a company custom worker field.
    * @param {CustomFieldCreateOptionParams} body - The request body to send.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
    * @returns {APIPromise<CustomFieldCreateOptionResponse>} Success
    *
    * @example
    * ```ts
-   * const createOption = await client.customFields.createOption('id', {
-   *   label: {},
-   *   value: {},
+   * const customField = await client.customFields.createOption('cf_1234', {
+   *   label: 'x',
+   *   value: 'x',
    * });
    * ```
    */
@@ -119,34 +122,34 @@ export class CustomFields extends APIResource {
   /**
    * Update the label or sort order of a custom worker field option. Options of archived fields cannot be edited. Requires the workers:custom_fields permission.
    *
-   * @param {string} id
+   * @param {string} id - The tag of a company custom worker field option.
    * @param {CustomFieldUpdateOptionParams} body - The request body to send.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
-   * @returns {APIPromise<Shared.Objects3>} Success
+   * @returns {APIPromise<CustomFieldUpdateOptionResponse>} Success
    *
    * @example
    * ```ts
-   * const objects3 = await client.customFields.updateOption('id', {});
+   * const customField = await client.customFields.updateOption('cfo_1234', {});
    * ```
    */
   updateOption(
     id: string,
     body: CustomFieldUpdateOptionParams,
     options?: RequestOptions,
-  ): APIPromise<Shared.Objects3> {
+  ): APIPromise<CustomFieldUpdateOptionResponse> {
     return this._client.patch(__scalarPath`/v1/custom_field_options/${id}`, { body, ...options });
   }
 
   /**
    * Delete a custom worker field option that is not applied to any worker. Options in use must be archived instead. Requires the workers:custom_fields permission at the manage level.
    *
-   * @param {string} id
+   * @param {string} id - The tag of a company custom worker field option.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
    * @returns <No Content>
    *
    * @example
    * ```ts
-   * await client.customFields.deleteOption('id');
+   * await client.customFields.deleteOption('cfo_1234');
    * ```
    */
   deleteOption(id: string, options?: RequestOptions): APIPromise<void> {
@@ -159,16 +162,16 @@ export class CustomFields extends APIResource {
   /**
    * Archive a custom worker field option. Archived options remain on existing worker values but cannot be newly selected. Requires the workers:custom_fields permission at the manage level.
    *
-   * @param {string} id
+   * @param {string} id - The tag of a company custom worker field option.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
-   * @returns {APIPromise<Shared.Objects3>} Success
+   * @returns {APIPromise<CustomFieldArchiveOptionResponse>} Success
    *
    * @example
    * ```ts
-   * const objects3 = await client.customFields.archiveOption('id');
+   * const customField = await client.customFields.archiveOption('cfo_1234');
    * ```
    */
-  archiveOption(id: string, options?: RequestOptions): APIPromise<Shared.Objects3> {
+  archiveOption(id: string, options?: RequestOptions): APIPromise<CustomFieldArchiveOptionResponse> {
     return this._client.post(__scalarPath`/v1/custom_field_options/${id}/archive`, options);
   }
 
@@ -181,7 +184,7 @@ export class CustomFields extends APIResource {
    *
    * @example
    * ```ts
-   * const listValues = await client.customFields.listValues();
+   * const customField = await client.customFields.listValues();
    * ```
    */
   listValues(
@@ -200,9 +203,9 @@ export class CustomFields extends APIResource {
    *
    * @example
    * ```ts
-   * const upsertValue = await client.customFields.upsertValue({
-   *   workerId: {},
-   *   fieldId: {},
+   * const customField = await client.customFields.upsertValue({
+   *   workerId: 'wrk_1234',
+   *   fieldId: 'cf_1234',
    *   value: {
    *     type: 'text',
    *     value: '',
@@ -227,8 +230,8 @@ export class CustomFields extends APIResource {
    * @example
    * ```ts
    * await client.customFields.clearValue({
-   *   workerId: {},
-   *   fieldId: {},
+   *   workerId: 'wrk_1234',
+   *   fieldId: 'cf_1234',
    * });
    * ```
    */
@@ -242,89 +245,515 @@ export class CustomFields extends APIResource {
   }
 }
 
-export type Union9 = Record<string, unknown> | null;
+export type PublicCustomFieldValueOutput =
+  | PublicCustomFieldValueOutput.TextCustomFieldValue
+  | PublicCustomFieldValueOutput.NumberCustomFieldValue
+  | PublicCustomFieldValueOutput.DateCustomFieldValue
+  | PublicCustomFieldValueOutput.BooleanCustomFieldValue
+  | PublicCustomFieldValueOutput.CurrencyCustomFieldValue
+  | PublicCustomFieldValueOutput.PercentageCustomFieldValue
+  | PublicCustomFieldValueOutput.SelectCustomFieldValue
+  | PublicCustomFieldValueOutput.MultiSelectCustomFieldValue;
 
-export interface Objects2 {
-  label: string;
-  value: string;
-  sortOrder?: number | Union1 | null;
+export namespace PublicCustomFieldValueOutput {
+  export interface TextCustomFieldValue {
+    type: 'text';
+    value: string;
+  }
+
+  export interface NumberCustomFieldValue {
+    type: 'number';
+    value: number | 'Infinity' | '-Infinity' | 'NaN';
+  }
+
+  export interface DateCustomFieldValue {
+    type: 'date';
+    /**
+     * @pattern ^\d{4}-\d{2}-\d{2}$
+     */
+    value: string;
+  }
+
+  export interface BooleanCustomFieldValue {
+    type: 'boolean';
+    value: boolean;
+  }
+
+  export interface CurrencyCustomFieldValue {
+    type: 'currency';
+    /**
+     * Integer base units of currencyCode (e.g. cents).
+     */
+    amount: number;
+    currencyCode:
+      | 'USD'
+      | 'AUD'
+      | 'BGN'
+      | 'BRL'
+      | 'CAD'
+      | 'CHF'
+      | 'CZK'
+      | 'DKK'
+      | 'EUR'
+      | 'GBP'
+      | 'HKD'
+      | 'HUF'
+      | 'IDR'
+      | 'INR'
+      | 'JPY'
+      | 'MYR'
+      | 'NOK'
+      | 'NZD'
+      | 'CNY'
+      | 'PLN'
+      | 'RON'
+      | 'TRY'
+      | 'SEK'
+      | 'SGD'
+      | 'AED'
+      | 'ARS'
+      | 'BDT'
+      | 'BWP'
+      | 'CLP'
+      | 'COP'
+      | 'CRC'
+      | 'EGP'
+      | 'FJD'
+      | 'GEL'
+      | 'GHS'
+      | 'ILS'
+      | 'KES'
+      | 'KRW'
+      | 'LKR'
+      | 'MAD'
+      | 'MXN'
+      | 'NPR'
+      | 'PHP'
+      | 'PKR'
+      | 'THB'
+      | 'UAH'
+      | 'UGX'
+      | 'UYU'
+      | 'VND'
+      | 'ZAR'
+      | 'ZMW'
+      | 'TND'
+      | 'NGN'
+      | 'RSD'
+      | 'TWD'
+      | 'GTQ'
+      | 'HNL'
+      | 'DOP'
+      | 'SAR'
+      | 'XAF'
+      | 'PEN';
+  }
+
+  export interface PercentageCustomFieldValue {
+    type: 'percentage';
+    value: number | 'Infinity' | '-Infinity' | 'NaN';
+  }
+
+  export interface SelectCustomFieldValue {
+    type: 'select';
+    option: SelectCustomFieldValue.Option;
+  }
+
+  export namespace SelectCustomFieldValue {
+    export interface Option {
+      /**
+       * The tag of a company custom worker field option.
+       * @pattern ^cfo_
+       */
+      id: string;
+      label: string;
+      value: string;
+      sortOrder: number | 'Infinity' | '-Infinity' | 'NaN';
+      status: 'active' | 'archived';
+      createdAt: string;
+    }
+  }
+
+  export interface MultiSelectCustomFieldValue {
+    type: 'multi_select';
+    options: Array<MultiSelectCustomFieldValue.Option>;
+  }
+
+  export namespace MultiSelectCustomFieldValue {
+    export interface Option {
+      /**
+       * The tag of a company custom worker field option.
+       * @pattern ^cfo_
+       */
+      id: string;
+      label: string;
+      value: string;
+      sortOrder: number | 'Infinity' | '-Infinity' | 'NaN';
+      status: 'active' | 'archived';
+      createdAt: string;
+    }
+  }
 }
 
-export type Union1 = 'Infinity' | '-Infinity' | 'NaN';
+export interface TextCustomFieldValue {
+  type: 'text';
+  value: string;
+}
 
-export type CustomFieldListResponse = Array<Shared.Objects>;
+export interface NumberCustomFieldValue {
+  type: 'number';
+  value: number | 'Infinity' | '-Infinity' | 'NaN';
+}
+
+export interface DateCustomFieldValue {
+  type: 'date';
+  /**
+   * @pattern ^\d{4}-\d{2}-\d{2}$
+   */
+  value: string;
+}
+
+export interface BooleanCustomFieldValue {
+  type: 'boolean';
+  value: boolean;
+}
+
+export interface CurrencyCustomFieldValue {
+  type: 'currency';
+  /**
+   * Integer base units of currencyCode (e.g. cents).
+   */
+  amount: number;
+  currencyCode:
+    | 'USD'
+    | 'AUD'
+    | 'BGN'
+    | 'BRL'
+    | 'CAD'
+    | 'CHF'
+    | 'CZK'
+    | 'DKK'
+    | 'EUR'
+    | 'GBP'
+    | 'HKD'
+    | 'HUF'
+    | 'IDR'
+    | 'INR'
+    | 'JPY'
+    | 'MYR'
+    | 'NOK'
+    | 'NZD'
+    | 'CNY'
+    | 'PLN'
+    | 'RON'
+    | 'TRY'
+    | 'SEK'
+    | 'SGD'
+    | 'AED'
+    | 'ARS'
+    | 'BDT'
+    | 'BWP'
+    | 'CLP'
+    | 'COP'
+    | 'CRC'
+    | 'EGP'
+    | 'FJD'
+    | 'GEL'
+    | 'GHS'
+    | 'ILS'
+    | 'KES'
+    | 'KRW'
+    | 'LKR'
+    | 'MAD'
+    | 'MXN'
+    | 'NPR'
+    | 'PHP'
+    | 'PKR'
+    | 'THB'
+    | 'UAH'
+    | 'UGX'
+    | 'UYU'
+    | 'VND'
+    | 'ZAR'
+    | 'ZMW'
+    | 'TND'
+    | 'NGN'
+    | 'RSD'
+    | 'TWD'
+    | 'GTQ'
+    | 'HNL'
+    | 'DOP'
+    | 'SAR'
+    | 'XAF'
+    | 'PEN';
+}
+
+export interface PercentageCustomFieldValue {
+  type: 'percentage';
+  value: number | 'Infinity' | '-Infinity' | 'NaN';
+}
+
+export interface SelectCustomFieldValue {
+  type: 'select';
+  option: SelectCustomFieldValue.Option;
+}
+
+export namespace SelectCustomFieldValue {
+  export interface Option {
+    /**
+     * The tag of a company custom worker field option.
+     * @pattern ^cfo_
+     */
+    id: string;
+    label: string;
+    value: string;
+    sortOrder: number | 'Infinity' | '-Infinity' | 'NaN';
+    status: 'active' | 'archived';
+    createdAt: string;
+  }
+}
+
+export interface MultiSelectCustomFieldValue {
+  type: 'multi_select';
+  options: Array<MultiSelectCustomFieldValue.Option>;
+}
+
+export namespace MultiSelectCustomFieldValue {
+  export interface Option {
+    /**
+     * The tag of a company custom worker field option.
+     * @pattern ^cfo_
+     */
+    id: string;
+    label: string;
+    value: string;
+    sortOrder: number | 'Infinity' | '-Infinity' | 'NaN';
+    status: 'active' | 'archived';
+    createdAt: string;
+  }
+}
+
+export type CustomFieldListResponse = Array<CustomFieldListResponse.CustomFieldListResponseItem>;
+
+export namespace CustomFieldListResponse {
+  export interface CustomFieldListResponseItem {
+    /**
+     * The tag of a company custom worker field.
+     * @pattern ^cf_
+     */
+    id: string;
+    name: string;
+    description: string | null;
+    type: 'text' | 'number' | 'date' | 'boolean' | 'currency' | 'percentage' | 'select' | 'multi_select';
+    config: Record<string, unknown>;
+    status: 'active' | 'archived';
+    category: 'info' | 'pii' | 'compensation' | 'banking' | 'it' | 'compliance';
+    accessLevel: 'admins' | 'manager' | 'worker';
+    inputBy: 'admin' | 'worker';
+    canWrite: boolean;
+    createdAt: string;
+    required?: boolean | null;
+  }
+}
 
 export interface CustomFieldCreateParams {
+  /**
+   * @minLength 1
+   * @pattern ^\S[\s\S]*\S$|^\S$|^$
+   */
   name: string;
   type: 'text' | 'number' | 'date' | 'boolean' | 'currency' | 'percentage' | 'select' | 'multi_select';
   category: 'info' | 'pii' | 'compensation' | 'banking' | 'it' | 'compliance';
   description?: string | null;
-  config?: Shared.Objects1 | null;
+  config?: Record<string, unknown> | null;
   accessLevel?: 'admins' | 'manager' | 'worker' | null;
   inputBy?: 'admin' | 'worker' | null;
   required?: boolean | null;
-  options?: Array<Objects2> | null;
+  options?: Array<CustomFieldCreateParams.Option> | null;
+}
+
+export namespace CustomFieldCreateParams {
+  export interface Option {
+    /**
+     * @minLength 1
+     * @pattern ^\S[\s\S]*\S$|^\S$|^$
+     */
+    label: string;
+    /**
+     * @minLength 1
+     * @pattern ^\S[\s\S]*\S$|^\S$|^$
+     */
+    value: string;
+    sortOrder?: number | 'Infinity' | '-Infinity' | 'NaN' | null;
+  }
 }
 
 export interface CustomFieldCreateResponse {
+  /**
+   * The tag of a company custom worker field.
+   * @pattern ^cf_
+   */
   id: string;
   name: string;
-  description: Shared.Union2 | null;
-  type: Shared.Union3;
-  config: Shared.Objects1;
-  status: Shared.Union4;
-  category: Shared.Union5;
-  accessLevel: Shared.Union6;
-  inputBy: Shared.Union7;
+  description: string | null;
+  type: 'text' | 'number' | 'date' | 'boolean' | 'currency' | 'percentage' | 'select' | 'multi_select';
+  config: Record<string, unknown>;
+  status: 'active' | 'archived';
+  category: 'info' | 'pii' | 'compensation' | 'banking' | 'it' | 'compliance';
+  accessLevel: 'admins' | 'manager' | 'worker';
+  inputBy: 'admin' | 'worker';
   canWrite: boolean;
   createdAt: string;
-  required?: Shared.Union8 | null;
+  required?: boolean | null;
 }
 
 export interface CustomFieldGetResponse {
+  /**
+   * The tag of a company custom worker field.
+   * @pattern ^cf_
+   */
   id: string;
   name: string;
-  description: Shared.Union2 | null;
-  type: Shared.Union3;
-  config: Shared.Objects1;
-  status: Shared.Union4;
-  category: Shared.Union5;
-  accessLevel: Shared.Union6;
-  inputBy: Shared.Union7;
+  description: string | null;
+  type: 'text' | 'number' | 'date' | 'boolean' | 'currency' | 'percentage' | 'select' | 'multi_select';
+  config: Record<string, unknown>;
+  status: 'active' | 'archived';
+  category: 'info' | 'pii' | 'compensation' | 'banking' | 'it' | 'compliance';
+  accessLevel: 'admins' | 'manager' | 'worker';
+  inputBy: 'admin' | 'worker';
   canWrite: boolean;
   createdAt: string;
-  options: Array<Shared.Objects3>;
-  required?: Shared.Union8 | null;
+  options: Array<CustomFieldGetResponse.Option>;
+  required?: boolean | null;
+}
+
+export namespace CustomFieldGetResponse {
+  export interface Option {
+    /**
+     * The tag of a company custom worker field option.
+     * @pattern ^cfo_
+     */
+    id: string;
+    label: string;
+    value: string;
+    sortOrder: number | 'Infinity' | '-Infinity' | 'NaN';
+    status: 'active' | 'archived';
+    createdAt: string;
+  }
 }
 
 export interface CustomFieldUpdateParams {
+  /**
+   * @minLength 1
+   * @pattern ^\S[\s\S]*\S$|^\S$|^$
+   */
   name?: string | null;
   description?: string | null;
-  config?: Shared.Objects1 | null;
+  config?: Record<string, unknown> | null;
   category?: 'info' | 'pii' | 'compensation' | 'banking' | 'it' | 'compliance' | null;
   accessLevel?: 'admins' | 'manager' | 'worker' | null;
   inputBy?: 'admin' | 'worker' | null;
   required?: boolean | null;
 }
 
+export interface CustomFieldUpdateResponse {
+  /**
+   * The tag of a company custom worker field.
+   * @pattern ^cf_
+   */
+  id: string;
+  name: string;
+  description: string | null;
+  type: 'text' | 'number' | 'date' | 'boolean' | 'currency' | 'percentage' | 'select' | 'multi_select';
+  config: Record<string, unknown>;
+  status: 'active' | 'archived';
+  category: 'info' | 'pii' | 'compensation' | 'banking' | 'it' | 'compliance';
+  accessLevel: 'admins' | 'manager' | 'worker';
+  inputBy: 'admin' | 'worker';
+  canWrite: boolean;
+  createdAt: string;
+  required?: boolean | null;
+}
+
+export interface CustomFieldArchiveResponse {
+  /**
+   * The tag of a company custom worker field.
+   * @pattern ^cf_
+   */
+  id: string;
+  name: string;
+  description: string | null;
+  type: 'text' | 'number' | 'date' | 'boolean' | 'currency' | 'percentage' | 'select' | 'multi_select';
+  config: Record<string, unknown>;
+  status: 'active' | 'archived';
+  category: 'info' | 'pii' | 'compensation' | 'banking' | 'it' | 'compliance';
+  accessLevel: 'admins' | 'manager' | 'worker';
+  inputBy: 'admin' | 'worker';
+  canWrite: boolean;
+  createdAt: string;
+  required?: boolean | null;
+}
+
 export interface CustomFieldCreateOptionParams {
+  /**
+   * @minLength 1
+   * @pattern ^\S[\s\S]*\S$|^\S$|^$
+   */
   label: string;
+  /**
+   * @minLength 1
+   * @pattern ^\S[\s\S]*\S$|^\S$|^$
+   */
   value: string;
-  sortOrder?: number | Union1 | null;
+  sortOrder?: number | 'Infinity' | '-Infinity' | 'NaN' | null;
 }
 
 export interface CustomFieldCreateOptionResponse {
+  /**
+   * The tag of a company custom worker field option.
+   * @pattern ^cfo_
+   */
   id: string;
   label: string;
   value: string;
-  sortOrder: Shared.Union10;
+  sortOrder: number | 'Infinity' | '-Infinity' | 'NaN';
   status: 'active' | 'archived';
   createdAt: string;
 }
 
 export interface CustomFieldUpdateOptionParams {
+  /**
+   * @minLength 1
+   * @pattern ^\S[\s\S]*\S$|^\S$|^$
+   */
   label?: string | null;
-  sortOrder?: number | Union1 | null;
+  sortOrder?: number | 'Infinity' | '-Infinity' | 'NaN' | null;
+}
+
+export interface CustomFieldUpdateOptionResponse {
+  /**
+   * The tag of a company custom worker field option.
+   * @pattern ^cfo_
+   */
+  id: string;
+  label: string;
+  value: string;
+  sortOrder: number | 'Infinity' | '-Infinity' | 'NaN';
+  status: 'active' | 'archived';
+  createdAt: string;
+}
+
+export interface CustomFieldArchiveOptionResponse {
+  /**
+   * The tag of a company custom worker field option.
+   * @pattern ^cfo_
+   */
+  id: string;
+  label: string;
+  value: string;
+  sortOrder: number | 'Infinity' | '-Infinity' | 'NaN';
+  status: 'active' | 'archived';
+  createdAt: string;
 }
 
 export interface CustomFieldListValuesParams {
@@ -337,67 +766,36 @@ export type CustomFieldListValuesResponse =
 
 export namespace CustomFieldListValuesResponse {
   export interface CustomFieldListValuesResponseItem {
+    /**
+     * The tag of a company custom worker field value.
+     * @pattern ^cfv_
+     */
     id: string;
+    /**
+     * The id of the worker.
+     * @pattern ^wrk_
+     */
     workerId: string;
+    /**
+     * The tag of a company custom worker field.
+     * @pattern ^cf_
+     */
     fieldId: string;
-    value:
-      | CustomFieldListValuesResponseItem.Value
-      | CustomFieldListValuesResponseItem.Value2
-      | CustomFieldListValuesResponseItem.Value3
-      | CustomFieldListValuesResponseItem.Value4
-      | CustomFieldListValuesResponseItem.Value5
-      | CustomFieldListValuesResponseItem.Value6
-      | CustomFieldListValuesResponseItem.Value7
-      | CustomFieldListValuesResponseItem.Value8;
+    value: PublicCustomFieldValueOutput;
     updatedAt: string;
-  }
-
-  export namespace CustomFieldListValuesResponseItem {
-    export interface Value {
-      type: 'text';
-      value: string;
-    }
-
-    export interface Value2 {
-      type: 'number';
-      value: Shared.Union10;
-    }
-
-    export interface Value3 {
-      type: 'date';
-      value: string;
-    }
-
-    export interface Value4 {
-      type: 'boolean';
-      value: boolean;
-    }
-
-    export interface Value5 {
-      type: 'currency';
-      amount: Shared.Union10;
-      currencyCode: Shared.Union;
-    }
-
-    export interface Value6 {
-      type: 'percentage';
-      value: Shared.Union10;
-    }
-
-    export interface Value7 {
-      type: 'select';
-      option: Shared.Objects3;
-    }
-
-    export interface Value8 {
-      type: 'multi_select';
-      options: Array<Shared.Objects3>;
-    }
   }
 }
 
 export interface CustomFieldUpsertValueParams {
+  /**
+   * The id of the worker.
+   * @pattern ^wrk_
+   */
   workerId: string;
+  /**
+   * The tag of a company custom worker field.
+   * @pattern ^cf_
+   */
   fieldId: string;
   value:
     | CustomFieldUpsertValueParams.Value
@@ -418,11 +816,14 @@ export namespace CustomFieldUpsertValueParams {
 
   export interface Value2 {
     type: 'number';
-    value: number | Union1;
+    value: number | 'Infinity' | '-Infinity' | 'NaN';
   }
 
   export interface Value3 {
     type: 'date';
+    /**
+     * @pattern ^\d{4}-\d{2}-\d{2}$
+     */
     value: string;
   }
 
@@ -433,7 +834,10 @@ export namespace CustomFieldUpsertValueParams {
 
   export interface Value5 {
     type: 'currency';
-    amount: number | Union1;
+    /**
+     * Integer base units of currencyCode (e.g. cents).
+     */
+    amount: number;
     currencyCode:
       | 'USD'
       | 'AUD'
@@ -500,11 +904,15 @@ export namespace CustomFieldUpsertValueParams {
 
   export interface Value6 {
     type: 'percentage';
-    value: number | Union1;
+    value: number | 'Infinity' | '-Infinity' | 'NaN';
   }
 
   export interface Value7 {
     type: 'select';
+    /**
+     * The tag of a company custom worker field option.
+     * @pattern ^cfo_
+     */
     optionId: string;
   }
 
@@ -515,77 +923,56 @@ export namespace CustomFieldUpsertValueParams {
 }
 
 export interface CustomFieldUpsertValueResponse {
+  /**
+   * The tag of a company custom worker field value.
+   * @pattern ^cfv_
+   */
   id: string;
+  /**
+   * The id of the worker.
+   * @pattern ^wrk_
+   */
   workerId: string;
+  /**
+   * The tag of a company custom worker field.
+   * @pattern ^cf_
+   */
   fieldId: string;
-  value:
-    | CustomFieldUpsertValueResponse.Value
-    | CustomFieldUpsertValueResponse.Value2
-    | CustomFieldUpsertValueResponse.Value3
-    | CustomFieldUpsertValueResponse.Value4
-    | CustomFieldUpsertValueResponse.Value5
-    | CustomFieldUpsertValueResponse.Value6
-    | CustomFieldUpsertValueResponse.Value7
-    | CustomFieldUpsertValueResponse.Value8;
+  value: PublicCustomFieldValueOutput;
   updatedAt: string;
 }
 
-export namespace CustomFieldUpsertValueResponse {
-  export interface Value {
-    type: 'text';
-    value: string;
-  }
-
-  export interface Value2 {
-    type: 'number';
-    value: Shared.Union10;
-  }
-
-  export interface Value3 {
-    type: 'date';
-    value: string;
-  }
-
-  export interface Value4 {
-    type: 'boolean';
-    value: boolean;
-  }
-
-  export interface Value5 {
-    type: 'currency';
-    amount: Shared.Union10;
-    currencyCode: Shared.Union;
-  }
-
-  export interface Value6 {
-    type: 'percentage';
-    value: Shared.Union10;
-  }
-
-  export interface Value7 {
-    type: 'select';
-    option: Shared.Objects3;
-  }
-
-  export interface Value8 {
-    type: 'multi_select';
-    options: Array<Shared.Objects3>;
-  }
-}
-
 export interface CustomFieldClearValueParams {
+  /**
+   * The id of the worker.
+   * @pattern ^wrk_
+   */
   workerId: string;
+  /**
+   * The tag of a company custom worker field.
+   * @pattern ^cf_
+   */
   fieldId: string;
 }
 export declare namespace CustomFields {
   export {
-    type Union9 as Union9,
-    type Objects2 as Objects2,
-    type Union1 as Union1,
+    type PublicCustomFieldValueOutput as PublicCustomFieldValueOutput,
+    type TextCustomFieldValue as TextCustomFieldValue,
+    type NumberCustomFieldValue as NumberCustomFieldValue,
+    type DateCustomFieldValue as DateCustomFieldValue,
+    type BooleanCustomFieldValue as BooleanCustomFieldValue,
+    type CurrencyCustomFieldValue as CurrencyCustomFieldValue,
+    type PercentageCustomFieldValue as PercentageCustomFieldValue,
+    type SelectCustomFieldValue as SelectCustomFieldValue,
+    type MultiSelectCustomFieldValue as MultiSelectCustomFieldValue,
     type CustomFieldListResponse as CustomFieldListResponse,
     type CustomFieldCreateResponse as CustomFieldCreateResponse,
     type CustomFieldGetResponse as CustomFieldGetResponse,
+    type CustomFieldUpdateResponse as CustomFieldUpdateResponse,
+    type CustomFieldArchiveResponse as CustomFieldArchiveResponse,
     type CustomFieldCreateOptionResponse as CustomFieldCreateOptionResponse,
+    type CustomFieldUpdateOptionResponse as CustomFieldUpdateOptionResponse,
+    type CustomFieldArchiveOptionResponse as CustomFieldArchiveOptionResponse,
     type CustomFieldListValuesResponse as CustomFieldListValuesResponse,
     type CustomFieldUpsertValueResponse as CustomFieldUpsertValueResponse,
     type CustomFieldCreateParams as CustomFieldCreateParams,

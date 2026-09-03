@@ -4,7 +4,6 @@ import { APIResource } from '../../resource';
 import { APIPromise } from '../../api-promise';
 import type { RequestOptions } from '../../internal/request-options';
 import { path as __scalarPath } from '../../internal/utils/path';
-import type * as Shared from '../shared';
 
 export class RetirementPlans extends APIResource {
   /**
@@ -16,7 +15,7 @@ export class RetirementPlans extends APIResource {
    *
    * @example
    * ```ts
-   * const list = await client.benefits.retirementPlans.list({
+   * const retirementPlan = await client.benefits.retirementPlans.list({
    *   limit: 'limit',
    *   statuses: ['active'],
    * });
@@ -29,63 +28,28 @@ export class RetirementPlans extends APIResource {
   /**
    * Get a company retirement plan by id, regardless of status.
    *
-   * @param {string} id
+   * @param {string} id - The tag of a company retirement plan.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
-   * @returns {APIPromise<RetirementPlanGetResponse>} A company retirement plan available through Warp.
+   * @returns {APIPromise<PublicRetirementPlan>} A company retirement plan available through Warp.
    *
    * @example
    * ```ts
-   * const get_ = await client.benefits.retirementPlans.get('id');
+   * const publicRetirementPlan = await client.benefits.retirementPlans.get('crpl_1234');
    * ```
    */
-  get(id: string, options?: RequestOptions): APIPromise<RetirementPlanGetResponse> {
+  get(id: string, options?: RequestOptions): APIPromise<PublicRetirementPlan> {
     return this._client.get(__scalarPath`/v1/benefits/retirement_plans/${id}`, options);
   }
 }
 
-export interface RetirementPlanListParams {
-  limit: string | null;
-  afterId?: string | null;
-  beforeId?: string | null;
-  types?: Array<
-    '401k' | 'roth_401k' | '403b' | 'roth_403b' | '457' | 'roth_457' | 'simple_ira' | 'roth_simple_ira'
-  > | null;
-  statuses: Array<'active' | 'terminated'> | null;
-}
-
-export interface RetirementPlanListResponse {
-  hasMore: boolean;
-  count: number;
-  data: Array<RetirementPlanListResponse.Data>;
-}
-
-export namespace RetirementPlanListResponse {
-  export interface Data {
-    id: string;
-    /**
-     * The retirement plan type.
-     */
-    type: '401k' | 'roth_401k' | '403b' | 'roth_403b' | '457' | 'roth_457' | 'simple_ira' | 'roth_simple_ira';
-    /**
-     * The company-facing plan name.
-     */
-    name: string;
-    /**
-     * The system administering the plan. Manual plans are administered by the company outside a connected provider.
-     */
-    provider: 'manual' | 'human_interest' | 'accrue';
-    effectiveStartDate: string;
-    effectiveEndDate: string | null;
-    /**
-     * The public lifecycle status of a retirement plan.
-     */
-    status: 'active' | 'terminated';
-    createdAt: string;
-    updatedAt: string;
-  }
-}
-
-export interface RetirementPlanGetResponse {
+/**
+ * A company retirement plan available through Warp.
+ */
+export interface PublicRetirementPlan {
+  /**
+   * The tag of a company retirement plan.
+   * @pattern ^crpl_
+   */
   id: string;
   /**
    * The retirement plan type.
@@ -98,20 +62,60 @@ export interface RetirementPlanGetResponse {
   /**
    * The system administering the plan. Manual plans are administered by the company outside a connected provider.
    */
-  provider: 'manual' | 'human_interest' | 'accrue';
+  provider: PublicRetirementPlanProvider;
+  /**
+   * @pattern ^\d{4}-\d{2}-\d{2}$
+   */
   effectiveStartDate: string;
+  /**
+   * @pattern ^\d{4}-\d{2}-\d{2}$
+   */
   effectiveEndDate: string | null;
   /**
    * The public lifecycle status of a retirement plan.
    */
-  status: 'active' | 'terminated';
+  status: PublicRetirementPlanStatus;
   createdAt: string;
   updatedAt: string;
 }
+
+/**
+ * The system administering the plan. Manual plans are administered by the company outside a connected provider.
+ */
+export type PublicRetirementPlanProvider = 'manual' | 'human_interest' | 'accrue';
+
+/**
+ * The public lifecycle status of a retirement plan.
+ */
+export type PublicRetirementPlanStatus = 'active' | 'terminated';
+
+export interface RetirementPlanListParams {
+  limit: string | null;
+  /**
+   * @pattern ^crpl_
+   */
+  afterId?: string | null;
+  /**
+   * @pattern ^crpl_
+   */
+  beforeId?: string | null;
+  types?: Array<
+    '401k' | 'roth_401k' | '403b' | 'roth_403b' | '457' | 'roth_457' | 'simple_ira' | 'roth_simple_ira'
+  > | null;
+  statuses: Array<PublicRetirementPlanStatus> | null;
+}
+
+export interface RetirementPlanListResponse {
+  hasMore: boolean;
+  count: number;
+  data: Array<PublicRetirementPlan>;
+}
 export declare namespace RetirementPlans {
   export {
+    type PublicRetirementPlan as PublicRetirementPlan,
+    type PublicRetirementPlanProvider as PublicRetirementPlanProvider,
+    type PublicRetirementPlanStatus as PublicRetirementPlanStatus,
     type RetirementPlanListResponse as RetirementPlanListResponse,
-    type RetirementPlanGetResponse as RetirementPlanGetResponse,
     type RetirementPlanListParams as RetirementPlanListParams,
   };
 }
