@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.5.0](https://github.com/TeamWarp/warp-cli/compare/v0.4.0...v0.5.0) (2026-09-06)
+
+
+### Features
+
+* **api:** add schema public_worker_manager ([bf1c243](https://github.com/TeamWarp/warp-cli/commit/bf1c243bbcddf6cbb51e40248d2865308bbf4f77))
+
+
+### Chores
+
+* **api:** update generated SDK content ([4837186](https://github.com/TeamWarp/warp-cli/commit/4837186e864f65b09bdc91d15e1583b26eeb50d4))
+
 ## [0.4.0](https://github.com/TeamWarp/warp-cli/compare/v0.3.0...v0.4.0) (2026-09-03)
 
 
