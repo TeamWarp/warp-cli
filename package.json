@@ -80,8 +80,6 @@
     "./man/warp-workplaces-list.1",
     "./man/warp-workplaces-create.1",
     "./man/warp-workplaces-update.1",
-    "./man/warp-i9-verifications-list.1",
-    "./man/warp-i9-verifications-retrieve.1",
     "./man/warp-completion.1"
   ],
   "scripts": {
