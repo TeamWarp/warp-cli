@@ -952,6 +952,13 @@ const cases: { operation: string; method: string; path: string; label?: string; 
   },
 
   {
+    operation: 'revealSsn',
+    method: 'POST',
+    path: '/v1/workers/reveal_ssn',
+    args: ['workers', 'reveal-ssn', '--worker-id', 'wrk_khac8380c2Lm', '--worker-id', 'wrk_q7Vm2pR9xK4c'],
+  },
+
+  {
     operation: 'list',
     method: 'GET',
     path: '/v1/workplaces',
@@ -1015,6 +1022,42 @@ const cases: { operation: string; method: string; path: string; label?: string; 
     path: '/v1/workplaces/{id}',
     label: 'all params',
     args: ['workplaces', 'update', 'wkp_1234', '--name', ''],
+  },
+
+  {
+    operation: 'list',
+    method: 'GET',
+    path: '/v1/i9-verifications',
+    label: 'required params',
+    args: ['i9-verifications', 'list', '--limit', 'limit'],
+  },
+
+  {
+    operation: 'list',
+    method: 'GET',
+    path: '/v1/i9-verifications',
+    label: 'all params',
+    args: [
+      'i9-verifications',
+      'list',
+      '--limit',
+      'limit',
+      '--after-id',
+      'i9v_1234',
+      '--before-id',
+      'i9v_1234',
+      '--worker-ids',
+      '["workerId"]',
+      '--statuses',
+      '["not_started"]',
+    ],
+  },
+
+  {
+    operation: 'retrieve',
+    method: 'GET',
+    path: '/v1/i9-verifications/{id}',
+    args: ['i9-verifications', 'retrieve', 'i9v_1234'],
   },
 ];
 
