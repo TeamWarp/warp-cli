@@ -1023,42 +1023,6 @@ const cases: { operation: string; method: string; path: string; label?: string; 
     label: 'all params',
     args: ['workplaces', 'update', 'wkp_1234', '--name', ''],
   },
-
-  {
-    operation: 'list',
-    method: 'GET',
-    path: '/v1/i9-verifications',
-    label: 'required params',
-    args: ['i9-verifications', 'list', '--limit', 'limit'],
-  },
-
-  {
-    operation: 'list',
-    method: 'GET',
-    path: '/v1/i9-verifications',
-    label: 'all params',
-    args: [
-      'i9-verifications',
-      'list',
-      '--limit',
-      'limit',
-      '--after-id',
-      'i9v_1234',
-      '--before-id',
-      'i9v_1234',
-      '--worker-ids',
-      '["workerId"]',
-      '--statuses',
-      '["not_started"]',
-    ],
-  },
-
-  {
-    operation: 'retrieve',
-    method: 'GET',
-    path: '/v1/i9-verifications/{id}',
-    args: ['i9-verifications', 'retrieve', 'i9v_1234'],
-  },
 ];
 
 // Each command gets its own budget so one hanging command fails on its own instead of stalling
