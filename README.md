@@ -11,6 +11,7 @@ The full API of this library can be found in [api.md](./api.md).
 - [Installation](#installation)
 - [Usage](#usage)
 - [API Reference](./api.md)
+- [File Arguments](#file-arguments)
 - [Shell Completion](#shell-completion)
 - [Manual Pages](#manual-pages)
 - [Authentication](#authentication)
@@ -43,6 +44,19 @@ warp benefits:health-plans list --api-key "$WARP_API_KEY" --limit 'limit' --stat
 The examples in the following sections assume a `client` configured as shown above.
 
 See the [API reference](./api.md) for every available operation.
+
+<br />
+
+## File Arguments
+
+Any command flag or credential reads its value from a file when the value begins with `@`, so a body field holding a whole document does not have to survive shell quoting. `@file://` always sends the file as text and `@data://` always sends it base64-encoded; a bare `@` lets the file decide. A flag that uploads a file takes its path with or without the `@`. Escape a literal value that begins with `@` as `\@`. The global options (`--base-url`, `--timeout`, `--format` and the rest) are read exactly as written.
+
+```sh
+warp COMMAND --FLAG @./body.json
+warp COMMAND --FLAG @file://./notes.txt
+warp COMMAND --FLAG @data://./logo.png
+warp COMMAND --FLAG '\@not-a-file'
+```
 
 <br />
 
