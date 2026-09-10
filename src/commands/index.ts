@@ -2614,6 +2614,86 @@ const commands = [
       },
     ],
   },
+  {
+    resourcePath: ['i9Verifications'],
+    commandPath: ['i9-verifications', 'list'],
+    methodName: 'list',
+    summary: 'List I-9 verifications',
+    description:
+      'List current and retained company I-9 verifications in all workflow states, newest first. Requires workers:compliance read access. Filters combine with AND across parameters and OR within each array. Count covers all matches before pagination. Use either afterId or beforeId; a missing or filter-mismatched cursor returns 400, so restart pagination if a filtered cursor changes state. Only verifications linked to a canonical company worker are returned.',
+    transport: 'http',
+    iterable: false,
+    callShape: 'params',
+    positional: [],
+    flags: [
+      {
+        name: 'limit',
+        optionKey: 'limit',
+        paramKey: 'limit',
+        location: 'query',
+        required: true,
+        valueKind: 'string',
+      },
+      {
+        name: 'after-id',
+        optionKey: 'afterId',
+        paramKey: 'afterId',
+        location: 'query',
+        required: false,
+        valueKind: 'string',
+      },
+      {
+        name: 'before-id',
+        optionKey: 'beforeId',
+        paramKey: 'beforeId',
+        location: 'query',
+        required: false,
+        valueKind: 'string',
+      },
+      {
+        name: 'worker-ids',
+        optionKey: 'workerIds',
+        paramKey: 'workerIds',
+        location: 'query',
+        required: false,
+        description:
+          'Worker IDs to include, supplied as repeated parameters. Omit for all workers. Unknown or foreign IDs contribute no matches.',
+        valueKind: 'array',
+      },
+      {
+        name: 'statuses',
+        optionKey: 'statuses',
+        paramKey: 'statuses',
+        location: 'query',
+        required: false,
+        description: 'Statuses to include, supplied as repeated parameters. Omit for all workflow states.',
+        valueKind: 'array',
+      },
+    ],
+  },
+  {
+    resourcePath: ['i9Verifications'],
+    commandPath: ['i9-verifications', 'retrieve'],
+    methodName: 'retrieve',
+    summary: 'Get I-9 verification',
+    description:
+      'Get a current or retained I-9 verification by its i9v_ ID. Requires workers:compliance read access. Returns the same metadata as the list endpoint. Missing verifications and verifications outside the company or without a canonical worker return 404.',
+    transport: 'http',
+    iterable: false,
+    callShape: 'options',
+    positional: [
+      {
+        name: 'id',
+        optionKey: 'id',
+        paramKey: 'id',
+        location: 'path',
+        required: true,
+        description: 'The tag of the i9 verification.',
+        valueKind: 'string',
+      },
+    ],
+    flags: [],
+  },
 ] as const satisfies readonly CliCommandDefinition[];
 
 export const getProgram = (): Command =>
