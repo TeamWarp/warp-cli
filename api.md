@@ -145,7 +145,7 @@ warp custom-fields list --api-key "$WARP_API_KEY"
 Create a custom worker field definition. The field type is immutable after creation. Select and multi_select fields can include their initial options. Access to values derives from the field category; requires the workers:custom_fields permission.
 
 ```sh
-warp custom-fields create --api-key "$WARP_API_KEY" --name 'name' --type 'text' --category 'info'
+warp custom-fields create --api-key "$WARP_API_KEY" --name 'x' --type 'text' --category 'info'
 ```
 
 ### Get Field
@@ -177,7 +177,7 @@ warp custom-fields archive 'cf_1234' --api-key "$WARP_API_KEY"
 Add an option to a select or multi_select custom worker field. The option value should be treated as stable; the label can change. Requires the workers:custom_fields permission.
 
 ```sh
-warp custom-fields create-option 'cf_1234' --api-key "$WARP_API_KEY" --label 'label' --value 'value'
+warp custom-fields create-option 'cf_1234' --api-key "$WARP_API_KEY" --label 'x' --value 'x'
 ```
 
 ### Update Field Option
@@ -245,7 +245,7 @@ warp departments list --api-key "$WARP_API_KEY" --limit 'limit'
 Create a new department.
 
 ```sh
-warp departments create --api-key "$WARP_API_KEY" --name 'name'
+warp departments create --api-key "$WARP_API_KEY" --name 'x'
 ```
 
 ### Update Department
@@ -285,7 +285,7 @@ warp offers list --api-key "$WARP_API_KEY" --limit 'limit'
 Create and send a candidate offer. The candidate receives an email with a link to the offer portal.
 
 ```sh
-warp offers create --api-key "$WARP_API_KEY" --candidate '{"firstName":"x","lastName":"x","email":"john@joinwarp.com"}' --position '{"title":"x","startDate":""}' --worker-type 'employee' --compensation '{"payBasis":"year","payCurrency":"USD","payRate":0}'
+warp offers create --api-key "$WARP_API_KEY" --candidate '{"firstName":"x","lastName":"x","email":"john@joinwarp.com"}' --position '{"title":"x","startDate":""}' --worker-type 'employee' --compensation '{"payBasis":"year","payCurrency":"USD","payRate":1}'
 ```
 
 ### Void Offer
@@ -301,7 +301,7 @@ warp offers void 'offr_1234' --api-key "$WARP_API_KEY" --void-reason 'candidate_
 Extend the expiration deadline of a sent offer.
 
 ```sh
-warp offers extend-deadline 'offr_1234' --api-key "$WARP_API_KEY" --expiration-time 'expirationTime'
+warp offers extend-deadline 'offr_1234' --api-key "$WARP_API_KEY" --expiration-time ''
 ```
 
 ### Resend Offer
@@ -449,7 +449,7 @@ warp workers delete 'wrk_1234' --api-key "$WARP_API_KEY"
 Create a new US employee. The worker will be created in draft status and must be invited separately via the invite endpoint. If hiring in a state without an existing tax registration, you must specify the stateRegistration field.
 
 ```sh
-warp workers create-employee --api-key "$WARP_API_KEY" --first-name 'Jonathan' --last-name 'Galt' --position 'Software Engineer' --start-date 'startDate' --email 'john@joinwarp.com' --department-id 'dpt_1234' --manager-id 'wrk_1234' --work-location '{"type":"office","workplaceId":"wkp_1234"}' --compensation '{"amount":0,"per":"hour"}'
+warp workers create-employee --api-key "$WARP_API_KEY" --first-name 'Jonathan' --last-name 'Galt' --position 'Software Engineer' --start-date '' --email 'john@joinwarp.com' --department-id 'dpt_1234' --manager-id 'wrk_1234' --work-location '{"type":"office","workplaceId":"wkp_1234"}' --compensation '{"amount":1,"per":"hour"}'
 ```
 
 ### Create Contractor
@@ -457,7 +457,7 @@ warp workers create-employee --api-key "$WARP_API_KEY" --first-name 'Jonathan' -
 Create a new contractor. The worker will be created in draft status and must be invited separately via the invite endpoint. For business contractors, the businessName field is required.
 
 ```sh
-warp workers create-contractor --api-key "$WARP_API_KEY" --entity-type 'individual' --first-name 'Melissa' --last-name 'Jones' --position 'Design Consultant' --start-date 'startDate' --email 'john@joinwarp.com' --department-id 'dpt_1234' --manager-id 'wrk_1234' --work-country 'AD'
+warp workers create-contractor --api-key "$WARP_API_KEY" --entity-type 'individual' --first-name 'Melissa' --last-name 'Jones' --position 'Design Consultant' --start-date '' --email 'john@joinwarp.com' --department-id 'dpt_1234' --manager-id 'wrk_1234' --work-country 'AD'
 ```
 
 ### Invite Worker
@@ -485,7 +485,7 @@ warp workplaces list --api-key "$WARP_API_KEY" --limit 'limit'
 Create a new workplace.
 
 ```sh
-warp workplaces create --api-key "$WARP_API_KEY" --name 'name' --type 'remote' --address '{"line1":"x","city":"","postalCode":"","state":"AL","country":"US"}'
+warp workplaces create --api-key "$WARP_API_KEY" --name 'x' --type 'remote' --address '{"line1":"x","city":"","postalCode":"","state":"AL","country":"US"}'
 ```
 
 ### Update Workplace
