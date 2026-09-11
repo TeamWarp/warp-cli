@@ -2620,7 +2620,7 @@ const commands = [
     methodName: 'list',
     summary: 'List I-9 verifications',
     description:
-      'List current and retained company I-9 verifications in all workflow states, newest first. Requires workers:compliance read access. Filters combine with AND across parameters and OR within each array. Count covers all matches before pagination. Use either afterId or beforeId; a missing or filter-mismatched cursor returns 400, so restart pagination if a filtered cursor changes state. Only verifications linked to a canonical company worker are returned.',
+      'List current and retained company I-9 verifications in all workflow states, newest first. The API key must have workers profile and compliance read scope.',
     transport: 'http',
     iterable: false,
     callShape: 'params',
@@ -2677,7 +2677,7 @@ const commands = [
     methodName: 'retrieve',
     summary: 'Get I-9 verification',
     description:
-      'Get a current or retained I-9 verification by its i9v_ ID. Requires workers:compliance read access. Returns the same metadata as the list endpoint. Missing verifications and verifications outside the company or without a canonical worker return 404.',
+      'Get a specific I-9 verification by its id. The API key must have workers profile and compliance read scope.',
     transport: 'http',
     iterable: false,
     callShape: 'options',

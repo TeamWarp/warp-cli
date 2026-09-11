@@ -6,7 +6,7 @@ warp\-i9\-verifications\-retrieve \- Get I\-9 verification
 .B warp i9\-verifications retrieve
 \fIid\fR [\fIoptions\fR]
 .SH "DESCRIPTION"
-Get a current or retained I\-9 verification by its i9v_ ID. Requires workers:compliance read access. Returns the same metadata as the list endpoint. Missing verifications and verifications outside the company or without a canonical worker return 404.
+Get a specific I\-9 verification by its id. The API key must have workers profile and compliance read scope.
 .SH "ARGUMENTS"
 .TP
 \fIid\fR, \fB\-\-id\fR \fI<value>\fR
