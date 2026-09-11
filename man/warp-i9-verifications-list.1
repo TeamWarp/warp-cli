@@ -6,7 +6,7 @@ warp\-i9\-verifications\-list \- List I\-9 verifications
 .B warp i9\-verifications list
 \fB\-\-limit\fR \fI<value>\fR [\fIoptions\fR]
 .SH "DESCRIPTION"
-List current and retained company I\-9 verifications in all workflow states, newest first. Requires workers:compliance read access. Filters combine with AND across parameters and OR within each array. Count covers all matches before pagination. Use either afterId or beforeId; a missing or filter\-mismatched cursor returns 400, so restart pagination if a filtered cursor changes state. Only verifications linked to a canonical company worker are returned.
+List current and retained company I\-9 verifications in all workflow states, newest first. The API key must have workers profile and compliance read scope.
 .SH "OPTIONS"
 .TP
 \fB\-\-limit\fR \fI<value>\fR
