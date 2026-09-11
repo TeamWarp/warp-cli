@@ -1,20 +1,16 @@
 .\" File generated from our OpenAPI spec by Scalar. Do not edit.
-.TH "WARP\-OFFERS\-EXTEND\-DEADLINE" "1" "" "warp" "warp Manual"
+.TH "WARP\-WORKERS\-REVEAL\-SSN" "1" "" "warp" "warp Manual"
 .SH "NAME"
-warp\-offers\-extend\-deadline \- Extend Offer Deadline
+warp\-workers\-reveal\-ssn \- Reveal Worker SSNs
 .SH "SYNOPSIS"
-.B warp offers extend\-deadline
-\fIid\fR \fB\-\-expiration\-time\fR \fI<value>\fR [\fIoptions\fR]
+.B warp workers reveal\-ssn
+\fB\-\-worker\-id\fR \fI<value>\fR [\fIoptions\fR]
 .SH "DESCRIPTION"
-Extend the expiration deadline of a sent offer.
-.SH "ARGUMENTS"
-.TP
-\fIid\fR, \fB\-\-id\fR \fI<value>\fR
-The tag of the offer. Required. Can also be supplied as \-\-id.
+Reveal full Social Security numbers for up to 50 workers. Requires the workers:pii read scope. Results preserve request order and use null when a worker has no SSN on file. The request fails if any worker is not found, emits one audit event per worker, and returns Cache\-Control: private, no\-store.
 .SH "OPTIONS"
 .TP
-\fB\-\-expiration\-time\fR \fI<value>\fR
-The expiration\-time body parameter. Required.
+\fB\-\-worker\-id\fR \fI<value>\fR
+One to 50 unique worker ids. Results are returned in this order. Required. Repeat the flag to pass multiple values.
 .TP
 \fB\-\-base\-url\fR \fI<url>\fR
 Override the base URL for API requests.
@@ -49,7 +45,7 @@ API credential. Can also be set with the WARP_API_KEY environment variable.
 .PP
 .RS 4
 .nf
-warp offers extend\-deadline 'offr_1234' \-\-api\-key "$WARP_API_KEY" \-\-expiration\-time ''
+warp workers reveal\-ssn \-\-api\-key "$WARP_API_KEY" \-\-worker\-id 'wrk_khac8380c2Lm' \-\-worker\-id 'wrk_q7Vm2pR9xK4c'
 .fi
 .RE
 .SH "ENVIRONMENT"

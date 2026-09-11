@@ -1,20 +1,28 @@
 .\" File generated from our OpenAPI spec by Scalar. Do not edit.
-.TH "WARP\-OFFERS\-EXTEND\-DEADLINE" "1" "" "warp" "warp Manual"
+.TH "WARP\-I9\-VERIFICATIONS\-LIST" "1" "" "warp" "warp Manual"
 .SH "NAME"
-warp\-offers\-extend\-deadline \- Extend Offer Deadline
+warp\-i9\-verifications\-list \- List I\-9 verifications
 .SH "SYNOPSIS"
-.B warp offers extend\-deadline
-\fIid\fR \fB\-\-expiration\-time\fR \fI<value>\fR [\fIoptions\fR]
+.B warp i9\-verifications list
+\fB\-\-limit\fR \fI<value>\fR [\fIoptions\fR]
 .SH "DESCRIPTION"
-Extend the expiration deadline of a sent offer.
-.SH "ARGUMENTS"
-.TP
-\fIid\fR, \fB\-\-id\fR \fI<value>\fR
-The tag of the offer. Required. Can also be supplied as \-\-id.
+List current and retained company I\-9 verifications in all workflow states, newest first. The API key must have workers profile and compliance read scope.
 .SH "OPTIONS"
 .TP
-\fB\-\-expiration\-time\fR \fI<value>\fR
-The expiration\-time body parameter. Required.
+\fB\-\-limit\fR \fI<value>\fR
+The limit query parameter. Required.
+.TP
+\fB\-\-after\-id\fR \fI<value>\fR
+The after\-id query parameter.
+.TP
+\fB\-\-before\-id\fR \fI<value>\fR
+The before\-id query parameter.
+.TP
+\fB\-\-worker\-ids\fR \fI<json>\fR
+Worker IDs to include, supplied as repeated parameters. Omit for all workers. Unknown or foreign IDs contribute no matches.
+.TP
+\fB\-\-statuses\fR \fI<json>\fR
+Statuses to include, supplied as repeated parameters. Omit for all workflow states.
 .TP
 \fB\-\-base\-url\fR \fI<url>\fR
 Override the base URL for API requests.
@@ -49,7 +57,7 @@ API credential. Can also be set with the WARP_API_KEY environment variable.
 .PP
 .RS 4
 .nf
-warp offers extend\-deadline 'offr_1234' \-\-api\-key "$WARP_API_KEY" \-\-expiration\-time ''
+warp i9\-verifications list \-\-api\-key "$WARP_API_KEY" \-\-limit 'limit'
 .fi
 .RE
 .SH "ENVIRONMENT"

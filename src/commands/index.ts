@@ -2430,6 +2430,31 @@ const commands = [
     flags: [],
   },
   {
+    resourcePath: ['workers'],
+    commandPath: ['workers', 'reveal-ssn'],
+    methodName: 'revealSsn',
+    summary: 'Reveal Worker SSNs',
+    description:
+      'Reveal full Social Security numbers for up to 50 workers. Requires the workers:pii read scope. Results preserve request order and use null when a worker has no SSN on file. The request fails if any worker is not found, emits one audit event per worker, and returns Cache-Control: private, no-store.',
+    transport: 'http',
+    iterable: false,
+    callShape: 'body',
+    positional: [],
+    flags: [
+      {
+        name: 'worker-id',
+        optionKey: 'workerId',
+        paramKey: 'workerIds',
+        location: 'body',
+        required: true,
+        description: 'One to 50 unique worker ids. Results are returned in this order.',
+        valueKind: 'array',
+        repeatable: true,
+        itemKind: 'string',
+      },
+    ],
+  },
+  {
     resourcePath: ['workplaces'],
     commandPath: ['workplaces', 'list'],
     methodName: 'list',
@@ -2589,13 +2614,93 @@ const commands = [
       },
     ],
   },
+  {
+    resourcePath: ['i9Verifications'],
+    commandPath: ['i9-verifications', 'list'],
+    methodName: 'list',
+    summary: 'List I-9 verifications',
+    description:
+      'List current and retained company I-9 verifications in all workflow states, newest first. The API key must have workers profile and compliance read scope.',
+    transport: 'http',
+    iterable: false,
+    callShape: 'params',
+    positional: [],
+    flags: [
+      {
+        name: 'limit',
+        optionKey: 'limit',
+        paramKey: 'limit',
+        location: 'query',
+        required: true,
+        valueKind: 'string',
+      },
+      {
+        name: 'after-id',
+        optionKey: 'afterId',
+        paramKey: 'afterId',
+        location: 'query',
+        required: false,
+        valueKind: 'string',
+      },
+      {
+        name: 'before-id',
+        optionKey: 'beforeId',
+        paramKey: 'beforeId',
+        location: 'query',
+        required: false,
+        valueKind: 'string',
+      },
+      {
+        name: 'worker-ids',
+        optionKey: 'workerIds',
+        paramKey: 'workerIds',
+        location: 'query',
+        required: false,
+        description:
+          'Worker IDs to include, supplied as repeated parameters. Omit for all workers. Unknown or foreign IDs contribute no matches.',
+        valueKind: 'array',
+      },
+      {
+        name: 'statuses',
+        optionKey: 'statuses',
+        paramKey: 'statuses',
+        location: 'query',
+        required: false,
+        description: 'Statuses to include, supplied as repeated parameters. Omit for all workflow states.',
+        valueKind: 'array',
+      },
+    ],
+  },
+  {
+    resourcePath: ['i9Verifications'],
+    commandPath: ['i9-verifications', 'retrieve'],
+    methodName: 'retrieve',
+    summary: 'Get I-9 verification',
+    description:
+      'Get a specific I-9 verification by its id. The API key must have workers profile and compliance read scope.',
+    transport: 'http',
+    iterable: false,
+    callShape: 'options',
+    positional: [
+      {
+        name: 'id',
+        optionKey: 'id',
+        paramKey: 'id',
+        location: 'path',
+        required: true,
+        description: 'The tag of the i9 verification.',
+        valueKind: 'string',
+      },
+    ],
+    flags: [],
+  },
 ] as const satisfies readonly CliCommandDefinition[];
 
 export const getProgram = (): Command =>
   createProgram({
     SDK,
     binaryName: 'warp',
-    version: '0.4.0', // x-release-please-version
+    version: '0.5.0', // x-release-please-version
     description: 'CLI for warp',
     defaultFormat: 'auto',
     defaultErrorFormat: 'auto',

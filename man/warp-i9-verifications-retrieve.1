@@ -1,20 +1,17 @@
 .\" File generated from our OpenAPI spec by Scalar. Do not edit.
-.TH "WARP\-OFFERS\-EXTEND\-DEADLINE" "1" "" "warp" "warp Manual"
+.TH "WARP\-I9\-VERIFICATIONS\-RETRIEVE" "1" "" "warp" "warp Manual"
 .SH "NAME"
-warp\-offers\-extend\-deadline \- Extend Offer Deadline
+warp\-i9\-verifications\-retrieve \- Get I\-9 verification
 .SH "SYNOPSIS"
-.B warp offers extend\-deadline
-\fIid\fR \fB\-\-expiration\-time\fR \fI<value>\fR [\fIoptions\fR]
+.B warp i9\-verifications retrieve
+\fIid\fR [\fIoptions\fR]
 .SH "DESCRIPTION"
-Extend the expiration deadline of a sent offer.
+Get a specific I\-9 verification by its id. The API key must have workers profile and compliance read scope.
 .SH "ARGUMENTS"
 .TP
 \fIid\fR, \fB\-\-id\fR \fI<value>\fR
-The tag of the offer. Required. Can also be supplied as \-\-id.
+The tag of the i9 verification. Required. Can also be supplied as \-\-id.
 .SH "OPTIONS"
-.TP
-\fB\-\-expiration\-time\fR \fI<value>\fR
-The expiration\-time body parameter. Required.
 .TP
 \fB\-\-base\-url\fR \fI<url>\fR
 Override the base URL for API requests.
@@ -49,7 +46,7 @@ API credential. Can also be set with the WARP_API_KEY environment variable.
 .PP
 .RS 4
 .nf
-warp offers extend\-deadline 'offr_1234' \-\-api\-key "$WARP_API_KEY" \-\-expiration\-time ''
+warp i9\-verifications retrieve 'i9v_1234' \-\-api\-key "$WARP_API_KEY"
 .fi
 .RE
 .SH "ENVIRONMENT"
