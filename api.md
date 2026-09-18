@@ -81,7 +81,10 @@ Read-only health plans, retirement plans, and payroll benefit deductions.
 List company health plans. Defaults to active plans. A plan whose effectiveEndDate has elapsed is reported and filtered as terminated.
 
 ```sh
-warp benefits:health-plans list --api-key "$WARP_API_KEY" --limit 'limit' --statuses '["active"]'
+warp benefits:health-plans list \
+  --api-key "$WARP_API_KEY" \
+  --limit 'limit' \
+  --statuses '["active"]'
 ```
 
 #### Get Health Plan
@@ -101,7 +104,10 @@ Read-only health plans, retirement plans, and payroll benefit deductions.
 List company retirement plans. Defaults to active plans. A plan whose effectiveEndDate has elapsed is reported and filtered as terminated.
 
 ```sh
-warp benefits:retirement-plans list --api-key "$WARP_API_KEY" --limit 'limit' --statuses '["active"]'
+warp benefits:retirement-plans list \
+  --api-key "$WARP_API_KEY" \
+  --limit 'limit' \
+  --statuses '["active"]'
 ```
 
 #### Get Retirement Plan
@@ -121,7 +127,10 @@ Read-only health plans, retirement plans, and payroll benefit deductions.
 List current payroll benefit deductions. Defaults to active deductions. A deduction whose effectiveEndDate has elapsed is reported and filtered as terminated.
 
 ```sh
-warp benefits:deductions list --api-key "$WARP_API_KEY" --limit 'limit' --statuses '["active"]'
+warp benefits:deductions list \
+  --api-key "$WARP_API_KEY" \
+  --limit 'limit' \
+  --statuses '["active"]'
 ```
 
 #### Get Benefit Deduction
@@ -149,7 +158,11 @@ warp custom-fields list --api-key "$WARP_API_KEY"
 Create a custom worker field definition. The field type is immutable after creation. Select and multi_select fields can include their initial options. Access to values derives from the field category; requires the workers:custom_fields permission.
 
 ```sh
-warp custom-fields create --api-key "$WARP_API_KEY" --name 'x' --type 'text' --category 'info'
+warp custom-fields create \
+  --api-key "$WARP_API_KEY" \
+  --name 'x' \
+  --type 'text' \
+  --category 'info'
 ```
 
 ### Get Field
@@ -181,7 +194,10 @@ warp custom-fields archive 'cf_1234' --api-key "$WARP_API_KEY"
 Add an option to a select or multi_select custom worker field. The option value should be treated as stable; the label can change. Requires the workers:custom_fields permission.
 
 ```sh
-warp custom-fields create-option 'cf_1234' --api-key "$WARP_API_KEY" --label 'x' --value 'x'
+warp custom-fields create-option 'cf_1234' \
+  --api-key "$WARP_API_KEY" \
+  --label 'x' \
+  --value 'x'
 ```
 
 ### Update Field Option
@@ -221,7 +237,11 @@ warp custom-fields list-values --api-key "$WARP_API_KEY"
 Create or replace a worker's value for a custom field. The value shape must match the field type, and your API key must hold write on the field's category.
 
 ```sh
-warp custom-fields upsert-value --api-key "$WARP_API_KEY" --worker-id 'wrk_1234' --field-id 'cf_1234' --value '{"type":"text","value":""}'
+warp custom-fields upsert-value \
+  --api-key "$WARP_API_KEY" \
+  --worker-id 'wrk_1234' \
+  --field-id 'cf_1234' \
+  --value '{"type":"text","value":""}'
 ```
 
 ### Clear Field Value
@@ -229,7 +249,10 @@ warp custom-fields upsert-value --api-key "$WARP_API_KEY" --worker-id 'wrk_1234'
 Remove a worker's value for a custom field. Your API key must hold write on the field's category.
 
 ```sh
-warp custom-fields clear-value --api-key "$WARP_API_KEY" --worker-id 'wrk_1234' --field-id 'cf_1234'
+warp custom-fields clear-value \
+  --api-key "$WARP_API_KEY" \
+  --worker-id 'wrk_1234' \
+  --field-id 'cf_1234'
 ```
 
 ## `Departments`
@@ -289,7 +312,12 @@ warp offers list --api-key "$WARP_API_KEY" --limit 'limit'
 Create and send a candidate offer. The candidate receives an email with a link to the offer portal.
 
 ```sh
-warp offers create --api-key "$WARP_API_KEY" --candidate '{"firstName":"x","lastName":"x","email":"john@joinwarp.com"}' --position '{"title":"x","startDate":""}' --worker-type 'employee' --compensation '{"payBasis":"year","payCurrency":"USD","payRate":1}'
+warp offers create \
+  --api-key "$WARP_API_KEY" \
+  --candidate '{"firstName":"x","lastName":"x","email":"john@joinwarp.com"}' \
+  --position '{"title":"x","startDate":""}' \
+  --worker-type 'employee' \
+  --compensation '{"payBasis":"year","payCurrency":"USD","payRate":1}'
 ```
 
 ### Void Offer
@@ -453,7 +481,17 @@ warp workers delete 'wrk_1234' --api-key "$WARP_API_KEY"
 Create a new US employee. The worker will be created in draft status and must be invited separately via the invite endpoint. If hiring in a state without an existing tax registration, you must specify the stateRegistration field.
 
 ```sh
-warp workers create-employee --api-key "$WARP_API_KEY" --first-name 'Jonathan' --last-name 'Galt' --position 'Software Engineer' --start-date '' --email 'john@joinwarp.com' --department-id 'dpt_1234' --manager-id 'wrk_1234' --work-location '{"type":"office","workplaceId":"wkp_1234"}' --compensation '{"amount":1,"per":"hour"}'
+warp workers create-employee \
+  --api-key "$WARP_API_KEY" \
+  --first-name 'Jonathan' \
+  --last-name 'Galt' \
+  --position 'Software Engineer' \
+  --start-date '' \
+  --email 'john@joinwarp.com' \
+  --department-id 'dpt_1234' \
+  --manager-id 'wrk_1234' \
+  --work-location '{"type":"office","workplaceId":"wkp_1234"}' \
+  --compensation '{"amount":1,"per":"hour"}'
 ```
 
 ### Create Contractor
@@ -461,7 +499,17 @@ warp workers create-employee --api-key "$WARP_API_KEY" --first-name 'Jonathan' -
 Create a new contractor. The worker will be created in draft status and must be invited separately via the invite endpoint. For business contractors, the businessName field is required.
 
 ```sh
-warp workers create-contractor --api-key "$WARP_API_KEY" --entity-type 'individual' --first-name 'Melissa' --last-name 'Jones' --position 'Design Consultant' --start-date '' --email 'john@joinwarp.com' --department-id 'dpt_1234' --manager-id 'wrk_1234' --work-country 'AD'
+warp workers create-contractor \
+  --api-key "$WARP_API_KEY" \
+  --entity-type 'individual' \
+  --first-name 'Melissa' \
+  --last-name 'Jones' \
+  --position 'Design Consultant' \
+  --start-date '' \
+  --email 'john@joinwarp.com' \
+  --department-id 'dpt_1234' \
+  --manager-id 'wrk_1234' \
+  --work-country 'AD'
 ```
 
 ### Invite Worker
@@ -477,7 +525,10 @@ warp workers invite 'wrk_1234' --api-key "$WARP_API_KEY"
 Reveal full Social Security numbers for up to 50 workers. Requires the workers:pii read scope. Results preserve request order and use null when a worker has no SSN on file. The request fails if any worker is not found, emits one audit event per worker, and returns Cache-Control: private, no-store.
 
 ```sh
-warp workers reveal-ssn --api-key "$WARP_API_KEY" --worker-id 'wrk_khac8380c2Lm' --worker-id 'wrk_q7Vm2pR9xK4c'
+warp workers reveal-ssn \
+  --api-key "$WARP_API_KEY" \
+  --worker-id 'wrk_khac8380c2Lm' \
+  --worker-id 'wrk_q7Vm2pR9xK4c'
 ```
 
 ## `Workplaces`
@@ -497,7 +548,11 @@ warp workplaces list --api-key "$WARP_API_KEY" --limit 'limit'
 Create a new workplace.
 
 ```sh
-warp workplaces create --api-key "$WARP_API_KEY" --name 'x' --type 'remote' --address '{"line1":"x","city":"","postalCode":"","state":"AL","country":"US"}'
+warp workplaces create \
+  --api-key "$WARP_API_KEY" \
+  --name 'x' \
+  --type 'remote' \
+  --address '{"line1":"x","city":"","postalCode":"","state":"AL","country":"US"}'
 ```
 
 ### Update Workplace

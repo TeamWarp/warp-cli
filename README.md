@@ -38,7 +38,10 @@ brew install TeamWarp/tap/warp
 ```sh
 warp [resource] [command] [flags]
 
-warp benefits:health-plans list --api-key "$WARP_API_KEY" --limit 'limit' --statuses '["active"]'
+warp benefits:health-plans list \
+  --api-key "$WARP_API_KEY" \
+  --limit 'limit' \
+  --statuses '["active"]'
 ```
 
 The examples in the following sections assume a `client` configured as shown above.

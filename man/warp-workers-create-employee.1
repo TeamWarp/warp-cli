@@ -93,7 +93,17 @@ API credential. Can also be set with the WARP_API_KEY environment variable.
 .PP
 .RS 4
 .nf
-warp workers create\-employee \-\-api\-key "$WARP_API_KEY" \-\-first\-name 'Jonathan' \-\-last\-name 'Galt' \-\-position 'Software Engineer' \-\-start\-date '' \-\-email 'john@joinwarp.com' \-\-department\-id 'dpt_1234' \-\-manager\-id 'wrk_1234' \-\-work\-location '{"type":"office","workplaceId":"wkp_1234"}' \-\-compensation '{"amount":1,"per":"hour"}'
+warp workers create\-employee \e
+  \-\-api\-key "$WARP_API_KEY" \e
+  \-\-first\-name 'Jonathan' \e
+  \-\-last\-name 'Galt' \e
+  \-\-position 'Software Engineer' \e
+  \-\-start\-date '' \e
+  \-\-email 'john@joinwarp.com' \e
+  \-\-department\-id 'dpt_1234' \e
+  \-\-manager\-id 'wrk_1234' \e
+  \-\-work\-location '{"type":"office","workplaceId":"wkp_1234"}' \e
+  \-\-compensation '{"amount":1,"per":"hour"}'
 .fi
 .RE
 .SH "ENVIRONMENT"
