@@ -2,7 +2,12 @@
 
 import type { Command } from 'commander';
 import SDK from '../sdk/index';
-import { createProgram, type CliClientOptionDefinition, type CliCommandDefinition } from '../cli/runtime';
+import {
+  createProgram,
+  type CliClientOptionDefinition,
+  type CliCommandDefinition,
+  type CliCommandGroup,
+} from '../cli/runtime';
 import { completions } from '../cli/completions';
 
 const clientOptions = [
@@ -2696,6 +2701,74 @@ const commands = [
   },
 ] as const satisfies readonly CliCommandDefinition[];
 
+const groups = [
+  {
+    commandPath: ['benefits', 'health-plans'],
+    description: 'Read-only health plans, retirement plans, and payroll benefit deductions.',
+  },
+  {
+    commandPath: ['benefits', 'retirement-plans'],
+    description: 'Read-only health plans, retirement plans, and payroll benefit deductions.',
+  },
+  {
+    commandPath: ['benefits', 'deductions'],
+    description: 'Read-only health plans, retirement plans, and payroll benefit deductions.',
+  },
+  {
+    commandPath: ['custom-fields'],
+    description:
+      'Company-defined custom fields for workers. Field definitions are administered with the workers:custom_fields permission; each field belongs to a worker-data category whose read/write grants govern its values.',
+  },
+  {
+    commandPath: ['departments'],
+    description:
+      'Endpoints for department management. Create, list, and update departments within your company.',
+  },
+  {
+    commandPath: ['levels'],
+    description: 'Endpoints for reading the job-level framework configured for your company.',
+  },
+  {
+    commandPath: ['offers'],
+    description:
+      'Endpoints for managing candidate offers. Create and send offers, list existing offers, and manage their lifecycle.',
+  },
+  {
+    commandPath: ['pay-rates'],
+    description: 'Read regular and additional worker pay rates.',
+  },
+  {
+    commandPath: ['payroll'],
+    description:
+      'Read-only payrolls and worker-level payroll calculations. Paycheck endpoints use one consistent resource for every worker type; payment execution is outside this API.',
+  },
+  {
+    commandPath: ['time-off'],
+    description:
+      'Endpoints for worker time off management. See time off requests, which workers are assigned to which policies, or worker remaining balances.',
+  },
+  {
+    commandPath: ['time-off', 'policies'],
+    description:
+      'Endpoints for worker time off management. See time off requests, which workers are assigned to which policies, or worker remaining balances.',
+  },
+  {
+    commandPath: ['workers'],
+    description:
+      'Endpoints for worker management. "Workers" include anyone employed by your company, whether US or international, full-time employees or contractors.',
+  },
+  {
+    commandPath: ['workplaces'],
+    description:
+      'Endpoints for workplace management. Create, list, and update workplaces within your company.',
+  },
+  {
+    commandPath: ['i9-verifications'],
+    description:
+      'Read company I-9 verification metadata, including retained forms, without exposing form contents.',
+  },
+] as const satisfies readonly CliCommandGroup[];
+
 export const getProgram = (): Command =>
   createProgram({
     SDK,
@@ -2706,5 +2779,6 @@ export const getProgram = (): Command =>
     defaultErrorFormat: 'auto',
     clientOptions,
     commands,
+    groups,
     completions,
   });
