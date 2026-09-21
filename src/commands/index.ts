@@ -9,6 +9,7 @@ import {
   type CliCommandGroup,
 } from '../cli/runtime';
 import { completions } from '../cli/completions';
+import type { CliAuthDefinition } from '../cli/login';
 
 const clientOptions = [
   {
@@ -32,6 +33,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'params',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -48,6 +50,7 @@ const commands = [
         paramKey: 'afterId',
         location: 'query',
         required: false,
+        description: 'The tag of a company health plan.',
         valueKind: 'string',
       },
       {
@@ -56,6 +59,7 @@ const commands = [
         paramKey: 'beforeId',
         location: 'query',
         required: false,
+        description: 'The tag of a company health plan.',
         valueKind: 'string',
       },
       {
@@ -93,6 +97,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'options',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -116,6 +121,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'params',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -132,6 +138,7 @@ const commands = [
         paramKey: 'afterId',
         location: 'query',
         required: false,
+        description: 'The tag of a company retirement plan.',
         valueKind: 'string',
       },
       {
@@ -140,6 +147,7 @@ const commands = [
         paramKey: 'beforeId',
         location: 'query',
         required: false,
+        description: 'The tag of a company retirement plan.',
         valueKind: 'string',
       },
       {
@@ -169,6 +177,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'options',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -192,6 +201,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'params',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -208,6 +218,7 @@ const commands = [
         paramKey: 'afterId',
         location: 'query',
         required: false,
+        description: 'The version-group tag of a payroll benefit deduction. Stable across edits.',
         valueKind: 'string',
       },
       {
@@ -216,6 +227,7 @@ const commands = [
         paramKey: 'beforeId',
         location: 'query',
         required: false,
+        description: 'The version-group tag of a payroll benefit deduction. Stable across edits.',
         valueKind: 'string',
       },
       {
@@ -277,6 +289,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'options',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -300,6 +313,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'options',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [],
   },
@@ -313,6 +327,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'body',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -399,6 +414,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'options',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -422,6 +438,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'body',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -502,6 +519,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'options',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -525,6 +543,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'body',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -573,6 +592,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'body',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -613,6 +633,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'options',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -636,6 +657,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'options',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -659,6 +681,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'params',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -689,6 +712,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'body',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -729,6 +753,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'params',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -760,6 +785,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'params',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -776,6 +802,7 @@ const commands = [
         paramKey: 'afterId',
         location: 'query',
         required: false,
+        description: 'The unique public id of the department',
         valueKind: 'string',
       },
       {
@@ -784,6 +811,7 @@ const commands = [
         paramKey: 'beforeId',
         location: 'query',
         required: false,
+        description: 'The unique public id of the department',
         valueKind: 'string',
       },
     ],
@@ -797,6 +825,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'body',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -818,6 +847,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'body',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -849,6 +879,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'options',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [],
   },
@@ -861,6 +892,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'params',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -877,6 +909,7 @@ const commands = [
         paramKey: 'afterId',
         location: 'query',
         required: false,
+        description: 'The tag of the offer.',
         valueKind: 'string',
       },
       {
@@ -885,6 +918,7 @@ const commands = [
         paramKey: 'beforeId',
         location: 'query',
         required: false,
+        description: 'The tag of the offer.',
         valueKind: 'string',
       },
       {
@@ -909,6 +943,7 @@ const commands = [
         paramKey: 'candidateEmail',
         location: 'query',
         required: false,
+        description: 'An email with a reasonably valid regex (based on RFC 5321 atext characters)',
         valueKind: 'string',
       },
     ],
@@ -923,6 +958,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'body',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -1020,6 +1056,8 @@ const commands = [
         paramKey: 'position',
         location: 'body',
         required: false,
+        description:
+          'Required when workerType is global_contractor. Ignored for employee and us_contractor offers.',
         valueKind: 'string',
         objectPath: ['country'],
       },
@@ -1038,6 +1076,7 @@ const commands = [
         paramKey: 'departmentId',
         location: 'body',
         required: false,
+        description: 'The unique public id of the department',
         valueKind: 'string',
       },
       {
@@ -1046,6 +1085,7 @@ const commands = [
         paramKey: 'workplaceId',
         location: 'body',
         required: false,
+        description: 'Public workplace identifier',
         valueKind: 'string',
       },
       {
@@ -1054,6 +1094,7 @@ const commands = [
         paramKey: 'managerId',
         location: 'body',
         required: false,
+        description: 'The id of the worker.',
         valueKind: 'string',
       },
       {
@@ -1062,6 +1103,7 @@ const commands = [
         paramKey: 'levelId',
         location: 'body',
         required: false,
+        description: 'The unique public id of the job level',
         valueKind: 'string',
       },
       {
@@ -1224,6 +1266,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'body',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -1263,6 +1306,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'body',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -1294,6 +1338,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'options',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -1317,6 +1362,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'params',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -1333,6 +1379,7 @@ const commands = [
         paramKey: 'afterId',
         location: 'query',
         required: false,
+        description: 'The tag of the pay rate.',
         valueKind: 'string',
       },
       {
@@ -1341,6 +1388,7 @@ const commands = [
         paramKey: 'beforeId',
         location: 'query',
         required: false,
+        description: 'The tag of the pay rate.',
         valueKind: 'string',
       },
       {
@@ -1391,6 +1439,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'options',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -1414,6 +1463,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'params',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -1529,6 +1579,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'options',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -1552,6 +1603,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'params',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -1686,6 +1738,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'options',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -1709,6 +1762,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'params',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -1725,6 +1779,7 @@ const commands = [
         paramKey: 'afterId',
         location: 'query',
         required: false,
+        description: 'The external-facing id of the worker assignment.',
         valueKind: 'string',
       },
       {
@@ -1733,6 +1788,7 @@ const commands = [
         paramKey: 'beforeId',
         location: 'query',
         required: false,
+        description: 'The external-facing id of the worker assignment.',
         valueKind: 'string',
       },
       {
@@ -1762,6 +1818,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'params',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -1778,6 +1835,7 @@ const commands = [
         paramKey: 'afterId',
         location: 'query',
         required: false,
+        description: 'The external-facing id of the worker assignment.',
         valueKind: 'string',
       },
       {
@@ -1786,6 +1844,7 @@ const commands = [
         paramKey: 'beforeId',
         location: 'query',
         required: false,
+        description: 'The external-facing id of the worker assignment.',
         valueKind: 'string',
       },
       {
@@ -1831,6 +1890,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'params',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -1924,6 +1984,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'params',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -1961,6 +2022,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'options',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -1983,6 +2045,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'params',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -1999,6 +2062,7 @@ const commands = [
         paramKey: 'afterId',
         location: 'query',
         required: false,
+        description: 'The id of the worker.',
         valueKind: 'string',
       },
       {
@@ -2007,6 +2071,7 @@ const commands = [
         paramKey: 'beforeId',
         location: 'query',
         required: false,
+        description: 'The id of the worker.',
         valueKind: 'string',
       },
       {
@@ -2044,6 +2109,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'options',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -2067,6 +2133,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'options',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -2090,6 +2157,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'body',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -2140,6 +2208,7 @@ const commands = [
         paramKey: 'workEmail',
         location: 'body',
         required: false,
+        description: 'Company-issued email address, if applicable.',
         valueKind: 'string',
       },
       {
@@ -2148,6 +2217,8 @@ const commands = [
         paramKey: 'requireI9',
         location: 'body',
         required: false,
+        description:
+          'Whether the employee is required to complete I-9 work authorization. Set to false if the employee has already been verified off-platform. Defaults to true.',
         valueKind: 'boolean',
       },
       {
@@ -2156,6 +2227,8 @@ const commands = [
         paramKey: 'stateRegistration',
         location: 'body',
         required: false,
+        description:
+          "How state tax registration is handled for this employee's work state. Required when hiring in a state where your company doesn't have an existing registration. Use 'self_managed' if you've already registered in this state, or 'warp_managed' for Warp to handle registration on your behalf.",
         valueKind: 'string',
       },
       {
@@ -2192,6 +2265,7 @@ const commands = [
         paramKey: 'stockOptions',
         location: 'body',
         required: false,
+        description: 'Number of stock options granted to this employee.',
         valueKind: 'unknown',
       },
       {
@@ -2238,6 +2312,7 @@ const commands = [
         paramKey: 'paySchedule',
         location: 'body',
         required: false,
+        description: "The employee's pay schedule. Must be a pay schedule that the company has configured.",
         valueKind: 'string',
       },
     ],
@@ -2252,6 +2327,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'body',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -2294,6 +2370,7 @@ const commands = [
         paramKey: 'businessName',
         location: 'body',
         required: false,
+        description: 'Required when entityType is "business". The legal name of the contractor\'s business.',
         valueKind: 'string',
       },
       {
@@ -2302,6 +2379,7 @@ const commands = [
         paramKey: 'scopeOfWork',
         location: 'body',
         required: false,
+        description: 'A description of the work the contractor will perform.',
         valueKind: 'string',
       },
       {
@@ -2327,6 +2405,7 @@ const commands = [
         paramKey: 'workEmail',
         location: 'body',
         required: false,
+        description: 'Company-issued email address, if applicable.',
         valueKind: 'string',
       },
       {
@@ -2371,6 +2450,7 @@ const commands = [
         paramKey: 'compensation',
         location: 'body',
         required: false,
+        description: "The contractor's pay rate. Omit if you'd like to pay on-demand or via invoicing.",
         valueKind: 'object',
       },
       {
@@ -2407,6 +2487,7 @@ const commands = [
         paramKey: 'paySchedule',
         location: 'body',
         required: false,
+        description: "The contractor's pay schedule. Must be a pay schedule that the company has configured.",
         valueKind: 'string',
       },
     ],
@@ -2421,6 +2502,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'options',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -2444,6 +2526,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'body',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -2468,6 +2551,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'params',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -2484,6 +2568,7 @@ const commands = [
         paramKey: 'afterId',
         location: 'query',
         required: false,
+        description: 'Public workplace identifier',
         valueKind: 'string',
       },
       {
@@ -2492,6 +2577,7 @@ const commands = [
         paramKey: 'beforeId',
         location: 'query',
         required: false,
+        description: 'Public workplace identifier',
         valueKind: 'string',
       },
     ],
@@ -2505,6 +2591,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'body',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -2597,6 +2684,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'body',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -2629,6 +2717,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'params',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -2645,6 +2734,7 @@ const commands = [
         paramKey: 'afterId',
         location: 'query',
         required: false,
+        description: 'The tag of the i9 verification.',
         valueKind: 'string',
       },
       {
@@ -2653,6 +2743,7 @@ const commands = [
         paramKey: 'beforeId',
         location: 'query',
         required: false,
+        description: 'The tag of the i9 verification.',
         valueKind: 'string',
       },
       {
@@ -2686,6 +2777,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'options',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -2769,6 +2861,30 @@ const groups = [
   },
 ] as const satisfies readonly CliCommandGroup[];
 
+const auth = {
+  loginPath: ['login'],
+  logoutPath: ['logout'],
+  loginCommand: 'warp login',
+  storeName: 'warp',
+  storeEnv: 'WARP_CREDENTIALS_FILE',
+  baseUrlEnv: 'WARP_BASE_URL',
+  backend: 'auto',
+  defaultBaseUrl: 'https://api.joinwarp.com/public',
+  requirements: [['apiKey']],
+  envByKey: {
+    apiKey: 'WARP_API_KEY',
+  },
+  methods: [
+    {
+      name: 'api-key',
+      label: 'Enter your API key',
+      kind: 'token',
+      clientKey: 'apiKey',
+      prompt: 'API key: ',
+    },
+  ],
+} as const satisfies CliAuthDefinition;
+
 export const getProgram = (): Command =>
   createProgram({
     SDK,
@@ -2781,4 +2897,5 @@ export const getProgram = (): Command =>
     commands,
     groups,
     completions,
+    auth,
   });
