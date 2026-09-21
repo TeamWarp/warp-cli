@@ -8,6 +8,10 @@ import { Command } from 'commander';
 import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
 
 import { encodeToon } from './toon.js';
+import { takeWarnings } from './credentials';
+import { type CliAuthDefinition, UsageError, runLogin, runLogout, storedCredentials } from './login';
+
+const LOGIN_COMMAND = 'warp login';
 
 type OutputFormat = 'auto' | 'json' | 'jsonl' | 'pretty' | 'raw' | 'toon' | 'yaml';
 
@@ -48,6 +52,7 @@ export type CliCommandDefinition = {
   readonly streaming?: 'sse' | 'jsonl';
   readonly iterable: boolean;
   readonly callShape: 'options' | 'params' | 'body';
+  readonly authClientKeyRequirements: readonly (readonly string[])[];
   // Param key of a body blob that is forwarded bare or spread into params, depending on callShape.
   readonly bodyParamKey?: string;
   readonly positional: readonly CliFlagDefinition[];
@@ -88,6 +93,7 @@ export type CreateProgramOptions = {
   // Completion script per shell, generated alongside the command table. Absent when the SDK
   // config disables shell completions, in which case no `completion` command is registered.
   readonly completions?: Readonly<Record<string, string>>;
+  readonly auth?: CliAuthDefinition;
 };
 
 type OutputOptions = {
@@ -125,6 +131,7 @@ export const createProgram = ({
   commands,
   groups,
   completions,
+  auth,
 }: CreateProgramOptions): Command => {
   const program = usageExitCode(new Command());
   program
@@ -153,9 +160,11 @@ export const createProgram = ({
     program.option('--' + option.name + ' <value>', clientOptionDescription(option));
   }
 
-  for (const definition of commands) addGeneratedCommand(program, SDK, clientOptions, definition, groups);
+  for (const definition of commands)
+    addGeneratedCommand(program, SDK, clientOptions, definition, groups, auth);
 
   if (completions) addCompletionCommand(program, binaryName, completions);
+  if (auth) addAuthCommands(program, auth);
 
   return program;
 };
@@ -216,6 +225,62 @@ const completionHelpExamples = (binaryName: string, shells: readonly string[]): 
   return lines.length > 0 ? '\nAdd one of these to your shell startup file:\n' + lines.join('\n') : '';
 };
 
+// `login`/`logout` sit at the top level unless the API already claims one of those names, in
+// which case they fall back under an `auth` parent. That parent is created here rather than
+// from the command table, so it needs its own description or `--help` lists a bare `auth`,
+// which is the very thing the group table exists to prevent. Both paths are described so
+// whichever one creates the group first carries it.
+const authGroups = (auth: CliAuthDefinition): readonly CliCommandGroup[] => [
+  { commandPath: auth.loginPath.slice(0, -1), description: 'Sign in and out' },
+  { commandPath: auth.logoutPath.slice(0, -1), description: 'Sign in and out' },
+];
+
+const addAuthCommands = (program: Command, auth: CliAuthDefinition): void => {
+  const flows = auth.methods.map((method) => method.name).join(', ');
+  const login = usageExitCode(new Command(auth.loginPath.at(-1) ?? 'login'))
+    .description('Sign in and save credentials for later commands')
+    .showHelpAfterError()
+    .option('--base-url <url>', 'Sign in against this base URL instead of the default')
+    .option('--flow <name>', 'Sign-in flow to use: ' + flows)
+    .addHelpText('after', authFlowHelp(auth))
+    .action(async (_options: unknown, command: Command) => {
+      const options = command.optsWithGlobals<{ baseUrl?: string; flow?: string }>();
+      await runAuthCommand(() => runLogin(auth, resolvedBaseUrl(auth, options.baseUrl), options.flow));
+    });
+  ensureCommandPath(program, auth.loginPath.slice(0, -1), authGroups(auth)).addCommand(login);
+
+  const logout = usageExitCode(new Command(auth.logoutPath.at(-1) ?? 'logout'))
+    .description('Forget saved credentials')
+    .showHelpAfterError()
+    .option('--base-url <url>', 'Forget the credentials saved for this base URL')
+    .option('--all', 'Forget every saved credential, for every base URL')
+    .action(async (_options: unknown, command: Command) => {
+      const options = command.optsWithGlobals<{ baseUrl?: string; all?: boolean }>();
+      await runAuthCommand(() =>
+        runLogout(auth, resolvedBaseUrl(auth, options.baseUrl), options.all === true),
+      );
+    });
+  ensureCommandPath(program, auth.logoutPath.slice(0, -1), authGroups(auth)).addCommand(logout);
+};
+
+const runAuthCommand = async (run: () => string | Promise<string>): Promise<void> => {
+  try {
+    processStdout.write((await run()) + '\n');
+  } catch (error) {
+    process.stderr.write((error instanceof Error ? error.message : String(error)) + '\n');
+    process.exitCode = error instanceof UsageError ? 2 : 10;
+  } finally {
+    for (const warning of takeWarnings()) process.stderr.write(warning + '\n');
+  }
+};
+
+const resolvedBaseUrl = (auth: CliAuthDefinition, flag: string | undefined): string =>
+  flag?.trim() || process.env[auth.baseUrlEnv]?.trim() || auth.defaultBaseUrl;
+
+// Lists the flows by name so `--flow` can be used without first running the picker.
+const authFlowHelp = (auth: CliAuthDefinition): string =>
+  '\nSign-in flows:\n' + auth.methods.map((method) => '  ' + method.name + '  ' + method.label).join('\n');
+
 const clientOptionDescription = (option: CliClientOptionDefinition): string => {
   const parts: string[] = [];
   if (option.description) parts.push(option.description);
@@ -225,12 +290,44 @@ const clientOptionDescription = (option: CliClientOptionDefinition): string => {
   return parts.join(' ');
 };
 
+// Constructs the embedded client, restating its credential guard in command-line terms.
+//
+// The SDK's own guard is worded for a library caller — "instantiate the X client with an apiKey
+// option, like new X({ apiKey: ... })" — which names something a CLI user cannot do. That wording
+// is fixed upstream to match the reference SDKs byte for byte, so it is restated here rather than
+// changed there. The environment variable is the anchor for the match: it is the one token of the
+// message this runtime also knows, so an unrelated constructor failure is rethrown untouched
+// instead of being reported as a missing credential.
+const buildClient = (
+  SDK: CreateProgramOptions['SDK'],
+  options: Record<string, unknown>,
+  clientOptions: readonly CliClientOptionDefinition[],
+): Record<string, unknown> => {
+  try {
+    return new SDK(options) as Record<string, unknown>;
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    const missing = clientOptions.find((option) => option.env !== undefined && message.includes(option.env));
+    if (!missing) throw error;
+    throw new Error(
+      'Missing credential: run `' +
+        LOGIN_COMMAND +
+        '`, pass --' +
+        missing.name +
+        ' <value>' +
+        (missing.env ? ' or set the ' + missing.env + ' environment variable' : '') +
+        '.',
+    );
+  }
+};
+
 const addGeneratedCommand = (
   program: Command,
   SDK: CreateProgramOptions['SDK'],
   clientOptions: readonly CliClientOptionDefinition[],
   definition: CliCommandDefinition,
   groups: readonly CliCommandGroup[] | undefined,
+  auth: CliAuthDefinition | undefined,
 ): void => {
   const parent = ensureCommandPath(program, definition.commandPath.slice(0, -1), groups);
   const commandName = definition.commandPath.at(-1) ?? definition.methodName;
@@ -290,7 +387,13 @@ const addGeneratedCommand = (
 
   // Flag spelling for path params (`--id wkr_1`); skipped when the name is already taken by a
   // client option or generated flag so Commander does not throw on a duplicate registration.
+  //
+  // `help` is skipped on top of that scan rather than through it: Commander keeps its built-in
+  // help option in `_helpOption`, not in `command.options`, so the scan cannot see it and
+  // `--help <value>` would register over it — leaving `<command> --help` to fail with "argument
+  // missing" instead of printing help. The param is still accepted positionally.
   for (const positional of definition.positional) {
+    if (positional.name === 'help') continue;
     if (command.options.some((option) => option.long === '--' + positional.name)) continue;
     command.option('--' + positional.name + ' <value>', positional.description ?? '');
   }
@@ -299,7 +402,7 @@ const addGeneratedCommand = (
     const command = args.at(-1);
     if (!(command instanceof Command)) throw new Error('Expected Commander command context');
     const positionalValues = args.slice(0, -1);
-    await runGeneratedCommand(SDK, clientOptions, definition, command, positionalValues);
+    await runGeneratedCommand(SDK, clientOptions, definition, command, positionalValues, auth);
   });
 
   parent.addCommand(command);
@@ -348,6 +451,7 @@ const runGeneratedCommand = async (
   definition: CliCommandDefinition,
   command: Command,
   positionalValues: readonly unknown[],
+  auth: CliAuthDefinition | undefined,
 ): Promise<void> => {
   const rootOptions = command.optsWithGlobals<GlobalOptions>();
   const commandOptions = command.opts<GlobalOptions>();
@@ -370,7 +474,11 @@ const runGeneratedCommand = async (
   };
 
   try {
-    const client = new SDK(sdkClientOptions(rootOptions, command, clientOptions)) as Record<string, unknown>;
+    const client = buildClient(
+      SDK,
+      await sdkClientOptions(rootOptions, command, clientOptions, definition, auth),
+      clientOptions,
+    );
     const method = sdkMethod(client, definition);
     const call = await callArguments(definition, command.opts<Record<string, unknown>>(), positionalValues);
 
@@ -407,26 +515,37 @@ const runGeneratedCommand = async (
   }
 };
 
-const sdkClientOptions = (
+const sdkClientOptions = async (
   options: GlobalOptions,
   command: Command,
   clientOptions: readonly CliClientOptionDefinition[],
-): Record<string, unknown> => {
+  definition: CliCommandDefinition,
+  auth: CliAuthDefinition | undefined,
+): Promise<Record<string, unknown>> => {
   // Forward configured client-option flags (auth keys, org headers, etc.) to the embedded SDK
   // using the SDK-facing camelCased key. Only forward values that were explicitly set so the
   // SDK's own env-var fallback keeps working when no CLI flag was passed.
-  const raw = options as unknown as Record<string, unknown>;
+  const rootOptions = options as unknown as Record<string, unknown>;
+  const commandOptions = command.opts<Record<string, unknown>>();
   const forwarded: Record<string, unknown> = {};
   for (const option of clientOptions) {
-    const value = raw[option.optionKey];
+    const commandValue = commandOptions[option.optionKey];
+    const value = commandValue === undefined ? rootOptions[option.optionKey] : commandValue;
     if (value === undefined) continue;
     // A credential is exactly the kind of value that belongs in a file rather than in shell
     // history, so a client option reads `@path` like any other flag. It never reaches the
     // structured decoding below it: an SDK client option is always a scalar.
     forwarded[option.sdkKey] = typeof value === 'string' ? clientOptionValue(value, option) : value;
   }
+  await applyStoredCredentials(
+    forwarded,
+    clientOptions,
+    definition.authClientKeyRequirements,
+    auth,
+    options.baseUrl,
+  );
   return {
-    ...(options.baseUrl ? { baseURL: options.baseUrl } : {}),
+    ...(options.baseUrl?.trim() ? { baseURL: options.baseUrl.trim() } : {}),
     ...(options.timeout ? { timeout: Number(options.timeout) } : {}),
     ...(options.maxRetries ? { maxRetries: Number(options.maxRetries) } : {}),
     ...(options.debug ? { logLevel: 'debug' } : {}),
@@ -437,6 +556,45 @@ const sdkClientOptions = (
       'X-Scalar-CLI-Command': command.name(),
     },
   };
+};
+
+const applyStoredCredentials = async (
+  forwarded: Record<string, unknown>,
+  clientOptions: readonly CliClientOptionDefinition[],
+  authClientKeyRequirements: readonly (readonly string[])[],
+  auth: CliAuthDefinition | undefined,
+  baseUrl: string | undefined,
+): Promise<void> => {
+  if (!auth) return;
+  if (authClientKeyRequirements.length === 0) return;
+  const hasExplicitValue = (option: CliClientOptionDefinition): boolean =>
+    forwarded[option.sdkKey] !== undefined || Boolean(option.env && (process.env[option.env] ?? '').trim());
+  const explicit = authClientKeyRequirements.find((keys) =>
+    keys.every((key) => {
+      const option = clientOptions.find((candidate) => candidate.clientKey === key);
+      return option !== undefined && hasExplicitValue(option);
+    }),
+  );
+  if (explicit) return;
+  const stored = await storedCredentials(auth, resolvedBaseUrl(auth, baseUrl));
+  const isSatisfiable = (keys: readonly string[]): boolean =>
+    keys.every((key) => {
+      const option = clientOptions.find((candidate) => candidate.clientKey === key);
+      if (!option) return false;
+      return hasExplicitValue(option) || (typeof stored[key] === 'string' && stored[key] !== '');
+    });
+  const selected =
+    authClientKeyRequirements.find((keys) => isSatisfiable(keys)) ?? authClientKeyRequirements[0] ?? [];
+  const pending = clientOptions.filter(
+    (option) => option.auth && selected.includes(option.clientKey) && !hasExplicitValue(option),
+  );
+  for (const option of pending) {
+    // Own-property lookup only: the store is a JSON file, so a key like "constructor"
+    // would otherwise resolve to something off Object.prototype rather than a credential.
+    if (!Object.prototype.hasOwnProperty.call(stored, option.clientKey)) continue;
+    const value = stored[option.clientKey];
+    if (typeof value === 'string' && value) forwarded[option.sdkKey] = value;
+  }
 };
 
 const sdkMethod = (
@@ -493,7 +651,18 @@ const callArguments = async (
   const stdin = await readStdinValue();
   const params = mergeObjects(stdin, { ...flagParams, ...positionalParams });
   const positionalArgs = definition.positional.map((param) => params[param.paramKey]);
-  const sdkParams = definition.transport === 'websocket' ? omitParams(params, ['send']) : params;
+  // A positional path param is handed to the SDK method as a leading argument, and the method
+  // never destructures it back out of `params` — only the path params it did *not* take
+  // positionally are pulled out there. Leaving it in `params` makes it fall through the
+  // method's `...query` / `...body` rest and reach the wire a second time, as
+  // `/version/1.0.0?semver=1.0.0` or as a `namespace` field in a body that has no such field.
+  //
+  // Dropping it cannot remove a field the call needs: a positional whose name collides with a
+  // params field is already disambiguated when the command table is built (a body `slug` beside
+  // a path one leaves the positional as `slug2`), so the two never share a key.
+  const omitted = definition.positional.map((param) => param.paramKey);
+  if (definition.transport === 'websocket') omitted.push('send');
+  const sdkParams = omitParams(params, omitted);
 
   if (definition.callShape === 'options') return { args: [...positionalArgs, undefined], params };
   if (definition.callShape === 'body')
@@ -1146,9 +1315,9 @@ const authHint = (clientOptions: readonly CliClientOptionDefinition[]): string |
     .map((option) => option.env)
     .filter((value): value is string => !!value)
     .join(', ');
-  return env
-    ? 'Authentication failed. Set ' + env + ' and try again.'
-    : 'Authentication failed. Set the required authentication environment variable and try again.';
+  return (
+    'Authentication failed. Run `' + LOGIN_COMMAND + '`' + (env ? ', or set ' + env : '') + ', and try again.'
+  );
 };
 
 // Keep transforms small and dependency-free; the CLI supports the common dot-path extraction case.

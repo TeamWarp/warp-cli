@@ -32,6 +32,8 @@
   ],
   "man": [
     "./man/warp.1",
+    "./man/warp-login.1",
+    "./man/warp-logout.1",
     "./man/warp-benefits-health-plans-list.1",
     "./man/warp-benefits-health-plans-get.1",
     "./man/warp-benefits-retirement-plans-list.1",
