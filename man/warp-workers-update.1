@@ -1,0 +1,139 @@
+.\" File generated from our OpenAPI spec by Scalar. Do not edit.
+.TH "WARP\-WORKERS\-UPDATE" "1" "" "warp" "warp Manual"
+.SH "NAME"
+warp\-workers\-update \- Update Worker
+.SH "SYNOPSIS"
+.B warp workers update
+\fIid\fR [\fIoptions\fR]
+.SH "DESCRIPTION"
+Update a worker and return the updated worker object. Omitted fields remain unchanged. Requires workers:profile write, plus read access to any referenced department, level, or workplace. See individual fields for update restrictions.
+.SH "ARGUMENTS"
+.TP
+\fIid\fR, \fB\-\-id\fR \fI<value>\fR
+The id of the worker. Required. Can also be supplied as \-\-id.
+.SH "OPTIONS"
+.TP
+\fB\-\-first\-name\fR \fI<value>\fR
+The first\-name body parameter.
+.TP
+\fB\-\-last\-name\fR \fI<value>\fR
+The last\-name body parameter.
+.TP
+\fB\-\-preferred\-name\fR \fI<value>\fR
+The preferred\-name body parameter.
+.TP
+\fB\-\-email\fR \fI<value>\fR
+An email with a reasonably valid regex (based on RFC 5321 atext characters).
+.TP
+\fB\-\-work\-email\fR \fI<value>\fR
+An email with a reasonably valid regex (based on RFC 5321 atext characters).
+.TP
+\fB\-\-phone\fR \fI<value>\fR
+The phone body parameter.
+.TP
+\fB\-\-time\-zone\fR \fI<value>\fR
+The time\-zone body parameter.
+.TP
+\fB\-\-date\-of\-birth\fR \fI<value>\fR
+The date\-of\-birth body parameter.
+.TP
+\fB\-\-marital\-status\fR \fI<value>\fR
+The marital\-status body parameter.
+.TP
+\fB\-\-biological\-sex\fR \fI<value>\fR
+The biological\-sex body parameter.
+.TP
+\fB\-\-address\fR \fI<json>\fR
+The address body parameter.
+.TP
+\fB\-\-position\fR \fI<value>\fR
+The position body parameter.
+.TP
+\fB\-\-department\-id\fR \fI<value>\fR
+The unique public id of the department.
+.TP
+\fB\-\-manager\-id\fR \fI<value>\fR
+The id of the worker.
+.TP
+\fB\-\-level\-id\fR \fI<value>\fR
+The unique public id of the job level.
+.TP
+\fB\-\-start\-date\fR \fI<value>\fR
+The start\-date body parameter.
+.TP
+\fB\-\-workplace\-id\fR \fI<value>\fR
+Public workplace identifier.
+.TP
+\fB\-\-state\-registration\fR \fI<value>\fR
+The state\-registration body parameter.
+.TP
+\fB\-\-base\-url\fR \fI<url>\fR
+Override the base URL for API requests.
+.TP
+\fB\-\-timeout\fR \fI<ms>\fR
+Request timeout in milliseconds.
+.TP
+\fB\-\-max\-retries\fR \fI<count>\fR
+Number of retries for retryable failures.
+.TP
+\fB\-\-format\fR \fI<format>\fR
+Output format: auto, json, jsonl, pretty, raw, toon, yaml.
+.TP
+\fB\-\-format\-error\fR \fI<format>\fR
+Error output format: auto, json, jsonl, pretty, raw, toon, yaml.
+.TP
+\fB\-\-transform\fR \fI<path>\fR
+Dot\-path transform for data output.
+.TP
+\fB\-\-transform\-error\fR \fI<path>\fR
+Dot\-path transform for error output.
+.TP
+\fB\-r\fR, \fB\-\-raw\-output\fR
+Print transformed string values without JSON quotes.
+.TP
+\fB\-\-debug\fR
+Enable SDK debug logging on standard error.
+.TP
+\fB\-\-api\-key\fR \fI<value>\fR
+API credential. Can also be set with the WARP_API_KEY environment variable.
+.SH "EXAMPLES"
+.PP
+.RS 4
+.nf
+warp workers update 'wrk_1234' \-\-api\-key "$WARP_API_KEY"
+.fi
+.RE
+.SH "ENVIRONMENT"
+.TP
+\fBWARP_API_KEY\fR
+Fallback for \-\-api\-key when the flag is not passed.
+.SH "EXIT STATUS"
+.TP
+\fB0\fR
+The command completed successfully.
+.TP
+\fB1\fR
+The request failed for an unclassified reason. Reported as error.
+.TP
+\fB2\fR
+The command was invoked incorrectly (missing or invalid arguments).
+.TP
+\fB10\fR
+Authentication or authorization failed (HTTP 401 or 403). Reported as auth\-failed.
+.TP
+\fB11\fR
+The requested resource does not exist (HTTP 404). Reported as not\-found.
+.TP
+\fB12\fR
+The request was rate limited (HTTP 429). Reported as rate\-limited.
+.TP
+\fB13\fR
+The request was rejected (any other HTTP 4xx). Reported as client\-error.
+.TP
+\fB14\fR
+The API failed to handle the request (HTTP 5xx). Reported as server\-error.
+.TP
+\fB15\fR
+The API could not be reached, or the request timed out. Reported as connection\-error.
+.SH "SEE ALSO"
+.BR warp (1)

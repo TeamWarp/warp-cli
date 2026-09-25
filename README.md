@@ -39,10 +39,12 @@ brew install TeamWarp/tap/warp
 ```sh
 warp [resource] [command] [flags]
 
-warp benefits:health-plans list \
+warp benefits create-deduction \
   --api-key "$WARP_API_KEY" \
-  --limit 'limit' \
-  --statuses '["active"]'
+  --worker-id 'wrk_1234' \
+  --type 'medical' \
+  --calculation '{"type":"fixed_amount","frequency":"monthly","employeeContribution":{"amount":0,"currency":"USD"},"employerContribution":{"amount":0,"currency":"USD"}}' \
+  --effective-start-date ''
 ```
 
 Every command accepts the global flags below, so the examples that follow show only what is specific to them.

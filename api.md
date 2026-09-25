@@ -5,6 +5,10 @@ Complete reference of every operation, grouped by resource. See [the README](./R
 ## Contents
 
 - [`Benefits`](#benefits)
+  - [Create Benefit Deduction](#create-benefit-deduction)
+  - [Update Benefit Deduction](#update-benefit-deduction)
+  - [Create Retirement Plan](#create-retirement-plan)
+  - [Update Retirement Plan](#update-retirement-plan)
   - [`Benefits HealthPlans`](#benefits-healthplans)
     - [List Health Plans](#list-health-plans)
     - [Get Health Plan](#get-health-plan)
@@ -62,6 +66,7 @@ Complete reference of every operation, grouped by resource. See [the README](./R
   - [Create Contractor](#create-contractor)
   - [Invite Worker](#invite-worker)
   - [Reveal Worker SSNs](#reveal-worker-ssns)
+  - [Update Worker](#update-worker)
 - [`Workplaces`](#workplaces)
   - [List Workplaces](#list-workplaces)
   - [Create Workplace](#create-workplace)
@@ -71,6 +76,49 @@ Complete reference of every operation, grouped by resource. See [the README](./R
   - [Get I-9 verification](#get-i-9-verification)
 
 ## `Benefits`
+
+Health plan reads and retirement plan and payroll benefit deduction management.
+
+### Create Benefit Deduction
+
+Create a benefit deduction for a worker.
+
+```sh
+warp benefits create-deduction \
+  --api-key "$WARP_API_KEY" \
+  --worker-id 'wrk_1234' \
+  --type 'medical' \
+  --calculation '{"type":"fixed_amount","frequency":"monthly","employeeContribution":{"amount":0,"currency":"USD"},"employerContribution":{"amount":0,"currency":"USD"}}' \
+  --effective-start-date ''
+```
+
+### Update Benefit Deduction
+
+Update a benefit deduction. The calculation type cannot change.
+
+```sh
+warp benefits update-deduction 'pbdg_1234' --api-key "$WARP_API_KEY"
+```
+
+### Create Retirement Plan
+
+Create a retirement plan for a company on the manual retirement channel.
+
+```sh
+warp benefits create-retirement-plan \
+  --api-key "$WARP_API_KEY" \
+  --type '401k' \
+  --name 'x' \
+  --effective-start-date ''
+```
+
+### Update Retirement Plan
+
+Update a retirement plan for a company on the manual retirement channel.
+
+```sh
+warp benefits update-retirement-plan 'crpl_1234' --api-key "$WARP_API_KEY"
+```
 
 ### `Benefits HealthPlans`
 
@@ -529,6 +577,14 @@ warp workers reveal-ssn \
   --api-key "$WARP_API_KEY" \
   --worker-id 'wrk_khac8380c2Lm' \
   --worker-id 'wrk_q7Vm2pR9xK4c'
+```
+
+### Update Worker
+
+Update a worker and return the updated worker object. Omitted fields remain unchanged. Requires workers:profile write, plus read access to any referenced department, level, or workplace. See individual fields for update restrictions.
+
+```sh
+warp workers update 'wrk_1234' --api-key "$WARP_API_KEY"
 ```
 
 ## `Workplaces`

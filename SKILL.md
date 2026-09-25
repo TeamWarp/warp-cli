@@ -25,10 +25,12 @@ Provide credentials using the options below. Environment variables are read auto
 ```sh
 warp [resource] [command] [flags]
 
-warp benefits:health-plans list \
+warp benefits create-deduction \
   --api-key "$WARP_API_KEY" \
-  --limit 'limit' \
-  --statuses '["active"]'
+  --worker-id 'wrk_1234' \
+  --type 'medical' \
+  --calculation '{"type":"fixed_amount","frequency":"monthly","employeeContribution":{"amount":0,"currency":"USD"},"employerContribution":{"amount":0,"currency":"USD"}}' \
+  --effective-start-date ''
 ```
 
 Method names, parameter shapes, and response types are generated from the API description — do not guess them. Look up the exact call signature in [api.md](./api.md) before writing a call.
