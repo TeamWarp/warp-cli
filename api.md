@@ -74,7 +74,7 @@ Complete reference of every operation, grouped by resource. See [the README](./R
 
 ### `Benefits HealthPlans`
 
-Read-only health plans, retirement plans, and payroll benefit deductions.
+Health plan reads and retirement plan and payroll benefit deduction management.
 
 #### List Health Plans
 
@@ -97,7 +97,7 @@ warp benefits:health-plans get 'chpl_1234' --api-key "$WARP_API_KEY"
 
 ### `Benefits RetirementPlans`
 
-Read-only health plans, retirement plans, and payroll benefit deductions.
+Health plan reads and retirement plan and payroll benefit deduction management.
 
 #### List Retirement Plans
 
@@ -120,7 +120,7 @@ warp benefits:retirement-plans get 'crpl_1234' --api-key "$WARP_API_KEY"
 
 ### `Benefits Deductions`
 
-Read-only health plans, retirement plans, and payroll benefit deductions.
+Health plan reads and retirement plan and payroll benefit deduction management.
 
 #### List Benefit Deductions
 

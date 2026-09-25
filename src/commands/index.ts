@@ -2796,15 +2796,15 @@ const commands = [
 const groups = [
   {
     commandPath: ['benefits', 'health-plans'],
-    description: 'Read-only health plans, retirement plans, and payroll benefit deductions.',
+    description: 'Health plan reads and retirement plan and payroll benefit deduction management.',
   },
   {
     commandPath: ['benefits', 'retirement-plans'],
-    description: 'Read-only health plans, retirement plans, and payroll benefit deductions.',
+    description: 'Health plan reads and retirement plan and payroll benefit deduction management.',
   },
   {
     commandPath: ['benefits', 'deductions'],
-    description: 'Read-only health plans, retirement plans, and payroll benefit deductions.',
+    description: 'Health plan reads and retirement plan and payroll benefit deduction management.',
   },
   {
     commandPath: ['custom-fields'],
