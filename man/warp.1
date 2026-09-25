@@ -40,6 +40,18 @@ Enable SDK debug logging on standard error.
 API credential. Can also be set with the WARP_API_KEY environment variable.
 .SH "COMMANDS"
 .TP
+\fBwarp benefits create\-deduction\fR
+Create Benefit Deduction. See warp\-benefits\-create\-deduction(1).
+.TP
+\fBwarp benefits update\-deduction\fR
+Update Benefit Deduction. See warp\-benefits\-update\-deduction(1).
+.TP
+\fBwarp benefits create\-retirement\-plan\fR
+Create Retirement Plan. See warp\-benefits\-create\-retirement\-plan(1).
+.TP
+\fBwarp benefits update\-retirement\-plan\fR
+Update Retirement Plan. See warp\-benefits\-update\-retirement\-plan(1).
+.TP
 \fBwarp benefits:health\-plans list\fR
 List Health Plans. See warp\-benefits\-health\-plans\-list(1).
 .TP
@@ -172,6 +184,12 @@ Create Contractor. See warp\-workers\-create\-contractor(1).
 \fBwarp workers invite\fR
 Invite Worker. See warp\-workers\-invite(1).
 .TP
+\fBwarp workers reveal\-ssn\fR
+Reveal Worker SSNs. See warp\-workers\-reveal\-ssn(1).
+.TP
+\fBwarp workers update\fR
+Update Worker. See warp\-workers\-update(1).
+.TP
 \fBwarp workplaces list\fR
 List Workplaces. See warp\-workplaces\-list(1).
 .TP
@@ -181,8 +199,31 @@ Create Workplace. See warp\-workplaces\-create(1).
 \fBwarp workplaces update\fR
 Update Workplace. See warp\-workplaces\-update(1).
 .TP
+\fBwarp i9\-verifications list\fR
+List I\-9 verifications. See warp\-i9\-verifications\-list(1).
+.TP
+\fBwarp i9\-verifications retrieve\fR
+Get I\-9 verification. See warp\-i9\-verifications\-retrieve(1).
+.TP
 \fBwarp completion\fR
 Print a shell completion script. See warp\-completion(1).
+.TP
+\fBwarp login\fR
+Sign in and save credentials for later commands. See warp\-login(1).
+.TP
+\fBwarp logout\fR
+Forget saved credentials. See warp\-logout(1).
+.SH "FILE ARGUMENTS"
+Any command flag or credential reads its value from a file when the value begins with @. A flag shown with a <path> value uploads a file and takes its path with or without the @. The global options above are read exactly as written.
+.PP
+.RS 4
+.nf
+warp COMMAND \-\-FLAG @./body.json    # contents of the file
+warp COMMAND \-\-FLAG @file://./n.txt # always sent as text
+warp COMMAND \-\-FLAG @data://./l.png # always base64\-encoded
+warp COMMAND \-\-FLAG '\e@literal'    # a value that begins with @
+.fi
+.RE
 .SH "SHELL COMPLETION"
 warp completion <shell> prints a completion script for bash, zsh, and fish. Load it from your shell startup file:
 .PP

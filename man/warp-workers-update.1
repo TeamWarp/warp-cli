@@ -1,31 +1,71 @@
 .\" File generated from our OpenAPI spec by Scalar. Do not edit.
-.TH "WARP\-WORKERS\-LIST" "1" "" "warp" "warp Manual"
+.TH "WARP\-WORKERS\-UPDATE" "1" "" "warp" "warp Manual"
 .SH "NAME"
-warp\-workers\-list \- List Workers
+warp\-workers\-update \- Update Worker
 .SH "SYNOPSIS"
-.B warp workers list
-\fB\-\-limit\fR \fI<value>\fR [\fIoptions\fR]
+.B warp workers update
+\fIid\fR [\fIoptions\fR]
 .SH "DESCRIPTION"
-List all workers. Workers include anyone employed by the company, whether US or international, full\-time employees or contractors.
+Update a worker and return the updated worker object. Omitted fields remain unchanged. Requires workers:profile write, plus read access to any referenced department, level, or workplace. See individual fields for update restrictions.
+.SH "ARGUMENTS"
+.TP
+\fIid\fR, \fB\-\-id\fR \fI<value>\fR
+The id of the worker. Required. Can also be supplied as \-\-id.
 .SH "OPTIONS"
 .TP
-\fB\-\-limit\fR \fI<value>\fR
-The limit query parameter. Required.
+\fB\-\-first\-name\fR \fI<value>\fR
+The first\-name body parameter.
 .TP
-\fB\-\-after\-id\fR \fI<value>\fR
-The id of the worker.
+\fB\-\-last\-name\fR \fI<value>\fR
+The last\-name body parameter.
 .TP
-\fB\-\-before\-id\fR \fI<value>\fR
-The id of the worker.
+\fB\-\-preferred\-name\fR \fI<value>\fR
+The preferred\-name body parameter.
 .TP
-\fB\-\-statuses\fR \fI<json>\fR
-The statuses query parameter.
-.TP
-\fB\-\-types\fR \fI<json>\fR
-The types query parameter.
+\fB\-\-email\fR \fI<value>\fR
+An email with a reasonably valid regex (based on RFC 5321 atext characters).
 .TP
 \fB\-\-work\-email\fR \fI<value>\fR
-The work\-email query parameter.
+An email with a reasonably valid regex (based on RFC 5321 atext characters).
+.TP
+\fB\-\-phone\fR \fI<value>\fR
+The phone body parameter.
+.TP
+\fB\-\-time\-zone\fR \fI<value>\fR
+The time\-zone body parameter.
+.TP
+\fB\-\-date\-of\-birth\fR \fI<value>\fR
+The date\-of\-birth body parameter.
+.TP
+\fB\-\-marital\-status\fR \fI<value>\fR
+The marital\-status body parameter.
+.TP
+\fB\-\-biological\-sex\fR \fI<value>\fR
+The biological\-sex body parameter.
+.TP
+\fB\-\-address\fR \fI<json>\fR
+The address body parameter.
+.TP
+\fB\-\-position\fR \fI<value>\fR
+The position body parameter.
+.TP
+\fB\-\-department\-id\fR \fI<value>\fR
+The unique public id of the department.
+.TP
+\fB\-\-manager\-id\fR \fI<value>\fR
+The id of the worker.
+.TP
+\fB\-\-level\-id\fR \fI<value>\fR
+The unique public id of the job level.
+.TP
+\fB\-\-start\-date\fR \fI<value>\fR
+The start\-date body parameter.
+.TP
+\fB\-\-workplace\-id\fR \fI<value>\fR
+Public workplace identifier.
+.TP
+\fB\-\-state\-registration\fR \fI<value>\fR
+The state\-registration body parameter.
 .TP
 \fB\-\-base\-url\fR \fI<url>\fR
 Override the base URL for API requests.
@@ -60,7 +100,7 @@ API credential. Can also be set with the WARP_API_KEY environment variable.
 .PP
 .RS 4
 .nf
-warp workers list \-\-api\-key "$WARP_API_KEY" \-\-limit 'limit'
+warp workers update 'wrk_1234' \-\-api\-key "$WARP_API_KEY"
 .fi
 .RE
 .SH "ENVIRONMENT"

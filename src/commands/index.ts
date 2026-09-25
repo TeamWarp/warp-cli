@@ -2,8 +2,14 @@
 
 import type { Command } from 'commander';
 import SDK from '../sdk/index';
-import { createProgram, type CliClientOptionDefinition, type CliCommandDefinition } from '../cli/runtime';
+import {
+  createProgram,
+  type CliClientOptionDefinition,
+  type CliCommandDefinition,
+  type CliCommandGroup,
+} from '../cli/runtime';
 import { completions } from '../cli/completions';
+import type { CliAuthDefinition } from '../cli/login';
 
 const clientOptions = [
   {
@@ -18,6 +24,239 @@ const clientOptions = [
 
 const commands = [
   {
+    resourcePath: ['benefits'],
+    commandPath: ['benefits', 'create-deduction'],
+    methodName: 'createDeduction',
+    summary: 'Create Benefit Deduction',
+    description: 'Create a benefit deduction for a worker.',
+    transport: 'http',
+    iterable: false,
+    callShape: 'body',
+    authClientKeyRequirements: [['apiKey']],
+    positional: [],
+    flags: [
+      {
+        name: 'worker-id',
+        optionKey: 'workerId',
+        paramKey: 'workerId',
+        location: 'body',
+        required: true,
+        description: 'The id of the worker.',
+        valueKind: 'string',
+      },
+      {
+        name: 'type',
+        optionKey: 'type',
+        paramKey: 'type',
+        location: 'body',
+        required: true,
+        description: 'The payroll deduction type to create.',
+        valueKind: 'string',
+      },
+      {
+        name: 'plan',
+        optionKey: 'plan',
+        paramKey: 'plan',
+        location: 'body',
+        required: false,
+        description: 'A matching company plan, or null for a planless deduction.',
+        valueKind: 'unknown',
+      },
+      {
+        name: 'name',
+        optionKey: 'name',
+        paramKey: 'name',
+        location: 'body',
+        required: false,
+        valueKind: 'string',
+      },
+      {
+        name: 'calculation',
+        optionKey: 'calculation',
+        paramKey: 'calculation',
+        location: 'body',
+        required: true,
+        description: 'Both contributions must be supplied.',
+        valueKind: 'unknown',
+      },
+      {
+        name: 'recurrence',
+        optionKey: 'recurrence',
+        paramKey: 'recurrence',
+        location: 'body',
+        required: false,
+        valueKind: 'string',
+      },
+      {
+        name: 'effective-start-date',
+        optionKey: 'effectiveStartDate',
+        paramKey: 'effectiveStartDate',
+        location: 'body',
+        required: true,
+        valueKind: 'string',
+      },
+      {
+        name: 'effective-end-date',
+        optionKey: 'effectiveEndDate',
+        paramKey: 'effectiveEndDate',
+        location: 'body',
+        required: false,
+        valueKind: 'string',
+      },
+    ],
+  },
+  {
+    resourcePath: ['benefits'],
+    commandPath: ['benefits', 'update-deduction'],
+    methodName: 'updateDeduction',
+    summary: 'Update Benefit Deduction',
+    description: 'Update a benefit deduction. The calculation type cannot change.',
+    transport: 'http',
+    iterable: false,
+    callShape: 'body',
+    authClientKeyRequirements: [['apiKey']],
+    positional: [
+      {
+        name: 'id',
+        optionKey: 'id',
+        paramKey: 'id',
+        location: 'path',
+        required: true,
+        description: 'The version-group tag of a payroll benefit deduction. Stable across edits.',
+        valueKind: 'string',
+      },
+    ],
+    flags: [
+      {
+        name: 'name',
+        optionKey: 'name',
+        paramKey: 'name',
+        location: 'body',
+        required: false,
+        valueKind: 'string',
+      },
+      {
+        name: 'calculation',
+        optionKey: 'calculation',
+        paramKey: 'calculation',
+        location: 'body',
+        required: false,
+        description: 'Both contributions must be supplied.',
+        valueKind: 'unknown',
+      },
+      {
+        name: 'recurrence',
+        optionKey: 'recurrence',
+        paramKey: 'recurrence',
+        location: 'body',
+        required: false,
+        valueKind: 'string',
+      },
+      {
+        name: 'status',
+        optionKey: 'status',
+        paramKey: 'status',
+        location: 'body',
+        required: false,
+        valueKind: 'string',
+      },
+      {
+        name: 'effective-end-date',
+        optionKey: 'effectiveEndDate',
+        paramKey: 'effectiveEndDate',
+        location: 'body',
+        required: false,
+        valueKind: 'string',
+      },
+    ],
+  },
+  {
+    resourcePath: ['benefits'],
+    commandPath: ['benefits', 'create-retirement-plan'],
+    methodName: 'createRetirementPlan',
+    summary: 'Create Retirement Plan',
+    description: 'Create a retirement plan for a company on the manual retirement channel.',
+    transport: 'http',
+    iterable: false,
+    callShape: 'body',
+    authClientKeyRequirements: [['apiKey']],
+    positional: [],
+    flags: [
+      {
+        name: 'type',
+        optionKey: 'type',
+        paramKey: 'type',
+        location: 'body',
+        required: true,
+        valueKind: 'string',
+      },
+      {
+        name: 'name',
+        optionKey: 'name',
+        paramKey: 'name',
+        location: 'body',
+        required: true,
+        valueKind: 'string',
+      },
+      {
+        name: 'effective-start-date',
+        optionKey: 'effectiveStartDate',
+        paramKey: 'effectiveStartDate',
+        location: 'body',
+        required: true,
+        valueKind: 'string',
+      },
+    ],
+  },
+  {
+    resourcePath: ['benefits'],
+    commandPath: ['benefits', 'update-retirement-plan'],
+    methodName: 'updateRetirementPlan',
+    summary: 'Update Retirement Plan',
+    description: 'Update a retirement plan for a company on the manual retirement channel.',
+    transport: 'http',
+    iterable: false,
+    callShape: 'body',
+    authClientKeyRequirements: [['apiKey']],
+    positional: [
+      {
+        name: 'id',
+        optionKey: 'id',
+        paramKey: 'id',
+        location: 'path',
+        required: true,
+        description: 'The tag of a company retirement plan.',
+        valueKind: 'string',
+      },
+    ],
+    flags: [
+      {
+        name: 'name',
+        optionKey: 'name',
+        paramKey: 'name',
+        location: 'body',
+        required: false,
+        valueKind: 'string',
+      },
+      {
+        name: 'effective-start-date',
+        optionKey: 'effectiveStartDate',
+        paramKey: 'effectiveStartDate',
+        location: 'body',
+        required: false,
+        valueKind: 'string',
+      },
+      {
+        name: 'effective-end-date',
+        optionKey: 'effectiveEndDate',
+        paramKey: 'effectiveEndDate',
+        location: 'body',
+        required: false,
+        valueKind: 'string',
+      },
+    ],
+  },
+  {
     resourcePath: ['benefits', 'healthPlans'],
     commandPath: ['benefits:health-plans', 'list'],
     methodName: 'list',
@@ -27,6 +266,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'params',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -43,6 +283,7 @@ const commands = [
         paramKey: 'afterId',
         location: 'query',
         required: false,
+        description: 'The tag of a company health plan.',
         valueKind: 'string',
       },
       {
@@ -51,6 +292,7 @@ const commands = [
         paramKey: 'beforeId',
         location: 'query',
         required: false,
+        description: 'The tag of a company health plan.',
         valueKind: 'string',
       },
       {
@@ -88,6 +330,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'options',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -111,6 +354,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'params',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -127,6 +371,7 @@ const commands = [
         paramKey: 'afterId',
         location: 'query',
         required: false,
+        description: 'The tag of a company retirement plan.',
         valueKind: 'string',
       },
       {
@@ -135,6 +380,7 @@ const commands = [
         paramKey: 'beforeId',
         location: 'query',
         required: false,
+        description: 'The tag of a company retirement plan.',
         valueKind: 'string',
       },
       {
@@ -164,6 +410,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'options',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -187,6 +434,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'params',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -203,6 +451,7 @@ const commands = [
         paramKey: 'afterId',
         location: 'query',
         required: false,
+        description: 'The version-group tag of a payroll benefit deduction. Stable across edits.',
         valueKind: 'string',
       },
       {
@@ -211,6 +460,7 @@ const commands = [
         paramKey: 'beforeId',
         location: 'query',
         required: false,
+        description: 'The version-group tag of a payroll benefit deduction. Stable across edits.',
         valueKind: 'string',
       },
       {
@@ -272,6 +522,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'options',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -295,6 +546,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'options',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [],
   },
@@ -308,6 +560,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'body',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -394,6 +647,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'options',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -417,6 +671,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'body',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -497,6 +752,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'options',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -520,6 +776,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'body',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -568,6 +825,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'body',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -608,6 +866,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'options',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -631,6 +890,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'options',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -654,6 +914,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'params',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -684,6 +945,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'body',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -724,6 +986,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'params',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -755,6 +1018,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'params',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -771,6 +1035,7 @@ const commands = [
         paramKey: 'afterId',
         location: 'query',
         required: false,
+        description: 'The unique public id of the department',
         valueKind: 'string',
       },
       {
@@ -779,6 +1044,7 @@ const commands = [
         paramKey: 'beforeId',
         location: 'query',
         required: false,
+        description: 'The unique public id of the department',
         valueKind: 'string',
       },
     ],
@@ -792,6 +1058,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'body',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -813,6 +1080,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'body',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -844,6 +1112,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'options',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [],
   },
@@ -856,6 +1125,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'params',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -872,6 +1142,7 @@ const commands = [
         paramKey: 'afterId',
         location: 'query',
         required: false,
+        description: 'The tag of the offer.',
         valueKind: 'string',
       },
       {
@@ -880,6 +1151,7 @@ const commands = [
         paramKey: 'beforeId',
         location: 'query',
         required: false,
+        description: 'The tag of the offer.',
         valueKind: 'string',
       },
       {
@@ -904,6 +1176,7 @@ const commands = [
         paramKey: 'candidateEmail',
         location: 'query',
         required: false,
+        description: 'An email with a reasonably valid regex (based on RFC 5321 atext characters)',
         valueKind: 'string',
       },
     ],
@@ -918,6 +1191,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'body',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -1015,6 +1289,8 @@ const commands = [
         paramKey: 'position',
         location: 'body',
         required: false,
+        description:
+          'Required when workerType is global_contractor. Ignored for employee and us_contractor offers.',
         valueKind: 'string',
         objectPath: ['country'],
       },
@@ -1033,6 +1309,7 @@ const commands = [
         paramKey: 'departmentId',
         location: 'body',
         required: false,
+        description: 'The unique public id of the department',
         valueKind: 'string',
       },
       {
@@ -1041,6 +1318,7 @@ const commands = [
         paramKey: 'workplaceId',
         location: 'body',
         required: false,
+        description: 'Public workplace identifier',
         valueKind: 'string',
       },
       {
@@ -1049,6 +1327,7 @@ const commands = [
         paramKey: 'managerId',
         location: 'body',
         required: false,
+        description: 'The id of the worker.',
         valueKind: 'string',
       },
       {
@@ -1057,6 +1336,7 @@ const commands = [
         paramKey: 'levelId',
         location: 'body',
         required: false,
+        description: 'The unique public id of the job level',
         valueKind: 'string',
       },
       {
@@ -1219,6 +1499,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'body',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -1258,6 +1539,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'body',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -1289,6 +1571,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'options',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -1312,6 +1595,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'params',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -1328,6 +1612,7 @@ const commands = [
         paramKey: 'afterId',
         location: 'query',
         required: false,
+        description: 'The tag of the pay rate.',
         valueKind: 'string',
       },
       {
@@ -1336,6 +1621,7 @@ const commands = [
         paramKey: 'beforeId',
         location: 'query',
         required: false,
+        description: 'The tag of the pay rate.',
         valueKind: 'string',
       },
       {
@@ -1386,6 +1672,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'options',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -1409,6 +1696,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'params',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -1524,6 +1812,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'options',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -1547,6 +1836,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'params',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -1681,6 +1971,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'options',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -1704,6 +1995,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'params',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -1720,6 +2012,7 @@ const commands = [
         paramKey: 'afterId',
         location: 'query',
         required: false,
+        description: 'The external-facing id of the worker assignment.',
         valueKind: 'string',
       },
       {
@@ -1728,6 +2021,7 @@ const commands = [
         paramKey: 'beforeId',
         location: 'query',
         required: false,
+        description: 'The external-facing id of the worker assignment.',
         valueKind: 'string',
       },
       {
@@ -1757,6 +2051,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'params',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -1773,6 +2068,7 @@ const commands = [
         paramKey: 'afterId',
         location: 'query',
         required: false,
+        description: 'The external-facing id of the worker assignment.',
         valueKind: 'string',
       },
       {
@@ -1781,6 +2077,7 @@ const commands = [
         paramKey: 'beforeId',
         location: 'query',
         required: false,
+        description: 'The external-facing id of the worker assignment.',
         valueKind: 'string',
       },
       {
@@ -1826,6 +2123,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'params',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -1919,6 +2217,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'params',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -1956,6 +2255,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'options',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -1978,6 +2278,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'params',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -1994,6 +2295,7 @@ const commands = [
         paramKey: 'afterId',
         location: 'query',
         required: false,
+        description: 'The id of the worker.',
         valueKind: 'string',
       },
       {
@@ -2002,6 +2304,7 @@ const commands = [
         paramKey: 'beforeId',
         location: 'query',
         required: false,
+        description: 'The id of the worker.',
         valueKind: 'string',
       },
       {
@@ -2039,6 +2342,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'options',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -2062,6 +2366,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'options',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -2085,6 +2390,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'body',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -2135,6 +2441,7 @@ const commands = [
         paramKey: 'workEmail',
         location: 'body',
         required: false,
+        description: 'Company-issued email address, if applicable.',
         valueKind: 'string',
       },
       {
@@ -2143,6 +2450,8 @@ const commands = [
         paramKey: 'requireI9',
         location: 'body',
         required: false,
+        description:
+          'Whether the employee is required to complete I-9 work authorization. Set to false if the employee has already been verified off-platform. Defaults to true.',
         valueKind: 'boolean',
       },
       {
@@ -2151,6 +2460,8 @@ const commands = [
         paramKey: 'stateRegistration',
         location: 'body',
         required: false,
+        description:
+          "How state tax registration is handled for this employee's work state. Required when hiring in a state where your company doesn't have an existing registration. Use 'self_managed' if you've already registered in this state, or 'warp_managed' for Warp to handle registration on your behalf.",
         valueKind: 'string',
       },
       {
@@ -2187,6 +2498,7 @@ const commands = [
         paramKey: 'stockOptions',
         location: 'body',
         required: false,
+        description: 'Number of stock options granted to this employee.',
         valueKind: 'unknown',
       },
       {
@@ -2233,6 +2545,7 @@ const commands = [
         paramKey: 'paySchedule',
         location: 'body',
         required: false,
+        description: "The employee's pay schedule. Must be a pay schedule that the company has configured.",
         valueKind: 'string',
       },
     ],
@@ -2247,6 +2560,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'body',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -2289,6 +2603,7 @@ const commands = [
         paramKey: 'businessName',
         location: 'body',
         required: false,
+        description: 'Required when entityType is "business". The legal name of the contractor\'s business.',
         valueKind: 'string',
       },
       {
@@ -2297,6 +2612,7 @@ const commands = [
         paramKey: 'scopeOfWork',
         location: 'body',
         required: false,
+        description: 'A description of the work the contractor will perform.',
         valueKind: 'string',
       },
       {
@@ -2322,6 +2638,7 @@ const commands = [
         paramKey: 'workEmail',
         location: 'body',
         required: false,
+        description: 'Company-issued email address, if applicable.',
         valueKind: 'string',
       },
       {
@@ -2366,6 +2683,7 @@ const commands = [
         paramKey: 'compensation',
         location: 'body',
         required: false,
+        description: "The contractor's pay rate. Omit if you'd like to pay on-demand or via invoicing.",
         valueKind: 'object',
       },
       {
@@ -2402,6 +2720,7 @@ const commands = [
         paramKey: 'paySchedule',
         location: 'body',
         required: false,
+        description: "The contractor's pay schedule. Must be a pay schedule that the company has configured.",
         valueKind: 'string',
       },
     ],
@@ -2416,6 +2735,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'options',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -2430,6 +2750,207 @@ const commands = [
     flags: [],
   },
   {
+    resourcePath: ['workers'],
+    commandPath: ['workers', 'reveal-ssn'],
+    methodName: 'revealSsn',
+    summary: 'Reveal Worker SSNs',
+    description:
+      'Reveal full Social Security numbers for up to 50 workers. Requires the workers:pii read scope. Results preserve request order and use null when a worker has no SSN on file. The request fails if any worker is not found, emits one audit event per worker, and returns Cache-Control: private, no-store.',
+    transport: 'http',
+    iterable: false,
+    callShape: 'body',
+    authClientKeyRequirements: [['apiKey']],
+    positional: [],
+    flags: [
+      {
+        name: 'worker-id',
+        optionKey: 'workerId',
+        paramKey: 'workerIds',
+        location: 'body',
+        required: true,
+        description: 'One to 50 unique worker ids. Results are returned in this order.',
+        valueKind: 'array',
+        repeatable: true,
+        itemKind: 'string',
+      },
+    ],
+  },
+  {
+    resourcePath: ['workers'],
+    commandPath: ['workers', 'update'],
+    methodName: 'update',
+    summary: 'Update Worker',
+    description:
+      'Update a worker and return the updated worker object. Omitted fields remain unchanged. Requires workers:profile write, plus read access to any referenced department, level, or workplace. See individual fields for update restrictions.',
+    transport: 'http',
+    iterable: false,
+    callShape: 'body',
+    authClientKeyRequirements: [['apiKey']],
+    positional: [
+      {
+        name: 'id',
+        optionKey: 'id',
+        paramKey: 'id',
+        location: 'path',
+        required: true,
+        description: 'The id of the worker.',
+        valueKind: 'string',
+      },
+    ],
+    flags: [
+      {
+        name: 'first-name',
+        optionKey: 'firstName',
+        paramKey: 'firstName',
+        location: 'body',
+        required: false,
+        valueKind: 'string',
+      },
+      {
+        name: 'last-name',
+        optionKey: 'lastName',
+        paramKey: 'lastName',
+        location: 'body',
+        required: false,
+        valueKind: 'string',
+      },
+      {
+        name: 'preferred-name',
+        optionKey: 'preferredName',
+        paramKey: 'preferredName',
+        location: 'body',
+        required: false,
+        valueKind: 'string',
+      },
+      {
+        name: 'email',
+        optionKey: 'email',
+        paramKey: 'email',
+        location: 'body',
+        required: false,
+        description: 'An email with a reasonably valid regex (based on RFC 5321 atext characters)',
+        valueKind: 'string',
+      },
+      {
+        name: 'work-email',
+        optionKey: 'workEmail',
+        paramKey: 'workEmail',
+        location: 'body',
+        required: false,
+        description: 'An email with a reasonably valid regex (based on RFC 5321 atext characters)',
+        valueKind: 'string',
+      },
+      {
+        name: 'phone',
+        optionKey: 'phone',
+        paramKey: 'phone',
+        location: 'body',
+        required: false,
+        valueKind: 'string',
+      },
+      {
+        name: 'time-zone',
+        optionKey: 'timeZone',
+        paramKey: 'timeZone',
+        location: 'body',
+        required: false,
+        valueKind: 'string',
+      },
+      {
+        name: 'date-of-birth',
+        optionKey: 'dateOfBirth',
+        paramKey: 'dateOfBirth',
+        location: 'body',
+        required: false,
+        valueKind: 'string',
+      },
+      {
+        name: 'marital-status',
+        optionKey: 'maritalStatus',
+        paramKey: 'maritalStatus',
+        location: 'body',
+        required: false,
+        valueKind: 'string',
+      },
+      {
+        name: 'biological-sex',
+        optionKey: 'biologicalSex',
+        paramKey: 'biologicalSex',
+        location: 'body',
+        required: false,
+        valueKind: 'string',
+      },
+      {
+        name: 'address',
+        optionKey: 'address',
+        paramKey: 'address',
+        location: 'body',
+        required: false,
+        valueKind: 'object',
+      },
+      {
+        name: 'position',
+        optionKey: 'position',
+        paramKey: 'position',
+        location: 'body',
+        required: false,
+        valueKind: 'string',
+      },
+      {
+        name: 'department-id',
+        optionKey: 'departmentId',
+        paramKey: 'departmentId',
+        location: 'body',
+        required: false,
+        description: 'The unique public id of the department',
+        valueKind: 'string',
+      },
+      {
+        name: 'manager-id',
+        optionKey: 'managerId',
+        paramKey: 'managerId',
+        location: 'body',
+        required: false,
+        description: 'The id of the worker.',
+        valueKind: 'string',
+      },
+      {
+        name: 'level-id',
+        optionKey: 'levelId',
+        paramKey: 'levelId',
+        location: 'body',
+        required: false,
+        description: 'The unique public id of the job level',
+        valueKind: 'string',
+      },
+      {
+        name: 'start-date',
+        optionKey: 'startDate',
+        paramKey: 'startDate',
+        location: 'body',
+        required: false,
+        valueKind: 'string',
+      },
+      {
+        name: 'workplace-id',
+        optionKey: 'workplaceId',
+        paramKey: 'workplaceId',
+        location: 'body',
+        required: false,
+        description: 'Public workplace identifier',
+        valueKind: 'string',
+      },
+      {
+        name: 'state-registration',
+        optionKey: 'stateRegistration',
+        paramKey: 'stateRegistration',
+        location: 'body',
+        required: false,
+        valueKind: 'string',
+      },
+    ],
+  },
+  {
     resourcePath: ['workplaces'],
     commandPath: ['workplaces', 'list'],
     methodName: 'list',
@@ -2438,6 +2959,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'params',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -2454,6 +2976,7 @@ const commands = [
         paramKey: 'afterId',
         location: 'query',
         required: false,
+        description: 'Public workplace identifier',
         valueKind: 'string',
       },
       {
@@ -2462,6 +2985,7 @@ const commands = [
         paramKey: 'beforeId',
         location: 'query',
         required: false,
+        description: 'Public workplace identifier',
         valueKind: 'string',
       },
     ],
@@ -2475,6 +2999,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'body',
+    authClientKeyRequirements: [['apiKey']],
     positional: [],
     flags: [
       {
@@ -2567,6 +3092,7 @@ const commands = [
     transport: 'http',
     iterable: false,
     callShape: 'body',
+    authClientKeyRequirements: [['apiKey']],
     positional: [
       {
         name: 'id',
@@ -2589,17 +3115,199 @@ const commands = [
       },
     ],
   },
+  {
+    resourcePath: ['i9Verifications'],
+    commandPath: ['i9-verifications', 'list'],
+    methodName: 'list',
+    summary: 'List I-9 verifications',
+    description:
+      'List current and retained company I-9 verifications in all workflow states, newest first. The API key must have workers profile and compliance read scope.',
+    transport: 'http',
+    iterable: false,
+    callShape: 'params',
+    authClientKeyRequirements: [['apiKey']],
+    positional: [],
+    flags: [
+      {
+        name: 'limit',
+        optionKey: 'limit',
+        paramKey: 'limit',
+        location: 'query',
+        required: true,
+        valueKind: 'string',
+      },
+      {
+        name: 'after-id',
+        optionKey: 'afterId',
+        paramKey: 'afterId',
+        location: 'query',
+        required: false,
+        description: 'The tag of the i9 verification.',
+        valueKind: 'string',
+      },
+      {
+        name: 'before-id',
+        optionKey: 'beforeId',
+        paramKey: 'beforeId',
+        location: 'query',
+        required: false,
+        description: 'The tag of the i9 verification.',
+        valueKind: 'string',
+      },
+      {
+        name: 'worker-ids',
+        optionKey: 'workerIds',
+        paramKey: 'workerIds',
+        location: 'query',
+        required: false,
+        description:
+          'Worker IDs to include, supplied as repeated parameters. Omit for all workers. Unknown or foreign IDs contribute no matches.',
+        valueKind: 'array',
+      },
+      {
+        name: 'statuses',
+        optionKey: 'statuses',
+        paramKey: 'statuses',
+        location: 'query',
+        required: false,
+        description: 'Statuses to include, supplied as repeated parameters. Omit for all workflow states.',
+        valueKind: 'array',
+      },
+    ],
+  },
+  {
+    resourcePath: ['i9Verifications'],
+    commandPath: ['i9-verifications', 'retrieve'],
+    methodName: 'retrieve',
+    summary: 'Get I-9 verification',
+    description:
+      'Get a specific I-9 verification by its id. The API key must have workers profile and compliance read scope.',
+    transport: 'http',
+    iterable: false,
+    callShape: 'options',
+    authClientKeyRequirements: [['apiKey']],
+    positional: [
+      {
+        name: 'id',
+        optionKey: 'id',
+        paramKey: 'id',
+        location: 'path',
+        required: true,
+        description: 'The tag of the i9 verification.',
+        valueKind: 'string',
+      },
+    ],
+    flags: [],
+  },
 ] as const satisfies readonly CliCommandDefinition[];
+
+const groups = [
+  {
+    commandPath: ['benefits'],
+    description: 'Health plan reads and retirement plan and payroll benefit deduction management.',
+  },
+  {
+    commandPath: ['benefits', 'health-plans'],
+    description: 'Health plan reads and retirement plan and payroll benefit deduction management.',
+  },
+  {
+    commandPath: ['benefits', 'retirement-plans'],
+    description: 'Health plan reads and retirement plan and payroll benefit deduction management.',
+  },
+  {
+    commandPath: ['benefits', 'deductions'],
+    description: 'Health plan reads and retirement plan and payroll benefit deduction management.',
+  },
+  {
+    commandPath: ['custom-fields'],
+    description:
+      'Company-defined custom fields for workers. Field definitions are administered with the workers:custom_fields permission; each field belongs to a worker-data category whose read/write grants govern its values.',
+  },
+  {
+    commandPath: ['departments'],
+    description:
+      'Endpoints for department management. Create, list, and update departments within your company.',
+  },
+  {
+    commandPath: ['levels'],
+    description: 'Endpoints for reading the job-level framework configured for your company.',
+  },
+  {
+    commandPath: ['offers'],
+    description:
+      'Endpoints for managing candidate offers. Create and send offers, list existing offers, and manage their lifecycle.',
+  },
+  {
+    commandPath: ['pay-rates'],
+    description: 'Read regular and additional worker pay rates.',
+  },
+  {
+    commandPath: ['payroll'],
+    description:
+      'Read-only payrolls and worker-level payroll calculations. Paycheck endpoints use one consistent resource for every worker type; payment execution is outside this API.',
+  },
+  {
+    commandPath: ['time-off'],
+    description:
+      'Endpoints for worker time off management. See time off requests, which workers are assigned to which policies, or worker remaining balances.',
+  },
+  {
+    commandPath: ['time-off', 'policies'],
+    description:
+      'Endpoints for worker time off management. See time off requests, which workers are assigned to which policies, or worker remaining balances.',
+  },
+  {
+    commandPath: ['workers'],
+    description:
+      'Endpoints for worker management. "Workers" include anyone employed by your company, whether US or international, full-time employees or contractors.',
+  },
+  {
+    commandPath: ['workplaces'],
+    description:
+      'Endpoints for workplace management. Create, list, and update workplaces within your company.',
+  },
+  {
+    commandPath: ['i9-verifications'],
+    description:
+      'Read company I-9 verification metadata, including retained forms, without exposing form contents.',
+  },
+] as const satisfies readonly CliCommandGroup[];
+
+const auth = {
+  loginPath: ['login'],
+  logoutPath: ['logout'],
+  loginCommand: 'warp login',
+  storeName: 'warp',
+  storeEnv: 'WARP_CREDENTIALS_FILE',
+  baseUrlEnv: 'WARP_BASE_URL',
+  backend: 'auto',
+  defaultBaseUrl: 'https://api.joinwarp.com/public',
+  requirements: [['apiKey']],
+  envByKey: {
+    apiKey: 'WARP_API_KEY',
+  },
+  methods: [
+    {
+      name: 'api-key',
+      label: 'Enter your API key',
+      kind: 'token',
+      clientKey: 'apiKey',
+      prompt: 'API key: ',
+    },
+  ],
+} as const satisfies CliAuthDefinition;
 
 export const getProgram = (): Command =>
   createProgram({
     SDK,
     binaryName: 'warp',
-    version: '0.4.0', // x-release-please-version
+    version: '0.5.0', // x-release-please-version
     description: 'CLI for warp',
     defaultFormat: 'auto',
     defaultErrorFormat: 'auto',
     clientOptions,
     commands,
+    groups,
     completions,
+    auth,
   });

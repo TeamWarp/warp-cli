@@ -11,6 +11,8 @@ The full API of this library can be found in [api.md](./api.md).
 - [Installation](#installation)
 - [Usage](#usage)
 - [API Reference](./api.md)
+- [Signing In](#signing-in)
+- [File Arguments](#file-arguments)
 - [Shell Completion](#shell-completion)
 - [Manual Pages](#manual-pages)
 - [Authentication](#authentication)
@@ -37,12 +39,42 @@ brew install TeamWarp/tap/warp
 ```sh
 warp [resource] [command] [flags]
 
-warp benefits:health-plans list --api-key "$WARP_API_KEY" --limit 'limit' --statuses '["active"]'
+warp benefits create-deduction \
+  --api-key "$WARP_API_KEY" \
+  --worker-id 'wrk_1234' \
+  --type 'medical' \
+  --calculation '{"type":"fixed_amount","frequency":"monthly","employeeContribution":{"amount":0,"currency":"USD"},"employerContribution":{"amount":0,"currency":"USD"}}' \
+  --effective-start-date ''
 ```
 
-The examples in the following sections assume a `client` configured as shown above.
+Every command accepts the global flags below, so the examples that follow show only what is specific to them.
 
 See the [API reference](./api.md) for every available operation.
+
+<br />
+
+## Signing In
+
+`warp login` signs you in and saves the credential for later commands, so it does not have to be passed every time. It goes into your operating system's credential store — the system keyring on Linux, Credential Manager on Windows — and falls back to a file in your state directory, readable only by you, when no such store is available. On macOS it is always that file, because the system's own tool accepts a password only on its command line, where other processes could read it. Either way it is filed under the base URL it was captured for, so a credential saved for one host is never sent to another. `warp logout` forgets it. A credential passed with a flag, or set in the environment, still takes precedence over a saved one.
+
+```sh
+warp login
+warp logout
+warp logout --all
+```
+
+<br />
+
+## File Arguments
+
+Any command flag or credential reads its value from a file when the value begins with `@`, so a body field holding a whole document does not have to survive shell quoting. `@file://` always sends the file as text and `@data://` always sends it base64-encoded; a bare `@` lets the file decide. A flag that uploads a file takes its path with or without the `@`. Escape a literal value that begins with `@` as `\@`. The global options (`--base-url`, `--timeout`, `--format` and the rest) are read exactly as written.
+
+```sh
+warp COMMAND --FLAG @./body.json
+warp COMMAND --FLAG @file://./notes.txt
+warp COMMAND --FLAG @data://./logo.png
+warp COMMAND --FLAG '\@not-a-file'
+```
 
 <br />
 
