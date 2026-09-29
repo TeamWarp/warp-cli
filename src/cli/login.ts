@@ -19,6 +19,7 @@ import {
   writeProfile,
 } from './credentials';
 import { windowsPowerShell } from './keychain';
+import { clip, listRow } from './list';
 
 /** One way `login` can obtain a credential. Mirrors the emitter's `CliAuthMethodDefinition`. */
 export type CliAuthMethodDefinition = {
@@ -81,6 +82,8 @@ export type CliAuthDefinition = {
   readonly requirements: readonly (readonly string[])[];
   readonly envByKey: Readonly<Record<string, string>>;
   readonly methods: readonly CliAuthMethodDefinition[];
+  /** Publisher logo for the browser sign-in page; absent means the page shows none. */
+  readonly logo?: string;
 };
 
 /** How long the browser flow waits for the redirect before giving the terminal back. */
@@ -219,7 +222,7 @@ export const runLogin = async (
   const method = await chooseMethod(auth, flow);
   const location = storeLocation(auth);
   const key = profileKey(baseUrl);
-  const captured = await captureCredentials(method, baseUrl);
+  const captured = await captureCredentials(method, baseUrl, auth.logo);
   // Where it landed is reported by the write itself rather than predicted, so under `auto` the
   // line a user reads names the store the credential actually went into. The write merges this
   // captured result inside its lock, because a browser grant can sit for minutes before it arrives.
@@ -342,6 +345,7 @@ const chooseMethod = async (
 const captureCredentials = async (
   method: CliAuthMethodDefinition,
   baseUrl: string,
+  logo: string | undefined,
 ): Promise<StoredProfile> => {
   if (method.kind === 'token') {
     const value = await promptSecret(method.prompt);
@@ -355,7 +359,7 @@ const captureCredentials = async (
     if (!password) throw new UsageError('No password entered; nothing was saved.');
     return { credentials: { [method.usernameKey]: username, [method.passwordKey]: password } };
   }
-  const { token, clientId, refreshUrl } = await runOauthFlow(method, baseUrl);
+  const { token, clientId, refreshUrl } = await runOauthFlow(method, baseUrl, logo);
   return {
     credentials: { [method.clientKey]: token.accessToken },
     oauth: { [method.clientKey]: oauthMetadata(token, refreshUrl, clientId, undefined) },
@@ -396,12 +400,13 @@ type TokenResponse = {
 const runOauthFlow = async (
   method: Extract<CliAuthMethodDefinition, { kind: 'oauth' }>,
   baseUrl: string,
+  logo: string | undefined,
 ): Promise<OAuthFlowResult> => {
   if (method.grant === 'authorizationCode') {
-    const result = await authorizationCodeFlow(method, baseUrl);
+    const result = await authorizationCodeFlow(method, baseUrl, logo);
     return { ...result, refreshUrl: method.refreshUrl };
   }
-  if (method.grant === 'openIdConnect') return openIdConnectFlow(method, baseUrl);
+  if (method.grant === 'openIdConnect') return openIdConnectFlow(method, baseUrl, logo);
   if (method.grant === 'deviceAuthorization') return deviceAuthorizationFlow(method, baseUrl);
   if (method.grant === 'clientCredentials') {
     const clientId = method.clientId ?? (await promptLine('Client id: '));
@@ -482,6 +487,7 @@ const deviceAuthorizationFlow = async (
 const openIdConnectFlow = async (
   method: Extract<CliAuthMethodDefinition, { grant: 'openIdConnect' }>,
   baseUrl: string,
+  logo: string | undefined,
 ): Promise<OAuthFlowResult> => {
   const endpoints = await discoverOpenIdConnect(method.discoveryUrl, baseUrl);
   const result = await authorizationCodeFlow(
@@ -493,6 +499,7 @@ const openIdConnectFlow = async (
       refreshUrl: endpoints.tokenUrl,
     },
     baseUrl,
+    logo,
   );
   return { ...result, refreshUrl: endpoints.tokenUrl };
 };
@@ -680,6 +687,7 @@ const discoverOpenIdConnect = async (
 const authorizationCodeFlow = async (
   method: Extract<CliAuthMethodDefinition, { grant: 'authorizationCode' }>,
   baseUrl: string,
+  logo: string | undefined,
 ): Promise<{ readonly token: TokenResponse; readonly clientId: string | undefined }> => {
   const clientId = method.clientId;
   if (!clientId || !method.authorizationUrl) throw new Error('This flow needs a configured OAuth client id.');
@@ -708,7 +716,7 @@ const authorizationCodeFlow = async (
     }
     throw error;
   });
-  const redirect = awaitRedirect(server, state, REDIRECT_PATH);
+  const redirect = awaitRedirect(server, state, REDIRECT_PATH, logo);
   const redirectUri = 'http://127.0.0.1:' + String(port) + REDIRECT_PATH;
   try {
     authorizeUrl.searchParams.set('response_type', 'code');
@@ -748,16 +756,18 @@ const authorizationCodeFlow = async (
 /**
  * The style for the one page a generated CLI ever puts in front of a browser.
  *
- * Every colour is a token on `:root` so the palette can be restyled in one block, and each is
- * redefined under `prefers-color-scheme: dark` rather than being left to the browser.
+ * Laid out after the Scalar dashboard's own sign-in confirmation: the publisher's logo centred a
+ * little above the fold, then a one-line heading with its icon, then a muted line of detail — no
+ * card, no accent colour. Every colour is a token on `:root` so the palette can be restyled in one
+ * block.
  *
  * The font stack names Inter first and then falls back to the system UI face. Naming it is free
  * where it is already installed and costs nothing where it is not — what it must never do is
  * *fetch* it, for the same reason the rest of this page is inline.
  */
 const PAGE_STYLE =
-  // Values taken from the Scalar dashboard's own theme: `--scalar-background-1/2`,
-  // `--scalar-color-1/2`, `--scalar-border-color` and the semantic green and red, per mode.
+  // Values taken from the Scalar dashboard's own theme: `--scalar-background-1` and
+  // `--scalar-color-1/2`, per mode.
   //
   // `light-dark()` rather than a `prefers-color-scheme` block, so each token states its light and
   // dark value together and the palette can be read as pairs. It resolves against the
@@ -765,51 +775,72 @@ const PAGE_STYLE =
   //
   // Where the function is not understood (before Firefox 120, Chrome 123, Safari 17.5) every token
   // is invalid at computed-value time and the properties using them fall back to their initial
-  // values — black on white, with an unstyled icon and no card border. Plain, still legible, and
-  // still saying the sign-in worked, which is the page's whole job.
+  // values — black on white. Plain, still legible, and still saying the sign-in worked, which is the
+  // page's whole job.
   ':root{color-scheme:light dark;' +
   '--bg:light-dark(#fff,#0f0f0f);' +
-  '--card:light-dark(#f6f6f6,#1a1a1a);' +
   '--fg:light-dark(#1b1b1b,#e7e7e7);' +
-  '--muted:light-dark(#757575,#a4a4a4);' +
-  '--line:light-dark(#dfdfdf,#2d2d2d);' +
-  '--ok:light-dark(#069061,#00b648);' +
-  '--err:light-dark(#ef0006,#dc1b19)}' +
+  '--muted:light-dark(#757575,#a4a4a4)}' +
   '*{box-sizing:border-box}' +
-  'body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;background:var(--bg);color:var(--fg);' +
+  // The dashboard's auth layout: content starts 15% of the way down the viewport in a 380px column.
+  'body{margin:0;padding:15vh 48px 48px;background:var(--bg);color:var(--fg);' +
   // Mirrors `--scalar-font`, which also leads with Inter and falls back to the system UI face.
-  'font:16px/1.6 Inter,ui-sans-serif,system-ui,sans-serif;-webkit-font-smoothing:antialiased}' +
-  // `--scalar-radius` is 3px and `--scalar-radius-lg` doubles it; 6px is that, spelled literally
-  // because the page carries no token indirection of its own.
-  '.card{width:100%;max-width:23rem;padding:40px 32px;text-align:center;background:var(--card);' +
-  'border:1px solid var(--line);border-radius:6px}' +
-  'svg{width:38px;height:38px}' +
-  // `--scalar-bold` is 600, which is what the dashboard's own headings use.
-  'h1{margin:20px 0 8px;font-size:18px;font-weight:600;letter-spacing:-.01em}' +
-  'p{margin:0;color:var(--muted);font-size:14px}';
+  'font:14px/1.5 Inter,ui-sans-serif,system-ui,sans-serif;-webkit-font-smoothing:antialiased}' +
+  'main{max-width:380px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}' +
+  // 32px tall like the dashboard's mark, but width left to the image: a publisher's logo is as
+  // often a wordmark as a square icon. The 16px margin plus the 8px gap is the dashboard's 24px.
+  '.logo{display:block;height:32px;max-width:100%;margin-bottom:16px;object-fit:contain}' +
+  // `text-lg` at regular weight, as the dashboard sets it, with a 20px icon beside it.
+  'h1{margin:0;display:flex;align-items:center;justify-content:center;gap:8px;font-size:16px;font-weight:400;line-height:24px}' +
+  'h1 svg{flex:none;width:20px;height:20px}' +
+  // `text-sm` in `--scalar-color-2`.
+  'p{margin:0;color:var(--muted);font-size:13px;line-height:20px}';
 
 /**
- * The tab icon, as the same mark the page shows.
+ * The page's two marks, as Phosphor's light-weight `sign-in` and `warning` glyphs on a 256 grid —
+ * the icons the dashboard's own confirmation and failure screens use.
  *
- * A data URI rather than a file, so the browser never requests `/favicon.ico` from the loopback
- * listener — which would otherwise answer a 404 to a request it only receives because the page
- * declared no icon.
- *
- * Deliberately a status mark and not a vendor logo: this page is served by every generated CLI, so
- * an icon identifying the SDK's *author* would put one company's branding on another's sign-in.
- *
- * The colours are the dark-mode pair, which read against a light and a dark tab strip alike;
- * `light-dark()` is no use here because the SVG is a separate document with no `color-scheme` of
- * its own. Only `#`, `<` and `>` are escaped, which is all a data URI in an attribute needs, and
- * the SVG quotes its attributes with apostrophes so the `href` can keep the double quotes.
+ * Phosphor Icons, Copyright (c) 2020 Phosphor Icons, MIT License (https://github.com/phosphor-icons/core).
  */
-const favicon = (mark: string, ok: boolean): string => {
+const SIGNED_IN_ICON =
+  'M140.24,132.24l-40,40a6,6,0,0,1-8.48-8.48L121.51,134H24a6,6,0,0,1,0-12h97.51L91.76,92.24a6,6,0,0,1,8.48-8.48l40,40A6,6,0,0,1,140.24,132.24ZM200,34H136a6,6,0,0,0,0,12h58V210H136a6,6,0,0,0,0,12h64a6,6,0,0,0,6-6V40A6,6,0,0,0,200,34Z';
+const WARNING_ICON =
+  'M235.07,189.09,147.61,37.22h0a22.75,22.75,0,0,0-39.22,0L20.93,189.09a21.53,21.53,0,0,0,0,21.72A22.35,22.35,0,0,0,40.55,222h174.9a22.35,22.35,0,0,0,19.6-11.19A21.53,21.53,0,0,0,235.07,189.09ZM224.66,204.8a10.46,10.46,0,0,1-9.21,5.2H40.55a10.46,10.46,0,0,1-9.21-5.2,9.51,9.51,0,0,1,0-9.72L118.79,43.21a10.75,10.75,0,0,1,18.42,0l87.46,151.87A9.51,9.51,0,0,1,224.66,204.8ZM122,144V104a6,6,0,0,1,12,0v40a6,6,0,0,1-12,0Zm16,36a10,10,0,1,1-10-10A10,10,0,0,1,138,180Z';
+
+/**
+ * Escapes a value for a double-quoted HTML attribute.
+ *
+ * The logo arrives through the generator's own filter, which admits only an `https` URL or an image
+ * `data:` URI, but an SVG `data:` URI can legally carry quotes and angle brackets. Escaping here is
+ * lossless — the parser decodes the entities back before the URL is read — so the attribute cannot
+ * be closed early whatever the filter let through.
+ */
+const escapeAttribute = (value: string): string =>
+  value.replace(/&/gu, '&amp;').replace(/"/gu, '&quot;').replace(/</gu, '&lt;').replace(/>/gu, '&gt;');
+
+/**
+ * The tab icon: the publisher's logo when one is configured, otherwise the page's own mark.
+ *
+ * Always declared, so the browser never requests `/favicon.ico` from the loopback listener — which
+ * would otherwise answer a 404 to a request it only receives because the page declared no icon.
+ *
+ * The fallback is deliberately a status mark and not a vendor logo: this page is served by every
+ * generated CLI, so a default icon identifying the SDK's *generator* would put one company's
+ * branding on another's sign-in.
+ *
+ * The fallback's colours are a green and a red that read against a light and a dark tab strip
+ * alike; `light-dark()` is no use here because the SVG is a separate document with no
+ * `color-scheme` of its own. Only `#`, `<` and `>` are escaped, which is all a data URI in an
+ * attribute needs, and the SVG quotes its attributes with apostrophes so the `href` can keep the
+ * double quotes.
+ */
+const favicon = (icon: string, ok: boolean, logo: string | undefined): string => {
+  if (logo) return '<link rel="icon" href="' + escapeAttribute(logo) + '">';
   const svg =
-    "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='" +
+    "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 256 256' fill='" +
     (ok ? '#00b648' : '#dc1b19') +
-    "' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'>" +
-    "<circle cx='12' cy='12' r='9.25'/><path d='" +
-    mark +
+    "'><path d='" +
+    icon +
     "'/></svg>";
   return (
     '<link rel="icon" href="data:image/svg+xml,' +
@@ -821,36 +852,38 @@ const favicon = (mark: string, ok: boolean): string => {
 /**
  * Renders the redirect page.
  *
- * Inlined down to the icon, with nothing fetched: the listener answers on loopback, where the
- * machine may well have no route out at all, and a callback page that reached for a stylesheet or a
- * font would also tell whoever served it that a sign-in had just happened.
+ * Inlined down to the icon, with nothing fetched but a configured logo: the listener answers on
+ * loopback, where the machine may well have no route out at all, and a callback page that reached
+ * for a stylesheet or a font would also tell whoever served it that a sign-in had just happened.
+ * The logo is the one exception, because it is the publisher's own and the publisher's provider has
+ * just seen the sign-in anyway. It is sent with no referrer, so the host serving it never sees the
+ * loopback URL, and a `data:` URI keeps even that request from happening. A logo that fails to
+ * load has an empty `alt`, so it leaves nothing on the page rather than a broken-image box.
  *
  * Nothing the authorization server sent is interpolated here. The provider's own `error` goes to
  * the terminal through `safeText` instead, which keeps untrusted text out of markup entirely rather
  * than relying on this function to escape it.
  */
-const redirectPage = (heading: string, detail: string, ok: boolean): string => {
-  const mark = ok ? 'm8 12.5 2.5 2.5 5.5-6' : 'm9 9 6 6m0-6-6 6';
+const redirectPage = (heading: string, detail: string, ok: boolean, logo: string | undefined): string => {
+  const icon = ok ? SIGNED_IN_ICON : WARNING_ICON;
   return (
     '<!doctype html><html lang="en"><meta charset="utf-8">' +
     '<meta name="viewport" content="width=device-width,initial-scale=1">' +
-    favicon(mark, ok) +
+    '<meta name="referrer" content="no-referrer">' +
+    favicon(icon, ok, logo) +
     '<title>' +
     heading +
     '</title><style>' +
     PAGE_STYLE +
-    '</style><div class="card">' +
-    '<svg viewBox="0 0 24 24" fill="none" stroke="' +
-    (ok ? 'var(--ok)' : 'var(--err)') +
-    '" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-    '<circle cx="12" cy="12" r="9.25"/><path d="' +
-    mark +
+    '</style><main>' +
+    (logo ? '<img class="logo" src="' + escapeAttribute(logo) + '" alt="">' : '') +
+    '<h1><svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="' +
+    icon +
     '"/></svg>' +
-    '<h1>' +
     heading +
     '</h1><p>' +
     detail +
-    '</p></div>'
+    '</p></main>'
   );
 };
 
@@ -866,6 +899,7 @@ const awaitRedirect = (
   server: ReturnType<typeof createServer>,
   state: string,
   path: string,
+  logo: string | undefined,
 ): Promise<string> =>
   new Promise<string>((resolve, reject) => {
     server.on('request', (request, response) => {
@@ -878,7 +912,7 @@ const awaitRedirect = (
         response.end(body);
       };
       const finish = (status: number, heading: string, detail: string, ok: boolean): void => {
-        send(status, 'text/html', redirectPage(heading, detail, ok));
+        send(status, 'text/html', redirectPage(heading, detail, ok, logo));
       };
       // The path is part of what was registered as `redirect_uri`, so anything else is not the
       // redirect however it is decorated. Checked alongside the parameters rather than instead of
@@ -1377,15 +1411,6 @@ const promptChoice = async (heading: string, choices: readonly Choice[]): Promis
     render();
   });
 };
-
-/**
- * Cuts a line to the terminal's width.
- *
- * A row that wrapped would occupy two of them, and the redraw counts rows rather than measuring
- * them, so one wrapped label would put every following frame a line out of place.
- */
-const clip = (text: string, width: number): string =>
-  text.length <= width ? text : text.slice(0, Math.max(0, width - 3)) + '...';
 
 /** Reads one visible line from the terminal. Prompts go to stderr so stdout stays machine-readable. */
 const promptLine = (label: string): Promise<string> =>
