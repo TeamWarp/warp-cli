@@ -14,6 +14,18 @@ import { type CliAuthDefinition, UsageError, runLogin, runLogout, storedCredenti
 
 const LOGIN_COMMAND = 'warp login';
 
+// The sign-in command for the environment a request targeted.
+const loginCommandFor = (environment: string | undefined): string => {
+  if (environment === undefined) return LOGIN_COMMAND;
+  const word = /^[A-Za-z0-9._-]+$/u.test(environment) ? environment : shellQuote(environment);
+  return LOGIN_COMMAND + ' --environment ' + word;
+};
+
+// Quotes one word for a POSIX shell so it reaches the command exactly as written.
+// biome-ignore lint/suspicious/noControlCharactersInRegex: dropping control characters is the point.
+const shellQuote = (value: string): string =>
+  "'" + value.replace(/[\u0000-\u0008\u000B-\u001F\u007F-\u009F]/gu, '').replace(/'/gu, "'\\''") + "'";
+
 type OutputFormat = 'auto' | 'json' | 'jsonl' | 'pretty' | 'raw' | 'toon' | 'yaml';
 
 export type CliValueKind =
@@ -92,6 +104,8 @@ export type CliEnvironment = {
 type EnvironmentSelection = {
   readonly environments: readonly CliEnvironment[];
   readonly defaultEnvironment: string | undefined;
+  readonly environmentEnv: string | undefined;
+  readonly baseUrlEnv: string | undefined;
 };
 
 export type CreateProgramOptions = {
@@ -116,6 +130,11 @@ export type CreateProgramOptions = {
   // The environment a bare invocation targets, which is also the one the embedded SDK falls back
   // to. Carried rather than taken as `environments[0]` so both agree by construction.
   readonly defaultEnvironment?: string;
+  // Environment variable that selects an environment the way the flag does, and the embedded
+  // SDK's own base-URL variable, which cannot be combined with it. Absent when the CLI offers no
+  // such variable, in which case only the flag selects an environment.
+  readonly environmentEnv?: string;
+  readonly baseUrlEnv?: string;
   readonly auth?: CliAuthDefinition;
 };
 
@@ -157,9 +176,11 @@ export const createProgram = ({
   completions,
   environments = [],
   defaultEnvironment,
+  environmentEnv,
+  baseUrlEnv,
   auth,
 }: CreateProgramOptions): Command => {
-  const selection: EnvironmentSelection = { environments, defaultEnvironment };
+  const selection: EnvironmentSelection = { environments, defaultEnvironment, environmentEnv, baseUrlEnv };
   const program = usageExitCode(new Command());
   program
     .enablePositionalOptions()
@@ -201,7 +222,7 @@ export const createProgram = ({
   if (environments.length > 0) addEnvironmentsCommand(program, selection, defaultFormat);
 
   if (completions) addCompletionCommand(program, binaryName, completions);
-  if (auth) addAuthCommands(program, auth);
+  if (auth) addAuthCommands(program, auth, selection);
 
   return program;
 };
@@ -269,11 +290,16 @@ const completionHelpExamples = (binaryName: string, shells: readonly string[]): 
 // renders the same sentence into the man pages, the README, and the completion scripts. It is built
 // here rather than passed in because this runtime is one fixed file for every generated CLI: only
 // the data handed to `createProgram` varies.
-const environmentFlagDescription = ({ environments, defaultEnvironment }: EnvironmentSelection): string => {
+const environmentFlagDescription = ({
+  environments,
+  defaultEnvironment,
+  environmentEnv,
+}: EnvironmentSelection): string => {
   const names = environments.map((environment) => environmentLabel(environment.name)).join(', ');
   return (
     'Named environment to target: ' +
     names +
+    (environmentEnv ? ' (can also be set with ' + environmentEnv + ' env var)' : '') +
     (defaultEnvironment ? ' (default: ' + environmentLabel(defaultEnvironment) + ')' : '')
   );
 };
@@ -299,16 +325,28 @@ const environmentLabel = (name: string): string =>
 // It prints through the same writer every generated command uses and takes its own `--format`, so a
 // script can read the URLs straight out of it (`--format json`) instead of parsing the table a human
 // reads.
+//
+// "Default" is the environment a command without `--environment` uses, so an exported
+// environment variable naming a configured one moves the mark there: every such command now goes
+// to it. An unknown name leaves the configured default marked, since every other command refuses
+// that value and this list is where a user looks up what it should have been.
 const addEnvironmentsCommand = (
   program: Command,
-  { environments, defaultEnvironment }: EnvironmentSelection,
+  { environments, defaultEnvironment, environmentEnv }: EnvironmentSelection,
   defaultFormat: OutputFormat,
 ): void => {
-  const rows = environments.map((environment) => ({
-    name: environment.name,
-    url: environment.url,
-    default: environment.name === defaultEnvironment,
-  }));
+  // Read when the command runs, not when it is registered, like every other environment variable.
+  const listRows = (): { readonly name: string; readonly url: string; readonly default: boolean }[] => {
+    const ambient = ambientEnvironment(environmentEnv);
+    const effective = environments.some((environment) => environment.name === ambient)
+      ? ambient
+      : defaultEnvironment;
+    return environments.map((environment) => ({
+      name: environment.name,
+      url: environment.url,
+      default: environment.name === effective,
+    }));
+  };
   program
     .command('environments')
     .description('List the named environments --environment can select')
@@ -318,6 +356,7 @@ const addEnvironmentsCommand = (
       // reading, so the list is drawn the way the sign-in picker draws its own. `auto` lands here
       // rather than on JSON because this command exists to be read, not parsed — a script names
       // the format it wants, and `--format json` is what the README and the man page tell it to.
+      const rows = listRows();
       const requested = options.format ?? program.opts<GlobalOptions>().format;
       if (requested === undefined || requested === 'auto' || requested === 'pretty') {
         writeEnvironmentList(rows);
@@ -346,39 +385,78 @@ const writeEnvironmentList = (
   }
 };
 
-// Resolves `--environment` against the configured list.
+// The environment the selecting variable names, or undefined when it is unset or not offered.
+// Blank is unset, as the embedded SDK treats its own variables: an `export NAME=` left in a shell
+// profile must not select an environment called "". Shared by `resolveEnvironment` and the
+// `environments` list, so the two cannot disagree about which environment the variable picks.
+const ambientEnvironment = (environmentEnv: string | undefined): string | undefined =>
+  environmentEnv ? process.env[environmentEnv]?.trim() || undefined : undefined;
+
+// Resolves the environment a command targets: `--environment`, else the environment variable that
+// stands in for it, checked against the configured list.
 //
-// Both failures are usage errors: no request is built for either, and neither is one the embedded SDK
-// can report in command-line terms. An unknown name reaches the client as a key it cannot index,
-// leaving it with no base URL at all, and the flag pair is rejected there with a message naming
-// `baseURL: null` — a library construct a command line has no spelling for, which is the same reason
-// `buildClient` restates the credential guard.
+// Every failure is a usage error: no request is built for any of them, and none is one the embedded
+// SDK can report in command-line terms. An unknown name reaches the client as a key it cannot index,
+// leaving it with no base URL at all, and a URL paired with an environment is rejected there with a
+// message naming `baseURL: null` — a library construct a command line has no spelling for, which is
+// the same reason `buildClient` restates the credential guard.
+//
+// `login` and `logout` resolve through here too, because the environment decides which stored
+// credential a request carries: the two must agree on it or a sign-in lands where no request looks.
 const resolveEnvironment = (
   options: GlobalOptions,
   command: Command,
-  { environments }: EnvironmentSelection,
+  { environments, environmentEnv, baseUrlEnv }: EnvironmentSelection,
 ): string | undefined => {
   // Answered before the option bag is read at all: with no environments configured the CLI never
   // registers `--environment`, so an `environment` key here belongs to something else — a client
   // option of that name, whose value would otherwise be rejected as an environment (and, for a
   // credential, echoed into the error).
   if (environments.length === 0) return undefined;
-  const selected = options.environment;
+  const flagged = options.environment;
+  // A URL typed on this command line outranks an environment exported for the whole shell, the
+  // precedence every other option follows — so the variable is not even read, and a stale value in
+  // it cannot fail a command that named its URL. Trimmed, as the request path trims it: a blank
+  // `--base-url` is no flag at all, so it cannot outrank anything.
+  if (flagged === undefined && options.baseUrl?.trim()) return undefined;
+  const ambient = ambientEnvironment(environmentEnv);
+  const selected = flagged ?? ambient;
   if (selected === undefined) return undefined;
   const names = environments.map((environment) => environment.name);
   if (!names.includes(selected)) {
     command.error(
       "error: unknown environment '" +
-        selected +
-        "'. Available environments: " +
+        environmentLabel(selected) +
+        "'" +
+        (flagged === undefined ? ' in ' + environmentEnv : '') +
+        '. Available environments: ' +
         names.map(environmentLabel).join(', '),
       { exitCode: 2 },
     );
   }
-  // Each names a base URL on its own, so honoring either would silently discard the other.
-  if (options.baseUrl) {
+  if (flagged !== undefined) {
+    // Each names a base URL on its own, so honoring either would silently discard the other.
+    // Trimmed like every other reading of the flag: a blank `--base-url` names no URL, so it
+    // conflicts with nothing, and the variable form below already treats it that way.
+    if (options.baseUrl?.trim()) {
+      command.error(
+        'error: --environment cannot be combined with --base-url, which already names the URL to call',
+        { exitCode: 2 },
+      );
+    }
+    return selected;
+  }
+  // Two exported variables, each naming where requests go, with nothing to say which was meant.
+  // The embedded SDK refuses a base URL beside an environment for the same reason, so this is not
+  // settled by picking one: a production URL exported last week must not quietly beat a staging
+  // environment exported today, or the other way round.
+  if (baseUrlEnv && process.env[baseUrlEnv]?.trim()) {
     command.error(
-      'error: --environment cannot be combined with --base-url, which already names the URL to call',
+      'error: ' +
+        environmentEnv +
+        ' and ' +
+        baseUrlEnv +
+        ' are both set, and each names where requests go. Unset one, or pass --environment or --base-url to choose.',
       { exitCode: 2 },
     );
   }
@@ -395,7 +473,11 @@ const authGroups = (auth: CliAuthDefinition): readonly CliCommandGroup[] => [
   { commandPath: auth.logoutPath.slice(0, -1), description: 'Sign in and out' },
 ];
 
-const addAuthCommands = (program: Command, auth: CliAuthDefinition): void => {
+const addAuthCommands = (
+  program: Command,
+  auth: CliAuthDefinition,
+  selection: EnvironmentSelection,
+): void => {
   const flows = auth.methods.map((method) => method.name).join(', ');
   const login = usageExitCode(new Command(auth.loginPath.at(-1) ?? 'login'))
     .description('Sign in and save credentials for later commands')
@@ -404,23 +486,56 @@ const addAuthCommands = (program: Command, auth: CliAuthDefinition): void => {
     .option('--flow <name>', 'Sign-in flow to use: ' + flows)
     .addHelpText('after', authFlowHelp(auth))
     .action(async (_options: unknown, command: Command) => {
-      const options = command.optsWithGlobals<{ baseUrl?: string; flow?: string }>();
-      await runAuthCommand(() => runLogin(auth, resolvedBaseUrl(auth, options.baseUrl), options.flow));
+      const options = command.optsWithGlobals<GlobalOptions & { flow?: string }>();
+      const environment = resolveEnvironment(options, command, selection);
+      await runAuthCommand(() =>
+        runLogin(
+          auth,
+          credentialBaseUrl(auth, options.baseUrl, environment),
+          options.flow,
+          loginCommandFor(environment),
+        ),
+      );
     });
+  addEnvironmentOption(login, selection);
   ensureCommandPath(program, auth.loginPath.slice(0, -1), authGroups(auth)).addCommand(login);
 
   const logout = usageExitCode(new Command(auth.logoutPath.at(-1) ?? 'logout'))
     .description('Forget saved credentials')
     .showHelpAfterError()
-    .option('--base-url <url>', 'Forget the credentials saved for this base URL')
+    .option('--base-url <url>', 'Forget the credentials saved for this base URL (not with --all)')
     .option('--all', 'Forget every saved credential, for every base URL')
     .action(async (_options: unknown, command: Command) => {
-      const options = command.optsWithGlobals<{ baseUrl?: string; all?: boolean }>();
+      const options = command.optsWithGlobals<GlobalOptions & { all?: boolean }>();
+      if (options.all === true) {
+        if (options.baseUrl?.trim()) {
+          command.error(
+            'error: --base-url cannot be combined with --all, which forgets the credentials of every base URL',
+            { exitCode: 2 },
+          );
+        }
+        if (selection.environments.length > 0 && options.environment !== undefined) {
+          command.error(
+            'error: --environment cannot be combined with --all, which forgets the credentials of every environment',
+            { exitCode: 2 },
+          );
+        }
+        await runAuthCommand(() => runLogout(auth, '', true));
+        return;
+      }
+      const environment = resolveEnvironment(options, command, selection);
       await runAuthCommand(() =>
-        runLogout(auth, resolvedBaseUrl(auth, options.baseUrl), options.all === true),
+        runLogout(auth, credentialBaseUrl(auth, options.baseUrl, environment), false),
       );
     });
+  addEnvironmentOption(logout, selection);
   ensureCommandPath(program, auth.logoutPath.slice(0, -1), authGroups(auth)).addCommand(logout);
+};
+
+// Lets `login` and `logout` take `--environment` after the verb, as every request command does.
+const addEnvironmentOption = (command: Command, selection: EnvironmentSelection): void => {
+  if (selection.environments.length > 0)
+    command.option('--environment <name>', environmentFlagDescription(selection));
 };
 
 const runAuthCommand = async (run: () => string | Promise<string>): Promise<void> => {
@@ -434,8 +549,17 @@ const runAuthCommand = async (run: () => string | Promise<string>): Promise<void
   }
 };
 
-const resolvedBaseUrl = (auth: CliAuthDefinition, flag: string | undefined): string =>
-  flag?.trim() || process.env[auth.baseUrlEnv]?.trim() || auth.defaultBaseUrl;
+// The base URL a stored credential is filed under for this invocation. One resolver for `login`,
+// `logout` and the request path, so a sign-in lands exactly where a later request looks.
+const credentialBaseUrl = (
+  auth: CliAuthDefinition,
+  flag: string | undefined,
+  environment: string | undefined,
+): string =>
+  flag?.trim() ||
+  auth.environments?.find((entry) => entry.name === environment)?.url ||
+  process.env[auth.baseUrlEnv]?.trim() ||
+  auth.defaultBaseUrl;
 
 // Lists the flows by name so `--flow` can be used without first running the picker.
 const authFlowHelp = (auth: CliAuthDefinition): string =>
@@ -462,6 +586,7 @@ const buildClient = (
   SDK: CreateProgramOptions['SDK'],
   options: Record<string, unknown>,
   clientOptions: readonly CliClientOptionDefinition[],
+  environment: string | undefined,
 ): Record<string, unknown> => {
   try {
     return new SDK(options) as Record<string, unknown>;
@@ -471,7 +596,7 @@ const buildClient = (
     if (!missing) throw error;
     throw new Error(
       'Missing credential: run `' +
-        LOGIN_COMMAND +
+        loginCommandFor(environment) +
         '`, pass --' +
         missing.name +
         ' <value>' +
@@ -648,6 +773,7 @@ const runGeneratedCommand = async (
       SDK,
       await sdkClientOptions(rootOptions, command, clientOptions, definition, environment, auth),
       clientOptions,
+      environment,
     );
     const method = sdkMethod(client, definition);
     const call = await callArguments(definition, command.opts<Record<string, unknown>>(), positionalValues);
@@ -680,7 +806,7 @@ const runGeneratedCommand = async (
 
     await writeOutput(resolved, outputOptions);
   } catch (error) {
-    await writeError(error, errorOptions, clientOptions, SDK);
+    await writeError(error, errorOptions, clientOptions, SDK, environment);
     process.exitCode = errorExitCode(error, SDK);
   }
 };
@@ -714,10 +840,11 @@ const sdkClientOptions = async (
     definition.authClientKeyRequirements,
     auth,
     options.baseUrl,
+    environment,
   );
   return {
     ...(options.baseUrl?.trim() ? { baseURL: options.baseUrl.trim() } : {}),
-    ...(environment ? { environment, baseURL: null } : {}),
+    ...(environment !== undefined ? { environment, baseURL: null } : {}),
     ...(options.timeout ? { timeout: Number(options.timeout) } : {}),
     ...(options.maxRetries ? { maxRetries: Number(options.maxRetries) } : {}),
     ...(options.debug ? { logLevel: 'debug' } : {}),
@@ -736,6 +863,7 @@ const applyStoredCredentials = async (
   authClientKeyRequirements: readonly (readonly string[])[],
   auth: CliAuthDefinition | undefined,
   baseUrl: string | undefined,
+  environment: string | undefined,
 ): Promise<void> => {
   if (!auth) return;
   if (authClientKeyRequirements.length === 0) return;
@@ -748,7 +876,7 @@ const applyStoredCredentials = async (
     }),
   );
   if (explicit) return;
-  const stored = await storedCredentials(auth, resolvedBaseUrl(auth, baseUrl));
+  const stored = await storedCredentials(auth, credentialBaseUrl(auth, baseUrl, environment));
   const isSatisfiable = (keys: readonly string[]): boolean =>
     keys.every((key) => {
       const option = clientOptions.find((candidate) => candidate.clientKey === key);
@@ -1351,8 +1479,9 @@ const writeError = async (
   options: OutputOptions,
   clientOptions: readonly CliClientOptionDefinition[],
   SDK: CreateProgramOptions['SDK'],
+  environment: string | undefined,
 ): Promise<void> => {
-  const body = transformValue(errorBody(error, clientOptions, SDK), options.transform);
+  const body = transformValue(errorBody(error, clientOptions, SDK, environment), options.transform);
   if (options.rawOutput && typeof body === 'string') {
     process.stderr.write(body + '\n');
     return;
@@ -1390,10 +1519,11 @@ const errorBody = (
   error: unknown,
   clientOptions: readonly CliClientOptionDefinition[],
   SDK: CreateProgramOptions['SDK'],
+  environment: string | undefined,
 ): Record<string, unknown> => {
   if (error && typeof error === 'object') {
     const record = error as Record<string, unknown>;
-    const hint = errorHint(record, clientOptions);
+    const hint = errorHint(record, clientOptions, environment);
     return {
       name: record.name,
       // Stable class identifier so a caller can branch on the kind of failure without parsing prose.
@@ -1471,9 +1601,10 @@ const errorExitCode = (error: unknown, SDK: CreateProgramOptions['SDK']): number
 const errorHint = (
   error: Record<string, unknown>,
   clientOptions: readonly CliClientOptionDefinition[],
+  environment: string | undefined,
 ): string | undefined => {
   const status = error.status;
-  if (status === 401) return authHint(clientOptions);
+  if (status === 401) return authHint(clientOptions, environment);
   // 403 is a permission failure, not a credential one: the request authenticated fine, so
   // telling the caller to set the auth env var would send it round the same loop again.
   if (status === 403) return 'Access denied. The credential is valid but lacks permission for this resource.';
@@ -1484,7 +1615,10 @@ const errorHint = (
 
 // Undefined when the SDK declares no authentication: there would be no variable to name, and a
 // generic "set the required environment variable" would point at something that does not exist.
-const authHint = (clientOptions: readonly CliClientOptionDefinition[]): string | undefined => {
+const authHint = (
+  clientOptions: readonly CliClientOptionDefinition[],
+  environment: string | undefined,
+): string | undefined => {
   const authOptions = clientOptions.filter((option) => option.auth);
   if (authOptions.length === 0) return undefined;
   const env = authOptions
@@ -1492,7 +1626,11 @@ const authHint = (clientOptions: readonly CliClientOptionDefinition[]): string |
     .filter((value): value is string => !!value)
     .join(', ');
   return (
-    'Authentication failed. Run `' + LOGIN_COMMAND + '`' + (env ? ', or set ' + env : '') + ', and try again.'
+    'Authentication failed. Run `' +
+    loginCommandFor(environment) +
+    '`' +
+    (env ? ', or set ' + env : '') +
+    ', and try again.'
   );
 };
 

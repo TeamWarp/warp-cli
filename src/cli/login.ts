@@ -38,6 +38,8 @@ export type CliAuthMethodDefinition = {
       readonly scopes: readonly string[];
       readonly clientId: string;
       readonly redirectPort: number;
+      /** Issuer the redirect's `iss` must name (RFC 9207); absent means an `iss` is not checked. */
+      readonly issuer?: string;
     }
   | {
       readonly kind: 'oauth';
@@ -66,6 +68,8 @@ export type CliAuthMethodDefinition = {
       readonly scopes: readonly string[];
       readonly clientId: string;
       readonly redirectPort: number;
+      /** Configured issuer the discovered one must match; absent trusts the one discovery verifies. */
+      readonly issuer?: string;
     }
 );
 
@@ -79,6 +83,8 @@ export type CliAuthDefinition = {
   readonly baseUrlEnv: string;
   readonly backend: 'auto' | 'keychain' | 'file';
   readonly defaultBaseUrl: string;
+  /** Named environments and the URL each sends requests to; absent when there is no `--environment`. */
+  readonly environments?: readonly { readonly name: string; readonly url: string }[];
   readonly requirements: readonly (readonly string[])[];
   readonly envByKey: Readonly<Record<string, string>>;
   readonly methods: readonly CliAuthMethodDefinition[];
@@ -88,6 +94,12 @@ export type CliAuthDefinition = {
 
 /** How long the browser flow waits for the redirect before giving the terminal back. */
 const BROWSER_FLOW_TIMEOUT_MS = 300000;
+
+/**
+ * How long the browser flow waits for its answered pages to finish sending before closing the
+ * listener. Loopback delivers a page in milliseconds; this only bounds a browser that stops reading.
+ */
+const RESPONSE_FLUSH_TIMEOUT_MS = 2000;
 
 /** The one path the loopback listener answers as a redirect; it is what `redirect_uri` registers. */
 const REDIRECT_PATH = '/callback';
@@ -129,6 +141,16 @@ const REFRESH_LEEWAY_MS = 60000;
  */
 const SILENT_REFRESH_TIMEOUT_MS = 5000;
 
+/**
+ * How far past its `exp` an ID token is still accepted, to absorb clock drift between this machine
+ * and the provider.
+ *
+ * OpenID Connect Core leaves the allowance to the client. Five minutes is the customary figure: a
+ * token the provider minted seconds ago is not refused because a laptop's clock runs slow, and a
+ * token that genuinely expired is still refused long before it could be useful to a replay.
+ */
+const ID_TOKEN_CLOCK_SKEW_MS = 300000;
+
 /** Lifetime assumed for a token whose endpoint did not state one. See {@link oauthMetadata}. */
 const ASSUMED_TOKEN_LIFETIME_S = 3600;
 
@@ -165,11 +187,17 @@ const methodKeys = (method: CliAuthMethodDefinition): readonly string[] =>
  *
  * The alternative closest to complete is the one named: it is the cheapest way out for the user,
  * and listing every unmet alternative would describe choices the API treats as interchangeable.
+ *
+ * `loginCommand` names the environment this `login` selected, when it selected one. The credential
+ * just saved is filed under that environment's URL, so a hint naming the bare command would file
+ * the next one under the default environment instead, and the pair would never meet. A sign-in made
+ * with `--base-url` selects no environment and gets the bare command, as the request hints do.
  */
 const outstandingRequirement = (
   auth: CliAuthDefinition,
   location: CredentialStoreLocation,
   key: string,
+  loginCommand: string,
 ): string | undefined => {
   if (auth.requirements.length === 0) return undefined;
   // The store *and* the environment, because that is what the request path counts. `applyStoredCredentials`
@@ -198,7 +226,7 @@ const outstandingRequirement = (
     runnable.push(method);
   }
   if (runnable.length === 0) return 'Requests here also need another credential this CLI cannot obtain.';
-  const commands = runnable.map((method) => auth.loginCommand + ' --flow ' + method.name);
+  const commands = runnable.map((method) => loginCommand + ' --flow ' + method.name);
   return (
     'Requests here also need ' +
     (runnable.length === 1 ? 'one more credential' : String(runnable.length) + ' more credentials') +
@@ -213,11 +241,15 @@ const outstandingRequirement = (
  *
  * Every prompt is written to standard error, so the confirmation this returns is the only thing on
  * standard output and `login` stays usable in a pipeline.
+ *
+ * `loginCommand` is the sign-in command for the environment this one selected (the bare command
+ * when none was); it names the next step when the API needs a further credential.
  */
 export const runLogin = async (
   auth: CliAuthDefinition,
   baseUrl: string,
   flow: string | undefined,
+  loginCommand: string,
 ): Promise<string> => {
   const method = await chooseMethod(auth, flow);
   const location = storeLocation(auth);
@@ -235,7 +267,7 @@ export const runLogin = async (
     '. Credentials saved to ' +
     storeDescription(location, backend) +
     '.';
-  const outstanding = outstandingRequirement(auth, location, key);
+  const outstanding = outstandingRequirement(auth, location, key, loginCommand);
   return outstanding ? line + '\n' + outstanding : line;
 };
 
@@ -395,6 +427,8 @@ type TokenResponse = {
   readonly refreshToken?: string;
   /** Lifetime in seconds, as the token endpoint reported it. */
   readonly expiresIn?: number;
+  /** OpenID Connect ID token, when the endpoint returned one; checked by the OIDC flow, never stored. */
+  readonly idToken?: string;
 };
 
 const runOauthFlow = async (
@@ -483,13 +517,31 @@ const deviceAuthorizationFlow = async (
   };
 };
 
-/** Discovers OpenID Connect endpoints, then uses the same PKCE flow as a declared authorization code grant. */
+/**
+ * Discovers OpenID Connect endpoints, then uses the same PKCE flow as a declared authorization code
+ * grant — holding the redirect's `iss` and the ID token to the issuer discovery verified.
+ */
 const openIdConnectFlow = async (
   method: Extract<CliAuthMethodDefinition, { grant: 'openIdConnect' }>,
   baseUrl: string,
   logo: string | undefined,
 ): Promise<OAuthFlowResult> => {
   const endpoints = await discoverOpenIdConnect(method.discoveryUrl, baseUrl);
+  // A configured issuer is the publisher saying which provider this CLI signs in with. Discovery
+  // only proves the document agrees with the URL it came from, and that URL is spec-derived, so a
+  // document that points somewhere else is refused here rather than trusted for the rest of the flow.
+  if (method.issuer !== undefined && !sameIssuer(endpoints.issuer, method.issuer)) {
+    throw new Error(
+      'The OpenID Connect discovery document is issued by ' +
+        safeText(endpoints.issuer) +
+        ', not the configured issuer ' +
+        safeText(method.issuer) +
+        '.',
+    );
+  }
+  // Same randomness as `state`. `state` ties the redirect to this process; the nonce ties the ID
+  // token to it, so a token minted for some other sign-in cannot be replayed into this one.
+  const nonce = base64Url(randomBytes(16));
   const result = await authorizationCodeFlow(
     {
       ...method,
@@ -497,11 +549,104 @@ const openIdConnectFlow = async (
       authorizationUrl: endpoints.authorizationUrl,
       tokenUrl: endpoints.tokenUrl,
       refreshUrl: endpoints.tokenUrl,
+      issuer: endpoints.issuer,
     },
     baseUrl,
     logo,
+    {
+      // Discovery always yields an issuer to compare a received `iss` with, but only a configured
+      // issuer or the provider's own advertisement makes a *missing* one a failure: RFC 9207 lets a
+      // server that never promised the parameter leave it out.
+      issRequired: method.issuer !== undefined || endpoints.issParameterSupported,
+      nonce,
+      // Run inside the code flow, while the browser is still waiting on its page, so a refused ID
+      // token is what the browser is told about too. It also runs before `login` writes anything:
+      // a token that fails is not stored, and neither is the access token that arrived beside it.
+      verify: (token) => {
+        if (token.idToken !== undefined) {
+          verifyIdToken(token.idToken, { issuer: endpoints.issuer, clientId: method.clientId, nonce });
+        }
+      },
+    },
   );
   return { ...result, refreshUrl: endpoints.tokenUrl };
+};
+
+/**
+ * Checks the claims of an ID token the token endpoint returned, per OpenID Connect Core 3.1.3.7.
+ *
+ * The signature is deliberately not verified. Section 3.1.3.7 lets TLS server validation stand in
+ * for it when the token is received directly from the token endpoint — which is the only way this
+ * flow receives one: `exchangeToken` refuses a plain-HTTP endpoint off loopback and follows no
+ * redirects. Verifying it anyway would mean fetching and caching the provider's JWKS and
+ * implementing each signing algorithm, in a runtime that ships with no dependencies. The claims are
+ * what bind the token to this sign-in, and those are checked in full.
+ */
+const verifyIdToken = (
+  idToken: string,
+  expected: { readonly issuer: string; readonly clientId: string; readonly nonce: string },
+): void => {
+  const claims = idTokenClaims(idToken);
+  const issuer = claims['iss'];
+  if (typeof issuer !== 'string' || !sameIssuer(issuer, expected.issuer)) {
+    throw new Error(
+      'The ID token was issued by ' +
+        (typeof issuer === 'string' ? safeText(issuer) || 'an empty issuer' : 'no issuer') +
+        ', but this sign-in expected ' +
+        safeText(expected.issuer) +
+        '.',
+    );
+  }
+  const audience = claims['aud'];
+  const audiences = typeof audience === 'string' ? [audience] : Array.isArray(audience) ? audience : [];
+  if (!audiences.includes(expected.clientId)) {
+    throw new Error('The ID token is not addressed to this client (' + safeText(expected.clientId) + ').');
+  }
+  // With more than one audience, `azp` names the party the token was actually issued to; without
+  // it, a token minted for another client that merely lists this one could be passed off as ours.
+  // A present `azp` is held to the client id even for a single audience, as the spec recommends.
+  const party = claims['azp'];
+  if ((audiences.length > 1 || party !== undefined) && party !== expected.clientId) {
+    throw new Error(
+      party === undefined
+        ? 'The ID token lists several audiences but names no authorized party (azp).'
+        : 'The ID token was issued to another authorized party (azp) than this client.',
+    );
+  }
+  const expiry = claims['exp'];
+  if (typeof expiry !== 'number' || !Number.isFinite(expiry)) {
+    throw new Error('The ID token has no usable expiry.');
+  }
+  if (expiry * 1000 + ID_TOKEN_CLOCK_SKEW_MS <= Date.now()) {
+    throw new Error('The ID token has expired.');
+  }
+  const nonce = claims['nonce'];
+  if (typeof nonce !== 'string' || !sameToken(nonce, expected.nonce)) {
+    throw new Error(
+      'The ID token does not carry the nonce this sign-in sent, so it may belong to another sign-in.',
+    );
+  }
+};
+
+/**
+ * Decodes the payload of a compact-serialized JWT into its claims, refusing anything malformed.
+ *
+ * Strict about the alphabet because Node's base64url decoder is not: it skips characters it does
+ * not recognise, so a mangled segment would otherwise decode into *something* rather than fail.
+ */
+const idTokenClaims = (idToken: string): Record<string, unknown> => {
+  const malformed = new Error('The token endpoint returned a malformed ID token.');
+  const segments = idToken.split('.');
+  const payload = segments[1];
+  if (segments.length !== 3 || !payload || !/^[A-Za-z0-9_-]+$/u.test(payload)) throw malformed;
+  let claims: unknown;
+  try {
+    claims = JSON.parse(Buffer.from(payload, 'base64url').toString('utf8'));
+  } catch {
+    throw malformed;
+  }
+  if (!claims || typeof claims !== 'object' || Array.isArray(claims)) throw malformed;
+  return claims as Record<string, unknown>;
 };
 
 const scopeParam = (scopes: readonly string[]): Record<string, string> =>
@@ -626,11 +771,20 @@ const discoveryIssuer = (url: URL): string | undefined =>
 const sameIssuer = (left: string, right: string): boolean =>
   left.replace(/\/+$/u, '') === right.replace(/\/+$/u, '');
 
-/** Fetches the OpenID Provider configuration and keeps only the two endpoints PKCE needs. */
+/**
+ * Fetches the OpenID Provider configuration and keeps what the browser flow needs: the two
+ * endpoints PKCE uses, the issuer the document was verified to come from, and whether the provider
+ * promises RFC 9207's `iss` on its redirects.
+ */
 const discoverOpenIdConnect = async (
   discoveryUrl: string,
   baseUrl: string,
-): Promise<{ readonly authorizationUrl: string; readonly tokenUrl: string }> => {
+): Promise<{
+  readonly authorizationUrl: string;
+  readonly tokenUrl: string;
+  readonly issuer: string;
+  readonly issParameterSupported: boolean;
+}> => {
   const url = requireSecureUrl(discoveryUrl, baseUrl, 'OpenID Connect discovery document');
   const { response, text } = await getJson(url, 'OpenID Connect discovery document');
   const payload = parseJson(text);
@@ -673,6 +827,8 @@ const discoverOpenIdConnect = async (
       'OpenID Connect authorization endpoint',
     ).toString(),
     tokenUrl: requireSecureUrl(tokenUrl, issuerUrl.toString(), 'OpenID Connect token endpoint').toString(),
+    issuer,
+    issParameterSupported: payload?.['authorization_response_iss_parameter_supported'] === true,
   };
 };
 
@@ -683,11 +839,28 @@ const discoverOpenIdConnect = async (
  * being redeemed by anything but this process. The redirect listens on 127.0.0.1 rather than a
  * public interface, and the authorization URL is printed before the browser is opened so a headless
  * or remote shell can still complete the flow by hand.
+ *
+ * `options.issRequired` makes an `iss`-less redirect a failure; it defaults to whether an issuer
+ * is known at all, which for this grant means one was configured. `options.nonce` is sent on the
+ * authorize request, and only OpenID Connect sends one, since only it returns an ID token to hold
+ * the nonce to. `options.verify` checks the exchanged token and throws to refuse it.
+ *
+ * The browser's request for the redirect is answered only after the code exchange and `verify`,
+ * so it never shows "Signed in" for a token this flow goes on to refuse. (Saving the credential
+ * comes later, in `runLogin`; a store that then refuses the write is reported in the terminal.)
+ * The wait is bounded by the token request's own timeout. Afterwards no redirect is held any more,
+ * and the listener is closed only once every answered response has finished sending — or its
+ * browser has gone — or `RESPONSE_FLUSH_TIMEOUT_MS` has passed.
  */
 const authorizationCodeFlow = async (
   method: Extract<CliAuthMethodDefinition, { grant: 'authorizationCode' }>,
   baseUrl: string,
   logo: string | undefined,
+  options: {
+    readonly issRequired?: boolean;
+    readonly nonce?: string;
+    readonly verify?: (token: TokenResponse) => void;
+  } = {},
 ): Promise<{ readonly token: TokenResponse; readonly clientId: string | undefined }> => {
   const clientId = method.clientId;
   if (!clientId || !method.authorizationUrl) throw new Error('This flow needs a configured OAuth client id.');
@@ -716,7 +889,15 @@ const authorizationCodeFlow = async (
     }
     throw error;
   });
-  const redirect = awaitRedirect(server, state, REDIRECT_PATH, logo);
+  const listener: RedirectListener = { answered: [], closing: false };
+  const redirect = awaitRedirect(
+    server,
+    state,
+    REDIRECT_PATH,
+    logo,
+    { expected: method.issuer, required: options.issRequired ?? method.issuer !== undefined },
+    listener,
+  );
   const redirectUri = 'http://127.0.0.1:' + String(port) + REDIRECT_PATH;
   try {
     authorizeUrl.searchParams.set('response_type', 'code');
@@ -725,26 +906,62 @@ const authorizationCodeFlow = async (
     authorizeUrl.searchParams.set('state', state);
     authorizeUrl.searchParams.set('code_challenge', challenge);
     authorizeUrl.searchParams.set('code_challenge_method', 'S256');
+    if (options.nonce !== undefined) authorizeUrl.searchParams.set('nonce', options.nonce);
     if (method.scopes.length > 0) authorizeUrl.searchParams.set('scope', method.scopes.join(' '));
     const target = authorizeUrl.toString();
     processStderr.write(
       'Opening your browser to sign in. If it does not open, visit:\n\n  ' + target + '\n\n',
     );
     openBrowser(target);
-    const code = await withTimeout(
+    const { code, respond } = await withTimeout(
       redirect,
       BROWSER_FLOW_TIMEOUT_MS,
       'Timed out waiting for the browser redirect.',
     );
-    const token = await exchangeToken(method.tokenUrl, baseUrl, {
-      grant_type: 'authorization_code',
-      code,
-      redirect_uri: redirectUri,
-      client_id: clientId,
-      code_verifier: verifier,
-    });
-    return { token, clientId };
+    // `respond` answers the held browser request once and ignores later calls, so the `finally`
+    // below can answer it with a failure on any path that got here without answering it.
+    try {
+      let token: TokenResponse;
+      try {
+        token = await exchangeToken(method.tokenUrl, baseUrl, {
+          grant_type: 'authorization_code',
+          code,
+          redirect_uri: redirectUri,
+          client_id: clientId,
+          code_verifier: verifier,
+        });
+      } catch (error) {
+        respond(
+          'Sign-in failed',
+          'Your provider did not issue a credential. Return to your terminal for details.',
+          false,
+        );
+        throw error;
+      }
+      options.verify?.(token);
+      respond('Signed in', 'You can close this window and return to your terminal.', true);
+      return { token, clientId };
+    } finally {
+      respond(
+        'Sign-in could not be verified',
+        'The credential your provider issued did not match this sign-in. Return to your terminal for details.',
+        false,
+      );
+    }
   } finally {
+    // From here on a redirect is answered at once with the neutral page and never held, so nothing
+    // that arrives during the wait below is left for nobody to answer — a redirect landing after the
+    // browser wait timed out included.
+    listener.closing = true;
+    // Answered pages are waited for before any socket is destroyed: `closeAllConnections` cancels
+    // writes still queued on a socket, and a page carrying a large publisher logo takes more than one
+    // write to send, so closing straight after `end()` could leave the browser a blank or truncated
+    // page. Bounded, so a browser that stops reading cannot hold the terminal.
+    //
+    // `server.close()` comes after the wait, not before it: since Node 19 it also closes every
+    // connection with no request in progress, and a connection whose response has been ended but not
+    // yet flushed counts as one — so closing first cut off exactly the pages this wait protects.
+    await drainAnswered(listener.answered, RESPONSE_FLUSH_TIMEOUT_MS);
     server.close();
     // Belt and braces with the `connection: close` above: a connection opened but never used (a
     // browser preconnecting to the redirect host) is not covered by that header and would keep the
@@ -752,6 +969,46 @@ const authorizationCodeFlow = async (
     server.closeAllConnections();
   }
 };
+
+/** What the browser flow shares with its loopback request handler. */
+type RedirectListener = {
+  /** One entry per response written, settling once it has been sent or its browser has gone. */
+  readonly answered: Promise<void>[];
+  /** Set when the flow is finishing: every later redirect gets the neutral page at once. */
+  closing: boolean;
+};
+
+/**
+ * Waits, up to `ms` in all, for every answered response — including any answered while waiting.
+ *
+ * Re-reads the list after each batch because the listener keeps accepting until it is closed, and a
+ * response written during the wait is just as liable to be cut off as one written before it.
+ */
+const drainAnswered = async (answered: readonly Promise<void>[], ms: number): Promise<void> => {
+  const deadline = Date.now() + ms;
+  let waited = 0;
+  while (waited < answered.length && Date.now() < deadline) {
+    const batch = answered.slice(waited);
+    waited = answered.length;
+    await settledWithin(Promise.all(batch), deadline - Date.now());
+  }
+};
+
+/**
+ * Resolves once `promise` settles or `ms` have passed, whichever is first, and never rejects.
+ *
+ * The timer is cleared when the promise wins, so a finished wait leaves nothing pending that would
+ * keep the process alive.
+ */
+const settledWithin = (promise: Promise<unknown>, ms: number): Promise<void> =>
+  new Promise<void>((resolve) => {
+    const timer = setTimeout(resolve, ms);
+    const done = (): void => {
+      clearTimeout(timer);
+      resolve();
+    };
+    promise.then(done, done);
+  });
 
 /**
  * The style for the one page a generated CLI ever puts in front of a browser.
@@ -887,28 +1144,49 @@ const redirectPage = (heading: string, detail: string, ok: boolean, logo: string
   );
 };
 
+/** The code a redirect carried, and the one-shot answer to the browser request still waiting on it. */
+type HeldRedirect = {
+  readonly code: string;
+  readonly respond: (heading: string, detail: string, ok: boolean) => void;
+};
+
 /**
- * Resolves with the authorization code the redirect carries.
+ * Resolves with the authorization code the redirect carries, holding the browser's request open.
+ *
+ * A redirect that fails a check here is answered at once. One that passes is left waiting, and the
+ * caller answers it through `respond` once the rest of the sign-in has succeeded or failed.
  *
  * Anything that is not the redirect — a browser probing `/favicon.ico`, a stray request to the
  * port — is answered 404 and ignored, so it cannot resolve or reject the wait. The `state` is
  * compared in constant time and rejected on mismatch, which is what ties the redirect back to the
- * request this process started.
+ * request this process started; the `iss` is then held to `issuer` (see {@link redirectIssuerProblem}).
  */
 const awaitRedirect = (
   server: ReturnType<typeof createServer>,
   state: string,
   path: string,
   logo: string | undefined,
-): Promise<string> =>
-  new Promise<string>((resolve, reject) => {
+  issuer: RedirectIssuer,
+  listener: RedirectListener,
+): Promise<HeldRedirect> =>
+  new Promise<HeldRedirect>((resolve, reject) => {
+    // Set once a redirect has resolved or rejected this wait. A later redirect — the user reloading
+    // the tab while the first is still held — can change nothing, but it still deserves an answer:
+    // left unanswered it would hang until the listener closed and then show an empty-response error.
+    let settled = false;
     server.on('request', (request, response) => {
       const url = new URL(request.url ?? '/', 'http://127.0.0.1');
       const params = url.searchParams;
+      // Listened for as soon as the request arrives, not when it is answered: a held redirect whose
+      // browser gives up while the code is exchanged (a reload, a closed tab) has already fired its
+      // `'close'` by the time it is answered, and a listener added then would never hear it —
+      // leaving the flow to wait out `RESPONSE_FLUSH_TIMEOUT_MS` for a page nobody will read.
+      const closed = new Promise<void>((done) => response.once('close', () => done()));
       const send = (status: number, type: string, body: string): void => {
         // `connection: close` rather than the default keep-alive: `server.close()` waits for open
         // connections, and a browser holding one would leave the CLI running after it had signed in.
         response.writeHead(status, { 'content-type': type + '; charset=utf-8', connection: 'close' });
+        listener.answered.push(closed);
         response.end(body);
       };
       const finish = (status: number, heading: string, detail: string, ok: boolean): void => {
@@ -924,6 +1202,16 @@ const awaitRedirect = (
         send(404, 'text/plain', 'Not found.\n');
         return;
       }
+      if (settled || listener.closing) {
+        finish(
+          409,
+          'Return to your terminal',
+          'This sign-in has already been received. Your terminal shows how it ended.',
+          false,
+        );
+        return;
+      }
+      settled = true;
       if (!sameToken(params.get('state') ?? '', state)) {
         // Ends the sign-in rather than waiting for a better redirect. A request that reaches here is
         // on the registered path and carries a `code` or an `error`, which makes it the provider's
@@ -938,6 +1226,20 @@ const awaitRedirect = (
           false,
         );
         reject(new Error('The browser redirect did not match this sign-in attempt.'));
+        return;
+      }
+      // Checked before the `error` branch as well as the code: RFC 9207 puts `iss` on error
+      // responses too, and an error page from a server that is not the expected one is no more its
+      // provider's word than a code is.
+      const issuerProblem = redirectIssuerProblem(params.get('iss'), issuer);
+      if (issuerProblem) {
+        finish(
+          400,
+          'Sign-in could not be verified',
+          'This response did not come from the provider your terminal expected. Return to your terminal and try again.',
+          false,
+        );
+        reject(new Error(issuerProblem));
         return;
       }
       const failure = params.get('error');
@@ -962,11 +1264,54 @@ const awaitRedirect = (
         reject(new Error('The browser redirect carried no authorization code.'));
         return;
       }
-      finish(200, 'Signed in', 'You can close this window and return to your terminal.', true);
-      resolve(code);
+      let responded = false;
+      resolve({
+        code,
+        respond: (heading, detail, ok) => {
+          if (responded) return;
+          responded = true;
+          finish(ok ? 200 : 400, heading, detail, ok);
+        },
+      });
     });
     server.on('error', reject);
   });
+
+/** The issuer a browser redirect is held to, and whether it must name one at all. */
+type RedirectIssuer = { readonly expected: string | undefined; readonly required: boolean };
+
+/**
+ * Why a redirect's `iss` parameter (RFC 9207) is unacceptable, or `undefined` when it is fine.
+ *
+ * This is the mix-up-attack defence. `state` proves the redirect answers this process's request,
+ * but not which authorization server sent it: a CLI that trusts more than one provider can have its
+ * browser steered through an attacker's, and would then redeem the code that server handed back at
+ * the honest provider's token endpoint — or hand an honest code to the attacker's. Naming the issuer
+ * on the redirect, and refusing one that is not the server this sign-in began with, closes that
+ * before the code is exchanged anywhere.
+ *
+ * With no expected issuer — a plain OAuth scheme and none configured — a received `iss` is
+ * ignored: there is nothing to compare it with, so it can neither confirm nor refute the sender,
+ * and refusing it would break every provider that sends one to clients that never asked.
+ */
+const redirectIssuerProblem = (received: string | null, issuer: RedirectIssuer): string | undefined => {
+  if (issuer.expected === undefined) return undefined;
+  if (received === null) {
+    return issuer.required
+      ? 'The browser redirect did not say which provider sent it (no iss parameter), but this sign-in expected ' +
+          safeText(issuer.expected) +
+          '.'
+      : undefined;
+  }
+  if (sameIssuer(received, issuer.expected)) return undefined;
+  return (
+    'The browser redirect was sent by ' +
+    (safeText(received) || 'an empty issuer') +
+    ', but this sign-in expected ' +
+    safeText(issuer.expected) +
+    '.'
+  );
+};
 
 /** Starts the loopback listener, resolving with the port the OS actually bound. */
 const listen = (server: ReturnType<typeof createServer>, port: number): Promise<number> =>
@@ -1049,9 +1394,13 @@ const tokenResponse = (payload: Record<string, unknown> | undefined): TokenRespo
   }
   const refreshToken = payload?.['refresh_token'];
   const expiresIn = payload?.['expires_in'];
+  const idToken = payload?.['id_token'];
   return {
     accessToken,
     ...(typeof refreshToken === 'string' && refreshToken ? { refreshToken } : {}),
+    // Kept as sent, even when empty or not a string, so the OIDC flow refuses a malformed one rather
+    // than treating it as absent.
+    ...(idToken === undefined || idToken === null ? {} : { idToken: String(idToken) }),
     // A lifetime at or below zero is not a lifetime. Stored as one it makes `needsRefresh` true
     // forever, so every command pays a full refresh round trip ahead of the request it wanted —
     // on a token that is in fact perfectly good. The device grant already applies this floor to
