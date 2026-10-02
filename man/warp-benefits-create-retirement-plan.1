@@ -1,31 +1,22 @@
 .\" File generated from our OpenAPI spec by Scalar. Do not edit.
-.TH "WARP\-WORKERS\-LIST" "1" "" "warp" "warp Manual"
+.TH "WARP\-BENEFITS\-CREATE\-RETIREMENT\-PLAN" "1" "" "warp" "warp Manual"
 .SH "NAME"
-warp\-workers\-list \- List Workers
+warp\-benefits\-create\-retirement\-plan \- Create Retirement Plan
 .SH "SYNOPSIS"
-.B warp workers list
-\fB\-\-limit\fR \fI<value>\fR [\fIoptions\fR]
+.B warp benefits create\-retirement\-plan
+\fB\-\-type\fR \fI<value>\fR \fB\-\-name\fR \fI<value>\fR \fB\-\-effective\-start\-date\fR \fI<value>\fR [\fIoptions\fR]
 .SH "DESCRIPTION"
-List all workers. Workers include anyone employed by the company, whether US or international, full\-time employees or contractors.
+Create a retirement plan for a company on the manual retirement channel.
 .SH "OPTIONS"
 .TP
-\fB\-\-limit\fR \fI<value>\fR
-The limit query parameter. Required.
+\fB\-\-type\fR \fI<value>\fR
+The type body parameter. Required.
 .TP
-\fB\-\-after\-id\fR \fI<value>\fR
-The id of the worker.
+\fB\-\-name\fR \fI<value>\fR
+The name body parameter. Required.
 .TP
-\fB\-\-before\-id\fR \fI<value>\fR
-The id of the worker.
-.TP
-\fB\-\-statuses\fR \fI<json>\fR
-The statuses query parameter.
-.TP
-\fB\-\-types\fR \fI<json>\fR
-The types query parameter.
-.TP
-\fB\-\-work\-email\fR \fI<value>\fR
-The work\-email query parameter.
+\fB\-\-effective\-start\-date\fR \fI<value>\fR
+The effective\-start\-date body parameter. Required.
 .TP
 \fB\-\-base\-url\fR \fI<url>\fR
 Override the base URL for API requests.
@@ -60,7 +51,11 @@ API credential. Can also be set with the WARP_API_KEY environment variable.
 .PP
 .RS 4
 .nf
-warp workers list \-\-api\-key "$WARP_API_KEY" \-\-limit 'limit'
+warp benefits create\-retirement\-plan \e
+  \-\-api\-key "$WARP_API_KEY" \e
+  \-\-type '401k' \e
+  \-\-name 'x' \e
+  \-\-effective\-start\-date ''
 .fi
 .RE
 .SH "ENVIRONMENT"

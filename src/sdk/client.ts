@@ -14,6 +14,7 @@ import {
   formatRequestDetails,
   loggerFor,
   parseLogLevel,
+  redactUrl,
   type LogLevel,
   type Logger,
 } from './internal/utils/log';
@@ -25,7 +26,15 @@ import type { HTTPMethod, FinalizedRequestInit, MergedRequestInit, PromiseOrValu
 import { stringifyQuery } from './internal/utils/query';
 import { toFile } from './core/uploads';
 import { VERSION } from './version';
-import { Benefits } from './resources/benefits/benefits';
+import {
+  Benefits,
+  type BenefitCreateDeductionResponse,
+  type BenefitCreateRetirementPlanResponse,
+  type BenefitCreateDeductionParams,
+  type BenefitUpdateDeductionParams,
+  type BenefitCreateRetirementPlanParams,
+  type BenefitUpdateRetirementPlanParams,
+} from './resources/benefits/benefits';
 import {
   CustomFields,
   type PublicCustomFieldValueOutput,
@@ -179,9 +188,13 @@ import {
   type WorkerCreateEmployeeResponse,
   type WorkerCreateContractorResponse,
   type WorkerInviteResponse,
+  type WorkerRevealSsnResponse,
+  type WorkerUpdateResponse,
   type WorkerListParams,
   type WorkerCreateEmployeeParams,
   type WorkerCreateContractorParams,
+  type WorkerRevealSsnParams,
+  type WorkerUpdateParams,
 } from './resources/workers';
 import {
   Workplaces,
@@ -192,6 +205,12 @@ import {
   type WorkplaceCreateParams,
   type WorkplaceUpdateParams,
 } from './resources/workplaces';
+import {
+  I9Verifications,
+  type I9VerificationListResponse,
+  type I9VerificationRetrieveResponse,
+  type I9VerificationListParams,
+} from './resources/i9-verifications';
 import {
   Webhooks,
   type OfferAcceptedWebhookEvent,
@@ -419,7 +438,7 @@ export class Warp {
   }
 
   private getUserAgent(): string {
-    return `${this.constructor.name}/JS ${VERSION}`;
+    return `Warp/JS ${VERSION}`;
   }
 
   protected defaultIdempotencyKey(): string {
@@ -605,7 +624,7 @@ export class Warp {
       throw new Errors.APIConnectionError({ cause: response });
     }
 
-    const responseInfo = `[${requestLogID}${retryLogStr}] ${req.method} ${url} ${
+    const responseInfo = `[${requestLogID}${retryLogStr}] ${req.method} ${redactUrl(url)} ${
       response.ok ? 'succeeded' : 'failed'
     } with status ${response.status} in ${headersTime - startTime}ms`;
 
@@ -682,7 +701,8 @@ export class Warp {
   ): Promise<Response> {
     const { signal, method, ...options } = init || {};
     const abort = this._makeAbort(controller);
-    if (signal) signal.addEventListener('abort', abort, { once: true });
+    if (signal?.aborted) abort();
+    else if (signal) signal.addEventListener('abort', abort, { once: true });
 
     const timeout = setTimeout(abort, ms);
 
@@ -703,7 +723,7 @@ export class Warp {
     }
 
     try {
-      // use undefined this binding; fetch errors if bound to something else in browser/cloudflare
+      // use undefined this binding; fetch errors if bound to something else in browsers and edge runtimes / workers
       return await this.fetch.call(undefined, url, fetchOptions);
     } finally {
       clearTimeout(timeout);
@@ -890,18 +910,20 @@ export class Warp {
     if (body == null) {
       return { bodyHeaders: undefined, body: undefined };
     }
-    const headers = buildHeaders([rawHeaders]);
+    // A `content-type` from either header bag says how the body is already encoded; the request's
+    // own wins over the client-wide default, as it does on the wire.
+    const headers = buildHeaders([this._options.defaultHeaders, rawHeaders]);
     if (
       // Pass raw type verbatim
       ArrayBuffer.isView(body) ||
       body instanceof ArrayBuffer ||
       body instanceof DataView ||
-      // Always pass strings through verbatim. The previous guard required a caller-set
-      // `content-type` and otherwise fell through to `FallbackEncoder`, which JSON.stringifies
-      // the value and labels it `application/json` — silently quoting plain-text payloads and
-      // mislabeling them as JSON. fetch defaults a string body to `text/plain;charset=UTF-8`
-      // when no `content-type` is set, which is a safer default than misclaiming JSON.
-      typeof body === 'string' ||
+      // A string is only already-encoded when something has said what it is encoded as.
+      // Generated call sites state the declared request media type, so a `text/plain` or
+      // ndjson payload reaches the wire byte-for-byte. A string with no `content-type` came
+      // from a body the document declared as JSON — `{ "type": "string" }` — and encoding it
+      // below is what puts the quotes the server parses for around it.
+      (typeof body === 'string' && headers.values.has('content-type')) ||
       // `Blob` is superset of `File`
       ((globalThis as any).Blob && body instanceof (globalThis as any).Blob) ||
       // `FormData` -> `multipart/form-data`
@@ -1023,6 +1045,7 @@ export class Warp {
   timeOff: TimeOff = new TimeOff(this);
   workers: Workers = new Workers(this);
   workplaces: Workplaces = new Workplaces(this);
+  i9Verifications: I9Verifications = new I9Verifications(this);
   webhooks: Webhooks = new Webhooks(this);
 }
 
@@ -1036,11 +1059,20 @@ Warp.Payroll = Payroll;
 Warp.TimeOff = TimeOff;
 Warp.Workers = Workers;
 Warp.Workplaces = Workplaces;
+Warp.I9Verifications = I9Verifications;
 Warp.Webhooks = Webhooks;
 
 export declare namespace Warp {
   export type RequestOptions = Opts.RequestOptions;
-  export { Benefits as Benefits };
+  export {
+    Benefits as Benefits,
+    type BenefitCreateDeductionResponse as BenefitCreateDeductionResponse,
+    type BenefitCreateRetirementPlanResponse as BenefitCreateRetirementPlanResponse,
+    type BenefitCreateDeductionParams as BenefitCreateDeductionParams,
+    type BenefitUpdateDeductionParams as BenefitUpdateDeductionParams,
+    type BenefitCreateRetirementPlanParams as BenefitCreateRetirementPlanParams,
+    type BenefitUpdateRetirementPlanParams as BenefitUpdateRetirementPlanParams,
+  };
 
   export {
     CustomFields as CustomFields,
@@ -1202,9 +1234,13 @@ export declare namespace Warp {
     type WorkerCreateEmployeeResponse as WorkerCreateEmployeeResponse,
     type WorkerCreateContractorResponse as WorkerCreateContractorResponse,
     type WorkerInviteResponse as WorkerInviteResponse,
+    type WorkerRevealSsnResponse as WorkerRevealSsnResponse,
+    type WorkerUpdateResponse as WorkerUpdateResponse,
     type WorkerListParams as WorkerListParams,
     type WorkerCreateEmployeeParams as WorkerCreateEmployeeParams,
     type WorkerCreateContractorParams as WorkerCreateContractorParams,
+    type WorkerRevealSsnParams as WorkerRevealSsnParams,
+    type WorkerUpdateParams as WorkerUpdateParams,
   };
 
   export {
@@ -1215,6 +1251,13 @@ export declare namespace Warp {
     type WorkplaceListParams as WorkplaceListParams,
     type WorkplaceCreateParams as WorkplaceCreateParams,
     type WorkplaceUpdateParams as WorkplaceUpdateParams,
+  };
+
+  export {
+    I9Verifications as I9Verifications,
+    type I9VerificationListResponse as I9VerificationListResponse,
+    type I9VerificationRetrieveResponse as I9VerificationRetrieveResponse,
+    type I9VerificationListParams as I9VerificationListParams,
   };
 
   export {
