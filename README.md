@@ -55,7 +55,7 @@ See the [API reference](./api.md) for every available operation.
 
 ## Signing In
 
-`warp login` signs you in and saves the credential for later commands, so it does not have to be passed every time. It goes into your operating system's credential store — the system keyring on Linux, Credential Manager on Windows — and falls back to a file in your state directory, readable only by you, when no such store is available. On macOS it is always that file, because the system's own tool accepts a password only on its command line, where other processes could read it. Either way it is filed under the base URL it was captured for, so a credential saved for one host is never sent to another. `warp logout` forgets it. A credential passed with a flag, or set in the environment, still takes precedence over a saved one.
+`warp login` signs you in and saves the credential for later commands, so it does not have to be passed every time. It goes into your operating system's credential store — the Keychain on macOS, the system keyring on Linux, Credential Manager on Windows — and falls back to a file in your state directory, readable only by you, when no such store is available. Either way it is filed under the base URL it was captured for, so a credential saved for one host is never sent to another. `warp logout` forgets it. A credential passed with a flag, or set in the environment, still takes precedence over a saved one.
 
 ```sh
 warp login
