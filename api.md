@@ -394,7 +394,7 @@ warp offers resend 'offr_1234' --api-key "$WARP_API_KEY"
 
 ## `PayRates`
 
-Read regular and additional worker pay rates.
+Read worker pay rates and create or delete effective-dated regular pay rates. No public pay-rate update operation is exposed.
 
 ### List Pay Rates
 
