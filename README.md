@@ -112,7 +112,7 @@ Pass credentials to the generated client constructor. Environment variables are 
 
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
-| `--api-key` | `string \| provider` | - | Credential for the apiKey scheme. Defaults to WARP_API_KEY. |
+| `--api-key` | `<value>` | - | Credential for the apiKey scheme. Defaults to WARP_API_KEY. |
 
 Declared schemes:
 

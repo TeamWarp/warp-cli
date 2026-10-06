@@ -3265,7 +3265,8 @@ const groups = [
   },
   {
     commandPath: ['pay-rates'],
-    description: 'Read regular and additional worker pay rates.',
+    description:
+      'Read worker pay rates and create or delete effective-dated regular pay rates. No public pay-rate update operation is exposed.',
   },
   {
     commandPath: ['payroll'],
