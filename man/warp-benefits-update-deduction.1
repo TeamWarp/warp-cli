@@ -1,31 +1,32 @@
 .\" File generated from our OpenAPI spec by Scalar. Do not edit.
-.TH "WARP\-WORKERS\-LIST" "1" "" "warp" "warp Manual"
+.TH "WARP\-BENEFITS\-UPDATE\-DEDUCTION" "1" "" "warp" "warp Manual"
 .SH "NAME"
-warp\-workers\-list \- List Workers
+warp\-benefits\-update\-deduction \- Update Benefit Deduction
 .SH "SYNOPSIS"
-.B warp workers list
-\fB\-\-limit\fR \fI<value>\fR [\fIoptions\fR]
+.B warp benefits update\-deduction
+\fIid\fR [\fIoptions\fR]
 .SH "DESCRIPTION"
-List all workers. Workers include anyone employed by the company, whether US or international, full\-time employees or contractors.
+Update a benefit deduction. The calculation type cannot change.
+.SH "ARGUMENTS"
+.TP
+\fIid\fR, \fB\-\-id\fR \fI<value>\fR
+The version\-group tag of a payroll benefit deduction. Stable across edits. Required. Can also be supplied as \-\-id.
 .SH "OPTIONS"
 .TP
-\fB\-\-limit\fR \fI<value>\fR
-The limit query parameter. Required.
+\fB\-\-name\fR \fI<value>\fR
+The name body parameter.
 .TP
-\fB\-\-after\-id\fR \fI<value>\fR
-The id of the worker.
+\fB\-\-calculation\fR \fI<value>\fR
+Both contributions must be supplied.
 .TP
-\fB\-\-before\-id\fR \fI<value>\fR
-The id of the worker.
+\fB\-\-recurrence\fR \fI<value>\fR
+The recurrence body parameter.
 .TP
-\fB\-\-statuses\fR \fI<json>\fR
-The statuses query parameter.
+\fB\-\-status\fR \fI<value>\fR
+The status body parameter.
 .TP
-\fB\-\-types\fR \fI<json>\fR
-The types query parameter.
-.TP
-\fB\-\-work\-email\fR \fI<value>\fR
-The work\-email query parameter.
+\fB\-\-effective\-end\-date\fR \fI<value>\fR
+The effective\-end\-date body parameter.
 .TP
 \fB\-\-base\-url\fR \fI<url>\fR
 Override the base URL for API requests.
@@ -60,7 +61,7 @@ API credential. Can also be set with the WARP_API_KEY environment variable.
 .PP
 .RS 4
 .nf
-warp workers list \-\-api\-key "$WARP_API_KEY" \-\-limit 'limit'
+warp benefits update\-deduction 'pbdg_1234' \-\-api\-key "$WARP_API_KEY"
 .fi
 .RE
 .SH "ENVIRONMENT"

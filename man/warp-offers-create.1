@@ -40,22 +40,22 @@ The position.title body parameter.
 The position.start\-date body parameter.
 .TP
 \fB\-\-position.country\fR \fI<value>\fR
-The position.country body parameter.
+Required when workerType is global_contractor. Ignored for employee and us_contractor offers.
 .TP
 \fB\-\-position.scope\-of\-work\fR \fI<value>\fR
 The position.scope\-of\-work body parameter.
 .TP
 \fB\-\-department\-id\fR \fI<value>\fR
-The department\-id body parameter.
+The unique public id of the department.
 .TP
 \fB\-\-workplace\-id\fR \fI<value>\fR
-The workplace\-id body parameter.
+Public workplace identifier.
 .TP
 \fB\-\-manager\-id\fR \fI<value>\fR
-The manager\-id body parameter.
+The id of the worker.
 .TP
 \fB\-\-level\-id\fR \fI<value>\fR
-The level\-id body parameter.
+The unique public id of the job level.
 .TP
 \fB\-\-worker\-type\fR \fI<value>\fR
 The worker\-type body parameter. Required.
@@ -141,7 +141,12 @@ API credential. Can also be set with the WARP_API_KEY environment variable.
 .PP
 .RS 4
 .nf
-warp offers create \-\-api\-key "$WARP_API_KEY" \-\-candidate '{"firstName":"x","lastName":"x","email":"john@joinwarp.com"}' \-\-position '{"title":"x","startDate":""}' \-\-worker\-type 'employee' \-\-compensation '{"payBasis":"year","payCurrency":"USD","payRate":0}'
+warp offers create \e
+  \-\-api\-key "$WARP_API_KEY" \e
+  \-\-candidate '{"firstName":"x","lastName":"x","email":"john@joinwarp.com"}' \e
+  \-\-position '{"title":"x","startDate":""}' \e
+  \-\-worker\-type 'employee' \e
+  \-\-compensation '{"payBasis":"year","payCurrency":"USD","payRate":1}'
 .fi
 .RE
 .SH "ENVIRONMENT"
