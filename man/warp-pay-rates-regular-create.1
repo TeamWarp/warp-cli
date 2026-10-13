@@ -1,0 +1,110 @@
+.\" File generated from our OpenAPI spec by Scalar. Do not edit.
+.TH "WARP\-PAY\-RATES\-REGULAR\-CREATE" "1" "" "warp" "warp Manual"
+.SH "NAME"
+warp\-pay\-rates\-regular\-create \- Create Regular Pay Rate
+.SH "SYNOPSIS"
+.B warp pay\-rates:regular create
+\fB\-\-worker\-id\fR \fI<value>\fR \fB\-\-type\fR \fI<value>\fR \fB\-\-currency\fR \fI<value>\fR \fB\-\-effective\-date\fR \fI<value>\fR [\fIoptions\fR]
+.SH "DESCRIPTION"
+Create an effective\-dated regular pay rate for a worker. The API key must have the compensation write scope corresponding to the worker classification. Fixed rates require a nonnegative integer amount in minor currency units, and writes accept only currencies with exactly two ISO 4217 minor\-unit digits. Amount is required except for variable pay, and requireHoursSubmission is required for hourly pay. An inactive worker’s rate must start on the worker start date; an active worker’s rate must start on or after that date. An existing future rate blocks creation except for a same\-start\-date replacement. Currency changes must begin at the current pay\-period start, or at the worker start date when the worker is inactive, is a pay\-as\-you\-go contractor, or has a future start date. Variable pay returns a null id and stores no fixed pay\-rate row. Replacing a fixed row on the same date emits separate deleted and created webhooks; delivery order is not guaranteed. Creating a fixed rate over variable pay emits only the created webhook because no fixed row existed to delete. There is no pay\-rate update event.
+.SH "OPTIONS"
+.TP
+\fB\-\-worker\-id\fR \fI<value>\fR
+The worker whose regular pay rate will be created. Required.
+.TP
+\fB\-\-type\fR \fI<value>\fR
+How the regular pay rate is measured. Salary represents an annual rate. Variable pay creates a dated boundary without a fixed pay\-rate row and returns a null id. Required.
+.TP
+\fB\-\-amount\fR \fI<number>\fR
+minor units — cents, e.g. 2345 for $23.45.
+.TP
+\fB\-\-currency\fR \fI<value>\fR
+The two\-decimal ISO 4217 payout currency of the pay rate. Required.
+.TP
+\fB\-\-effective\-date\fR \fI<value>\fR
+The effective\-date body parameter. Required.
+.TP
+\fB\-\-require\-hours\-submission\fR
+Whether the worker must submit hours. Required when type is hourly.
+.TP
+\fB\-\-description\fR \fI<value>\fR
+A human\-readable label for the pay rate.
+.TP
+\fB\-\-notes\fR \fI<value>\fR
+Optional internal notes about the pay rate change.
+.TP
+\fB\-\-base\-url\fR \fI<url>\fR
+Override the base URL for API requests.
+.TP
+\fB\-\-timeout\fR \fI<ms>\fR
+Request timeout in milliseconds.
+.TP
+\fB\-\-max\-retries\fR \fI<count>\fR
+Number of retries for retryable failures.
+.TP
+\fB\-\-format\fR \fI<format>\fR
+Output format: auto, json, jsonl, pretty, raw, toon, yaml.
+.TP
+\fB\-\-format\-error\fR \fI<format>\fR
+Error output format: auto, json, jsonl, pretty, raw, toon, yaml.
+.TP
+\fB\-\-transform\fR \fI<path>\fR
+Dot\-path transform for data output.
+.TP
+\fB\-\-transform\-error\fR \fI<path>\fR
+Dot\-path transform for error output.
+.TP
+\fB\-r\fR, \fB\-\-raw\-output\fR
+Print transformed string values without JSON quotes.
+.TP
+\fB\-\-debug\fR
+Enable SDK debug logging on standard error.
+.TP
+\fB\-\-api\-key\fR \fI<value>\fR
+API credential. Can also be set with the WARP_API_KEY environment variable.
+.SH "EXAMPLES"
+.PP
+.RS 4
+.nf
+warp pay\-rates:regular create \e
+  \-\-api\-key "$WARP_API_KEY" \e
+  \-\-worker\-id 'wrk_khac8380c2Lm' \e
+  \-\-type 'salary' \e
+  \-\-currency 'USD' \e
+  \-\-effective\-date ''
+.fi
+.RE
+.SH "ENVIRONMENT"
+.TP
+\fBWARP_API_KEY\fR
+Fallback for \-\-api\-key when the flag is not passed.
+.SH "EXIT STATUS"
+.TP
+\fB0\fR
+The command completed successfully.
+.TP
+\fB1\fR
+The request failed for an unclassified reason. Reported as error.
+.TP
+\fB2\fR
+The command was invoked incorrectly (missing or invalid arguments).
+.TP
+\fB10\fR
+Authentication or authorization failed (HTTP 401 or 403). Reported as auth\-failed.
+.TP
+\fB11\fR
+The requested resource does not exist (HTTP 404). Reported as not\-found.
+.TP
+\fB12\fR
+The request was rate limited (HTTP 429). Reported as rate\-limited.
+.TP
+\fB13\fR
+The request was rejected (any other HTTP 4xx). Reported as client\-error.
+.TP
+\fB14\fR
+The API failed to handle the request (HTTP 5xx). Reported as server\-error.
+.TP
+\fB15\fR
+The API could not be reached, or the request timed out. Reported as connection\-error.
+.SH "SEE ALSO"
+.BR warp (1)

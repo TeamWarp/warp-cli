@@ -40,18 +40,6 @@ Enable SDK debug logging on standard error.
 API credential. Can also be set with the WARP_API_KEY environment variable.
 .SH "COMMANDS"
 .TP
-\fBwarp benefits create\-deduction\fR
-Create Benefit Deduction. See warp\-benefits\-create\-deduction(1).
-.TP
-\fBwarp benefits update\-deduction\fR
-Update Benefit Deduction. See warp\-benefits\-update\-deduction(1).
-.TP
-\fBwarp benefits create\-retirement\-plan\fR
-Create Retirement Plan. See warp\-benefits\-create\-retirement\-plan(1).
-.TP
-\fBwarp benefits update\-retirement\-plan\fR
-Update Retirement Plan. See warp\-benefits\-update\-retirement\-plan(1).
-.TP
 \fBwarp benefits:health\-plans list\fR
 List Health Plans. See warp\-benefits\-health\-plans\-list(1).
 .TP
@@ -61,14 +49,29 @@ Get Health Plan. See warp\-benefits\-health\-plans\-get(1).
 \fBwarp benefits:retirement\-plans list\fR
 List Retirement Plans. See warp\-benefits\-retirement\-plans\-list(1).
 .TP
+\fBwarp benefits:retirement\-plans create\fR
+Create Retirement Plan. See warp\-benefits\-retirement\-plans\-create(1).
+.TP
 \fBwarp benefits:retirement\-plans get\fR
 Get Retirement Plan. See warp\-benefits\-retirement\-plans\-get(1).
+.TP
+\fBwarp benefits:retirement\-plans update\fR
+Update Retirement Plan. See warp\-benefits\-retirement\-plans\-update(1).
 .TP
 \fBwarp benefits:deductions list\fR
 List Benefit Deductions. See warp\-benefits\-deductions\-list(1).
 .TP
+\fBwarp benefits:deductions create\fR
+Create Benefit Deduction. See warp\-benefits\-deductions\-create(1).
+.TP
 \fBwarp benefits:deductions get\fR
 Get Benefit Deduction. See warp\-benefits\-deductions\-get(1).
+.TP
+\fBwarp benefits:deductions update\fR
+Update Benefit Deduction. See warp\-benefits\-deductions\-update(1).
+.TP
+\fBwarp company list\fR
+Get company. See warp\-company\-list(1).
 .TP
 \fBwarp custom\-fields list\fR
 List Fields. See warp\-custom\-fields\-list(1).
@@ -115,6 +118,18 @@ Create Department. See warp\-departments\-create(1).
 \fBwarp departments update\fR
 Update Department. See warp\-departments\-update(1).
 .TP
+\fBwarp i9\-verifications list\fR
+List I\-9 verifications. See warp\-i9\-verifications\-list(1).
+.TP
+\fBwarp i9\-verifications get\fR
+Get I\-9 verification. See warp\-i9\-verifications\-get(1).
+.TP
+\fBwarp bank\-accounts list\fR
+List bank accounts. See warp\-bank\-accounts\-list(1).
+.TP
+\fBwarp bank\-accounts get\fR
+Get bank account. See warp\-bank\-accounts\-get(1).
+.TP
 \fBwarp levels list\fR
 List Job Levels. See warp\-levels\-list(1).
 .TP
@@ -139,6 +154,12 @@ List Pay Rates. See warp\-pay\-rates\-list(1).
 \fBwarp pay\-rates get\fR
 Get Pay Rate. See warp\-pay\-rates\-get(1).
 .TP
+\fBwarp pay\-rates:regular create\fR
+Create Regular Pay Rate. See warp\-pay\-rates\-regular\-create(1).
+.TP
+\fBwarp pay\-rates:regular delete\fR
+Delete Future Regular Pay Rate. See warp\-pay\-rates\-regular\-delete(1).
+.TP
 \fBwarp payroll list\fR
 List Payrolls. See warp\-payroll\-list(1).
 .TP
@@ -148,8 +169,8 @@ Get Payroll. See warp\-payroll\-get(1).
 \fBwarp payroll list\-paychecks\fR
 List Paychecks. See warp\-payroll\-list\-paychecks(1).
 .TP
-\fBwarp payroll get\-paycheck\fR
-Get Paycheck. See warp\-payroll\-get\-paycheck(1).
+\fBwarp payroll retrieve\-paycheck\fR
+Get Paycheck. See warp\-payroll\-retrieve\-paycheck(1).
 .TP
 \fBwarp time\-off list\-assignments\fR
 List Time Off Assignments. See warp\-time\-off\-list\-assignments(1).
@@ -166,14 +187,20 @@ List Time Off Policies. See warp\-time\-off\-policies\-list(1).
 \fBwarp time\-off:policies get\fR
 Get Time Off Policy. See warp\-time\-off\-policies\-get(1).
 .TP
-\fBwarp workers list\fR
-List Workers. See warp\-workers\-list(1).
+\fBwarp workers update\fR
+Update Worker. See warp\-workers\-update(1).
 .TP
 \fBwarp workers get\fR
 Get Worker. See warp\-workers\-get(1).
 .TP
 \fBwarp workers delete\fR
 Delete Worker. See warp\-workers\-delete(1).
+.TP
+\fBwarp workers reveal\-ssn\fR
+Reveal Worker SSNs. See warp\-workers\-reveal\-ssn(1).
+.TP
+\fBwarp workers list\fR
+List Workers. See warp\-workers\-list(1).
 .TP
 \fBwarp workers create\-employee\fR
 Create Employee. See warp\-workers\-create\-employee(1).
@@ -184,12 +211,6 @@ Create Contractor. See warp\-workers\-create\-contractor(1).
 \fBwarp workers invite\fR
 Invite Worker. See warp\-workers\-invite(1).
 .TP
-\fBwarp workers reveal\-ssn\fR
-Reveal Worker SSNs. See warp\-workers\-reveal\-ssn(1).
-.TP
-\fBwarp workers update\fR
-Update Worker. See warp\-workers\-update(1).
-.TP
 \fBwarp workplaces list\fR
 List Workplaces. See warp\-workplaces\-list(1).
 .TP
@@ -198,12 +219,6 @@ Create Workplace. See warp\-workplaces\-create(1).
 .TP
 \fBwarp workplaces update\fR
 Update Workplace. See warp\-workplaces\-update(1).
-.TP
-\fBwarp i9\-verifications list\fR
-List I\-9 verifications. See warp\-i9\-verifications\-list(1).
-.TP
-\fBwarp i9\-verifications retrieve\fR
-Get I\-9 verification. See warp\-i9\-verifications\-retrieve(1).
 .TP
 \fBwarp completion\fR
 Print a shell completion script. See warp\-completion(1).
