@@ -57,6 +57,9 @@ Complete reference of every operation, grouped by resource. See [the README](./R
   - [`PayRates Regular`](#payrates-regular)
     - [Create Regular Pay Rate](#create-regular-pay-rate)
     - [Delete Future Regular Pay Rate](#delete-future-regular-pay-rate)
+- [`PaySplits`](#paysplits)
+  - [List pay splits](#list-pay-splits)
+  - [Get pay split](#get-pay-split)
 - [`Payroll`](#payroll)
   - [List Payrolls](#list-payrolls)
   - [Get Payroll](#get-payroll)
@@ -498,6 +501,26 @@ warp pay-rates:regular delete \
   --effective-date ''
 ```
 
+## `PaySplits`
+
+Read stored pay-split configurations without changing banking instructions or guaranteeing payroll execution.
+
+### List pay splits
+
+List stored pay-split configurations, newest first. Defaults to active. Requires workers banking and profile read scopes plus the applicable US or global compensation read scope.
+
+```sh
+warp pay-splits list --api-key "$WARP_API_KEY" --limit 'limit' --statuses '["active"]'
+```
+
+### Get pay split
+
+Get a stored pay-split configuration, including retained inactive configurations. Requires workers banking and profile read scopes plus the applicable US or global compensation read scope.
+
+```sh
+warp pay-splits get 'nps_1234' --api-key "$WARP_API_KEY"
+```
+
 ## `Payroll`
 
 Read-only payrolls and worker-level payroll calculations. Paycheck endpoints use one consistent resource for every worker type; payment execution is outside this API.
@@ -531,7 +554,7 @@ warp payroll list-paychecks --api-key "$WARP_API_KEY" --limit 'limit'
 Get a paycheck by id. All worker types use the same paycheck schema. Categories that do not apply to a worker are represented by zero-valued totals and empty line-item arrays. For example, a US 1099 contractor with no applicable payroll taxes returns zero `workerTaxes` and `employerTaxes` totals and an empty `taxes` array. Missing, foreign, unauthorized, or unavailable paychecks return 404.
 
 ```sh
-warp payroll retrieve-paycheck 'pyc_1234' --api-key "$WARP_API_KEY"
+warp payroll get-paycheck 'pyc_1234' --api-key "$WARP_API_KEY"
 ```
 
 ## `TimeOff`

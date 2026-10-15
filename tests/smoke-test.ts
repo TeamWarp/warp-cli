@@ -779,6 +779,44 @@ const cases: { operation: string; method: string; path: string; label?: string; 
   {
     operation: 'list',
     method: 'GET',
+    path: '/v1/pay_splits',
+    label: 'required params',
+    args: ['pay-splits', 'list', '--limit', 'limit', '--statuses', '["active"]'],
+  },
+
+  {
+    operation: 'list',
+    method: 'GET',
+    path: '/v1/pay_splits',
+    label: 'all params',
+    args: [
+      'pay-splits',
+      'list',
+      '--limit',
+      'limit',
+      '--after-id',
+      'nps_1234',
+      '--before-id',
+      'nps_1234',
+      '--worker-ids',
+      '["workerId"]',
+      '--types',
+      '["percentage"]',
+      '--statuses',
+      '["active"]',
+    ],
+  },
+
+  {
+    operation: 'get',
+    method: 'GET',
+    path: '/v1/pay_splits/{id}',
+    args: ['pay-splits', 'get', 'nps_1234'],
+  },
+
+  {
+    operation: 'list',
+    method: 'GET',
     path: '/v1/payrolls',
     label: 'required params',
     args: ['payroll', 'list', '--limit', 'limit'],
@@ -870,10 +908,10 @@ const cases: { operation: string; method: string; path: string; label?: string; 
   },
 
   {
-    operation: 'retrievePaycheck',
+    operation: 'getPaycheck',
     method: 'GET',
     path: '/v1/paychecks/{id}',
-    args: ['payroll', 'retrieve-paycheck', 'pyc_1234'],
+    args: ['payroll', 'get-paycheck', 'pyc_1234'],
   },
 
   {

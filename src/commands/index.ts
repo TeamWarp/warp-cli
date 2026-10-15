@@ -2006,6 +2006,101 @@ const commands = [
     ],
   },
   {
+    resourcePath: ['paySplits'],
+    commandPath: ['pay-splits', 'list'],
+    methodName: 'list',
+    summary: 'List pay splits',
+    description:
+      'List stored pay-split configurations, newest first. Defaults to active. Requires workers banking and profile read scopes plus the applicable US or global compensation read scope.',
+    transport: 'http',
+    iterable: false,
+    callShape: 'params',
+    authClientKeyRequirements: [['apiKey']],
+    positional: [],
+    flags: [
+      {
+        name: 'limit',
+        optionKey: 'limit',
+        paramKey: 'limit',
+        location: 'query',
+        required: true,
+        valueKind: 'string',
+      },
+      {
+        name: 'after-id',
+        optionKey: 'afterId',
+        paramKey: 'afterId',
+        location: 'query',
+        required: false,
+        description: 'The tag of the bank account pay split.',
+        valueKind: 'string',
+      },
+      {
+        name: 'before-id',
+        optionKey: 'beforeId',
+        paramKey: 'beforeId',
+        location: 'query',
+        required: false,
+        description: 'The tag of the bank account pay split.',
+        valueKind: 'string',
+      },
+      {
+        name: 'worker-ids',
+        optionKey: 'workerIds',
+        paramKey: 'workerIds',
+        location: 'query',
+        required: false,
+        description:
+          'Worker IDs as repeated parameters. Omit for all workers. Unknown or foreign IDs contribute no matches.',
+        valueKind: 'array',
+      },
+      {
+        name: 'types',
+        optionKey: 'types',
+        paramKey: 'types',
+        location: 'query',
+        required: false,
+        description: 'Configuration types as repeated parameters. Omit for all types.',
+        valueKind: 'array',
+      },
+      {
+        name: 'statuses',
+        optionKey: 'statuses',
+        paramKey: 'statuses',
+        location: 'query',
+        required: true,
+        description:
+          'Statuses as repeated parameters. Defaults to active; explicitly request inactive or both to include retained configurations.',
+        valueKind: 'array',
+      },
+    ],
+  },
+  {
+    resourcePath: ['paySplits'],
+    commandPath: ['pay-splits', 'get'],
+    methodName: 'get',
+    summary: 'Get pay split',
+    description:
+      'Get a stored pay-split configuration, including retained inactive configurations. Requires workers banking and profile read scopes plus the applicable US or global compensation read scope.',
+    transport: 'http',
+    iterable: false,
+    callShape: 'options',
+    authClientKeyRequirements: [['apiKey']],
+    positional: [
+      {
+        name: 'id',
+        optionKey: 'id',
+        paramKey: 'id',
+        location: 'path',
+        required: true,
+        description: 'The tag of the bank account pay split.',
+        valueKind: 'string',
+        flagName: 'id',
+      },
+    ],
+    flags: [],
+  },
+  {
     resourcePath: ['payroll'],
     commandPath: ['payroll', 'list'],
     methodName: 'list',
@@ -2283,8 +2378,8 @@ const commands = [
   },
   {
     resourcePath: ['payroll'],
-    commandPath: ['payroll', 'retrieve-paycheck'],
-    methodName: 'retrievePaycheck',
+    commandPath: ['payroll', 'get-paycheck'],
+    methodName: 'getPaycheck',
     summary: 'Get Paycheck',
     description:
       'Get a paycheck by id. All worker types use the same paycheck schema. Categories that do not apply to a worker are represented by zero-valued totals and empty line-item arrays. For example, a US 1099 contractor with no applicable payroll taxes returns zero `workerTaxes` and `employerTaxes` totals and an empty `taxes` array. Missing, foreign, unauthorized, or unavailable paychecks return 404.',
@@ -3499,6 +3594,11 @@ const groups = [
     commandPath: ['pay-rates:regular'],
     description:
       'Read worker pay rates and create or delete effective-dated regular pay rates. No public pay-rate update operation is exposed.',
+  },
+  {
+    commandPath: ['pay-splits'],
+    description:
+      'Read stored pay-split configurations without changing banking instructions or guaranteeing payroll execution.',
   },
   {
     commandPath: ['payroll'],
