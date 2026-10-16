@@ -47,7 +47,7 @@ export class Offers extends APIResource {
    *   compensation: {
    *     payBasis: 'year',
    *     payCurrency: 'USD',
-   *     payRate: 0,
+   *     payRate: 1,
    *   },
    * });
    * ```
@@ -120,7 +120,7 @@ export class Offers extends APIResource {
  */
 export interface PublicMoneyAmount {
   /**
-   * Amount in the currency base unit, e.g. cents for USD.
+   * minor units — cents, e.g. 2345 for $23.45
    * @minimum 0
    */
   amount: number;
@@ -195,16 +195,19 @@ export interface PublicMoneyAmount {
 export interface OfferListParams {
   limit: string | null;
   /**
+   * The tag of the offer.
    * @pattern ^offr_
    */
   afterId?: string | null;
   /**
+   * The tag of the offer.
    * @pattern ^offr_
    */
   beforeId?: string | null;
-  statuses?: Array<'draft' | 'sent' | 'accepted' | 'void'> | null;
+  statuses?: Array<'draft' | 'sent' | 'accepted' | 'void' | 'expired'> | null;
   workerTypes?: Array<'employee' | 'us_contractor' | 'global_contractor'> | null;
   /**
+   * An email with a reasonably valid regex (based on RFC 5321 atext characters)
    * @format email
    */
   candidateEmail?: string | null;
@@ -223,7 +226,7 @@ export namespace OfferListResponse {
      * @pattern ^offr_
      */
     id: string;
-    status: 'draft' | 'sent' | 'accepted' | 'void';
+    status: 'draft' | 'sent' | 'accepted' | 'void' | 'expired';
     workerType: 'employee' | 'us_contractor' | 'global_contractor';
     candidate: Data.Candidate;
     position: Data.Position;
@@ -242,6 +245,14 @@ export namespace OfferListResponse {
     expirationTime: string | null;
     lastViewedAt: string | null;
     createdAt: string;
+    /**
+     * The reason the offer was voided. Null for offers that have not been voided.
+     */
+    voidReason?: 'replaced' | 'candidate_declined' | 'other' | null;
+    /**
+     * Additional notes explaining why the offer was voided.
+     */
+    voidNotes?: string | null;
     /**
      * The offer's job level, or null if unassigned. Omitted when job levels are not enabled.
      */
@@ -556,7 +567,13 @@ export namespace OfferListResponse {
 
     export interface Compensation {
       basePay: Compensation.BasePay;
+      /**
+       * A monetary amount with its currency and server-formatted display value.
+       */
       signOnBonus: PublicMoneyAmount | null;
+      /**
+       * A monetary amount with its currency and server-formatted display value.
+       */
       relocationBonus: PublicMoneyAmount | null;
       stock: Compensation.Stock | null;
     }
@@ -569,6 +586,9 @@ export namespace OfferListResponse {
         amount: PublicMoneyAmount;
         basis: 'year' | 'month' | 'week' | 'hour' | 'variable';
         type: 'fixed' | 'pay_as_you_go' | null;
+        /**
+         * A monetary amount with its currency and server-formatted display value.
+         */
         variableRate: PublicMoneyAmount | null;
       }
 
@@ -607,18 +627,22 @@ export interface OfferCreateParams {
   workerType: 'employee' | 'us_contractor' | 'global_contractor';
   compensation: OfferCreateParams.Compensation;
   /**
+   * The unique public id of the department
    * @pattern ^dpt_
    */
   departmentId?: string | null;
   /**
+   * Public workplace identifier
    * @pattern ^wkp_
    */
   workplaceId?: string | null;
   /**
+   * The id of the worker.
    * @pattern ^wrk_
    */
   managerId?: string | null;
   /**
+   * The unique public id of the job level
    * @pattern ^jlvl_
    */
   levelId?: string | null;
@@ -663,6 +687,9 @@ export namespace OfferCreateParams {
      * @pattern ^\d{4}-\d{2}-\d{2}$
      */
     startDate: string;
+    /**
+     * Required when workerType is global_contractor. Ignored for employee and us_contractor offers.
+     */
     country?:
       | 'AD'
       | 'AE'
@@ -982,10 +1009,22 @@ export namespace OfferCreateParams {
       | 'SAR'
       | 'XAF'
       | 'PEN';
+    /**
+     * @exclusiveMinimum 0
+     */
     payRate: number;
     payType?: 'fixed' | 'pay_as_you_go' | null;
+    /**
+     * @exclusiveMinimum 0
+     */
     payVariableRate?: number | null;
+    /**
+     * @exclusiveMinimum 0
+     */
     signOnBonus?: number | null;
+    /**
+     * @exclusiveMinimum 0
+     */
     relocationBonus?: number | null;
     /**
      * @minimum 0
@@ -1014,7 +1053,7 @@ export interface OfferCreateResponse {
    * @pattern ^offr_
    */
   id: string;
-  status: 'draft' | 'sent' | 'accepted' | 'void';
+  status: 'draft' | 'sent' | 'accepted' | 'void' | 'expired';
   workerType: 'employee' | 'us_contractor' | 'global_contractor';
   candidate: OfferCreateResponse.Candidate;
   position: OfferCreateResponse.Position;
@@ -1033,6 +1072,14 @@ export interface OfferCreateResponse {
   expirationTime: string | null;
   lastViewedAt: string | null;
   createdAt: string;
+  /**
+   * The reason the offer was voided. Null for offers that have not been voided.
+   */
+  voidReason?: 'replaced' | 'candidate_declined' | 'other' | null;
+  /**
+   * Additional notes explaining why the offer was voided.
+   */
+  voidNotes?: string | null;
   /**
    * The offer's job level, or null if unassigned. Omitted when job levels are not enabled.
    */
@@ -1347,7 +1394,13 @@ export namespace OfferCreateResponse {
 
   export interface Compensation {
     basePay: Compensation.BasePay;
+    /**
+     * A monetary amount with its currency and server-formatted display value.
+     */
     signOnBonus: PublicMoneyAmount | null;
+    /**
+     * A monetary amount with its currency and server-formatted display value.
+     */
     relocationBonus: PublicMoneyAmount | null;
     stock: Compensation.Stock | null;
   }
@@ -1360,6 +1413,9 @@ export namespace OfferCreateResponse {
       amount: PublicMoneyAmount;
       basis: 'year' | 'month' | 'week' | 'hour' | 'variable';
       type: 'fixed' | 'pay_as_you_go' | null;
+      /**
+       * A monetary amount with its currency and server-formatted display value.
+       */
       variableRate: PublicMoneyAmount | null;
     }
 
@@ -1402,7 +1458,7 @@ export interface OfferVoidResponse {
    * @pattern ^offr_
    */
   id: string;
-  status: 'draft' | 'sent' | 'accepted' | 'void';
+  status: 'draft' | 'sent' | 'accepted' | 'void' | 'expired';
   workerType: 'employee' | 'us_contractor' | 'global_contractor';
   candidate: OfferVoidResponse.Candidate;
   position: OfferVoidResponse.Position;
@@ -1421,6 +1477,14 @@ export interface OfferVoidResponse {
   expirationTime: string | null;
   lastViewedAt: string | null;
   createdAt: string;
+  /**
+   * The reason the offer was voided. Null for offers that have not been voided.
+   */
+  voidReason?: 'replaced' | 'candidate_declined' | 'other' | null;
+  /**
+   * Additional notes explaining why the offer was voided.
+   */
+  voidNotes?: string | null;
   /**
    * The offer's job level, or null if unassigned. Omitted when job levels are not enabled.
    */
@@ -1735,7 +1799,13 @@ export namespace OfferVoidResponse {
 
   export interface Compensation {
     basePay: Compensation.BasePay;
+    /**
+     * A monetary amount with its currency and server-formatted display value.
+     */
     signOnBonus: PublicMoneyAmount | null;
+    /**
+     * A monetary amount with its currency and server-formatted display value.
+     */
     relocationBonus: PublicMoneyAmount | null;
     stock: Compensation.Stock | null;
   }
@@ -1748,6 +1818,9 @@ export namespace OfferVoidResponse {
       amount: PublicMoneyAmount;
       basis: 'year' | 'month' | 'week' | 'hour' | 'variable';
       type: 'fixed' | 'pay_as_you_go' | null;
+      /**
+       * A monetary amount with its currency and server-formatted display value.
+       */
       variableRate: PublicMoneyAmount | null;
     }
 
@@ -1789,7 +1862,7 @@ export interface OfferExtendDeadlineResponse {
    * @pattern ^offr_
    */
   id: string;
-  status: 'draft' | 'sent' | 'accepted' | 'void';
+  status: 'draft' | 'sent' | 'accepted' | 'void' | 'expired';
   workerType: 'employee' | 'us_contractor' | 'global_contractor';
   candidate: OfferExtendDeadlineResponse.Candidate;
   position: OfferExtendDeadlineResponse.Position;
@@ -1808,6 +1881,14 @@ export interface OfferExtendDeadlineResponse {
   expirationTime: string | null;
   lastViewedAt: string | null;
   createdAt: string;
+  /**
+   * The reason the offer was voided. Null for offers that have not been voided.
+   */
+  voidReason?: 'replaced' | 'candidate_declined' | 'other' | null;
+  /**
+   * Additional notes explaining why the offer was voided.
+   */
+  voidNotes?: string | null;
   /**
    * The offer's job level, or null if unassigned. Omitted when job levels are not enabled.
    */
@@ -2122,7 +2203,13 @@ export namespace OfferExtendDeadlineResponse {
 
   export interface Compensation {
     basePay: Compensation.BasePay;
+    /**
+     * A monetary amount with its currency and server-formatted display value.
+     */
     signOnBonus: PublicMoneyAmount | null;
+    /**
+     * A monetary amount with its currency and server-formatted display value.
+     */
     relocationBonus: PublicMoneyAmount | null;
     stock: Compensation.Stock | null;
   }
@@ -2135,6 +2222,9 @@ export namespace OfferExtendDeadlineResponse {
       amount: PublicMoneyAmount;
       basis: 'year' | 'month' | 'week' | 'hour' | 'variable';
       type: 'fixed' | 'pay_as_you_go' | null;
+      /**
+       * A monetary amount with its currency and server-formatted display value.
+       */
       variableRate: PublicMoneyAmount | null;
     }
 
@@ -2172,7 +2262,7 @@ export interface OfferResendResponse {
    * @pattern ^offr_
    */
   id: string;
-  status: 'draft' | 'sent' | 'accepted' | 'void';
+  status: 'draft' | 'sent' | 'accepted' | 'void' | 'expired';
   workerType: 'employee' | 'us_contractor' | 'global_contractor';
   candidate: OfferResendResponse.Candidate;
   position: OfferResendResponse.Position;
@@ -2191,6 +2281,14 @@ export interface OfferResendResponse {
   expirationTime: string | null;
   lastViewedAt: string | null;
   createdAt: string;
+  /**
+   * The reason the offer was voided. Null for offers that have not been voided.
+   */
+  voidReason?: 'replaced' | 'candidate_declined' | 'other' | null;
+  /**
+   * Additional notes explaining why the offer was voided.
+   */
+  voidNotes?: string | null;
   /**
    * The offer's job level, or null if unassigned. Omitted when job levels are not enabled.
    */
@@ -2505,7 +2603,13 @@ export namespace OfferResendResponse {
 
   export interface Compensation {
     basePay: Compensation.BasePay;
+    /**
+     * A monetary amount with its currency and server-formatted display value.
+     */
     signOnBonus: PublicMoneyAmount | null;
+    /**
+     * A monetary amount with its currency and server-formatted display value.
+     */
     relocationBonus: PublicMoneyAmount | null;
     stock: Compensation.Stock | null;
   }
@@ -2518,6 +2622,9 @@ export namespace OfferResendResponse {
       amount: PublicMoneyAmount;
       basis: 'year' | 'month' | 'week' | 'hour' | 'variable';
       type: 'fixed' | 'pay_as_you_go' | null;
+      /**
+       * A monetary amount with its currency and server-formatted display value.
+       */
       variableRate: PublicMoneyAmount | null;
     }
 
