@@ -2734,6 +2734,14 @@ const commands = [
         valueKind: 'string',
       },
       {
+        name: 't-shirt-size',
+        optionKey: 'tShirtSize',
+        paramKey: 'tShirtSize',
+        location: 'body',
+        required: false,
+        valueKind: 'string',
+      },
+      {
         name: 'email',
         optionKey: 'email',
         paramKey: 'email',

@@ -1,8 +1,8 @@
-# warp
+# Warp
 
-This library provides convenient access to the warp REST API from the command line.
+This library provides convenient access to the Warp REST API from the command line.
 
-The full API of this library can be found in [api.md](./api.md).
+The REST API documentation can be found on [docs.warp.co](https://docs.warp.co). The full API of this library can be found in [api.md](./api.md).
 
 <br />
 

@@ -1070,6 +1070,8 @@ const cases: { operation: string; method: string; path: string; label?: string; 
       'x',
       '--preferred-name',
       '',
+      '--t-shirt-size',
+      'XS',
       '--email',
       'john@joinwarp.com',
       '--work-email',
