@@ -1,6 +1,8 @@
 // File generated from our OpenAPI spec by Scalar. See README.md for details.
 
 export { Benefits } from './benefits/benefits';
+export { Company } from './company';
+export type { PublicCompany, PublicCompanyAddress, PublicCompanyBusinessType } from './company';
 export { CustomFields } from './custom-fields';
 export type {
   PublicCustomFieldValueOutput,
@@ -39,6 +41,14 @@ export type {
   DepartmentUpdateParams,
   DepartmentUpdateResponse,
 } from './departments';
+export { I9Verifications } from './i9-verifications';
+export type {
+  PublicI9Verification,
+  I9VerificationListParams,
+  I9VerificationListResponse,
+} from './i9-verifications';
+export { BankAccounts } from './bank-accounts';
+export type { PublicBankAccount, BankAccountListParams, BankAccountListResponse } from './bank-accounts';
 export { Levels } from './levels';
 export type { LevelListResponse } from './levels';
 export { Offers } from './offers';
@@ -54,14 +64,30 @@ export type {
   OfferExtendDeadlineResponse,
   OfferResendResponse,
 } from './offers';
-export { PayRates } from './pay-rates';
+export { PayRates } from './pay-rates/pay-rates';
 export type {
   PublicPayRate,
   PublicPayRateType,
   PublicPayRatePer,
   PayRateListParams,
   PayRateListResponse,
-} from './pay-rates';
+} from './pay-rates/pay-rates';
+export { PaySplits } from './pay-splits';
+export type {
+  PublicPaySplit,
+  PublicPercentagePaySplit,
+  PublicAmountPaySplit,
+  PublicPaySplitStatus,
+  PublicPaySplitPercentageAllocation,
+  PublicPaySplitAmountAllocation,
+  PublicBankAccountReference,
+  PublicPaySplitPercentage,
+  PublicPaySplitAllocation,
+  PublicPaySplitFixedAllocation,
+  PublicPaySplitRemainderAllocation,
+  PaySplitListParams,
+  PaySplitListResponse,
+} from './pay-splits';
 export { Payroll } from './payroll';
 export type {
   PublicPayrollList,
@@ -140,8 +166,11 @@ export type {
 } from './time-off/time-off';
 export { Workers } from './workers';
 export type {
+  PublicWorkerAddress,
+  PublicWorkerManager,
   PublicWorkerCompensation,
   PublicWorkerCustomField,
+  PublicWorkerSsn,
   PublicTextWorkerCustomField,
   PublicNumberWorkerCustomField,
   PublicDateWorkerCustomField,
@@ -150,9 +179,13 @@ export type {
   PublicPercentageWorkerCustomField,
   PublicSelectWorkerCustomField,
   PublicMultiSelectWorkerCustomField,
+  WorkerUpdateParams,
+  WorkerUpdateResponse,
+  WorkerGetResponse,
+  WorkerRevealSsnParams,
+  WorkerRevealSsnResponse,
   WorkerListParams,
   WorkerListResponse,
-  WorkerGetResponse,
   WorkerCreateEmployeeParams,
   WorkerCreateEmployeeResponse,
   WorkerCreateContractorParams,
@@ -170,23 +203,27 @@ export type {
 } from './workplaces';
 export { Webhooks } from './webhooks';
 export type {
-  OfferAcceptedWebhookEvent,
+  TimeOffRequestCreatedWebhookEvent,
+  TimeOffRequestReviewedWebhookEvent,
+  TimeOffRequestDeletedWebhookEvent,
+  TimeOffBalanceAdjustedWebhookEvent,
+  WorkerCreatedWebhookEvent,
+  WorkerUpdatedWebhookEvent,
+  WorkerDeletedWebhookEvent,
+  WorkerInviteSentWebhookEvent,
+  WorkerInviteAcceptedWebhookEvent,
+  WorkerOnboardingCompletedWebhookEvent,
+  WorkerOffboardingStartedWebhookEvent,
+  WorkerOffboardedWebhookEvent,
+  WorkerReactivatedWebhookEvent,
   OfferCreatedWebhookEvent,
+  OfferSignatureRequestedWebhookEvent,
   OfferSentWebhookEvent,
   OfferViewedWebhookEvent,
+  OfferAcceptedWebhookEvent,
   OfferVoidedWebhookEvent,
-  TimeOffBalanceAdjustedWebhookEvent,
-  TimeOffRequestCreatedWebhookEvent,
-  TimeOffRequestDeletedWebhookEvent,
-  TimeOffRequestReviewedWebhookEvent,
-  WorkerCreatedWebhookEvent,
-  WorkerDeletedWebhookEvent,
-  WorkerInviteAcceptedWebhookEvent,
-  WorkerInviteSentWebhookEvent,
-  WorkerOffboardedWebhookEvent,
-  WorkerOffboardingStartedWebhookEvent,
-  WorkerOnboardingCompletedWebhookEvent,
-  WorkerReactivatedWebhookEvent,
-  WorkerUpdatedWebhookEvent,
+  OfferExpiredWebhookEvent,
+  PayRateCreatedWebhookEvent,
+  PayRateDeletedWebhookEvent,
   ParsedWebhookEvent,
 } from './webhooks';

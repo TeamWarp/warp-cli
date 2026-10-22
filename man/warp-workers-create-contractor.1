@@ -22,10 +22,10 @@ The last\-name body parameter. Required.
 The contractor's role or job title. Required.
 .TP
 \fB\-\-business\-name\fR \fI<value>\fR
-The business\-name body parameter.
+Required when entityType is "business". The legal name of the contractor's business.
 .TP
 \fB\-\-scope\-of\-work\fR \fI<value>\fR
-The scope\-of\-work body parameter.
+A description of the work the contractor will perform.
 .TP
 \fB\-\-start\-date\fR \fI<value>\fR
 The start\-date body parameter. Required.
@@ -34,7 +34,7 @@ The start\-date body parameter. Required.
 Personal email address. The invite will be sent here. Required.
 .TP
 \fB\-\-work\-email\fR \fI<value>\fR
-The work\-email body parameter.
+Company\-issued email address, if applicable.
 .TP
 \fB\-\-department\-id\fR \fI<value>\fR
 The department to assign this contractor to. Required.
@@ -49,7 +49,7 @@ The worker id of this contractor's direct manager. Required.
 The work\-country body parameter. Required.
 .TP
 \fB\-\-compensation\fR \fI<json>\fR
-The compensation body parameter.
+The contractor's pay rate. Omit if you'd like to pay on\-demand or via invoicing.
 .TP
 \fB\-\-compensation.currency\fR \fI<value>\fR
 The compensation.currency body parameter.
@@ -61,7 +61,7 @@ The compensation.amount body parameter.
 The pay period for the compensation amount.
 .TP
 \fB\-\-pay\-schedule\fR \fI<value>\fR
-The pay\-schedule body parameter.
+The contractor's pay schedule. Must be a pay schedule that the company has configured.
 .TP
 \fB\-\-base\-url\fR \fI<url>\fR
 Override the base URL for API requests.
@@ -96,7 +96,17 @@ API credential. Can also be set with the WARP_API_KEY environment variable.
 .PP
 .RS 4
 .nf
-warp workers create\-contractor \-\-api\-key "$WARP_API_KEY" \-\-entity\-type 'individual' \-\-first\-name 'Melissa' \-\-last\-name 'Jones' \-\-position 'Design Consultant' \-\-start\-date 'startDate' \-\-email 'john@joinwarp.com' \-\-department\-id 'dpt_1234' \-\-manager\-id 'wrk_1234' \-\-work\-country 'AD'
+warp workers create\-contractor \e
+  \-\-api\-key "$WARP_API_KEY" \e
+  \-\-entity\-type 'individual' \e
+  \-\-first\-name 'Melissa' \e
+  \-\-last\-name 'Jones' \e
+  \-\-position 'Design Consultant' \e
+  \-\-start\-date '' \e
+  \-\-email 'john@joinwarp.com' \e
+  \-\-department\-id 'dpt_1234' \e
+  \-\-manager\-id 'wrk_1234' \e
+  \-\-work\-country 'AD'
 .fi
 .RE
 .SH "ENVIRONMENT"

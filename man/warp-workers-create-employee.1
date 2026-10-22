@@ -25,13 +25,13 @@ The start\-date body parameter. Required.
 Personal email address. The invite will be sent here. Required.
 .TP
 \fB\-\-work\-email\fR \fI<value>\fR
-The work\-email body parameter.
+Company\-issued email address, if applicable.
 .TP
 \fB\-\-require\-i9\fR
-The require\-i9 body parameter.
+Whether the employee is required to complete I\-9 work authorization. Set to false if the employee has already been verified off\-platform. Defaults to true.
 .TP
 \fB\-\-state\-registration\fR \fI<value>\fR
-The state\-registration body parameter.
+How state tax registration is handled for this employee's work state. Required when hiring in a state where your company doesn't have an existing registration. Use 'self_managed' if you've already registered in this state, or 'warp_managed' for Warp to handle registration on your behalf.
 .TP
 \fB\-\-department\-id\fR \fI<value>\fR
 The department to assign this employee to. Required.
@@ -43,7 +43,7 @@ The job level to assign this employee to, or null to leave unassigned. Omit this
 The worker id of this employee's direct manager. Required.
 .TP
 \fB\-\-stock\-options\fR \fI<value>\fR
-The stock\-options body parameter.
+Number of stock options granted to this employee.
 .TP
 \fB\-\-work\-location\fR \fI<value>\fR
 Where the employee will work. Either an existing company workplace or a remote US state. Required.
@@ -58,7 +58,7 @@ The compensation.amount body parameter.
 Whether the amount is per hour or per year.
 .TP
 \fB\-\-pay\-schedule\fR \fI<value>\fR
-The pay\-schedule body parameter.
+The employee's pay schedule. Must be a pay schedule that the company has configured.
 .TP
 \fB\-\-base\-url\fR \fI<url>\fR
 Override the base URL for API requests.
@@ -93,7 +93,17 @@ API credential. Can also be set with the WARP_API_KEY environment variable.
 .PP
 .RS 4
 .nf
-warp workers create\-employee \-\-api\-key "$WARP_API_KEY" \-\-first\-name 'Jonathan' \-\-last\-name 'Galt' \-\-position 'Software Engineer' \-\-start\-date 'startDate' \-\-email 'john@joinwarp.com' \-\-department\-id 'dpt_1234' \-\-manager\-id 'wrk_1234' \-\-work\-location '{"type":"office","workplaceId":"wkp_1234"}' \-\-compensation '{"amount":0,"per":"hour"}'
+warp workers create\-employee \e
+  \-\-api\-key "$WARP_API_KEY" \e
+  \-\-first\-name 'Jonathan' \e
+  \-\-last\-name 'Galt' \e
+  \-\-position 'Software Engineer' \e
+  \-\-start\-date '' \e
+  \-\-email 'john@joinwarp.com' \e
+  \-\-department\-id 'dpt_1234' \e
+  \-\-manager\-id 'wrk_1234' \e
+  \-\-work\-location '{"type":"office","workplaceId":"wkp_1234"}' \e
+  \-\-compensation '{"amount":1,"per":"hour"}'
 .fi
 .RE
 .SH "ENVIRONMENT"

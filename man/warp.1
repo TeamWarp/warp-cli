@@ -49,14 +49,29 @@ Get Health Plan. See warp\-benefits\-health\-plans\-get(1).
 \fBwarp benefits:retirement\-plans list\fR
 List Retirement Plans. See warp\-benefits\-retirement\-plans\-list(1).
 .TP
+\fBwarp benefits:retirement\-plans create\fR
+Create Retirement Plan. See warp\-benefits\-retirement\-plans\-create(1).
+.TP
 \fBwarp benefits:retirement\-plans get\fR
 Get Retirement Plan. See warp\-benefits\-retirement\-plans\-get(1).
+.TP
+\fBwarp benefits:retirement\-plans update\fR
+Update Retirement Plan. See warp\-benefits\-retirement\-plans\-update(1).
 .TP
 \fBwarp benefits:deductions list\fR
 List Benefit Deductions. See warp\-benefits\-deductions\-list(1).
 .TP
+\fBwarp benefits:deductions create\fR
+Create Benefit Deduction. See warp\-benefits\-deductions\-create(1).
+.TP
 \fBwarp benefits:deductions get\fR
 Get Benefit Deduction. See warp\-benefits\-deductions\-get(1).
+.TP
+\fBwarp benefits:deductions update\fR
+Update Benefit Deduction. See warp\-benefits\-deductions\-update(1).
+.TP
+\fBwarp company list\fR
+Get company. See warp\-company\-list(1).
 .TP
 \fBwarp custom\-fields list\fR
 List Fields. See warp\-custom\-fields\-list(1).
@@ -103,6 +118,18 @@ Create Department. See warp\-departments\-create(1).
 \fBwarp departments update\fR
 Update Department. See warp\-departments\-update(1).
 .TP
+\fBwarp i9\-verifications list\fR
+List I\-9 verifications. See warp\-i9\-verifications\-list(1).
+.TP
+\fBwarp i9\-verifications get\fR
+Get I\-9 verification. See warp\-i9\-verifications\-get(1).
+.TP
+\fBwarp bank\-accounts list\fR
+List bank accounts. See warp\-bank\-accounts\-list(1).
+.TP
+\fBwarp bank\-accounts get\fR
+Get bank account. See warp\-bank\-accounts\-get(1).
+.TP
 \fBwarp levels list\fR
 List Job Levels. See warp\-levels\-list(1).
 .TP
@@ -126,6 +153,18 @@ List Pay Rates. See warp\-pay\-rates\-list(1).
 .TP
 \fBwarp pay\-rates get\fR
 Get Pay Rate. See warp\-pay\-rates\-get(1).
+.TP
+\fBwarp pay\-rates:regular create\fR
+Create Regular Pay Rate. See warp\-pay\-rates\-regular\-create(1).
+.TP
+\fBwarp pay\-rates:regular delete\fR
+Delete Future Regular Pay Rate. See warp\-pay\-rates\-regular\-delete(1).
+.TP
+\fBwarp pay\-splits list\fR
+List pay splits. See warp\-pay\-splits\-list(1).
+.TP
+\fBwarp pay\-splits get\fR
+Get pay split. See warp\-pay\-splits\-get(1).
 .TP
 \fBwarp payroll list\fR
 List Payrolls. See warp\-payroll\-list(1).
@@ -154,14 +193,20 @@ List Time Off Policies. See warp\-time\-off\-policies\-list(1).
 \fBwarp time\-off:policies get\fR
 Get Time Off Policy. See warp\-time\-off\-policies\-get(1).
 .TP
-\fBwarp workers list\fR
-List Workers. See warp\-workers\-list(1).
+\fBwarp workers update\fR
+Update Worker. See warp\-workers\-update(1).
 .TP
 \fBwarp workers get\fR
 Get Worker. See warp\-workers\-get(1).
 .TP
 \fBwarp workers delete\fR
 Delete Worker. See warp\-workers\-delete(1).
+.TP
+\fBwarp workers reveal\-ssn\fR
+Reveal Worker SSNs. See warp\-workers\-reveal\-ssn(1).
+.TP
+\fBwarp workers list\fR
+List Workers. See warp\-workers\-list(1).
 .TP
 \fBwarp workers create\-employee\fR
 Create Employee. See warp\-workers\-create\-employee(1).
@@ -183,6 +228,23 @@ Update Workplace. See warp\-workplaces\-update(1).
 .TP
 \fBwarp completion\fR
 Print a shell completion script. See warp\-completion(1).
+.TP
+\fBwarp login\fR
+Sign in and save credentials for later commands. See warp\-login(1).
+.TP
+\fBwarp logout\fR
+Forget saved credentials. See warp\-logout(1).
+.SH "FILE ARGUMENTS"
+Any command flag or credential reads its value from a file when the value begins with @. A flag shown with a <path> value uploads a file and takes its path with or without the @. The global options above are read exactly as written.
+.PP
+.RS 4
+.nf
+warp COMMAND \-\-FLAG @./body.json    # contents of the file
+warp COMMAND \-\-FLAG @file://./n.txt # always sent as text
+warp COMMAND \-\-FLAG @data://./l.png # always base64\-encoded
+warp COMMAND \-\-FLAG '\e@literal'    # a value that begins with @
+.fi
+.RE
 .SH "SHELL COMPLETION"
 warp completion <shell> prints a completion script for bash, zsh, and fish. Load it from your shell startup file:
 .PP
