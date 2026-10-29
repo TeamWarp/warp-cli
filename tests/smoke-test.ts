@@ -841,7 +841,7 @@ const cases: { operation: string; method: string; path: string; label?: string; 
       '--subtypes',
       '["regular"]',
       '--statuses',
-      '["draft"]',
+      '["preparing"]',
       '--pay-frequencies',
       '["weekly"]',
       '--payday-on-or-after',
