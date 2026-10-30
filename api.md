@@ -667,7 +667,7 @@ warp workers create-employee \
   --department-id 'dpt_1234' \
   --manager-id 'wrk_1234' \
   --work-location '{"type":"office","workplaceId":"wkp_1234"}' \
-  --compensation '{"amount":1,"per":"hour"}'
+  --compensation '{"amount":85000,"per":"hour"}'
 ```
 
 ### Create Contractor

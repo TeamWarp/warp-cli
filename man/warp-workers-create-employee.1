@@ -52,7 +52,7 @@ Where the employee will work. Either an existing company workplace or a remote U
 The employee's base compensation. Required.
 .TP
 \fB\-\-compensation.amount\fR \fI<number>\fR
-The compensation.amount body parameter.
+The pay amount. Interpreted based on the "per" field.
 .TP
 \fB\-\-compensation.per\fR \fI<value>\fR
 Whether the amount is per hour or per year.
@@ -103,7 +103,7 @@ warp workers create\-employee \e
   \-\-department\-id 'dpt_1234' \e
   \-\-manager\-id 'wrk_1234' \e
   \-\-work\-location '{"type":"office","workplaceId":"wkp_1234"}' \e
-  \-\-compensation '{"amount":1,"per":"hour"}'
+  \-\-compensation '{"amount":85000,"per":"hour"}'
 .fi
 .RE
 .SH "ENVIRONMENT"
