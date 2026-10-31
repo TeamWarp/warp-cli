@@ -1,5 +1,203 @@
 # Changelog
 
+## [0.5.0](https://github.com/TeamWarp/warp-cli/compare/v0.4.0...v0.5.0) (2026-10-31)
+
+
+### ⚠ BREAKING CHANGES
+
+* **api:** Property `bank_account_not_found_encoded.id` type changed from `string` to `string | string | string`.
+* **api:** 11 breaking changes to the SDK surface.
+    - Schema `public_payroll_status` shape changed.
+    - Property `public_funding_payroll_totals.netPay` type changed from `public_currency_money_amount_1` to `public_currency_money_amount_1 | null`.
+    - Property `public_payroll_detail_totals.netPay` type changed from `public_currency_money_amount_1` to `public_currency_money_amount_1 | null`.
+    - Property `public_paycheck_summary_currency_totals.netPay` type changed from `public_currency_money_amount_12` to `public_currency_money_amount_12 | null`.
+    - Property `public_paycheck_currency_totals.netPay` type changed from `public_currency_money_amount_12` to `public_currency_money_amount_12 | null`.
+    - Added required property `public_paycheck_earning.sourceRate`.
+    - Property `public_paycheck_reimbursement.amount` type changed from `public_payroll_money_amount_1` to `public_payroll_money_amount_2`.
+    - Property `public_paycheck_deduction.amount` type changed from `public_payroll_money_amount_2` to `public_payroll_money_amount_3`.
+    - Property `public_paycheck_benefit.workerContribution` type changed from `public_payroll_money_amount_3` to `public_payroll_money_amount_4`.
+    - Property `public_paycheck_benefit.employerContribution` type changed from `public_payroll_money_amount_4` to `public_payroll_money_amount_5`.
+    - Property `public_paycheck_tax.amount` type changed from `public_payroll_money_amount_5` to `public_payroll_money_amount_6`.
+* **api:** Property `public_paycheck_worker.workerType` shape changed (`enum(us_w2 | us_1099 | global_contractor | …)`).
+* **api:** Added required property `public_paycheck_detail.yearToDate`.
+* **api:** Removed operation `payroll.retrievePaycheck` (`GET /v1/paychecks/{id}`).
+* **api:** 28 breaking changes to the SDK surface.
+    - Removed operation `benefits.createDeduction` (`POST /v1/benefits/deductions`).
+    - Removed operation `benefits.updateDeduction` (`PATCH /v1/benefits/deductions/{id}`).
+    - Removed operation `benefits.createRetirementPlan` (`POST /v1/benefits/retirement_plans`).
+    - Removed operation `benefits.updateRetirementPlan` (`PATCH /v1/benefits/retirement_plans/{id}`).
+    - Removed operation `payroll.getPaycheck` (`GET /v1/paychecks/{id}`).
+    - Removed operation `i9Verifications.retrieve` (`GET /v1/i9_verifications/{id}`).
+    - Removed webhook `TimeOffRequestCreated` (`time_off.request.created`).
+    - Removed webhook `TimeOffRequestReviewed` (`time_off.request.reviewed`).
+    - Removed webhook `TimeOffRequestDeleted` (`time_off.request.deleted`).
+    - Removed webhook `TimeOffBalanceAdjusted` (`time_off.balance.adjusted`).
+    - Removed webhook `WorkerCreated` (`worker.created`).
+    - Removed webhook `WorkerUpdated` (`worker.updated`).
+    - Removed webhook `WorkerDeleted` (`worker.deleted`).
+    - Removed webhook `WorkerInviteSent` (`worker.invite_sent`).
+    - Removed webhook `WorkerInviteAccepted` (`worker.invite_accepted`).
+    - Removed webhook `WorkerOnboardingCompleted` (`worker.onboarding_completed`).
+    - Removed webhook `WorkerOffboardingStarted` (`worker.offboarding_started`).
+    - Removed webhook `WorkerOffboarded` (`worker.offboarded`).
+    - Removed webhook `WorkerReactivated` (`worker.reactivated`).
+    - Removed webhook `OfferCreated` (`offer.created`).
+    - Removed webhook `OfferSignatureRequested` (`offer.signature_requested`).
+    - Removed webhook `OfferSent` (`offer.sent`).
+    - Removed webhook `OfferViewed` (`offer.viewed`).
+    - Removed webhook `OfferAccepted` (`offer.accepted`).
+    - Removed webhook `OfferVoided` (`offer.voided`).
+    - Removed webhook `OfferExpired` (`offer.expired`).
+    - Removed webhook `PayRateCreated` (`pay_rate.created`).
+    - Removed webhook `PayRateDeleted` (`pay_rate.deleted`).
+* **api:** 55 breaking changes to the SDK surface.
+    - Property `public_worker_compensation.per` type changed from `public_pay_rate_per & string` to `public_pay_rate_per & unknown`.
+    - Property `public_payroll_summary.type` type changed from `public_payroll_type & string` to `public_payroll_type & unknown`.
+    - Property `public_payroll_summary.subtype` type changed from `public_payroll_subtype & string` to `public_payroll_subtype & unknown`.
+    - Property `public_payroll_summary.status` type changed from `public_payroll_status & string` to `public_payroll_status & unknown`.
+    - Property `public_payroll_summary.fundingCurrency` type changed from `public_payroll_currency & string` to `public_payroll_currency & unknown`.
+    - Property `public_payroll_summary.payPeriod` type changed from `public_pay_period & string` to `public_pay_period & unknown`.
+    - Property `public_payroll_summary.totals` type changed from `public_funding_payroll_totals & string` to `public_funding_payroll_totals & unknown`.
+    - Property `public_payroll_detail.type` type changed from `public_payroll_type & string` to `public_payroll_type & unknown`.
+    - Property `public_payroll_detail.subtype` type changed from `public_payroll_subtype & string` to `public_payroll_subtype & unknown`.
+    - Property `public_payroll_detail.status` type changed from `public_payroll_status & string` to `public_payroll_status & unknown`.
+    - Property `public_payroll_detail.fundingCurrency` type changed from `public_payroll_currency & string` to `public_payroll_currency & unknown`.
+    - Property `public_payroll_detail.payPeriod` type changed from `public_pay_period & string` to `public_pay_period & unknown`.
+    - Property `public_payroll_detail.totals` type changed from `public_payroll_detail_totals & string` to `public_payroll_detail_totals & unknown`.
+    - Property `public_payroll_detail.fundingMethod` type changed from `public_payroll_funding_method & string` to `public_payroll_funding_method & unknown`.
+    - Property `public_paycheck_payroll.type` type changed from `public_payroll_type & string` to `public_payroll_type & unknown`.
+    - Property `public_paycheck_payroll.subtype` type changed from `public_payroll_subtype & string` to `public_payroll_subtype & unknown`.
+    - Property `public_paycheck_payroll.status` type changed from `public_payroll_status & string` to `public_payroll_status & unknown`.
+    - Property `public_paycheck_payroll.fundingCurrency` type changed from `public_payroll_currency & string` to `public_payroll_currency & unknown`.
+    - Property `public_paycheck_payroll.payPeriod` type changed from `public_pay_period & string` to `public_pay_period & unknown`.
+    - Property `public_paycheck_summary_currency_totals.currency` type changed from `public_payroll_currency & string` to `public_payroll_currency & unknown`.
+    - Property `public_paycheck_summary_totals.byCurrency` type changed from `string` to `unknown`.
+    - Property `public_paycheck_summary_totals.inFundingCurrency` type changed from `public_paycheck_summary_currency_totals & string` to `public_paycheck_summary_currency_totals & unknown`.
+    - Property `public_paycheck_summary.payroll` type changed from `public_paycheck_payroll & string` to `public_paycheck_payroll & unknown`.
+    - Property `public_paycheck_summary.worker` type changed from `public_paycheck_worker & string` to `public_paycheck_worker & unknown`.
+    - Property `public_paycheck_summary.status` type changed from `public_paycheck_status & string` to `public_paycheck_status & unknown`.
+    - Property `public_paycheck_summary.paymentMethod` type changed from `public_paycheck_payment_method & string` to `public_paycheck_payment_method & unknown`.
+    - Property `public_paycheck_summary.totals` type changed from `public_paycheck_summary_totals & string` to `public_paycheck_summary_totals & unknown`.
+    - Property `public_paycheck_list.data` type changed from `string` to `unknown`.
+    - Property `public_paycheck_currency_totals.currency` type changed from `public_payroll_currency & string` to `public_payroll_currency & unknown`.
+    - Property `public_paycheck_detail_totals.byCurrency` type changed from `string` to `unknown`.
+    - Property `public_paycheck_detail_totals.inFundingCurrency` type changed from `public_paycheck_currency_totals & string` to `public_paycheck_currency_totals & unknown`.
+    - Property `public_exchange_rate.fromCurrency` type changed from `public_payroll_currency & string` to `public_payroll_currency & unknown`.
+    - Property `public_exchange_rate.toCurrency` type changed from `public_payroll_currency & string` to `public_payroll_currency & unknown`.
+    - Property `public_exchange_rate.rate` type changed from `public_exchange_rate_value & string` to `public_exchange_rate_value & unknown`.
+    - Property `public_payroll_money_amount.currency` type changed from `public_payroll_currency & string` to `public_payroll_currency & unknown`.
+    - Property `public_hourly_rate.amount` type changed from `public_hourly_rate_amount & string` to `public_hourly_rate_amount & unknown`.
+    - Property `public_hourly_rate.currency` type changed from `public_payroll_currency & string` to `public_payroll_currency & unknown`.
+    - Property `public_payroll_money_amount_1.currency` type changed from `public_payroll_currency & string` to `public_payroll_currency & unknown`.
+    - Property `public_payroll_money_amount_2.currency` type changed from `public_payroll_currency & string` to `public_payroll_currency & unknown`.
+    - Property `public_paycheck_deduction.taxTreatment` type changed from `public_paycheck_deduction_tax_treatment & string` to `public_paycheck_deduction_tax_treatment & unknown`.
+    - Property `public_payroll_money_amount_3.currency` type changed from `public_payroll_currency & string` to `public_payroll_currency & unknown`.
+    - Property `public_payroll_money_amount_4.currency` type changed from `public_payroll_currency & string` to `public_payroll_currency & unknown`.
+    - Property `public_payroll_money_amount_5.currency` type changed from `public_payroll_currency & string` to `public_payroll_currency & unknown`.
+    - Property `public_paycheck_tax.payer` type changed from `public_tax_payer & string` to `public_tax_payer & unknown`.
+    - Property `public_paycheck_detail.payroll` type changed from `public_paycheck_payroll & string` to `public_paycheck_payroll & unknown`.
+    - Property `public_paycheck_detail.worker` type changed from `public_paycheck_worker & string` to `public_paycheck_worker & unknown`.
+    - Property `public_paycheck_detail.status` type changed from `public_paycheck_status & string` to `public_paycheck_status & unknown`.
+    - Property `public_paycheck_detail.paymentMethod` type changed from `public_paycheck_payment_method & string` to `public_paycheck_payment_method & unknown`.
+    - Property `public_paycheck_detail.totals` type changed from `public_paycheck_detail_totals & string` to `public_paycheck_detail_totals & unknown`.
+    - Property `public_paycheck_detail.exchangeRates` type changed from `string` to `unknown`.
+    - Property `public_paycheck_detail.earnings` type changed from `string` to `unknown`.
+    - Property `public_paycheck_detail.reimbursements` type changed from `string` to `unknown`.
+    - Property `public_paycheck_detail.deductions` type changed from `string` to `unknown`.
+    - Property `public_paycheck_detail.benefits` type changed from `string` to `unknown`.
+    - Property `public_paycheck_detail.taxes` type changed from `string` to `unknown`.
+* **api:** Property `public_paycheck_earning.type` type changed from `enum(hourly | salaried | overtime | …)` to `enum(hourly | salaried | overtime | …)`.
+* **api:** Property `public_health_plan.type` type changed from `enum(medical | dental | vision | …)` to `enum(medical | dental | vision | …)`.
+* **api:** Property `invalid_offer_status_error_encoded.status` type changed from `enum(draft | sent | accepted | …)` to `enum(draft | sent | accepted | …)`.
+* **api:** Property `missing_required_company_permissions_encoded.requiredPermissions` type changed from `Array<object>` to `Array<object>`.
+* **api:** Property `public_paycheck_worker.workerType` type changed from `enum(us_w2 | us_1099 | global_contractor)` to `enum(us_w2 | us_1099 | global_contractor | …)`.
+* **api:** 2 breaking changes to the SDK surface.
+    - Added required property `public_i9_verification.worker`.
+    - Removed required property `public_i9_verification.workerId`.
+* **api:** 5 breaking changes to the SDK surface.
+    - Removed operation `i9Verifications.list` (`GET /v1/i9-verifications`).
+    - Removed operation `i9Verifications.retrieve` (`GET /v1/i9-verifications/{id}`).
+    - Removed schema `public_i9_verification`.
+    - Removed schema `invalid_i9_verification_query_encoded`.
+    - Removed schema `i9_verification_not_found_encoded`.
+* **api:** 34 breaking changes to the SDK surface.
+    - Property `public_worker_compensation.amount` type changed from `integer` to `integer`.
+    - Property `public_money_amount.amount` type changed from `integer` to `integer`.
+    - Property `public_pay_rate.amount` type changed from `integer` to `integer`.
+    - Property `public_currency_money_amount.amount` type changed from `integer` to `integer`.
+    - Property `public_currency_money_amount_1.amount` type changed from `integer` to `integer`.
+    - Property `public_currency_money_amount_2.amount` type changed from `integer` to `integer`.
+    - Property `public_currency_money_amount_3.amount` type changed from `integer` to `integer`.
+    - Property `public_currency_money_amount_4.amount` type changed from `integer` to `integer`.
+    - Property `public_currency_money_amount_5.amount` type changed from `integer` to `integer`.
+    - Property `public_currency_money_amount_6.amount` type changed from `integer` to `integer`.
+    - Property `public_currency_money_amount_7.amount` type changed from `integer` to `integer`.
+    - Property `public_currency_money_amount_8.amount` type changed from `integer` to `integer`.
+    - Property `public_currency_money_amount_9.amount` type changed from `integer` to `integer`.
+    - Property `public_currency_money_amount_10.amount` type changed from `integer` to `integer`.
+    - Property `public_payroll_summary.paycheckCount` type changed from `integer` to `integer`.
+    - Property `public_currency_money_amount_11.amount` type changed from `integer` to `integer`.
+    - Property `public_payroll_detail.paycheckCount` type changed from `integer` to `integer`.
+    - Property `public_currency_money_amount_12.amount` type changed from `integer` to `integer`.
+    - Property `public_currency_money_amount_13.amount` type changed from `integer` to `integer`.
+    - Property `public_currency_money_amount_14.amount` type changed from `integer` to `integer`.
+    - Property `public_currency_money_amount_15.amount` type changed from `integer` to `integer`.
+    - Property `public_currency_money_amount_16.amount` type changed from `integer` to `integer`.
+    - Property `public_currency_money_amount_17.amount` type changed from `integer` to `integer`.
+    - Property `public_currency_money_amount_18.amount` type changed from `integer` to `integer`.
+    - Property `public_currency_money_amount_19.amount` type changed from `integer` to `integer`.
+    - Property `public_currency_money_amount_20.amount` type changed from `integer` to `integer`.
+    - Property `public_payroll_money_amount.amount` type changed from `integer` to `integer`.
+    - Property `public_paycheck_earning.hours` type changed from `number | null` to `number | null`.
+    - Property `public_payroll_money_amount_1.amount` type changed from `integer` to `integer`.
+    - Property `public_payroll_money_amount_2.amount` type changed from `integer` to `integer`.
+    - Property `public_payroll_money_amount_3.amount` type changed from `integer` to `integer`.
+    - Property `public_payroll_money_amount_4.amount` type changed from `integer` to `integer`.
+    - Property `public_payroll_money_amount_5.amount` type changed from `integer` to `integer`.
+    - Property `public_paycheck_detail.reportedHours` type changed from `number | null` to `number | null`.
+
+### Features
+
+* **api:** add body field tShirtSize on workers.update (+2 more changes) ([a6f4863](https://github.com/TeamWarp/warp-cli/commit/a6f48633d64c620705dad7530fb765e54472b46c))
+* **api:** add operation benefits.createDeduction (+29 more changes) ([40a3a5d](https://github.com/TeamWarp/warp-cli/commit/40a3a5da7c90c6aea697c3e1979ddbb0a2180277))
+* **api:** add operation i9Verifications.list (+4 more changes) ([a623c28](https://github.com/TeamWarp/warp-cli/commit/a623c28e68170016f5f105a01342cb98bce26ec4))
+* **api:** add operation workers.revealSsn (+7 more changes) ([5077b15](https://github.com/TeamWarp/warp-cli/commit/5077b15d9f4c29ada2efa751adbb9d45b659c84a))
+* **api:** add property public_i9_verification.worker (+1 more change) ([180f086](https://github.com/TeamWarp/warp-cli/commit/180f08662c485dd3cb3cccead30aa14640ff84bc))
+* **api:** add schema benefit_plan_input (+1 more change) ([0822f14](https://github.com/TeamWarp/warp-cli/commit/0822f14e54feb7415dd093fc2baa3436d85b0643))
+* **api:** add schema public_worker_manager ([bf1c243](https://github.com/TeamWarp/warp-cli/commit/bf1c243bbcddf6cbb51e40248d2865308bbf4f77))
+* **api:** add webhook OfferSignatureRequested (+1 more change) ([d33ccad](https://github.com/TeamWarp/warp-cli/commit/d33ccad3ef8fdebd170e9defea399b259b345593))
+* **api:** add webhook PayRateCreated (+2 more changes) ([64355cb](https://github.com/TeamWarp/warp-cli/commit/64355cbd99e3d2400aef6396d2aeacbc08125658))
+* **api:** remove operation benefits.createDeduction (+60 more changes) ([b515bc5](https://github.com/TeamWarp/warp-cli/commit/b515bc5ddffa76220f29c8f723e9a26c3e2bad60))
+* **api:** remove operation i9Verifications.list (+4 more changes) ([a23ae11](https://github.com/TeamWarp/warp-cli/commit/a23ae11ab732150d69be1aaf9c0a5bc7c3cba707))
+* **api:** remove operation payroll.retrievePaycheck (+17 more changes) ([3a9fbb1](https://github.com/TeamWarp/warp-cli/commit/3a9fbb144ea0f970073fad228b9302edf797ad2b))
+* **api:** update property bank_account_not_found_encoded.id ([45c4113](https://github.com/TeamWarp/warp-cli/commit/45c41135be8a1c98bf81ff5a3e8efccd3289e99a))
+* **api:** update property public_health_plan.type ([26bf764](https://github.com/TeamWarp/warp-cli/commit/26bf76410056b2c9cd98cced62c174bc93c874de))
+* **api:** update property public_paycheck_earning.type ([06a85dd](https://github.com/TeamWarp/warp-cli/commit/06a85dd5b68d40a4eea7dafc5807d741a075bd7b))
+* **api:** update schema public_payroll_status (+12 more changes) ([937d9d0](https://github.com/TeamWarp/warp-cli/commit/937d9d0b2ab830c6717988902b01ba9086c8315f))
+* **api:** update SDK surface (1 change) ([7e484ea](https://github.com/TeamWarp/warp-cli/commit/7e484ea32f46499503fd156ddd62be06a01802ca))
+* **api:** update SDK surface (2 changes) ([13c16c5](https://github.com/TeamWarp/warp-cli/commit/13c16c5ae64200a476e6a0831cbdadd6952de670))
+* **api:** update SDK surface (2 changes) ([367a484](https://github.com/TeamWarp/warp-cli/commit/367a48422ca138a617a9d90dbaea0c48cdfcc558))
+* **api:** update SDK surface (2 changes) ([38c7d62](https://github.com/TeamWarp/warp-cli/commit/38c7d62f04bdefbe204d54fdfad2fa36dc88a382))
+* **api:** update SDK surface (2 changes) ([9f85c70](https://github.com/TeamWarp/warp-cli/commit/9f85c702c8cfdef89a41c8aae7ca58201cb22115))
+* **api:** update SDK surface (35 changes) ([a32b783](https://github.com/TeamWarp/warp-cli/commit/a32b7838bf68a37c2a1322cd475417c787fa40e1))
+* **api:** update SDK surface (56 changes) ([6037081](https://github.com/TeamWarp/warp-cli/commit/603708171a0a5187cfbdf510858d8830df2d791e))
+* **api:** update SDK surface (9 changes) ([85da07d](https://github.com/TeamWarp/warp-cli/commit/85da07d84dc0a63d39fdbbbb370342914528f359))
+
+
+### Chores
+
+* **api:** regenerate SDK ([e0ae9da](https://github.com/TeamWarp/warp-cli/commit/e0ae9da28d2745d2caa3d870dd4462f785d102fb))
+* **api:** regenerate SDK ([9e3aef6](https://github.com/TeamWarp/warp-cli/commit/9e3aef69ce8f1e57ce305af1fdf73876eb1d5728))
+* **api:** regenerate SDK ([24a3d09](https://github.com/TeamWarp/warp-cli/commit/24a3d09c0f364fec123f589802f4fe03dc53740d))
+* **api:** regenerate SDK ([7908ff1](https://github.com/TeamWarp/warp-cli/commit/7908ff11ad7eedc21483aac7d0abd280bf6e1e36))
+* **api:** update generated SDK content ([2e02765](https://github.com/TeamWarp/warp-cli/commit/2e027652397aa1277d63a8aef4e3e7b4487936e9))
+* **api:** update generated SDK content ([01816d3](https://github.com/TeamWarp/warp-cli/commit/01816d3a66e18de18beee9ffde11a0887b523ab2))
+* **api:** update generated SDK content ([bd5d9ac](https://github.com/TeamWarp/warp-cli/commit/bd5d9acd3daa6d065f528cf15184888783ef591c))
+* **api:** update generated SDK content ([da584e3](https://github.com/TeamWarp/warp-cli/commit/da584e371add293327a4d1a816bf3fe1ab4183f5))
+* **api:** update generated SDK content ([295009c](https://github.com/TeamWarp/warp-cli/commit/295009c389cf61b2b910b7eea6fa6d8f46091247))
+* **api:** update generated SDK content ([bc9ae2b](https://github.com/TeamWarp/warp-cli/commit/bc9ae2b902fa00f4b78726954b0c18ee04777789))
+* **api:** update generated SDK content ([4837186](https://github.com/TeamWarp/warp-cli/commit/4837186e864f65b09bdc91d15e1583b26eeb50d4))
+
 ## [0.4.0](https://github.com/TeamWarp/warp-cli/compare/v0.3.0...v0.4.0) (2026-09-03)
 
 
