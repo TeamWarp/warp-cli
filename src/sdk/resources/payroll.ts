@@ -11,7 +11,7 @@ export class Payroll extends APIResource {
    *
    * @param {PayrollListParams} query - The parameters to send with the request.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
-   * @returns {APIPromise<PublicPayrollList>} A cursor-paginated page of payroll summaries.
+   * @returns {APIPromise<PublicPayrollList>}
    *
    * @example
    * ```ts
@@ -29,7 +29,7 @@ export class Payroll extends APIResource {
    *
    * @param {string} id - The payroll ID.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
-   * @returns {APIPromise<PublicPayrollDetail>} A payroll run with funding and lifecycle details. Every amount in totals is expressed in fundingCurrency; line-derived categories are converted and rounded per paycheck before aggregation, while netPay remains provider-authoritative.
+   * @returns {APIPromise<PublicPayrollDetail>}
    *
    * @example
    * ```ts
@@ -45,7 +45,7 @@ export class Payroll extends APIResource {
    *
    * @param {PayrollListPaychecksParams} query - The parameters to send with the request.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
-   * @returns {APIPromise<PublicPaycheckList>} A cursor-paginated page of paycheck summaries.
+   * @returns {APIPromise<PublicPaycheckList>}
    *
    * @example
    * ```ts
@@ -63,7 +63,7 @@ export class Payroll extends APIResource {
    *
    * @param {string} id - The paycheck ID.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
-   * @returns {APIPromise<PublicPaycheckDetail>} A paycheck with currency-specific calculation lines, totals grouped by currency, and authoritative parent-payroll funding-currency totals. Source currencies for expenses, benefits, or other inputs are outside this payroll-calculation resource.
+   * @returns {APIPromise<PublicPaycheckDetail>}
    *
    * @example
    * ```ts
@@ -93,15 +93,18 @@ export interface PublicPayrollDetail {
    * @pattern ^pay_
    */
   id: string;
-  type: PublicPayrollType & string;
-  subtype: PublicPayrollSubtype & string;
-  status: PublicPayrollStatus & string;
-  fundingCurrency: PublicPayrollCurrency & string;
+  type: PublicPayrollType & unknown;
+  subtype: PublicPayrollSubtype & unknown;
+  status: PublicPayrollStatus & unknown;
+  fundingCurrency: PublicPayrollCurrency & unknown;
   /**
    * @pattern ^\d{4}-\d{2}-\d{2}$
    */
   payday: string;
-  payPeriod: PublicPayPeriod & string;
+  payPeriod: PublicPayPeriod & unknown;
+  /**
+   * The cadence at which workers are paid.
+   */
   payFrequency: PublicPayFrequency | null;
   description: string | null;
   approvalDeadline: string | null;
@@ -109,8 +112,8 @@ export interface PublicPayrollDetail {
    * @minimum 0
    */
   paycheckCount: number;
-  totals: PublicPayrollDetailTotals & string;
-  fundingMethod: PublicPayrollFundingMethod & string;
+  totals: PublicPayrollDetailTotals & unknown;
+  fundingMethod: PublicPayrollFundingMethod & unknown;
   reopenDeadline: string | null;
   timeline: PublicPayrollTimeline & unknown;
 }
@@ -121,7 +124,7 @@ export interface PublicPayrollDetail {
 export interface PublicPaycheckList {
   hasMore: boolean;
   count: number;
-  data: string;
+  data: unknown;
 }
 
 /**
@@ -133,26 +136,151 @@ export interface PublicPaycheckDetail {
    * @pattern ^pyc_
    */
   id: string;
-  payroll: PublicPaycheckPayroll & string;
-  worker: PublicPaycheckWorker & string;
-  status: PublicPaycheckStatus & string;
+  payroll: PublicPaycheckPayroll & unknown;
+  worker: PublicPaycheckWorker & unknown;
+  status: PublicPaycheckStatus & unknown;
   /**
    * @pattern ^\d{4}-\d{2}-\d{2}$
    */
   payday: string;
-  paymentMethod: PublicPaycheckPaymentMethod & string;
-  totals: PublicPaycheckDetailTotals & string;
+  paymentMethod: PublicPaycheckPaymentMethod & unknown;
+  totals: PublicPaycheckDetailTotals & unknown;
+  /**
+   * Employee YTD amounts for the selected US W-2 paystub. Groups with a nonzero current or YTD amount are included, including historical-only groups with no amount on this paycheck.
+   */
+  yearToDate: PublicPaycheckDetail.YearToDate | null;
   description: string | null;
-  exchangeRates: string;
+  exchangeRates: unknown;
   /**
    * @minimum 0
    */
   reportedHours: number | null;
-  earnings: string;
-  reimbursements: string;
-  deductions: string;
-  benefits: string;
-  taxes: string;
+  earnings: unknown;
+  reimbursements: unknown;
+  deductions: unknown;
+  benefits: unknown;
+  taxes: unknown;
+}
+
+export namespace PublicPaycheckDetail {
+  export interface YearToDate {
+    /**
+     * @pattern ^\d{4}-\d{2}-\d{2}$
+     */
+    asOfDate: string;
+    /**
+     * Provider-reported employee YTD category totals, in signed USD cents.
+     */
+    totals: YearToDate.Totals;
+    earnings: unknown;
+    taxes: unknown;
+    benefits: unknown;
+    reimbursements: unknown;
+    deductions: unknown;
+  }
+
+  export namespace YearToDate {
+    export interface Totals {
+      /**
+       * Gross earnings year-to-date for the selected paystub.
+       */
+      grossPay: Totals.GrossPay;
+      /**
+       * Net pay year-to-date for the selected paystub.
+       */
+      netPay: Totals.NetPay;
+      /**
+       * Employee taxes withheld year-to-date for the selected paystub.
+       */
+      workerTaxes: Totals.WorkerTaxes;
+      /**
+       * Employee benefit contributions year-to-date for the selected paystub.
+       */
+      workerBenefitContributions: Totals.WorkerBenefitContributions;
+      /**
+       * Reimbursements year-to-date for the selected paystub.
+       */
+      reimbursements: Totals.Reimbursements;
+      /**
+       * Post-tax deductions year-to-date for the selected paystub.
+       */
+      postTaxDeductions: Totals.PostTaxDeductions;
+    }
+
+    export namespace Totals {
+      export interface GrossPay {
+        /**
+         * minor units — cents, e.g. 2345 for $23.45
+         */
+        amount: number;
+        currency: PublicPayrollCurrency & unknown;
+        /**
+         * The server-formatted display string for the amount in its currency.
+         */
+        display: string;
+      }
+
+      export interface NetPay {
+        /**
+         * minor units — cents, e.g. 2345 for $23.45
+         */
+        amount: number;
+        currency: PublicPayrollCurrency & unknown;
+        /**
+         * The server-formatted display string for the amount in its currency.
+         */
+        display: string;
+      }
+
+      export interface WorkerTaxes {
+        /**
+         * minor units — cents, e.g. 2345 for $23.45
+         */
+        amount: number;
+        currency: PublicPayrollCurrency & unknown;
+        /**
+         * The server-formatted display string for the amount in its currency.
+         */
+        display: string;
+      }
+
+      export interface WorkerBenefitContributions {
+        /**
+         * minor units — cents, e.g. 2345 for $23.45
+         */
+        amount: number;
+        currency: PublicPayrollCurrency & unknown;
+        /**
+         * The server-formatted display string for the amount in its currency.
+         */
+        display: string;
+      }
+
+      export interface Reimbursements {
+        /**
+         * minor units — cents, e.g. 2345 for $23.45
+         */
+        amount: number;
+        currency: PublicPayrollCurrency & unknown;
+        /**
+         * The server-formatted display string for the amount in its currency.
+         */
+        display: string;
+      }
+
+      export interface PostTaxDeductions {
+        /**
+         * minor units — cents, e.g. 2345 for $23.45
+         */
+        amount: number;
+        currency: PublicPayrollCurrency & unknown;
+        /**
+         * The server-formatted display string for the amount in its currency.
+         */
+        display: string;
+      }
+    }
+  }
 }
 
 /**
@@ -164,15 +292,18 @@ export interface PublicPayrollSummary {
    * @pattern ^pay_
    */
   id: string;
-  type: PublicPayrollType & string;
-  subtype: PublicPayrollSubtype & string;
-  status: PublicPayrollStatus & string;
-  fundingCurrency: PublicPayrollCurrency & string;
+  type: PublicPayrollType & unknown;
+  subtype: PublicPayrollSubtype & unknown;
+  status: PublicPayrollStatus & unknown;
+  fundingCurrency: PublicPayrollCurrency & unknown;
   /**
    * @pattern ^\d{4}-\d{2}-\d{2}$
    */
   payday: string;
-  payPeriod: PublicPayPeriod & string;
+  payPeriod: PublicPayPeriod & unknown;
+  /**
+   * The cadence at which workers are paid.
+   */
   payFrequency: PublicPayFrequency | null;
   description: string | null;
   approvalDeadline: string | null;
@@ -180,7 +311,7 @@ export interface PublicPayrollSummary {
    * @minimum 0
    */
   paycheckCount: number;
-  totals: PublicFundingPayrollTotals & string;
+  totals: PublicFundingPayrollTotals & unknown;
 }
 
 /**
@@ -205,7 +336,9 @@ export type PublicPayrollSubtype =
  * The current public lifecycle status of a payroll.
  */
 export type PublicPayrollStatus =
+  | 'preparing'
   | 'draft'
+  | 'approving'
   | 'pending'
   | 'processing'
   | 'partially_paid'
@@ -303,15 +436,18 @@ export type PublicPayFrequency = 'weekly' | 'biweekly' | 'monthly' | 'semimonthl
  * Payroll category totals and provider-authoritative funding requirement.
  */
 export interface PublicPayrollDetailTotals {
+  /**
+   * The provider-reported amount the employer must fund for the payroll, when available.
+   */
   cashRequirement: PublicCurrencyMoneyAmount11 | null;
   /**
    * Gross earnings before worker taxes, deductions, and benefit contributions. Reimbursements are reported separately.
    */
   grossPay: PublicCurrencyMoneyAmount;
   /**
-   * The provider-calculated amount to send for workers: gross pay plus reimbursements, less worker taxes, deductions, and benefit contributions. It excludes payment execution fees and may differ from recomputed totals because of provider and FX rounding.
+   * The provider-calculated amount to send for workers: gross pay plus reimbursements, less worker taxes, deductions, and benefit contributions. It excludes payment execution fees and may differ from recomputed totals because of provider and FX rounding. Null when any paycheck net pay is not yet known.
    */
-  netPay: PublicCurrencyMoneyAmount1;
+  netPay: PublicCurrencyMoneyAmount1 | null;
   /**
    * Amounts reimbursed to workers in addition to gross pay. Reimbursements increase net pay and employer cost.
    */
@@ -371,15 +507,15 @@ export interface PublicPaycheckSummary {
    * @pattern ^pyc_
    */
   id: string;
-  payroll: PublicPaycheckPayroll & string;
-  worker: PublicPaycheckWorker & string;
-  status: PublicPaycheckStatus & string;
+  payroll: PublicPaycheckPayroll & unknown;
+  worker: PublicPaycheckWorker & unknown;
+  status: PublicPaycheckStatus & unknown;
   /**
    * @pattern ^\d{4}-\d{2}-\d{2}$
    */
   payday: string;
-  paymentMethod: PublicPaycheckPaymentMethod & string;
-  totals: PublicPaycheckSummaryTotals & string;
+  paymentMethod: PublicPaycheckPaymentMethod & unknown;
+  totals: PublicPaycheckSummaryTotals & unknown;
 }
 
 /**
@@ -391,11 +527,14 @@ export interface PublicPaycheckPayroll {
    * @pattern ^pay_
    */
   id: string;
-  type: PublicPayrollType & string;
-  subtype: PublicPayrollSubtype & string;
-  status: PublicPayrollStatus & string;
-  fundingCurrency: PublicPayrollCurrency & string;
-  payPeriod: PublicPayPeriod & string;
+  type: PublicPayrollType & unknown;
+  subtype: PublicPayrollSubtype & unknown;
+  status: PublicPayrollStatus & unknown;
+  fundingCurrency: PublicPayrollCurrency & unknown;
+  payPeriod: PublicPayPeriod & unknown;
+  /**
+   * The cadence at which workers are paid.
+   */
   payFrequency: PublicPayFrequency | null;
 }
 
@@ -417,7 +556,7 @@ export interface PublicPaycheckWorker {
    */
   lastName: string;
   displayName: string;
-  workerType: 'us_w2' | 'us_1099' | 'global_contractor';
+  workerType: 'us_w2' | 'us_1099' | 'global_contractor' | 'eor_employee';
 }
 
 /**
@@ -443,17 +582,17 @@ export type PublicPaycheckPaymentMethod = 'direct_deposit' | 'manual';
  * Detailed paycheck totals in calculation and payroll funding currencies.
  */
 export interface PublicPaycheckDetailTotals {
-  byCurrency: string;
-  inFundingCurrency: PublicPaycheckCurrencyTotals & string;
+  byCurrency: unknown;
+  inFundingCurrency: PublicPaycheckCurrencyTotals & unknown;
 }
 
 /**
  * A directed exchange rate where a fromCurrency major-unit amount multiplied by rate equals its toCurrency equivalent.
  */
 export interface PublicExchangeRate {
-  fromCurrency: PublicPayrollCurrency & string;
-  toCurrency: PublicPayrollCurrency & string;
-  rate: PublicExchangeRateValue & string;
+  fromCurrency: PublicPayrollCurrency & unknown;
+  toCurrency: PublicPayrollCurrency & unknown;
+  rate: PublicExchangeRateValue & unknown;
 }
 
 /**
@@ -474,8 +613,10 @@ export interface PublicPaycheckEarning {
     | 'non_hourly_regular'
     | 'fixed'
     | 'group_term_life'
-    | 'other_imputed';
+    | 'other_imputed'
+    | '2_percent_shareholder_benefits';
   /**
+   * Public workplace identifier
    * @pattern ^wkp_
    */
   workplaceId: string | null;
@@ -487,8 +628,22 @@ export interface PublicPaycheckEarning {
    * @minimum 0
    */
   hours: number | null;
+  /**
+   * A non-negative major-unit hourly rate. The earning amount remains authoritative.
+   */
   hourlyRate: PublicHourlyRate | null;
+  /**
+   * The effective compensation rate captured when the earning was saved, before proration.
+   */
+  sourceRate: PublicPaycheckEarning.SourceRate | null;
   description: string | null;
+}
+
+export namespace PublicPaycheckEarning {
+  export interface SourceRate {
+    amount: PublicPayrollMoneyAmount1 & unknown;
+    basis: 'yearly' | 'monthly' | 'weekly' | 'hourly';
+  }
 }
 
 /**
@@ -498,7 +653,7 @@ export interface PublicPaycheckReimbursement {
   /**
    * The amount reimbursed to the worker on this paycheck in the amount's currency. It may differ from the currency of the original expense.
    */
-  amount: PublicPayrollMoneyAmount1;
+  amount: PublicPayrollMoneyAmount2;
   description: string | null;
 }
 
@@ -506,11 +661,11 @@ export interface PublicPaycheckReimbursement {
  * One non-benefit deduction calculation line. Lines have no durable public identity.
  */
 export interface PublicPaycheckDeduction {
-  taxTreatment: PublicPaycheckDeductionTaxTreatment & string;
+  taxTreatment: PublicPaycheckDeductionTaxTreatment & unknown;
   /**
    * The amount deducted from the worker's pay on this line in the amount's currency.
    */
-  amount: PublicPayrollMoneyAmount2;
+  amount: PublicPayrollMoneyAmount3;
   description: string | null;
 }
 
@@ -520,6 +675,7 @@ export interface PublicPaycheckDeduction {
 export interface PublicPaycheckBenefit {
   name: string;
   /**
+   * The version-group tag of a payroll benefit deduction. Stable across edits.
    * @pattern ^pbdg_
    */
   benefitDeductionId: string | null;
@@ -567,23 +723,38 @@ export interface PublicPaycheckBenefit {
   /**
    * The amount the worker pays toward this benefit on the paycheck in the amount's currency.
    */
-  workerContribution: PublicPayrollMoneyAmount3;
+  workerContribution: PublicPayrollMoneyAmount4;
   /**
    * The amount the employer pays toward this benefit on the paycheck in the amount's currency.
    */
-  employerContribution: PublicPayrollMoneyAmount4;
+  employerContribution: PublicPayrollMoneyAmount5;
 }
 
 /**
  * One tax calculation line. Lines have no durable public identity.
  */
 export interface PublicPaycheckTax {
-  payer: PublicTaxPayer & string;
+  payer: PublicTaxPayer & unknown;
   /**
    * The tax amount attributed to the party identified by payer, expressed in the amount's currency.
    */
-  amount: PublicPayrollMoneyAmount5;
+  amount: PublicPaycheckTax.Amount;
   description: string | null;
+}
+
+export namespace PublicPaycheckTax {
+  export interface Amount {
+    /**
+     * minor units — cents, e.g. 2345 for $23.45
+     * @minimum 0
+     */
+    amount: number;
+    currency: PublicPayrollCurrency & unknown;
+    /**
+     * The server-formatted display string for the amount in its currency.
+     */
+    display: string;
+  }
 }
 
 /**
@@ -595,9 +766,9 @@ export interface PublicFundingPayrollTotals {
    */
   grossPay: PublicCurrencyMoneyAmount;
   /**
-   * The provider-calculated amount to send for workers: gross pay plus reimbursements, less worker taxes, deductions, and benefit contributions. It excludes payment execution fees and may differ from recomputed totals because of provider and FX rounding.
+   * The provider-calculated amount to send for workers: gross pay plus reimbursements, less worker taxes, deductions, and benefit contributions. It excludes payment execution fees and may differ from recomputed totals because of provider and FX rounding. Null when any paycheck net pay is not yet known.
    */
-  netPay: PublicCurrencyMoneyAmount1;
+  netPay: PublicCurrencyMoneyAmount1 | null;
   /**
    * Amounts reimbursed to workers in addition to gross pay. Reimbursements increase net pay and employer cost.
    */
@@ -641,7 +812,7 @@ export interface PublicFundingPayrollTotals {
  */
 export interface PublicCurrencyMoneyAmount11 {
   /**
-   * The amount in ISO 4217 minor units. For USD, 300000 represents $3,000.00.
+   * minor units — cents, e.g. 2345 for $23.45
    * @minimum 0
    */
   amount: number;
@@ -656,7 +827,7 @@ export interface PublicCurrencyMoneyAmount11 {
  */
 export interface PublicCurrencyMoneyAmount {
   /**
-   * The amount in ISO 4217 minor units. For USD, 300000 represents $3,000.00.
+   * minor units — cents, e.g. 2345 for $23.45
    * @minimum 0
    */
   amount: number;
@@ -667,11 +838,11 @@ export interface PublicCurrencyMoneyAmount {
 }
 
 /**
- * The provider-calculated amount to send for workers: gross pay plus reimbursements, less worker taxes, deductions, and benefit contributions. It excludes payment execution fees and may differ from recomputed totals because of provider and FX rounding.
+ * The provider-calculated amount to send for workers: gross pay plus reimbursements, less worker taxes, deductions, and benefit contributions. It excludes payment execution fees and may differ from recomputed totals because of provider and FX rounding. Null when any paycheck net pay is not yet known.
  */
 export interface PublicCurrencyMoneyAmount1 {
   /**
-   * The amount in ISO 4217 minor units. For USD, 300000 represents $3,000.00.
+   * minor units — cents, e.g. 2345 for $23.45
    * @minimum 0
    */
   amount: number;
@@ -686,7 +857,7 @@ export interface PublicCurrencyMoneyAmount1 {
  */
 export interface PublicCurrencyMoneyAmount2 {
   /**
-   * The amount in ISO 4217 minor units. For USD, 300000 represents $3,000.00.
+   * minor units — cents, e.g. 2345 for $23.45
    * @minimum 0
    */
   amount: number;
@@ -701,7 +872,7 @@ export interface PublicCurrencyMoneyAmount2 {
  */
 export interface PublicCurrencyMoneyAmount3 {
   /**
-   * The amount in ISO 4217 minor units. For USD, 300000 represents $3,000.00.
+   * minor units — cents, e.g. 2345 for $23.45
    * @minimum 0
    */
   amount: number;
@@ -716,7 +887,7 @@ export interface PublicCurrencyMoneyAmount3 {
  */
 export interface PublicCurrencyMoneyAmount4 {
   /**
-   * The amount in ISO 4217 minor units. For USD, 300000 represents $3,000.00.
+   * minor units — cents, e.g. 2345 for $23.45
    * @minimum 0
    */
   amount: number;
@@ -731,7 +902,7 @@ export interface PublicCurrencyMoneyAmount4 {
  */
 export interface PublicCurrencyMoneyAmount5 {
   /**
-   * The amount in ISO 4217 minor units. For USD, 300000 represents $3,000.00.
+   * minor units — cents, e.g. 2345 for $23.45
    * @minimum 0
    */
   amount: number;
@@ -746,7 +917,7 @@ export interface PublicCurrencyMoneyAmount5 {
  */
 export interface PublicCurrencyMoneyAmount6 {
   /**
-   * The amount in ISO 4217 minor units. For USD, 300000 represents $3,000.00.
+   * minor units — cents, e.g. 2345 for $23.45
    * @minimum 0
    */
   amount: number;
@@ -761,7 +932,7 @@ export interface PublicCurrencyMoneyAmount6 {
  */
 export interface PublicCurrencyMoneyAmount7 {
   /**
-   * The amount in ISO 4217 minor units. For USD, 300000 represents $3,000.00.
+   * minor units — cents, e.g. 2345 for $23.45
    * @minimum 0
    */
   amount: number;
@@ -776,7 +947,7 @@ export interface PublicCurrencyMoneyAmount7 {
  */
 export interface PublicCurrencyMoneyAmount8 {
   /**
-   * The amount in ISO 4217 minor units. For USD, 300000 represents $3,000.00.
+   * minor units — cents, e.g. 2345 for $23.45
    * @minimum 0
    */
   amount: number;
@@ -791,7 +962,7 @@ export interface PublicCurrencyMoneyAmount8 {
  */
 export interface PublicCurrencyMoneyAmount9 {
   /**
-   * The amount in ISO 4217 minor units. For USD, 300000 represents $3,000.00.
+   * minor units — cents, e.g. 2345 for $23.45
    * @minimum 0
    */
   amount: number;
@@ -806,7 +977,7 @@ export interface PublicCurrencyMoneyAmount9 {
  */
 export interface PublicCurrencyMoneyAmount10 {
   /**
-   * The amount in ISO 4217 minor units. For USD, 300000 represents $3,000.00.
+   * minor units — cents, e.g. 2345 for $23.45
    * @minimum 0
    */
   amount: number;
@@ -820,23 +991,23 @@ export interface PublicCurrencyMoneyAmount10 {
  * Compact paycheck totals in calculation and payroll funding currencies.
  */
 export interface PublicPaycheckSummaryTotals {
-  byCurrency: string;
-  inFundingCurrency: PublicPaycheckSummaryCurrencyTotals & string;
+  byCurrency: unknown;
+  inFundingCurrency: PublicPaycheckSummaryCurrencyTotals & unknown;
 }
 
 /**
- * Paycheck category totals in one currency. Every category is present, including zero-valued categories.
+ * Paycheck category totals in one currency. Every category is present, including zero-valued categories; netPay is null until known.
  */
 export interface PublicPaycheckCurrencyTotals {
-  currency: PublicPayrollCurrency & string;
+  currency: PublicPayrollCurrency & unknown;
   /**
    * Gross earnings before worker taxes, deductions, and benefit contributions. Reimbursements are reported separately.
    */
   grossPay: PublicCurrencyMoneyAmount13;
   /**
-   * Calculated net pay after reimbursements, worker taxes, deductions, and benefit contributions. It excludes payment execution fees and may differ from the amount the worker ultimately receives.
+   * Calculated net pay after reimbursements, worker taxes, deductions, and benefit contributions. It excludes payment execution fees and may differ from the amount the worker ultimately receives. Null in both calculation and funding currencies until net pay is known in both.
    */
-  netPay: PublicCurrencyMoneyAmount12;
+  netPay: PublicCurrencyMoneyAmount12 | null;
   /**
    * Amounts reimbursed to the worker in addition to gross pay. Reimbursements increase net pay and employer cost.
    */
@@ -877,11 +1048,11 @@ export type PublicExchangeRateValue = string;
  */
 export interface PublicPayrollMoneyAmount {
   /**
-   * The amount in ISO 4217 minor units. For USD, 300000 represents $3,000.00.
+   * minor units — cents, e.g. 2345 for $23.45
    * @minimum 0
    */
   amount: number;
-  currency: PublicPayrollCurrency & string;
+  currency: PublicPayrollCurrency & unknown;
   /**
    * The server-formatted display string for the amount in its currency.
    */
@@ -892,21 +1063,21 @@ export interface PublicPayrollMoneyAmount {
  * A non-negative major-unit hourly rate. The earning amount remains authoritative.
  */
 export interface PublicHourlyRate {
-  amount: PublicHourlyRateAmount & string;
-  currency: PublicPayrollCurrency & string;
+  amount: PublicHourlyRateAmount & unknown;
+  currency: PublicPayrollCurrency & unknown;
   per: 'hour';
 }
 
 /**
- * The amount reimbursed to the worker on this paycheck in the amount's currency. It may differ from the currency of the original expense.
+ * An amount in ISO currency minor units with a server-formatted display value.
  */
 export interface PublicPayrollMoneyAmount1 {
   /**
-   * The amount in ISO 4217 minor units. For USD, 300000 represents $3,000.00.
+   * minor units — cents, e.g. 2345 for $23.45
    * @minimum 0
    */
   amount: number;
-  currency: PublicPayrollCurrency & string;
+  currency: PublicPayrollCurrency & unknown;
   /**
    * The server-formatted display string for the amount in its currency.
    */
@@ -919,15 +1090,31 @@ export interface PublicPayrollMoneyAmount1 {
 export type PublicPaycheckDeductionTaxTreatment = 'pre_tax' | 'post_tax';
 
 /**
- * The amount deducted from the worker's pay on this line in the amount's currency.
+ * The amount reimbursed to the worker on this paycheck in the amount's currency. It may differ from the currency of the original expense.
  */
 export interface PublicPayrollMoneyAmount2 {
   /**
-   * The amount in ISO 4217 minor units. For USD, 300000 represents $3,000.00.
+   * minor units — cents, e.g. 2345 for $23.45
    * @minimum 0
    */
   amount: number;
-  currency: PublicPayrollCurrency & string;
+  currency: PublicPayrollCurrency & unknown;
+  /**
+   * The server-formatted display string for the amount in its currency.
+   */
+  display: string;
+}
+
+/**
+ * The amount deducted from the worker's pay on this line in the amount's currency.
+ */
+export interface PublicPayrollMoneyAmount3 {
+  /**
+   * minor units — cents, e.g. 2345 for $23.45
+   * @minimum 0
+   */
+  amount: number;
+  currency: PublicPayrollCurrency & unknown;
   /**
    * The server-formatted display string for the amount in its currency.
    */
@@ -937,29 +1124,13 @@ export interface PublicPayrollMoneyAmount2 {
 /**
  * The amount the worker pays toward this benefit on the paycheck in the amount's currency.
  */
-export interface PublicPayrollMoneyAmount3 {
-  /**
-   * The amount in ISO 4217 minor units. For USD, 300000 represents $3,000.00.
-   * @minimum 0
-   */
-  amount: number;
-  currency: PublicPayrollCurrency & string;
-  /**
-   * The server-formatted display string for the amount in its currency.
-   */
-  display: string;
-}
-
-/**
- * The amount the employer pays toward this benefit on the paycheck in the amount's currency.
- */
 export interface PublicPayrollMoneyAmount4 {
   /**
-   * The amount in ISO 4217 minor units. For USD, 300000 represents $3,000.00.
+   * minor units — cents, e.g. 2345 for $23.45
    * @minimum 0
    */
   amount: number;
-  currency: PublicPayrollCurrency & string;
+  currency: PublicPayrollCurrency & unknown;
   /**
    * The server-formatted display string for the amount in its currency.
    */
@@ -972,15 +1143,15 @@ export interface PublicPayrollMoneyAmount4 {
 export type PublicTaxPayer = 'worker' | 'employer';
 
 /**
- * The tax amount attributed to the party identified by payer, expressed in the amount's currency.
+ * The amount the employer pays toward this benefit on the paycheck in the amount's currency.
  */
 export interface PublicPayrollMoneyAmount5 {
   /**
-   * The amount in ISO 4217 minor units. For USD, 300000 represents $3,000.00.
+   * minor units — cents, e.g. 2345 for $23.45
    * @minimum 0
    */
   amount: number;
-  currency: PublicPayrollCurrency & string;
+  currency: PublicPayrollCurrency & unknown;
   /**
    * The server-formatted display string for the amount in its currency.
    */
@@ -991,11 +1162,11 @@ export interface PublicPayrollMoneyAmount5 {
  * Compact paycheck totals in one calculation currency.
  */
 export interface PublicPaycheckSummaryCurrencyTotals {
-  currency: PublicPayrollCurrency & string;
+  currency: PublicPayrollCurrency & unknown;
   /**
-   * Calculated net pay after reimbursements, worker taxes, deductions, and benefit contributions. It excludes payment execution fees and may differ from the amount the worker ultimately receives.
+   * Calculated net pay after reimbursements, worker taxes, deductions, and benefit contributions. It excludes payment execution fees and may differ from the amount the worker ultimately receives. Null in both calculation and funding currencies until net pay is known in both.
    */
-  netPay: PublicCurrencyMoneyAmount12;
+  netPay: PublicCurrencyMoneyAmount12 | null;
 }
 
 /**
@@ -1003,7 +1174,7 @@ export interface PublicPaycheckSummaryCurrencyTotals {
  */
 export interface PublicCurrencyMoneyAmount13 {
   /**
-   * The amount in ISO 4217 minor units. For USD, 300000 represents $3,000.00.
+   * minor units — cents, e.g. 2345 for $23.45
    * @minimum 0
    */
   amount: number;
@@ -1014,11 +1185,11 @@ export interface PublicCurrencyMoneyAmount13 {
 }
 
 /**
- * Calculated net pay after reimbursements, worker taxes, deductions, and benefit contributions. It excludes payment execution fees and may differ from the amount the worker ultimately receives.
+ * Calculated net pay after reimbursements, worker taxes, deductions, and benefit contributions. It excludes payment execution fees and may differ from the amount the worker ultimately receives. Null in both calculation and funding currencies until net pay is known in both.
  */
 export interface PublicCurrencyMoneyAmount12 {
   /**
-   * The amount in ISO 4217 minor units. For USD, 300000 represents $3,000.00.
+   * minor units — cents, e.g. 2345 for $23.45
    * @minimum 0
    */
   amount: number;
@@ -1033,7 +1204,7 @@ export interface PublicCurrencyMoneyAmount12 {
  */
 export interface PublicCurrencyMoneyAmount14 {
   /**
-   * The amount in ISO 4217 minor units. For USD, 300000 represents $3,000.00.
+   * minor units — cents, e.g. 2345 for $23.45
    * @minimum 0
    */
   amount: number;
@@ -1048,7 +1219,7 @@ export interface PublicCurrencyMoneyAmount14 {
  */
 export interface PublicCurrencyMoneyAmount15 {
   /**
-   * The amount in ISO 4217 minor units. For USD, 300000 represents $3,000.00.
+   * minor units — cents, e.g. 2345 for $23.45
    * @minimum 0
    */
   amount: number;
@@ -1063,7 +1234,7 @@ export interface PublicCurrencyMoneyAmount15 {
  */
 export interface PublicCurrencyMoneyAmount16 {
   /**
-   * The amount in ISO 4217 minor units. For USD, 300000 represents $3,000.00.
+   * minor units — cents, e.g. 2345 for $23.45
    * @minimum 0
    */
   amount: number;
@@ -1078,7 +1249,7 @@ export interface PublicCurrencyMoneyAmount16 {
  */
 export interface PublicCurrencyMoneyAmount17 {
   /**
-   * The amount in ISO 4217 minor units. For USD, 300000 represents $3,000.00.
+   * minor units — cents, e.g. 2345 for $23.45
    * @minimum 0
    */
   amount: number;
@@ -1093,7 +1264,7 @@ export interface PublicCurrencyMoneyAmount17 {
  */
 export interface PublicCurrencyMoneyAmount18 {
   /**
-   * The amount in ISO 4217 minor units. For USD, 300000 represents $3,000.00.
+   * minor units — cents, e.g. 2345 for $23.45
    * @minimum 0
    */
   amount: number;
@@ -1108,7 +1279,7 @@ export interface PublicCurrencyMoneyAmount18 {
  */
 export interface PublicCurrencyMoneyAmount19 {
   /**
-   * The amount in ISO 4217 minor units. For USD, 300000 represents $3,000.00.
+   * minor units — cents, e.g. 2345 for $23.45
    * @minimum 0
    */
   amount: number;
@@ -1123,7 +1294,7 @@ export interface PublicCurrencyMoneyAmount19 {
  */
 export interface PublicCurrencyMoneyAmount20 {
   /**
-   * The amount in ISO 4217 minor units. For USD, 300000 represents $3,000.00.
+   * minor units — cents, e.g. 2345 for $23.45
    * @minimum 0
    */
   amount: number;
@@ -1217,7 +1388,7 @@ export interface PayrollListPaychecksParams {
   /**
    * Worker classifications in effect for the paycheck to include. Omit to include every worker type visible to the API key.
    */
-  workerTypes?: Array<'us_w2' | 'us_1099' | 'global_contractor'> | null;
+  workerTypes?: Array<'us_w2' | 'us_1099' | 'global_contractor' | 'eor_employee'> | null;
   /**
    * Payroll calculation types to include, subject to the API key permissions.
    */

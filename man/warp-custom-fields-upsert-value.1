@@ -51,7 +51,11 @@ API credential. Can also be set with the WARP_API_KEY environment variable.
 .PP
 .RS 4
 .nf
-warp custom\-fields upsert\-value \-\-api\-key "$WARP_API_KEY" \-\-worker\-id 'wrk_1234' \-\-field\-id 'cf_1234' \-\-value '{"type":"text","value":""}'
+warp custom\-fields upsert\-value \e
+  \-\-api\-key "$WARP_API_KEY" \e
+  \-\-worker\-id 'wrk_1234' \e
+  \-\-field\-id 'cf_1234' \e
+  \-\-value '{"type":"text","value":""}'
 .fi
 .RE
 .SH "ENVIRONMENT"

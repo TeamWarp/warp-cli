@@ -10,10 +10,16 @@ Complete reference of every operation, grouped by resource. See [the README](./R
     - [Get Health Plan](#get-health-plan)
   - [`Benefits RetirementPlans`](#benefits-retirementplans)
     - [List Retirement Plans](#list-retirement-plans)
+    - [Create Retirement Plan](#create-retirement-plan)
     - [Get Retirement Plan](#get-retirement-plan)
+    - [Update Retirement Plan](#update-retirement-plan)
   - [`Benefits Deductions`](#benefits-deductions)
     - [List Benefit Deductions](#list-benefit-deductions)
+    - [Create Benefit Deduction](#create-benefit-deduction)
     - [Get Benefit Deduction](#get-benefit-deduction)
+    - [Update Benefit Deduction](#update-benefit-deduction)
+- [`Company`](#company)
+  - [Get company](#get-company)
 - [`CustomFields`](#customfields)
   - [List Fields](#list-fields)
   - [Create Field](#create-field)
@@ -31,6 +37,12 @@ Complete reference of every operation, grouped by resource. See [the README](./R
   - [List Departments](#list-departments)
   - [Create Department](#create-department)
   - [Update Department](#update-department)
+- [`I9Verifications`](#i9verifications)
+  - [List I-9 verifications](#list-i-9-verifications)
+  - [Get I-9 verification](#get-i-9-verification)
+- [`BankAccounts`](#bankaccounts)
+  - [List bank accounts](#list-bank-accounts)
+  - [Get bank account](#get-bank-account)
 - [`Levels`](#levels)
   - [List Job Levels](#list-job-levels)
 - [`Offers`](#offers)
@@ -42,6 +54,12 @@ Complete reference of every operation, grouped by resource. See [the README](./R
 - [`PayRates`](#payrates)
   - [List Pay Rates](#list-pay-rates)
   - [Get Pay Rate](#get-pay-rate)
+  - [`PayRates Regular`](#payrates-regular)
+    - [Create Regular Pay Rate](#create-regular-pay-rate)
+    - [Delete Future Regular Pay Rate](#delete-future-regular-pay-rate)
+- [`PaySplits`](#paysplits)
+  - [List pay splits](#list-pay-splits)
+  - [Get pay split](#get-pay-split)
 - [`Payroll`](#payroll)
   - [List Payrolls](#list-payrolls)
   - [Get Payroll](#get-payroll)
@@ -55,9 +73,11 @@ Complete reference of every operation, grouped by resource. See [the README](./R
     - [List Time Off Policies](#list-time-off-policies)
     - [Get Time Off Policy](#get-time-off-policy)
 - [`Workers`](#workers)
-  - [List Workers](#list-workers)
+  - [Update Worker](#update-worker)
   - [Get Worker](#get-worker)
   - [Delete Worker](#delete-worker)
+  - [Reveal Worker SSNs](#reveal-worker-ssns)
+  - [List Workers](#list-workers)
   - [Create Employee](#create-employee)
   - [Create Contractor](#create-contractor)
   - [Invite Worker](#invite-worker)
@@ -70,14 +90,17 @@ Complete reference of every operation, grouped by resource. See [the README](./R
 
 ### `Benefits HealthPlans`
 
-Read-only health plans, retirement plans, and payroll benefit deductions.
+Health plan reads and retirement plan and payroll benefit deduction management.
 
 #### List Health Plans
 
 List company health plans. Defaults to active plans. A plan whose effectiveEndDate has elapsed is reported and filtered as terminated.
 
 ```sh
-warp benefits:health-plans list --api-key "$WARP_API_KEY" --limit 'limit' --statuses '["active"]'
+warp benefits:health-plans list \
+  --api-key "$WARP_API_KEY" \
+  --limit 'limit' \
+  --statuses '["active"]'
 ```
 
 #### Get Health Plan
@@ -90,14 +113,29 @@ warp benefits:health-plans get 'chpl_1234' --api-key "$WARP_API_KEY"
 
 ### `Benefits RetirementPlans`
 
-Read-only health plans, retirement plans, and payroll benefit deductions.
+Health plan reads and retirement plan and payroll benefit deduction management.
 
 #### List Retirement Plans
 
 List company retirement plans. Defaults to active plans. A plan whose effectiveEndDate has elapsed is reported and filtered as terminated.
 
 ```sh
-warp benefits:retirement-plans list --api-key "$WARP_API_KEY" --limit 'limit' --statuses '["active"]'
+warp benefits:retirement-plans list \
+  --api-key "$WARP_API_KEY" \
+  --limit 'limit' \
+  --statuses '["active"]'
+```
+
+#### Create Retirement Plan
+
+Create a retirement plan for a company on the manual retirement channel.
+
+```sh
+warp benefits:retirement-plans create \
+  --api-key "$WARP_API_KEY" \
+  --type '401k' \
+  --name 'x' \
+  --effective-start-date ''
 ```
 
 #### Get Retirement Plan
@@ -108,16 +146,40 @@ Get a company retirement plan by id, regardless of status.
 warp benefits:retirement-plans get 'crpl_1234' --api-key "$WARP_API_KEY"
 ```
 
+#### Update Retirement Plan
+
+Update a retirement plan for a company on the manual retirement channel.
+
+```sh
+warp benefits:retirement-plans update 'crpl_1234' --api-key "$WARP_API_KEY"
+```
+
 ### `Benefits Deductions`
 
-Read-only health plans, retirement plans, and payroll benefit deductions.
+Health plan reads and retirement plan and payroll benefit deduction management.
 
 #### List Benefit Deductions
 
 List current payroll benefit deductions. Defaults to active deductions. A deduction whose effectiveEndDate has elapsed is reported and filtered as terminated.
 
 ```sh
-warp benefits:deductions list --api-key "$WARP_API_KEY" --limit 'limit' --statuses '["active"]'
+warp benefits:deductions list \
+  --api-key "$WARP_API_KEY" \
+  --limit 'limit' \
+  --statuses '["active"]'
+```
+
+#### Create Benefit Deduction
+
+Create a benefit deduction for a worker.
+
+```sh
+warp benefits:deductions create \
+  --api-key "$WARP_API_KEY" \
+  --worker-id 'wrk_1234' \
+  --type 'medical' \
+  --calculation '{"type":"fixed_amount","frequency":"monthly","employeeContribution":{"amount":0,"currency":"USD"},"employerContribution":{"amount":0,"currency":"USD"}}' \
+  --effective-start-date ''
 ```
 
 #### Get Benefit Deduction
@@ -126,6 +188,26 @@ Get the current version of a company benefit deduction by id.
 
 ```sh
 warp benefits:deductions get 'pbdg_1234' --api-key "$WARP_API_KEY"
+```
+
+#### Update Benefit Deduction
+
+Update a benefit deduction. The calculation type cannot change.
+
+```sh
+warp benefits:deductions update 'pbdg_1234' --api-key "$WARP_API_KEY"
+```
+
+## `Company`
+
+Read basic information about the company associated with your API key.
+
+### Get company
+
+Get the company associated with your API key, including its unmasked EIN. Requires settings read permission or higher. No parameters are required. The response is the company object directly, and unavailable incorporation dates are null.
+
+```sh
+warp company list --api-key "$WARP_API_KEY"
 ```
 
 ## `CustomFields`
@@ -145,7 +227,11 @@ warp custom-fields list --api-key "$WARP_API_KEY"
 Create a custom worker field definition. The field type is immutable after creation. Select and multi_select fields can include their initial options. Access to values derives from the field category; requires the workers:custom_fields permission.
 
 ```sh
-warp custom-fields create --api-key "$WARP_API_KEY" --name 'name' --type 'text' --category 'info'
+warp custom-fields create \
+  --api-key "$WARP_API_KEY" \
+  --name 'x' \
+  --type 'text' \
+  --category 'info'
 ```
 
 ### Get Field
@@ -177,7 +263,10 @@ warp custom-fields archive 'cf_1234' --api-key "$WARP_API_KEY"
 Add an option to a select or multi_select custom worker field. The option value should be treated as stable; the label can change. Requires the workers:custom_fields permission.
 
 ```sh
-warp custom-fields create-option 'cf_1234' --api-key "$WARP_API_KEY" --label 'label' --value 'value'
+warp custom-fields create-option 'cf_1234' \
+  --api-key "$WARP_API_KEY" \
+  --label 'x' \
+  --value 'x'
 ```
 
 ### Update Field Option
@@ -217,7 +306,11 @@ warp custom-fields list-values --api-key "$WARP_API_KEY"
 Create or replace a worker's value for a custom field. The value shape must match the field type, and your API key must hold write on the field's category.
 
 ```sh
-warp custom-fields upsert-value --api-key "$WARP_API_KEY" --worker-id 'wrk_1234' --field-id 'cf_1234' --value '{"type":"text","value":""}'
+warp custom-fields upsert-value \
+  --api-key "$WARP_API_KEY" \
+  --worker-id 'wrk_1234' \
+  --field-id 'cf_1234' \
+  --value '{"type":"text","value":""}'
 ```
 
 ### Clear Field Value
@@ -225,7 +318,10 @@ warp custom-fields upsert-value --api-key "$WARP_API_KEY" --worker-id 'wrk_1234'
 Remove a worker's value for a custom field. Your API key must hold write on the field's category.
 
 ```sh
-warp custom-fields clear-value --api-key "$WARP_API_KEY" --worker-id 'wrk_1234' --field-id 'cf_1234'
+warp custom-fields clear-value \
+  --api-key "$WARP_API_KEY" \
+  --worker-id 'wrk_1234' \
+  --field-id 'cf_1234'
 ```
 
 ## `Departments`
@@ -245,7 +341,7 @@ warp departments list --api-key "$WARP_API_KEY" --limit 'limit'
 Create a new department.
 
 ```sh
-warp departments create --api-key "$WARP_API_KEY" --name 'name'
+warp departments create --api-key "$WARP_API_KEY" --name 'x'
 ```
 
 ### Update Department
@@ -254,6 +350,46 @@ Update an existing department.
 
 ```sh
 warp departments update 'dpt_1234' --api-key "$WARP_API_KEY"
+```
+
+## `I9Verifications`
+
+Read company I-9 verification metadata, including retained forms, without exposing form contents.
+
+### List I-9 verifications
+
+List current and retained company I-9 verifications in all workflow states, newest first. The API key must have workers profile and compliance read scope.
+
+```sh
+warp i9-verifications list --api-key "$WARP_API_KEY" --limit 'limit'
+```
+
+### Get I-9 verification
+
+Get a specific I-9 verification by its id. The API key must have workers profile and compliance read scope.
+
+```sh
+warp i9-verifications get 'i9v_1234' --api-key "$WARP_API_KEY"
+```
+
+## `BankAccounts`
+
+Read masked worker bank account metadata. No banking instructions or account changes are supported.
+
+### List bank accounts
+
+List stored worker bank accounts, newest first. Requires workers banking and profile read scopes.
+
+```sh
+warp bank-accounts list --api-key "$WARP_API_KEY" --limit 'limit'
+```
+
+### Get bank account
+
+Get a stored worker bank account. Requires workers banking and profile read scopes.
+
+```sh
+warp bank-accounts get 'bank_1234' --api-key "$WARP_API_KEY"
 ```
 
 ## `Levels`
@@ -285,7 +421,12 @@ warp offers list --api-key "$WARP_API_KEY" --limit 'limit'
 Create and send a candidate offer. The candidate receives an email with a link to the offer portal.
 
 ```sh
-warp offers create --api-key "$WARP_API_KEY" --candidate '{"firstName":"x","lastName":"x","email":"john@joinwarp.com"}' --position '{"title":"x","startDate":""}' --worker-type 'employee' --compensation '{"payBasis":"year","payCurrency":"USD","payRate":0}'
+warp offers create \
+  --api-key "$WARP_API_KEY" \
+  --candidate '{"firstName":"x","lastName":"x","email":"john@joinwarp.com"}' \
+  --position '{"title":"x","startDate":""}' \
+  --worker-type 'employee' \
+  --compensation '{"payBasis":"year","payCurrency":"USD","payRate":1}'
 ```
 
 ### Void Offer
@@ -301,7 +442,7 @@ warp offers void 'offr_1234' --api-key "$WARP_API_KEY" --void-reason 'candidate_
 Extend the expiration deadline of a sent offer.
 
 ```sh
-warp offers extend-deadline 'offr_1234' --api-key "$WARP_API_KEY" --expiration-time 'expirationTime'
+warp offers extend-deadline 'offr_1234' --api-key "$WARP_API_KEY" --expiration-time ''
 ```
 
 ### Resend Offer
@@ -314,7 +455,7 @@ warp offers resend 'offr_1234' --api-key "$WARP_API_KEY"
 
 ## `PayRates`
 
-Read regular and additional worker pay rates.
+Read worker pay rates and create or delete effective-dated regular pay rates. No public pay-rate update operation is exposed.
 
 ### List Pay Rates
 
@@ -330,6 +471,54 @@ Get a specific pay rate by id. The API key must have the compensation read scope
 
 ```sh
 warp pay-rates get 'pyr_1234' --api-key "$WARP_API_KEY"
+```
+
+### `PayRates Regular`
+
+Read worker pay rates and create or delete effective-dated regular pay rates. No public pay-rate update operation is exposed.
+
+#### Create Regular Pay Rate
+
+Create an effective-dated regular pay rate for a worker. The API key must have the compensation write scope corresponding to the worker classification. Fixed rates require a nonnegative integer amount in minor currency units, and writes accept only currencies with exactly two ISO 4217 minor-unit digits. Amount is required except for variable pay, and requireHoursSubmission is required for hourly pay. An inactive worker’s rate must start on the worker start date; an active worker’s rate must start on or after that date. An existing future rate blocks creation except for a same-start-date replacement. Currency changes must begin at the current pay-period start, or at the worker start date when the worker is inactive, is a pay-as-you-go contractor, or has a future start date. Variable pay returns a null id and stores no fixed pay-rate row. Replacing a fixed row on the same date emits separate deleted and created webhooks; delivery order is not guaranteed. Creating a fixed rate over variable pay emits only the created webhook because no fixed row existed to delete. There is no pay-rate update event.
+
+```sh
+warp pay-rates:regular create \
+  --api-key "$WARP_API_KEY" \
+  --worker-id 'wrk_khac8380c2Lm' \
+  --type 'salary' \
+  --currency 'USD' \
+  --effective-date ''
+```
+
+#### Delete Future Regular Pay Rate
+
+Delete a regular pay rate or variable-pay boundary identified by worker and effective date. The effective date must be strictly after the current UTC date. The API key must have the compensation write scope corresponding to the worker classification. Deletion reopens the predecessor through the deleted range, including when deleting a variable-pay boundary. There is no public PATCH or PUT pay-rate update operation; replace a same-date rate by creating its replacement.
+
+```sh
+warp pay-rates:regular delete \
+  --api-key "$WARP_API_KEY" \
+  --worker-id 'wrk_khac8380c2Lm' \
+  --effective-date ''
+```
+
+## `PaySplits`
+
+Read stored pay-split configurations without changing banking instructions or guaranteeing payroll execution.
+
+### List pay splits
+
+List stored pay-split configurations, newest first. Defaults to active. Requires workers banking and profile read scopes plus the applicable US or global compensation read scope.
+
+```sh
+warp pay-splits list --api-key "$WARP_API_KEY" --limit 'limit' --statuses '["active"]'
+```
+
+### Get pay split
+
+Get a stored pay-split configuration, including retained inactive configurations. Requires workers banking and profile read scopes plus the applicable US or global compensation read scope.
+
+```sh
+warp pay-splits get 'nps_1234' --api-key "$WARP_API_KEY"
 ```
 
 ## `Payroll`
@@ -420,12 +609,12 @@ warp time-off:policies get 'top_1234' --api-key "$WARP_API_KEY"
 
 Endpoints for worker management. "Workers" include anyone employed by your company, whether US or international, full-time employees or contractors.
 
-### List Workers
+### Update Worker
 
-List all workers. Workers include anyone employed by the company, whether US or international, full-time employees or contractors.
+Update a worker and return the updated worker object. Omitted fields remain unchanged. Requires workers:profile write, plus read access to any referenced department, level, or workplace. See individual fields for update restrictions.
 
 ```sh
-warp workers list --api-key "$WARP_API_KEY" --limit 'limit'
+warp workers update 'wrk_1234' --api-key "$WARP_API_KEY"
 ```
 
 ### Get Worker
@@ -444,12 +633,41 @@ Delete a worker. Only workers who have not yet completed onboarding can be delet
 warp workers delete 'wrk_1234' --api-key "$WARP_API_KEY"
 ```
 
+### Reveal Worker SSNs
+
+Reveal full Social Security numbers for up to 50 workers. Requires the workers:pii read scope. Results preserve request order and use null when a worker has no SSN on file. The request fails if any worker is not found, emits one audit event per worker, and returns Cache-Control: private, no-store.
+
+```sh
+warp workers reveal-ssn \
+  --api-key "$WARP_API_KEY" \
+  --worker-id 'wrk_khac8380c2Lm' \
+  --worker-id 'wrk_q7Vm2pR9xK4c'
+```
+
+### List Workers
+
+List all workers. Workers include anyone employed by the company, whether US or international, full-time employees or contractors.
+
+```sh
+warp workers list --api-key "$WARP_API_KEY" --limit 'limit'
+```
+
 ### Create Employee
 
 Create a new US employee. The worker will be created in draft status and must be invited separately via the invite endpoint. If hiring in a state without an existing tax registration, you must specify the stateRegistration field.
 
 ```sh
-warp workers create-employee --api-key "$WARP_API_KEY" --first-name 'Jonathan' --last-name 'Galt' --position 'Software Engineer' --start-date 'startDate' --email 'john@joinwarp.com' --department-id 'dpt_1234' --manager-id 'wrk_1234' --work-location '{"type":"office","workplaceId":"wkp_1234"}' --compensation '{"amount":0,"per":"hour"}'
+warp workers create-employee \
+  --api-key "$WARP_API_KEY" \
+  --first-name 'Jonathan' \
+  --last-name 'Galt' \
+  --position 'Software Engineer' \
+  --start-date '' \
+  --email 'john@joinwarp.com' \
+  --department-id 'dpt_1234' \
+  --manager-id 'wrk_1234' \
+  --work-location '{"type":"office","workplaceId":"wkp_1234"}' \
+  --compensation '{"amount":85000,"per":"hour"}'
 ```
 
 ### Create Contractor
@@ -457,7 +675,17 @@ warp workers create-employee --api-key "$WARP_API_KEY" --first-name 'Jonathan' -
 Create a new contractor. The worker will be created in draft status and must be invited separately via the invite endpoint. For business contractors, the businessName field is required.
 
 ```sh
-warp workers create-contractor --api-key "$WARP_API_KEY" --entity-type 'individual' --first-name 'Melissa' --last-name 'Jones' --position 'Design Consultant' --start-date 'startDate' --email 'john@joinwarp.com' --department-id 'dpt_1234' --manager-id 'wrk_1234' --work-country 'AD'
+warp workers create-contractor \
+  --api-key "$WARP_API_KEY" \
+  --entity-type 'individual' \
+  --first-name 'Melissa' \
+  --last-name 'Jones' \
+  --position 'Design Consultant' \
+  --start-date '' \
+  --email 'john@joinwarp.com' \
+  --department-id 'dpt_1234' \
+  --manager-id 'wrk_1234' \
+  --work-country 'AD'
 ```
 
 ### Invite Worker
@@ -485,7 +713,11 @@ warp workplaces list --api-key "$WARP_API_KEY" --limit 'limit'
 Create a new workplace.
 
 ```sh
-warp workplaces create --api-key "$WARP_API_KEY" --name 'name' --type 'remote' --address '{"line1":"x","city":"","postalCode":"","state":"AL","country":"US"}'
+warp workplaces create \
+  --api-key "$WARP_API_KEY" \
+  --name 'x' \
+  --type 'remote' \
+  --address '{"line1":"x","city":"","postalCode":"","state":"AL","country":"US"}'
 ```
 
 ### Update Workplace
