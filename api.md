@@ -128,7 +128,7 @@ warp benefits:retirement-plans list \
 
 #### Create Retirement Plan
 
-Create a retirement plan for a company on the manual retirement channel.
+Create a retirement plan for a company on the manual or PayKonnect retirement channel.
 
 ```sh
 warp benefits:retirement-plans create \
@@ -148,7 +148,7 @@ warp benefits:retirement-plans get 'crpl_1234' --api-key "$WARP_API_KEY"
 
 #### Update Retirement Plan
 
-Update a retirement plan for a company on the manual retirement channel.
+Update a retirement plan for a company on the manual or PayKonnect retirement channel.
 
 ```sh
 warp benefits:retirement-plans update 'crpl_1234' --api-key "$WARP_API_KEY"
