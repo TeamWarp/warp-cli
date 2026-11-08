@@ -14,6 +14,7 @@ The REST API documentation can be found on [docs.warp.co](https://docs.warp.co).
 - [Signing In](#signing-in)
 - [File Arguments](#file-arguments)
 - [Shell Completion](#shell-completion)
+- [Upgrading](#upgrading)
 - [Manual Pages](#manual-pages)
 - [Authentication](#authentication)
 - [Errors](#errors)
@@ -89,6 +90,20 @@ eval "$(warp completion zsh)"
 
 # fish (~/.config/fish/config.fish)
 warp completion fish | source
+```
+
+<br />
+
+## Upgrading
+
+`warp upgrade` installs the latest release. When warp was installed through a package manager — Homebrew — it runs that manager's own upgrade instead of replacing files the manager owns. `warp upgrade --check` reports the latest version without installing it, and `warp uninstall` says how to remove this installation. warp also checks for a newer release at most once a day, and mentions it on stderr when one exists. The check is skipped entirely when output is redirected, when `CI` is set, and under `sudo`; set `WARP_NO_UPDATE_NOTIFIER` or `NO_UPDATE_NOTIFIER` to turn it off everywhere.
+
+```sh
+warp upgrade --check
+warp upgrade
+
+# Never contact GitHub to check for a newer release
+export WARP_NO_UPDATE_NOTIFIER=1
 ```
 
 <br />

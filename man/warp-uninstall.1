@@ -1,0 +1,23 @@
+.\" File generated from our OpenAPI spec by Scalar. Do not edit.
+.TH "WARP\-UNINSTALL" "1" "" "warp" "warp Manual"
+.SH "NAME"
+warp\-uninstall \- report how to remove this warp installation
+.SH "SYNOPSIS"
+.B warp uninstall
+.SH "DESCRIPTION"
+Prints how to remove this installation of warp, chosen from how the running executable was installed: the owning package manager's own removal command where one owns it, and the path to delete otherwise.
+.PP
+Deliberately reports rather than removes. Deleting files a package manager owns leaves that manager's database inconsistent, and a command that deletes its own executable cannot report what happened if the deletion half\-succeeds.
+.SH "EXIT STATUS"
+.TP
+\fB0\fR
+The command completed successfully.
+.TP
+\fB1\fR
+The command failed. The reason is reported on standard error.
+.TP
+\fB2\fR
+The command was invoked incorrectly (missing or invalid arguments).
+.SH "SEE ALSO"
+.BR warp (1),
+.BR warp\-upgrade (1)
