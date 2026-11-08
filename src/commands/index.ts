@@ -10,6 +10,7 @@ import {
 } from '../cli/runtime';
 import { completions } from '../cli/completions';
 import type { CliAuthDefinition } from '../cli/login';
+import { addUpgradeCommands, notifyIfOutdated } from '../cli/upgrade';
 
 const clientOptions = [
   {
@@ -19,6 +20,7 @@ const clientOptions = [
     optionKey: 'apiKey',
     env: 'WARP_API_KEY',
     auth: true,
+    authLocation: 'header:x-api-key',
   },
 ] as const satisfies readonly CliClientOptionDefinition[];
 
@@ -3678,4 +3680,8 @@ export const getProgram = (): Command =>
     groups,
     completions,
     auth,
+    addUpgradeCommands,
   });
+
+/** Runs the daily update check. Called by `run()` only, so building the program makes no request. */
+export const checkForUpdates = (argv: readonly string[]): void => notifyIfOutdated('warp', '0.4.0', argv); // x-release-please-version

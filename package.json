@@ -1,11 +1,14 @@
 {
   "name": "warp-cli",
-  "version": "0.4.0",
-  "description": "warp CLI",
+  "version": "0.1.0",
+  "description": "Warp Public API - API for accessing your organization's data on Warp.",
   "author": "Warp",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/TeamWarp/warp-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/TeamWarp/warp-cli/issues"
   },
   "homepage": "https://docs.warp.co",
   "type": "module",
@@ -96,7 +99,9 @@
     "./man/warp-workplaces-list.1",
     "./man/warp-workplaces-create.1",
     "./man/warp-workplaces-update.1",
-    "./man/warp-completion.1"
+    "./man/warp-completion.1",
+    "./man/warp-upgrade.1",
+    "./man/warp-uninstall.1"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json && tsc -p tsconfig.cjs.json && node scripts/finalize-build.mjs",

@@ -6,7 +6,7 @@ warp\-pay\-rates\-regular\-create \- Create Regular Pay Rate
 .B warp pay\-rates:regular create
 \fB\-\-worker\-id\fR \fI<value>\fR \fB\-\-type\fR \fI<value>\fR \fB\-\-currency\fR \fI<value>\fR \fB\-\-effective\-date\fR \fI<value>\fR [\fIoptions\fR]
 .SH "DESCRIPTION"
-Create an effective\-dated regular pay rate for a worker. The API key must have the compensation write scope corresponding to the worker classification. Fixed rates require a nonnegative integer amount in minor currency units, and writes accept only currencies with exactly two ISO 4217 minor\-unit digits. Amount is required except for variable pay, and requireHoursSubmission is required for hourly pay. An inactive worker’s rate must start on the worker start date; an active worker’s rate must start on or after that date. An existing future rate blocks creation except for a same\-start\-date replacement. Currency changes must begin at the current pay\-period start, or at the worker start date when the worker is inactive, is a pay\-as\-you\-go contractor, or has a future start date. Variable pay returns a null id and stores no fixed pay\-rate row. Replacing a fixed row on the same date emits separate deleted and created webhooks; delivery order is not guaranteed. Creating a fixed rate over variable pay emits only the created webhook because no fixed row existed to delete. There is no pay\-rate update event.
+Create an effective\-dated regular pay rate for a worker. The API key must have the compensation write scope corresponding to the worker classification. Fixed rates require a nonnegative integer amount in minor currency units, and writes accept only currencies with exactly two ISO 4217 minor\-unit digits. Amount is required except for variable pay, and requireHoursSubmission is required for hourly pay. An inactive worker\[u2019]s rate must start on the worker start date; an active worker\[u2019]s rate must start on or after that date. An existing future rate blocks creation except for a same\-start\-date replacement. Currency changes must begin at the current pay\-period start, or at the worker start date when the worker is inactive, is a pay\-as\-you\-go contractor, or has a future start date. Variable pay returns a null id and stores no fixed pay\-rate row. Replacing a fixed row on the same date emits separate deleted and created webhooks; delivery order is not guaranteed. Creating a fixed rate over variable pay emits only the created webhook because no fixed row existed to delete. There is no pay\-rate update event.
 .SH "OPTIONS"
 .TP
 \fB\-\-worker\-id\fR \fI<value>\fR
@@ -16,7 +16,7 @@ The worker whose regular pay rate will be created. Required.
 How the regular pay rate is measured. Salary represents an annual rate. Variable pay creates a dated boundary without a fixed pay\-rate row and returns a null id. Required.
 .TP
 \fB\-\-amount\fR \fI<number>\fR
-minor units — cents, e.g. 2345 for $23.45.
+minor units \[u2014] cents, e.g. 2345 for $23.45.
 .TP
 \fB\-\-currency\fR \fI<value>\fR
 The two\-decimal ISO 4217 payout currency of the pay rate. Required.
