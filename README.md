@@ -96,13 +96,13 @@ warp completion fish | source
 
 ## Upgrading
 
-`warp upgrade` installs the latest release. When warp was installed through a package manager — Homebrew — it runs that manager's own upgrade instead of replacing files the manager owns. `warp upgrade --check` reports the latest version without installing it, and `warp uninstall` says how to remove this installation. warp also checks for a newer release at most once a day, and mentions it on stderr when one exists. The check is skipped entirely when output is redirected, when `CI` is set, and under `sudo`; set `WARP_NO_UPDATE_NOTIFIER` or `NO_UPDATE_NOTIFIER` to turn it off everywhere.
+`warp upgrade` installs the latest release. When warp was installed through a package manager — Homebrew — it runs that manager's own upgrade instead of replacing files the manager owns. `warp upgrade --check` reports the latest version without installing it, and `warp uninstall` says how to remove this installation. warp also checks GitHub Releases for a newer release at most once a day, and mentions it on stderr when one exists. The check is skipped entirely when output is redirected, when `CI` is set, and under `sudo`; set `WARP_NO_UPDATE_NOTIFIER` or `NO_UPDATE_NOTIFIER` to turn it off everywhere.
 
 ```sh
 warp upgrade --check
 warp upgrade
 
-# Never contact GitHub to check for a newer release
+# Never check for a newer release
 export WARP_NO_UPDATE_NOTIFIER=1
 ```
 
@@ -135,7 +135,7 @@ Declared schemes:
 
 ## Errors
 
-Failed requests print a structured error to standard error and exit with a status that identifies the failure class. The error body carries the API's own `message` plus a stable `code`, the HTTP `status`, the `requestId`, and — where one applies — an actionable `hint`. Usage errors (exit `2`) are reported as a plain message instead, since no request was made. Exit statuses: `0` success, `1` `error`, `2` `usage`, `10` `auth-failed`, `11` `not-found`, `12` `rate-limited`, `13` `client-error`, `14` `server-error`, `15` `connection-error`.
+Failed requests print a structured error to standard error and exit with a status that identifies the failure class. The error body carries the API's own `message` plus a stable `code`, the HTTP `status`, the `requestId`, and — where one applies — an actionable `hint`. When the API answered with a JSON error payload, its parsed form is under `body`, so structured details such as an API-specific error code or field errors can be read without parsing `message`. Usage errors (exit `2`) are reported as a plain message instead, since no request was made. Exit statuses: `0` success, `1` `error`, `2` `usage`, `10` `auth-failed`, `11` `not-found`, `12` `rate-limited`, `13` `client-error`, `14` `server-error`, `15` `connection-error`.
 
 Documented error statuses: `400`, `401`, `403`, `404`, `409`, `422`, `429`, `500`.
 
@@ -168,6 +168,7 @@ Generated clients support request timeouts and retry temporary failures such as 
 - `--transform <path>` and `--transform-error <path>` — dot-path transform for data/error output.
 - `--raw-output`, `-r` — print transformed string values without JSON quotes.
 - `--max-items <count>` — bound iterator, streaming, and WebSocket command output.
+- `--no-input` — never prompt: a command that would ask fails instead, the same as it does without a terminal.
 - Errors carry a stable `code` and an actionable `hint` beside the API's own message, and each failure class exits with its own status: `1` `error`, `2` `usage`, `10` `auth-failed`, `11` `not-found`, `12` `rate-limited`, `13` `client-error`, `14` `server-error`, `15` `connection-error`.
 
 <br />

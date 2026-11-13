@@ -10,7 +10,7 @@ Replaces this warp executable with the latest published release, after verifying
 .PP
 When warp was installed through a package manager (Homebrew) nothing is replaced. That manager owns the installed files, and overwriting them leaves its database describing a file that is no longer there, so the command runs the manager's own upgrade command instead, with its output on this terminal.
 .PP
-warp also checks for a newer release at most once a day and mentions one on standard error. That check is skipped when either standard output or standard error is not a terminal, when CI is set, when running under sudo, and when NO_UPDATE_NOTIFIER or WARP_NO_UPDATE_NOTIFIER is set in the environment.
+warp also checks GitHub Releases for a newer release at most once a day and mentions one on standard error. That check is skipped when either standard output or standard error is not a terminal, when CI is set, when running under sudo, and when NO_UPDATE_NOTIFIER or WARP_NO_UPDATE_NOTIFIER is set in the environment.
 .SH "OPTIONS"
 .TP
 \fB\-\-check\fR
