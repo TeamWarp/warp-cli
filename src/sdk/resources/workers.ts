@@ -5,25 +5,24 @@ import { APIPromise } from '../api-promise';
 import type { RequestOptions } from '../internal/request-options';
 import { buildHeaders } from '../internal/headers';
 import { path as __scalarPath } from '../internal/utils/path';
-import type * as PayRatesAPI from './pay-rates';
+import type * as PayRatesAPI from './pay-rates/pay-rates';
 
 export class Workers extends APIResource {
   /**
-   * List all workers. Workers include anyone employed by the company, whether US or international, full-time employees or contractors.
+   * Update a worker and return the updated worker object. Omitted fields remain unchanged. Requires workers:profile write, plus read access to any referenced department, level, or workplace. See individual fields for update restrictions.
    *
-   * @param {WorkerListParams} query - The parameters to send with the request.
+   * @param {string} id - The id of the worker.
+   * @param {WorkerUpdateParams} body - The request body to send.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
-   * @returns {APIPromise<WorkerListResponse>} Success
+   * @returns {APIPromise<WorkerUpdateResponse>}
    *
    * @example
    * ```ts
-   * const worker = await client.workers.list({
-   *   limit: 'limit',
-   * });
+   * const worker = await client.workers.update('wrk_1234', {});
    * ```
    */
-  list(query: WorkerListParams, options?: RequestOptions): APIPromise<WorkerListResponse> {
-    return this._client.get('/v1/workers', { query, ...options });
+  update(id: string, body: WorkerUpdateParams, options?: RequestOptions): APIPromise<WorkerUpdateResponse> {
+    return this._client.patch(__scalarPath`/v1/workers/${id}`, { body, ...options });
   }
 
   /**
@@ -31,7 +30,7 @@ export class Workers extends APIResource {
    *
    * @param {string} id - The id of the worker.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
-   * @returns {APIPromise<WorkerGetResponse>} A worker profile, including lifecycle, workplace, profile, and compensation fields.
+   * @returns {APIPromise<WorkerGetResponse>}
    *
    * @example
    * ```ts
@@ -62,11 +61,45 @@ export class Workers extends APIResource {
   }
 
   /**
+   * Reveal full Social Security numbers for up to 50 workers. Requires the workers:pii read scope. Results preserve request order and use null when a worker has no SSN on file. The request fails if any worker is not found, emits one audit event per worker, and returns Cache-Control: private, no-store.
+   *
+   * @param {WorkerRevealSsnParams} body - The request body to send.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<WorkerRevealSsnResponse>} Success
+   *
+   * @example
+   * ```ts
+   * const worker = await client.workers.revealSsn({ workerIds: ['wrk_khac8380c2Lm', 'wrk_q7Vm2pR9xK4c'] });
+   * ```
+   */
+  revealSsn(body: WorkerRevealSsnParams, options?: RequestOptions): APIPromise<WorkerRevealSsnResponse> {
+    return this._client.post('/v1/workers/reveal_ssn', { body, ...options });
+  }
+
+  /**
+   * List all workers. Workers include anyone employed by the company, whether US or international, full-time employees or contractors.
+   *
+   * @param {WorkerListParams} query - The parameters to send with the request.
+   * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
+   * @returns {APIPromise<WorkerListResponse>} Success
+   *
+   * @example
+   * ```ts
+   * const worker = await client.workers.list({
+   *   limit: 'limit',
+   * });
+   * ```
+   */
+  list(query: WorkerListParams, options?: RequestOptions): APIPromise<WorkerListResponse> {
+    return this._client.get('/v1/workers', { query, ...options });
+  }
+
+  /**
    * Create a new US employee. The worker will be created in draft status and must be invited separately via the invite endpoint. If hiring in a state without an existing tax registration, you must specify the stateRegistration field.
    *
    * @param {WorkerCreateEmployeeParams} body - The request body to send.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
-   * @returns {APIPromise<WorkerCreateEmployeeResponse>} A worker profile, including lifecycle, workplace, profile, and compensation fields.
+   * @returns {APIPromise<WorkerCreateEmployeeResponse>}
    *
    * @example
    * ```ts
@@ -83,7 +116,7 @@ export class Workers extends APIResource {
    *     workplaceId: 'wkp_1234',
    *   },
    *   compensation: {
-   *     amount: 0,
+   *     amount: 85000,
    *     per: 'hour',
    *   },
    * });
@@ -101,7 +134,7 @@ export class Workers extends APIResource {
    *
    * @param {WorkerCreateContractorParams} body - The request body to send.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
-   * @returns {APIPromise<WorkerCreateContractorResponse>} A worker profile, including lifecycle, workplace, profile, and compensation fields.
+   * @returns {APIPromise<WorkerCreateContractorResponse>}
    *
    * @example
    * ```ts
@@ -130,7 +163,7 @@ export class Workers extends APIResource {
    *
    * @param {string} id - The id of the worker.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
-   * @returns {APIPromise<WorkerInviteResponse>} A worker profile, including lifecycle, workplace, profile, and compensation fields.
+   * @returns {APIPromise<WorkerInviteResponse>}
    *
    * @example
    * ```ts
@@ -143,6 +176,282 @@ export class Workers extends APIResource {
 }
 
 /**
+ * The worker's home address.
+ */
+export interface PublicWorkerAddress {
+  line1: string;
+  line2: string | null;
+  city: string;
+  state: string | null;
+  postalCode: string | null;
+  country:
+    | 'AD'
+    | 'AE'
+    | 'AF'
+    | 'AG'
+    | 'AI'
+    | 'AL'
+    | 'AM'
+    | 'AO'
+    | 'AQ'
+    | 'AR'
+    | 'AS'
+    | 'AT'
+    | 'AU'
+    | 'AW'
+    | 'AX'
+    | 'AZ'
+    | 'BA'
+    | 'BB'
+    | 'BD'
+    | 'BE'
+    | 'BF'
+    | 'BG'
+    | 'BH'
+    | 'BI'
+    | 'BJ'
+    | 'BL'
+    | 'BM'
+    | 'BN'
+    | 'BO'
+    | 'BQ'
+    | 'BR'
+    | 'BS'
+    | 'BT'
+    | 'BV'
+    | 'BW'
+    | 'BY'
+    | 'BZ'
+    | 'CA'
+    | 'CC'
+    | 'CD'
+    | 'CF'
+    | 'CG'
+    | 'CH'
+    | 'CI'
+    | 'CK'
+    | 'CL'
+    | 'CM'
+    | 'CN'
+    | 'CO'
+    | 'CR'
+    | 'CU'
+    | 'CV'
+    | 'CW'
+    | 'CX'
+    | 'CY'
+    | 'CZ'
+    | 'DE'
+    | 'DJ'
+    | 'DK'
+    | 'DM'
+    | 'DO'
+    | 'DZ'
+    | 'EC'
+    | 'EE'
+    | 'EG'
+    | 'EH'
+    | 'ER'
+    | 'ES'
+    | 'ET'
+    | 'FI'
+    | 'FJ'
+    | 'FK'
+    | 'FM'
+    | 'FO'
+    | 'FR'
+    | 'GA'
+    | 'GB'
+    | 'GD'
+    | 'GE'
+    | 'GF'
+    | 'GG'
+    | 'GH'
+    | 'GI'
+    | 'GL'
+    | 'GM'
+    | 'GN'
+    | 'GP'
+    | 'GQ'
+    | 'GR'
+    | 'GS'
+    | 'GT'
+    | 'GU'
+    | 'GW'
+    | 'GY'
+    | 'HK'
+    | 'HM'
+    | 'HN'
+    | 'HR'
+    | 'HT'
+    | 'HU'
+    | 'ID'
+    | 'IE'
+    | 'IL'
+    | 'IM'
+    | 'IN'
+    | 'IO'
+    | 'IQ'
+    | 'IR'
+    | 'IS'
+    | 'IT'
+    | 'JE'
+    | 'JM'
+    | 'JO'
+    | 'JP'
+    | 'KE'
+    | 'KG'
+    | 'KH'
+    | 'KI'
+    | 'KM'
+    | 'KN'
+    | 'KP'
+    | 'KR'
+    | 'KW'
+    | 'KY'
+    | 'KZ'
+    | 'LA'
+    | 'LB'
+    | 'LC'
+    | 'LI'
+    | 'LK'
+    | 'LR'
+    | 'LS'
+    | 'LT'
+    | 'LU'
+    | 'LV'
+    | 'LY'
+    | 'MA'
+    | 'MC'
+    | 'MD'
+    | 'ME'
+    | 'MF'
+    | 'MG'
+    | 'MH'
+    | 'MK'
+    | 'ML'
+    | 'MM'
+    | 'MN'
+    | 'MO'
+    | 'MP'
+    | 'MQ'
+    | 'MR'
+    | 'MS'
+    | 'MT'
+    | 'MU'
+    | 'MV'
+    | 'MW'
+    | 'MX'
+    | 'MY'
+    | 'MZ'
+    | 'NA'
+    | 'NC'
+    | 'NE'
+    | 'NF'
+    | 'NG'
+    | 'NI'
+    | 'NL'
+    | 'NO'
+    | 'NP'
+    | 'NR'
+    | 'NU'
+    | 'NZ'
+    | 'OM'
+    | 'PA'
+    | 'PE'
+    | 'PF'
+    | 'PG'
+    | 'PH'
+    | 'PK'
+    | 'PL'
+    | 'PM'
+    | 'PN'
+    | 'PR'
+    | 'PS'
+    | 'PT'
+    | 'PW'
+    | 'PY'
+    | 'QA'
+    | 'RE'
+    | 'RO'
+    | 'RS'
+    | 'RU'
+    | 'RW'
+    | 'SA'
+    | 'SB'
+    | 'SC'
+    | 'SD'
+    | 'SE'
+    | 'SG'
+    | 'SH'
+    | 'SI'
+    | 'SJ'
+    | 'SK'
+    | 'SL'
+    | 'SM'
+    | 'SN'
+    | 'SO'
+    | 'SR'
+    | 'SS'
+    | 'ST'
+    | 'SV'
+    | 'SX'
+    | 'SY'
+    | 'SZ'
+    | 'TC'
+    | 'TD'
+    | 'TF'
+    | 'TG'
+    | 'TH'
+    | 'TJ'
+    | 'TK'
+    | 'TL'
+    | 'TM'
+    | 'TN'
+    | 'TO'
+    | 'TR'
+    | 'TT'
+    | 'TV'
+    | 'TW'
+    | 'TZ'
+    | 'UA'
+    | 'UG'
+    | 'UM'
+    | 'US'
+    | 'UY'
+    | 'UZ'
+    | 'VA'
+    | 'VC'
+    | 'VE'
+    | 'VG'
+    | 'VI'
+    | 'VN'
+    | 'VU'
+    | 'WF'
+    | 'WS'
+    | 'XK'
+    | 'YE'
+    | 'YT'
+    | 'ZA'
+    | 'ZM'
+    | 'ZW';
+}
+
+/**
+ * The worker's manager.
+ */
+export interface PublicWorkerManager {
+  /**
+   * The id of the worker.
+   * @pattern ^wrk_
+   */
+  id: string;
+  firstName: string;
+  lastName: string;
+  displayName: string;
+}
+
+/**
  * The worker's current regular pay rate. For a worker whose start date is in the future, this is the regular rate effective on their start date. Null when no regular rate applies or when the API key lacks the corresponding US or global compensation read scope.
  */
 export interface PublicWorkerCompensation {
@@ -151,9 +460,9 @@ export interface PublicWorkerCompensation {
    * @pattern ^pyr_
    */
   payRateId: string;
-  per: PayRatesAPI.PublicPayRatePer & string;
+  per: PayRatesAPI.PublicPayRatePer & unknown;
   /**
-   * Amount in the currency base unit, e.g. cents for USD.
+   * minor units — cents, e.g. 2345 for $23.45
    * @minimum 0
    */
   amount: number;
@@ -510,6 +819,24 @@ export namespace PublicWorkerCustomField {
   }
 }
 
+/**
+ * A worker's decrypted Social Security number.
+ */
+export interface PublicWorkerSsn {
+  /**
+   * The id of the worker.
+   * @pattern ^wrk_
+   */
+  id: string;
+  /**
+   * The nine-digit Social Security number, or null when the worker has no SSN on file.
+   * @minLength 9
+   * @maxLength 9
+   * @pattern ^\d+$
+   */
+  ssn: string | null;
+}
+
 export interface PublicTextWorkerCustomField {
   type: 'text';
   /**
@@ -783,410 +1110,74 @@ export namespace PublicMultiSelectWorkerCustomField {
   }
 }
 
-export interface WorkerListParams {
-  limit: string | null;
+export interface WorkerUpdateParams {
   /**
-   * @pattern ^wrk_
+   * @minLength 1
+   * @pattern ^\S[\s\S]*\S$|^\S$|^$
    */
-  afterId?: string | null;
+  firstName?: string;
   /**
-   * @pattern ^wrk_
+   * @minLength 1
+   * @pattern ^\S[\s\S]*\S$|^\S$|^$
    */
-  beforeId?: string | null;
-  statuses?: Array<'draft' | 'invited' | 'onboarding' | 'active' | 'offboarding' | 'inactive'> | null;
-  types?: Array<'employee' | 'contractor'> | null;
+  lastName?: string;
+  /**
+   * @pattern ^\S[\s\S]*\S$|^\S$|^$
+   */
+  preferredName?: string | null;
+  tShirtSize?: 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL' | 'XXXL' | null;
+  /**
+   * An email with a reasonably valid regex (based on RFC 5321 atext characters)
+   * @format email
+   */
+  email?: string;
+  /**
+   * An email with a reasonably valid regex (based on RFC 5321 atext characters)
+   * @format email
+   */
   workEmail?: string | null;
+  phone?: string;
+  timeZone?: string;
+  /**
+   * @pattern ^\d{4}-\d{2}-\d{2}$
+   */
+  dateOfBirth?: string;
+  maritalStatus?: 'married' | 'not_married';
+  biologicalSex?: 'male' | 'female';
+  address?: unknown;
+  /**
+   * @minLength 1
+   * @pattern ^\S[\s\S]*\S$|^\S$|^$
+   */
+  position?: string;
+  /**
+   * The unique public id of the department
+   * @pattern ^dpt_
+   */
+  departmentId?: string | null;
+  /**
+   * The id of the worker.
+   * @pattern ^wrk_
+   */
+  managerId?: string | null;
+  /**
+   * The unique public id of the job level
+   * @pattern ^jlvl_
+   */
+  levelId?: string | null;
+  /**
+   * @pattern ^\d{4}-\d{2}-\d{2}$
+   */
+  startDate?: string;
+  /**
+   * Public workplace identifier
+   * @pattern ^wkp_
+   */
+  workplaceId?: string | null;
+  stateRegistration?: 'self_managed' | 'warp_managed';
 }
 
-export interface WorkerListResponse {
-  hasMore: boolean;
-  count: number;
-  data: Array<WorkerListResponse.Data>;
-}
-
-export namespace WorkerListResponse {
-  export interface Data {
-    /**
-     * The id of the worker.
-     * @pattern ^wrk_
-     */
-    id: string;
-    position: string;
-    type: 'employee' | 'contractor';
-    status: 'draft' | 'invited' | 'onboarding' | 'active' | 'offboarding' | 'inactive';
-    /**
-     * @pattern ^\d{4}-\d{2}-\d{2}$
-     */
-    startDate: string;
-    /**
-     * @pattern ^\d{4}-\d{2}-\d{2}$
-     */
-    endDate: string | null;
-    isBusiness: boolean | null;
-    businessName: string | null;
-    firstName: string;
-    lastName: string;
-    /**
-     * An email with a reasonably valid regex (based on RFC 5321 atext characters)
-     * @format email
-     */
-    email: string;
-    /**
-     * @format email
-     */
-    workEmail: string | null;
-    preferredName: string | null;
-    /**
-     * The worker's biological sex, or null when unavailable.
-     */
-    biologicalSex: 'male' | 'female' | null;
-    /**
-     * The worker's marital status, or null when unavailable.
-     */
-    maritalStatus: 'married' | 'not_married' | null;
-    /**
-     * The worker's date of birth, or null when unavailable.
-     * @pattern ^\d{4}-\d{2}-\d{2}$
-     */
-    dateOfBirth: string | null;
-    /**
-     * The worker's personal phone number, or null when unavailable.
-     */
-    phone: string | null;
-    /**
-     * The worker's home address, or null when unavailable.
-     */
-    address: Data.Address | null;
-    /**
-     * The "ui" name of a worker. If it's a business contractor business name is used. Otherwise we default to preferred name, then first-last.
-     */
-    displayName: string;
-    /**
-     * The IANA timezone of the worker (e.g., America/New_York).
-     */
-    timeZone: string | null;
-    /**
-     * The department the worker belongs to, or null if unassigned.
-     */
-    department: Data.Department | null;
-    /**
-     * The primary workplace the worker is assigned to, or null if unassigned.
-     */
-    primaryWorkplace: Data.PrimaryWorkplace | null;
-    /**
-     * The date the worker was most recently reactivated after an offboarding. This is distinct from startDate and is null if the worker has not been rehired.
-     * @pattern ^\d{4}-\d{2}-\d{2}$
-     */
-    latestRehireDate: string | null;
-    /**
-     * The reason the worker was terminated, or null when no termination reason is recorded.
-     */
-    terminationReason: string | null;
-    updatedAt: string;
-    /**
-     * The worker's current regular compensation, or the rate effective on a future start date. Null when the worker has no applicable regular pay rate or the API key lacks the corresponding compensation read scope.
-     */
-    compensation: PublicWorkerCompensation | null;
-    /**
-     * The worker's assigned job level, or null if unassigned. Omitted when job levels are not enabled.
-     */
-    level?: Data.Level | null;
-    customFields?: Array<PublicWorkerCustomField> | null;
-  }
-
-  export namespace Data {
-    export interface Address {
-      line1: string;
-      line2: string | null;
-      city: string;
-      state: string | null;
-      postalCode: string | null;
-      country:
-        | 'AD'
-        | 'AE'
-        | 'AF'
-        | 'AG'
-        | 'AI'
-        | 'AL'
-        | 'AM'
-        | 'AO'
-        | 'AQ'
-        | 'AR'
-        | 'AS'
-        | 'AT'
-        | 'AU'
-        | 'AW'
-        | 'AX'
-        | 'AZ'
-        | 'BA'
-        | 'BB'
-        | 'BD'
-        | 'BE'
-        | 'BF'
-        | 'BG'
-        | 'BH'
-        | 'BI'
-        | 'BJ'
-        | 'BL'
-        | 'BM'
-        | 'BN'
-        | 'BO'
-        | 'BQ'
-        | 'BR'
-        | 'BS'
-        | 'BT'
-        | 'BV'
-        | 'BW'
-        | 'BY'
-        | 'BZ'
-        | 'CA'
-        | 'CC'
-        | 'CD'
-        | 'CF'
-        | 'CG'
-        | 'CH'
-        | 'CI'
-        | 'CK'
-        | 'CL'
-        | 'CM'
-        | 'CN'
-        | 'CO'
-        | 'CR'
-        | 'CU'
-        | 'CV'
-        | 'CW'
-        | 'CX'
-        | 'CY'
-        | 'CZ'
-        | 'DE'
-        | 'DJ'
-        | 'DK'
-        | 'DM'
-        | 'DO'
-        | 'DZ'
-        | 'EC'
-        | 'EE'
-        | 'EG'
-        | 'EH'
-        | 'ER'
-        | 'ES'
-        | 'ET'
-        | 'FI'
-        | 'FJ'
-        | 'FK'
-        | 'FM'
-        | 'FO'
-        | 'FR'
-        | 'GA'
-        | 'GB'
-        | 'GD'
-        | 'GE'
-        | 'GF'
-        | 'GG'
-        | 'GH'
-        | 'GI'
-        | 'GL'
-        | 'GM'
-        | 'GN'
-        | 'GP'
-        | 'GQ'
-        | 'GR'
-        | 'GS'
-        | 'GT'
-        | 'GU'
-        | 'GW'
-        | 'GY'
-        | 'HK'
-        | 'HM'
-        | 'HN'
-        | 'HR'
-        | 'HT'
-        | 'HU'
-        | 'ID'
-        | 'IE'
-        | 'IL'
-        | 'IM'
-        | 'IN'
-        | 'IO'
-        | 'IQ'
-        | 'IR'
-        | 'IS'
-        | 'IT'
-        | 'JE'
-        | 'JM'
-        | 'JO'
-        | 'JP'
-        | 'KE'
-        | 'KG'
-        | 'KH'
-        | 'KI'
-        | 'KM'
-        | 'KN'
-        | 'KP'
-        | 'KR'
-        | 'KW'
-        | 'KY'
-        | 'KZ'
-        | 'LA'
-        | 'LB'
-        | 'LC'
-        | 'LI'
-        | 'LK'
-        | 'LR'
-        | 'LS'
-        | 'LT'
-        | 'LU'
-        | 'LV'
-        | 'LY'
-        | 'MA'
-        | 'MC'
-        | 'MD'
-        | 'ME'
-        | 'MF'
-        | 'MG'
-        | 'MH'
-        | 'MK'
-        | 'ML'
-        | 'MM'
-        | 'MN'
-        | 'MO'
-        | 'MP'
-        | 'MQ'
-        | 'MR'
-        | 'MS'
-        | 'MT'
-        | 'MU'
-        | 'MV'
-        | 'MW'
-        | 'MX'
-        | 'MY'
-        | 'MZ'
-        | 'NA'
-        | 'NC'
-        | 'NE'
-        | 'NF'
-        | 'NG'
-        | 'NI'
-        | 'NL'
-        | 'NO'
-        | 'NP'
-        | 'NR'
-        | 'NU'
-        | 'NZ'
-        | 'OM'
-        | 'PA'
-        | 'PE'
-        | 'PF'
-        | 'PG'
-        | 'PH'
-        | 'PK'
-        | 'PL'
-        | 'PM'
-        | 'PN'
-        | 'PR'
-        | 'PS'
-        | 'PT'
-        | 'PW'
-        | 'PY'
-        | 'QA'
-        | 'RE'
-        | 'RO'
-        | 'RS'
-        | 'RU'
-        | 'RW'
-        | 'SA'
-        | 'SB'
-        | 'SC'
-        | 'SD'
-        | 'SE'
-        | 'SG'
-        | 'SH'
-        | 'SI'
-        | 'SJ'
-        | 'SK'
-        | 'SL'
-        | 'SM'
-        | 'SN'
-        | 'SO'
-        | 'SR'
-        | 'SS'
-        | 'ST'
-        | 'SV'
-        | 'SX'
-        | 'SY'
-        | 'SZ'
-        | 'TC'
-        | 'TD'
-        | 'TF'
-        | 'TG'
-        | 'TH'
-        | 'TJ'
-        | 'TK'
-        | 'TL'
-        | 'TM'
-        | 'TN'
-        | 'TO'
-        | 'TR'
-        | 'TT'
-        | 'TV'
-        | 'TW'
-        | 'TZ'
-        | 'UA'
-        | 'UG'
-        | 'UM'
-        | 'US'
-        | 'UY'
-        | 'UZ'
-        | 'VA'
-        | 'VC'
-        | 'VE'
-        | 'VG'
-        | 'VI'
-        | 'VN'
-        | 'VU'
-        | 'WF'
-        | 'WS'
-        | 'XK'
-        | 'YE'
-        | 'YT'
-        | 'ZA'
-        | 'ZM'
-        | 'ZW';
-    }
-
-    export interface Department {
-      /**
-       * The unique public id of the department
-       * @pattern ^dpt_
-       */
-      id: string;
-      name: string;
-    }
-
-    export interface PrimaryWorkplace {
-      /**
-       * Public workplace identifier
-       * @pattern ^wkp_
-       */
-      id: string;
-      name: string;
-      type: 'remote' | 'office';
-    }
-
-    export interface Level {
-      /**
-       * The unique public id of the job level
-       * @pattern ^jlvl_
-       */
-      id: string;
-      code: string;
-      name: string;
-      track: 'ic' | 'manager' | 'executive';
-    }
-  }
-}
-
-export interface WorkerGetResponse {
+export interface WorkerUpdateResponse {
   /**
    * The id of the worker.
    * @pattern ^wrk_
@@ -1195,6 +1186,7 @@ export interface WorkerGetResponse {
   position: string;
   type: 'employee' | 'contractor';
   status: 'draft' | 'invited' | 'onboarding' | 'active' | 'offboarding' | 'inactive';
+  benefitEligible: boolean;
   /**
    * @pattern ^\d{4}-\d{2}-\d{2}$
    */
@@ -1213,6 +1205,7 @@ export interface WorkerGetResponse {
    */
   email: string;
   /**
+   * An email with a reasonably valid regex (based on RFC 5321 atext characters)
    * @format email
    */
   workEmail: string | null;
@@ -1237,7 +1230,141 @@ export interface WorkerGetResponse {
   /**
    * The worker's home address, or null when unavailable.
    */
-  address: WorkerGetResponse.Address | null;
+  address: PublicWorkerAddress | null;
+  /**
+   * The "ui" name of a worker. If it's a business contractor business name is used. Otherwise we default to preferred name, then first-last.
+   */
+  displayName: string;
+  /**
+   * The IANA timezone of the worker (e.g., America/New_York).
+   */
+  timeZone: string | null;
+  /**
+   * The department the worker belongs to, or null if unassigned.
+   */
+  department: WorkerUpdateResponse.Department | null;
+  /**
+   * The primary workplace the worker is assigned to, or null if unassigned.
+   */
+  primaryWorkplace: WorkerUpdateResponse.PrimaryWorkplace | null;
+  /**
+   * The date the worker was most recently reactivated after an offboarding. This is distinct from startDate and is null if the worker has not been rehired.
+   * @pattern ^\d{4}-\d{2}-\d{2}$
+   */
+  latestRehireDate: string | null;
+  /**
+   * The reason the worker was terminated, or null when no termination reason is recorded.
+   */
+  terminationReason: string | null;
+  updatedAt: string;
+  /**
+   * The worker's current regular compensation, or the rate effective on a future start date. Null when the worker has no applicable regular pay rate or the API key lacks the corresponding compensation read scope.
+   */
+  compensation: PublicWorkerCompensation | null;
+  /**
+   * The worker's manager, or null if unassigned.
+   */
+  manager?: PublicWorkerManager | null;
+  /**
+   * The worker's stored T-shirt size, or null when unset or unavailable.
+   */
+  tShirtSize?: 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL' | 'XXXL' | null;
+  /**
+   * The worker's assigned job level, or null if unassigned. Omitted when job levels are not enabled.
+   */
+  level?: WorkerUpdateResponse.Level | null;
+  /**
+   * The worker's custom field values. Every active company custom field appears; fields outside this API key's permission scopes are redacted (value null, redacted true) rather than omitted, so the list is identical across keys. Empty when the company has no custom fields.
+   */
+  customFields?: Array<PublicWorkerCustomField> | null;
+}
+
+export namespace WorkerUpdateResponse {
+  export interface Department {
+    /**
+     * The unique public id of the department
+     * @pattern ^dpt_
+     */
+    id: string;
+    name: string;
+  }
+
+  export interface PrimaryWorkplace {
+    /**
+     * Public workplace identifier
+     * @pattern ^wkp_
+     */
+    id: string;
+    name: string;
+    type: 'remote' | 'office';
+  }
+
+  export interface Level {
+    /**
+     * The unique public id of the job level
+     * @pattern ^jlvl_
+     */
+    id: string;
+    code: string;
+    name: string;
+    track: 'ic' | 'manager' | 'executive';
+  }
+}
+
+export interface WorkerGetResponse {
+  /**
+   * The id of the worker.
+   * @pattern ^wrk_
+   */
+  id: string;
+  position: string;
+  type: 'employee' | 'contractor';
+  status: 'draft' | 'invited' | 'onboarding' | 'active' | 'offboarding' | 'inactive';
+  benefitEligible: boolean;
+  /**
+   * @pattern ^\d{4}-\d{2}-\d{2}$
+   */
+  startDate: string;
+  /**
+   * @pattern ^\d{4}-\d{2}-\d{2}$
+   */
+  endDate: string | null;
+  isBusiness: boolean | null;
+  businessName: string | null;
+  firstName: string;
+  lastName: string;
+  /**
+   * An email with a reasonably valid regex (based on RFC 5321 atext characters)
+   * @format email
+   */
+  email: string;
+  /**
+   * An email with a reasonably valid regex (based on RFC 5321 atext characters)
+   * @format email
+   */
+  workEmail: string | null;
+  preferredName: string | null;
+  /**
+   * The worker's biological sex, or null when unavailable.
+   */
+  biologicalSex: 'male' | 'female' | null;
+  /**
+   * The worker's marital status, or null when unavailable.
+   */
+  maritalStatus: 'married' | 'not_married' | null;
+  /**
+   * The worker's date of birth, or null when unavailable.
+   * @pattern ^\d{4}-\d{2}-\d{2}$
+   */
+  dateOfBirth: string | null;
+  /**
+   * The worker's personal phone number, or null when unavailable.
+   */
+  phone: string | null;
+  /**
+   * The worker's home address, or null when unavailable.
+   */
+  address: PublicWorkerAddress | null;
   /**
    * The "ui" name of a worker. If it's a business contractor business name is used. Otherwise we default to preferred name, then first-last.
    */
@@ -1269,272 +1396,24 @@ export interface WorkerGetResponse {
    */
   compensation: PublicWorkerCompensation | null;
   /**
+   * The worker's manager, or null if unassigned.
+   */
+  manager?: PublicWorkerManager | null;
+  /**
+   * The worker's stored T-shirt size, or null when unset or unavailable.
+   */
+  tShirtSize?: 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL' | 'XXXL' | null;
+  /**
    * The worker's assigned job level, or null if unassigned. Omitted when job levels are not enabled.
    */
   level?: WorkerGetResponse.Level | null;
+  /**
+   * The worker's custom field values. Every active company custom field appears; fields outside this API key's permission scopes are redacted (value null, redacted true) rather than omitted, so the list is identical across keys. Empty when the company has no custom fields.
+   */
   customFields?: Array<PublicWorkerCustomField> | null;
 }
 
 export namespace WorkerGetResponse {
-  export interface Address {
-    line1: string;
-    line2: string | null;
-    city: string;
-    state: string | null;
-    postalCode: string | null;
-    country:
-      | 'AD'
-      | 'AE'
-      | 'AF'
-      | 'AG'
-      | 'AI'
-      | 'AL'
-      | 'AM'
-      | 'AO'
-      | 'AQ'
-      | 'AR'
-      | 'AS'
-      | 'AT'
-      | 'AU'
-      | 'AW'
-      | 'AX'
-      | 'AZ'
-      | 'BA'
-      | 'BB'
-      | 'BD'
-      | 'BE'
-      | 'BF'
-      | 'BG'
-      | 'BH'
-      | 'BI'
-      | 'BJ'
-      | 'BL'
-      | 'BM'
-      | 'BN'
-      | 'BO'
-      | 'BQ'
-      | 'BR'
-      | 'BS'
-      | 'BT'
-      | 'BV'
-      | 'BW'
-      | 'BY'
-      | 'BZ'
-      | 'CA'
-      | 'CC'
-      | 'CD'
-      | 'CF'
-      | 'CG'
-      | 'CH'
-      | 'CI'
-      | 'CK'
-      | 'CL'
-      | 'CM'
-      | 'CN'
-      | 'CO'
-      | 'CR'
-      | 'CU'
-      | 'CV'
-      | 'CW'
-      | 'CX'
-      | 'CY'
-      | 'CZ'
-      | 'DE'
-      | 'DJ'
-      | 'DK'
-      | 'DM'
-      | 'DO'
-      | 'DZ'
-      | 'EC'
-      | 'EE'
-      | 'EG'
-      | 'EH'
-      | 'ER'
-      | 'ES'
-      | 'ET'
-      | 'FI'
-      | 'FJ'
-      | 'FK'
-      | 'FM'
-      | 'FO'
-      | 'FR'
-      | 'GA'
-      | 'GB'
-      | 'GD'
-      | 'GE'
-      | 'GF'
-      | 'GG'
-      | 'GH'
-      | 'GI'
-      | 'GL'
-      | 'GM'
-      | 'GN'
-      | 'GP'
-      | 'GQ'
-      | 'GR'
-      | 'GS'
-      | 'GT'
-      | 'GU'
-      | 'GW'
-      | 'GY'
-      | 'HK'
-      | 'HM'
-      | 'HN'
-      | 'HR'
-      | 'HT'
-      | 'HU'
-      | 'ID'
-      | 'IE'
-      | 'IL'
-      | 'IM'
-      | 'IN'
-      | 'IO'
-      | 'IQ'
-      | 'IR'
-      | 'IS'
-      | 'IT'
-      | 'JE'
-      | 'JM'
-      | 'JO'
-      | 'JP'
-      | 'KE'
-      | 'KG'
-      | 'KH'
-      | 'KI'
-      | 'KM'
-      | 'KN'
-      | 'KP'
-      | 'KR'
-      | 'KW'
-      | 'KY'
-      | 'KZ'
-      | 'LA'
-      | 'LB'
-      | 'LC'
-      | 'LI'
-      | 'LK'
-      | 'LR'
-      | 'LS'
-      | 'LT'
-      | 'LU'
-      | 'LV'
-      | 'LY'
-      | 'MA'
-      | 'MC'
-      | 'MD'
-      | 'ME'
-      | 'MF'
-      | 'MG'
-      | 'MH'
-      | 'MK'
-      | 'ML'
-      | 'MM'
-      | 'MN'
-      | 'MO'
-      | 'MP'
-      | 'MQ'
-      | 'MR'
-      | 'MS'
-      | 'MT'
-      | 'MU'
-      | 'MV'
-      | 'MW'
-      | 'MX'
-      | 'MY'
-      | 'MZ'
-      | 'NA'
-      | 'NC'
-      | 'NE'
-      | 'NF'
-      | 'NG'
-      | 'NI'
-      | 'NL'
-      | 'NO'
-      | 'NP'
-      | 'NR'
-      | 'NU'
-      | 'NZ'
-      | 'OM'
-      | 'PA'
-      | 'PE'
-      | 'PF'
-      | 'PG'
-      | 'PH'
-      | 'PK'
-      | 'PL'
-      | 'PM'
-      | 'PN'
-      | 'PR'
-      | 'PS'
-      | 'PT'
-      | 'PW'
-      | 'PY'
-      | 'QA'
-      | 'RE'
-      | 'RO'
-      | 'RS'
-      | 'RU'
-      | 'RW'
-      | 'SA'
-      | 'SB'
-      | 'SC'
-      | 'SD'
-      | 'SE'
-      | 'SG'
-      | 'SH'
-      | 'SI'
-      | 'SJ'
-      | 'SK'
-      | 'SL'
-      | 'SM'
-      | 'SN'
-      | 'SO'
-      | 'SR'
-      | 'SS'
-      | 'ST'
-      | 'SV'
-      | 'SX'
-      | 'SY'
-      | 'SZ'
-      | 'TC'
-      | 'TD'
-      | 'TF'
-      | 'TG'
-      | 'TH'
-      | 'TJ'
-      | 'TK'
-      | 'TL'
-      | 'TM'
-      | 'TN'
-      | 'TO'
-      | 'TR'
-      | 'TT'
-      | 'TV'
-      | 'TW'
-      | 'TZ'
-      | 'UA'
-      | 'UG'
-      | 'UM'
-      | 'US'
-      | 'UY'
-      | 'UZ'
-      | 'VA'
-      | 'VC'
-      | 'VE'
-      | 'VG'
-      | 'VI'
-      | 'VN'
-      | 'VU'
-      | 'WF'
-      | 'WS'
-      | 'XK'
-      | 'YE'
-      | 'YT'
-      | 'ZA'
-      | 'ZM'
-      | 'ZW';
-  }
-
   export interface Department {
     /**
      * The unique public id of the department
@@ -1563,6 +1442,176 @@ export namespace WorkerGetResponse {
     code: string;
     name: string;
     track: 'ic' | 'manager' | 'executive';
+  }
+}
+
+export interface WorkerRevealSsnParams {
+  /**
+   * One to 50 unique worker ids. Results are returned in this order.
+   * @minItems 1
+   * @maxItems 50
+   */
+  workerIds: Array<string>;
+}
+
+export type WorkerRevealSsnResponse = Array<PublicWorkerSsn>;
+
+export interface WorkerListParams {
+  limit: string | null;
+  /**
+   * The id of the worker.
+   * @pattern ^wrk_
+   */
+  afterId?: string | null;
+  /**
+   * The id of the worker.
+   * @pattern ^wrk_
+   */
+  beforeId?: string | null;
+  statuses?: Array<'draft' | 'invited' | 'onboarding' | 'active' | 'offboarding' | 'inactive'> | null;
+  types?: Array<'employee' | 'contractor'> | null;
+  workEmail?: string | null;
+}
+
+export interface WorkerListResponse {
+  hasMore: boolean;
+  count: number;
+  data: Array<WorkerListResponse.Data>;
+}
+
+export namespace WorkerListResponse {
+  export interface Data {
+    /**
+     * The id of the worker.
+     * @pattern ^wrk_
+     */
+    id: string;
+    position: string;
+    type: 'employee' | 'contractor';
+    status: 'draft' | 'invited' | 'onboarding' | 'active' | 'offboarding' | 'inactive';
+    benefitEligible: boolean;
+    /**
+     * @pattern ^\d{4}-\d{2}-\d{2}$
+     */
+    startDate: string;
+    /**
+     * @pattern ^\d{4}-\d{2}-\d{2}$
+     */
+    endDate: string | null;
+    isBusiness: boolean | null;
+    businessName: string | null;
+    firstName: string;
+    lastName: string;
+    /**
+     * An email with a reasonably valid regex (based on RFC 5321 atext characters)
+     * @format email
+     */
+    email: string;
+    /**
+     * An email with a reasonably valid regex (based on RFC 5321 atext characters)
+     * @format email
+     */
+    workEmail: string | null;
+    preferredName: string | null;
+    /**
+     * The worker's biological sex, or null when unavailable.
+     */
+    biologicalSex: 'male' | 'female' | null;
+    /**
+     * The worker's marital status, or null when unavailable.
+     */
+    maritalStatus: 'married' | 'not_married' | null;
+    /**
+     * The worker's date of birth, or null when unavailable.
+     * @pattern ^\d{4}-\d{2}-\d{2}$
+     */
+    dateOfBirth: string | null;
+    /**
+     * The worker's personal phone number, or null when unavailable.
+     */
+    phone: string | null;
+    /**
+     * The worker's home address, or null when unavailable.
+     */
+    address: PublicWorkerAddress | null;
+    /**
+     * The "ui" name of a worker. If it's a business contractor business name is used. Otherwise we default to preferred name, then first-last.
+     */
+    displayName: string;
+    /**
+     * The IANA timezone of the worker (e.g., America/New_York).
+     */
+    timeZone: string | null;
+    /**
+     * The department the worker belongs to, or null if unassigned.
+     */
+    department: Data.Department | null;
+    /**
+     * The primary workplace the worker is assigned to, or null if unassigned.
+     */
+    primaryWorkplace: Data.PrimaryWorkplace | null;
+    /**
+     * The date the worker was most recently reactivated after an offboarding. This is distinct from startDate and is null if the worker has not been rehired.
+     * @pattern ^\d{4}-\d{2}-\d{2}$
+     */
+    latestRehireDate: string | null;
+    /**
+     * The reason the worker was terminated, or null when no termination reason is recorded.
+     */
+    terminationReason: string | null;
+    updatedAt: string;
+    /**
+     * The worker's current regular compensation, or the rate effective on a future start date. Null when the worker has no applicable regular pay rate or the API key lacks the corresponding compensation read scope.
+     */
+    compensation: PublicWorkerCompensation | null;
+    /**
+     * The worker's manager, or null if unassigned.
+     */
+    manager?: PublicWorkerManager | null;
+    /**
+     * The worker's stored T-shirt size, or null when unset or unavailable.
+     */
+    tShirtSize?: 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL' | 'XXXL' | null;
+    /**
+     * The worker's assigned job level, or null if unassigned. Omitted when job levels are not enabled.
+     */
+    level?: Data.Level | null;
+    /**
+     * The worker's custom field values. Every active company custom field appears; fields outside this API key's permission scopes are redacted (value null, redacted true) rather than omitted, so the list is identical across keys. Empty when the company has no custom fields.
+     */
+    customFields?: Array<PublicWorkerCustomField> | null;
+  }
+
+  export namespace Data {
+    export interface Department {
+      /**
+       * The unique public id of the department
+       * @pattern ^dpt_
+       */
+      id: string;
+      name: string;
+    }
+
+    export interface PrimaryWorkplace {
+      /**
+       * Public workplace identifier
+       * @pattern ^wkp_
+       */
+      id: string;
+      name: string;
+      type: 'remote' | 'office';
+    }
+
+    export interface Level {
+      /**
+       * The unique public id of the job level
+       * @pattern ^jlvl_
+       */
+      id: string;
+      code: string;
+      name: string;
+      track: 'ic' | 'manager' | 'executive';
+    }
   }
 }
 
@@ -1611,17 +1660,30 @@ export interface WorkerCreateEmployeeParams {
    */
   compensation: WorkerCreateEmployeeParams.Compensation;
   /**
+   * Company-issued email address, if applicable.
    * @format email
    */
   workEmail?: string | null;
+  /**
+   * Whether the employee is required to complete I-9 work authorization. Set to false if the employee has already been verified off-platform. Defaults to true.
+   */
   requireI9?: boolean | null;
+  /**
+   * How state tax registration is handled for this employee's work state. Required when hiring in a state where your company doesn't have an existing registration. Use 'self_managed' if you've already registered in this state, or 'warp_managed' for Warp to handle registration on your behalf.
+   */
   stateRegistration?: 'self_managed' | 'warp_managed' | null;
   /**
    * The job level to assign this employee to, or null to leave unassigned. Omit this field when job levels are not enabled.
    * @pattern ^jlvl_
    */
   levelId?: string | null;
+  /**
+   * Number of stock options granted to this employee.
+   */
   stockOptions?: number | 'Infinity' | '-Infinity' | 'NaN' | null;
+  /**
+   * The employee's pay schedule. Must be a pay schedule that the company has configured.
+   */
   paySchedule?: 'weekly' | 'biweekly' | 'monthly' | 'semimonthly' | 'quarterly' | 'annually' | null;
 }
 
@@ -1695,6 +1757,10 @@ export namespace WorkerCreateEmployeeParams {
   }
 
   export interface Compensation {
+    /**
+     * The pay amount. Interpreted based on the "per" field.
+     * @exclusiveMinimum 0
+     */
     amount: number;
     /**
      * Whether the amount is per hour or per year.
@@ -1712,6 +1778,7 @@ export interface WorkerCreateEmployeeResponse {
   position: string;
   type: 'employee' | 'contractor';
   status: 'draft' | 'invited' | 'onboarding' | 'active' | 'offboarding' | 'inactive';
+  benefitEligible: boolean;
   /**
    * @pattern ^\d{4}-\d{2}-\d{2}$
    */
@@ -1730,6 +1797,7 @@ export interface WorkerCreateEmployeeResponse {
    */
   email: string;
   /**
+   * An email with a reasonably valid regex (based on RFC 5321 atext characters)
    * @format email
    */
   workEmail: string | null;
@@ -1754,7 +1822,7 @@ export interface WorkerCreateEmployeeResponse {
   /**
    * The worker's home address, or null when unavailable.
    */
-  address: WorkerCreateEmployeeResponse.Address | null;
+  address: PublicWorkerAddress | null;
   /**
    * The "ui" name of a worker. If it's a business contractor business name is used. Otherwise we default to preferred name, then first-last.
    */
@@ -1786,272 +1854,24 @@ export interface WorkerCreateEmployeeResponse {
    */
   compensation: PublicWorkerCompensation | null;
   /**
+   * The worker's manager, or null if unassigned.
+   */
+  manager?: PublicWorkerManager | null;
+  /**
+   * The worker's stored T-shirt size, or null when unset or unavailable.
+   */
+  tShirtSize?: 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL' | 'XXXL' | null;
+  /**
    * The worker's assigned job level, or null if unassigned. Omitted when job levels are not enabled.
    */
   level?: WorkerCreateEmployeeResponse.Level | null;
+  /**
+   * The worker's custom field values. Every active company custom field appears; fields outside this API key's permission scopes are redacted (value null, redacted true) rather than omitted, so the list is identical across keys. Empty when the company has no custom fields.
+   */
   customFields?: Array<PublicWorkerCustomField> | null;
 }
 
 export namespace WorkerCreateEmployeeResponse {
-  export interface Address {
-    line1: string;
-    line2: string | null;
-    city: string;
-    state: string | null;
-    postalCode: string | null;
-    country:
-      | 'AD'
-      | 'AE'
-      | 'AF'
-      | 'AG'
-      | 'AI'
-      | 'AL'
-      | 'AM'
-      | 'AO'
-      | 'AQ'
-      | 'AR'
-      | 'AS'
-      | 'AT'
-      | 'AU'
-      | 'AW'
-      | 'AX'
-      | 'AZ'
-      | 'BA'
-      | 'BB'
-      | 'BD'
-      | 'BE'
-      | 'BF'
-      | 'BG'
-      | 'BH'
-      | 'BI'
-      | 'BJ'
-      | 'BL'
-      | 'BM'
-      | 'BN'
-      | 'BO'
-      | 'BQ'
-      | 'BR'
-      | 'BS'
-      | 'BT'
-      | 'BV'
-      | 'BW'
-      | 'BY'
-      | 'BZ'
-      | 'CA'
-      | 'CC'
-      | 'CD'
-      | 'CF'
-      | 'CG'
-      | 'CH'
-      | 'CI'
-      | 'CK'
-      | 'CL'
-      | 'CM'
-      | 'CN'
-      | 'CO'
-      | 'CR'
-      | 'CU'
-      | 'CV'
-      | 'CW'
-      | 'CX'
-      | 'CY'
-      | 'CZ'
-      | 'DE'
-      | 'DJ'
-      | 'DK'
-      | 'DM'
-      | 'DO'
-      | 'DZ'
-      | 'EC'
-      | 'EE'
-      | 'EG'
-      | 'EH'
-      | 'ER'
-      | 'ES'
-      | 'ET'
-      | 'FI'
-      | 'FJ'
-      | 'FK'
-      | 'FM'
-      | 'FO'
-      | 'FR'
-      | 'GA'
-      | 'GB'
-      | 'GD'
-      | 'GE'
-      | 'GF'
-      | 'GG'
-      | 'GH'
-      | 'GI'
-      | 'GL'
-      | 'GM'
-      | 'GN'
-      | 'GP'
-      | 'GQ'
-      | 'GR'
-      | 'GS'
-      | 'GT'
-      | 'GU'
-      | 'GW'
-      | 'GY'
-      | 'HK'
-      | 'HM'
-      | 'HN'
-      | 'HR'
-      | 'HT'
-      | 'HU'
-      | 'ID'
-      | 'IE'
-      | 'IL'
-      | 'IM'
-      | 'IN'
-      | 'IO'
-      | 'IQ'
-      | 'IR'
-      | 'IS'
-      | 'IT'
-      | 'JE'
-      | 'JM'
-      | 'JO'
-      | 'JP'
-      | 'KE'
-      | 'KG'
-      | 'KH'
-      | 'KI'
-      | 'KM'
-      | 'KN'
-      | 'KP'
-      | 'KR'
-      | 'KW'
-      | 'KY'
-      | 'KZ'
-      | 'LA'
-      | 'LB'
-      | 'LC'
-      | 'LI'
-      | 'LK'
-      | 'LR'
-      | 'LS'
-      | 'LT'
-      | 'LU'
-      | 'LV'
-      | 'LY'
-      | 'MA'
-      | 'MC'
-      | 'MD'
-      | 'ME'
-      | 'MF'
-      | 'MG'
-      | 'MH'
-      | 'MK'
-      | 'ML'
-      | 'MM'
-      | 'MN'
-      | 'MO'
-      | 'MP'
-      | 'MQ'
-      | 'MR'
-      | 'MS'
-      | 'MT'
-      | 'MU'
-      | 'MV'
-      | 'MW'
-      | 'MX'
-      | 'MY'
-      | 'MZ'
-      | 'NA'
-      | 'NC'
-      | 'NE'
-      | 'NF'
-      | 'NG'
-      | 'NI'
-      | 'NL'
-      | 'NO'
-      | 'NP'
-      | 'NR'
-      | 'NU'
-      | 'NZ'
-      | 'OM'
-      | 'PA'
-      | 'PE'
-      | 'PF'
-      | 'PG'
-      | 'PH'
-      | 'PK'
-      | 'PL'
-      | 'PM'
-      | 'PN'
-      | 'PR'
-      | 'PS'
-      | 'PT'
-      | 'PW'
-      | 'PY'
-      | 'QA'
-      | 'RE'
-      | 'RO'
-      | 'RS'
-      | 'RU'
-      | 'RW'
-      | 'SA'
-      | 'SB'
-      | 'SC'
-      | 'SD'
-      | 'SE'
-      | 'SG'
-      | 'SH'
-      | 'SI'
-      | 'SJ'
-      | 'SK'
-      | 'SL'
-      | 'SM'
-      | 'SN'
-      | 'SO'
-      | 'SR'
-      | 'SS'
-      | 'ST'
-      | 'SV'
-      | 'SX'
-      | 'SY'
-      | 'SZ'
-      | 'TC'
-      | 'TD'
-      | 'TF'
-      | 'TG'
-      | 'TH'
-      | 'TJ'
-      | 'TK'
-      | 'TL'
-      | 'TM'
-      | 'TN'
-      | 'TO'
-      | 'TR'
-      | 'TT'
-      | 'TV'
-      | 'TW'
-      | 'TZ'
-      | 'UA'
-      | 'UG'
-      | 'UM'
-      | 'US'
-      | 'UY'
-      | 'UZ'
-      | 'VA'
-      | 'VC'
-      | 'VE'
-      | 'VG'
-      | 'VI'
-      | 'VN'
-      | 'VU'
-      | 'WF'
-      | 'WS'
-      | 'XK'
-      | 'YE'
-      | 'YT'
-      | 'ZA'
-      | 'ZM'
-      | 'ZW';
-  }
-
   export interface Department {
     /**
      * The unique public id of the department
@@ -2375,12 +2195,17 @@ export interface WorkerCreateContractorParams {
     | 'ZM'
     | 'ZW';
   /**
+   * Required when entityType is "business". The legal name of the contractor's business.
    * @minLength 1
    * @pattern ^\S[\s\S]*\S$|^\S$|^$
    */
   businessName?: string | null;
+  /**
+   * A description of the work the contractor will perform.
+   */
   scopeOfWork?: string | null;
   /**
+   * Company-issued email address, if applicable.
    * @format email
    */
   workEmail?: string | null;
@@ -2389,7 +2214,13 @@ export interface WorkerCreateContractorParams {
    * @pattern ^jlvl_
    */
   levelId?: string | null;
+  /**
+   * The contractor's pay rate. Omit if you'd like to pay on-demand or via invoicing.
+   */
   compensation?: WorkerCreateContractorParams.Compensation | null;
+  /**
+   * The contractor's pay schedule. Must be a pay schedule that the company has configured.
+   */
   paySchedule?: 'weekly' | 'biweekly' | 'monthly' | 'semimonthly' | 'quarterly' | 'annually' | null;
 }
 
@@ -2457,6 +2288,10 @@ export namespace WorkerCreateContractorParams {
       | 'SAR'
       | 'XAF'
       | 'PEN';
+    /**
+     * The pay amount. Interpreted based on the "per" field.
+     * @exclusiveMinimum 0
+     */
     amount: number;
     /**
      * The pay period for the compensation amount.
@@ -2474,6 +2309,7 @@ export interface WorkerCreateContractorResponse {
   position: string;
   type: 'employee' | 'contractor';
   status: 'draft' | 'invited' | 'onboarding' | 'active' | 'offboarding' | 'inactive';
+  benefitEligible: boolean;
   /**
    * @pattern ^\d{4}-\d{2}-\d{2}$
    */
@@ -2492,6 +2328,7 @@ export interface WorkerCreateContractorResponse {
    */
   email: string;
   /**
+   * An email with a reasonably valid regex (based on RFC 5321 atext characters)
    * @format email
    */
   workEmail: string | null;
@@ -2516,7 +2353,7 @@ export interface WorkerCreateContractorResponse {
   /**
    * The worker's home address, or null when unavailable.
    */
-  address: WorkerCreateContractorResponse.Address | null;
+  address: PublicWorkerAddress | null;
   /**
    * The "ui" name of a worker. If it's a business contractor business name is used. Otherwise we default to preferred name, then first-last.
    */
@@ -2548,272 +2385,24 @@ export interface WorkerCreateContractorResponse {
    */
   compensation: PublicWorkerCompensation | null;
   /**
+   * The worker's manager, or null if unassigned.
+   */
+  manager?: PublicWorkerManager | null;
+  /**
+   * The worker's stored T-shirt size, or null when unset or unavailable.
+   */
+  tShirtSize?: 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL' | 'XXXL' | null;
+  /**
    * The worker's assigned job level, or null if unassigned. Omitted when job levels are not enabled.
    */
   level?: WorkerCreateContractorResponse.Level | null;
+  /**
+   * The worker's custom field values. Every active company custom field appears; fields outside this API key's permission scopes are redacted (value null, redacted true) rather than omitted, so the list is identical across keys. Empty when the company has no custom fields.
+   */
   customFields?: Array<PublicWorkerCustomField> | null;
 }
 
 export namespace WorkerCreateContractorResponse {
-  export interface Address {
-    line1: string;
-    line2: string | null;
-    city: string;
-    state: string | null;
-    postalCode: string | null;
-    country:
-      | 'AD'
-      | 'AE'
-      | 'AF'
-      | 'AG'
-      | 'AI'
-      | 'AL'
-      | 'AM'
-      | 'AO'
-      | 'AQ'
-      | 'AR'
-      | 'AS'
-      | 'AT'
-      | 'AU'
-      | 'AW'
-      | 'AX'
-      | 'AZ'
-      | 'BA'
-      | 'BB'
-      | 'BD'
-      | 'BE'
-      | 'BF'
-      | 'BG'
-      | 'BH'
-      | 'BI'
-      | 'BJ'
-      | 'BL'
-      | 'BM'
-      | 'BN'
-      | 'BO'
-      | 'BQ'
-      | 'BR'
-      | 'BS'
-      | 'BT'
-      | 'BV'
-      | 'BW'
-      | 'BY'
-      | 'BZ'
-      | 'CA'
-      | 'CC'
-      | 'CD'
-      | 'CF'
-      | 'CG'
-      | 'CH'
-      | 'CI'
-      | 'CK'
-      | 'CL'
-      | 'CM'
-      | 'CN'
-      | 'CO'
-      | 'CR'
-      | 'CU'
-      | 'CV'
-      | 'CW'
-      | 'CX'
-      | 'CY'
-      | 'CZ'
-      | 'DE'
-      | 'DJ'
-      | 'DK'
-      | 'DM'
-      | 'DO'
-      | 'DZ'
-      | 'EC'
-      | 'EE'
-      | 'EG'
-      | 'EH'
-      | 'ER'
-      | 'ES'
-      | 'ET'
-      | 'FI'
-      | 'FJ'
-      | 'FK'
-      | 'FM'
-      | 'FO'
-      | 'FR'
-      | 'GA'
-      | 'GB'
-      | 'GD'
-      | 'GE'
-      | 'GF'
-      | 'GG'
-      | 'GH'
-      | 'GI'
-      | 'GL'
-      | 'GM'
-      | 'GN'
-      | 'GP'
-      | 'GQ'
-      | 'GR'
-      | 'GS'
-      | 'GT'
-      | 'GU'
-      | 'GW'
-      | 'GY'
-      | 'HK'
-      | 'HM'
-      | 'HN'
-      | 'HR'
-      | 'HT'
-      | 'HU'
-      | 'ID'
-      | 'IE'
-      | 'IL'
-      | 'IM'
-      | 'IN'
-      | 'IO'
-      | 'IQ'
-      | 'IR'
-      | 'IS'
-      | 'IT'
-      | 'JE'
-      | 'JM'
-      | 'JO'
-      | 'JP'
-      | 'KE'
-      | 'KG'
-      | 'KH'
-      | 'KI'
-      | 'KM'
-      | 'KN'
-      | 'KP'
-      | 'KR'
-      | 'KW'
-      | 'KY'
-      | 'KZ'
-      | 'LA'
-      | 'LB'
-      | 'LC'
-      | 'LI'
-      | 'LK'
-      | 'LR'
-      | 'LS'
-      | 'LT'
-      | 'LU'
-      | 'LV'
-      | 'LY'
-      | 'MA'
-      | 'MC'
-      | 'MD'
-      | 'ME'
-      | 'MF'
-      | 'MG'
-      | 'MH'
-      | 'MK'
-      | 'ML'
-      | 'MM'
-      | 'MN'
-      | 'MO'
-      | 'MP'
-      | 'MQ'
-      | 'MR'
-      | 'MS'
-      | 'MT'
-      | 'MU'
-      | 'MV'
-      | 'MW'
-      | 'MX'
-      | 'MY'
-      | 'MZ'
-      | 'NA'
-      | 'NC'
-      | 'NE'
-      | 'NF'
-      | 'NG'
-      | 'NI'
-      | 'NL'
-      | 'NO'
-      | 'NP'
-      | 'NR'
-      | 'NU'
-      | 'NZ'
-      | 'OM'
-      | 'PA'
-      | 'PE'
-      | 'PF'
-      | 'PG'
-      | 'PH'
-      | 'PK'
-      | 'PL'
-      | 'PM'
-      | 'PN'
-      | 'PR'
-      | 'PS'
-      | 'PT'
-      | 'PW'
-      | 'PY'
-      | 'QA'
-      | 'RE'
-      | 'RO'
-      | 'RS'
-      | 'RU'
-      | 'RW'
-      | 'SA'
-      | 'SB'
-      | 'SC'
-      | 'SD'
-      | 'SE'
-      | 'SG'
-      | 'SH'
-      | 'SI'
-      | 'SJ'
-      | 'SK'
-      | 'SL'
-      | 'SM'
-      | 'SN'
-      | 'SO'
-      | 'SR'
-      | 'SS'
-      | 'ST'
-      | 'SV'
-      | 'SX'
-      | 'SY'
-      | 'SZ'
-      | 'TC'
-      | 'TD'
-      | 'TF'
-      | 'TG'
-      | 'TH'
-      | 'TJ'
-      | 'TK'
-      | 'TL'
-      | 'TM'
-      | 'TN'
-      | 'TO'
-      | 'TR'
-      | 'TT'
-      | 'TV'
-      | 'TW'
-      | 'TZ'
-      | 'UA'
-      | 'UG'
-      | 'UM'
-      | 'US'
-      | 'UY'
-      | 'UZ'
-      | 'VA'
-      | 'VC'
-      | 'VE'
-      | 'VG'
-      | 'VI'
-      | 'VN'
-      | 'VU'
-      | 'WF'
-      | 'WS'
-      | 'XK'
-      | 'YE'
-      | 'YT'
-      | 'ZA'
-      | 'ZM'
-      | 'ZW';
-  }
-
   export interface Department {
     /**
      * The unique public id of the department
@@ -2854,6 +2443,7 @@ export interface WorkerInviteResponse {
   position: string;
   type: 'employee' | 'contractor';
   status: 'draft' | 'invited' | 'onboarding' | 'active' | 'offboarding' | 'inactive';
+  benefitEligible: boolean;
   /**
    * @pattern ^\d{4}-\d{2}-\d{2}$
    */
@@ -2872,6 +2462,7 @@ export interface WorkerInviteResponse {
    */
   email: string;
   /**
+   * An email with a reasonably valid regex (based on RFC 5321 atext characters)
    * @format email
    */
   workEmail: string | null;
@@ -2896,7 +2487,7 @@ export interface WorkerInviteResponse {
   /**
    * The worker's home address, or null when unavailable.
    */
-  address: WorkerInviteResponse.Address | null;
+  address: PublicWorkerAddress | null;
   /**
    * The "ui" name of a worker. If it's a business contractor business name is used. Otherwise we default to preferred name, then first-last.
    */
@@ -2928,272 +2519,24 @@ export interface WorkerInviteResponse {
    */
   compensation: PublicWorkerCompensation | null;
   /**
+   * The worker's manager, or null if unassigned.
+   */
+  manager?: PublicWorkerManager | null;
+  /**
+   * The worker's stored T-shirt size, or null when unset or unavailable.
+   */
+  tShirtSize?: 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL' | 'XXXL' | null;
+  /**
    * The worker's assigned job level, or null if unassigned. Omitted when job levels are not enabled.
    */
   level?: WorkerInviteResponse.Level | null;
+  /**
+   * The worker's custom field values. Every active company custom field appears; fields outside this API key's permission scopes are redacted (value null, redacted true) rather than omitted, so the list is identical across keys. Empty when the company has no custom fields.
+   */
   customFields?: Array<PublicWorkerCustomField> | null;
 }
 
 export namespace WorkerInviteResponse {
-  export interface Address {
-    line1: string;
-    line2: string | null;
-    city: string;
-    state: string | null;
-    postalCode: string | null;
-    country:
-      | 'AD'
-      | 'AE'
-      | 'AF'
-      | 'AG'
-      | 'AI'
-      | 'AL'
-      | 'AM'
-      | 'AO'
-      | 'AQ'
-      | 'AR'
-      | 'AS'
-      | 'AT'
-      | 'AU'
-      | 'AW'
-      | 'AX'
-      | 'AZ'
-      | 'BA'
-      | 'BB'
-      | 'BD'
-      | 'BE'
-      | 'BF'
-      | 'BG'
-      | 'BH'
-      | 'BI'
-      | 'BJ'
-      | 'BL'
-      | 'BM'
-      | 'BN'
-      | 'BO'
-      | 'BQ'
-      | 'BR'
-      | 'BS'
-      | 'BT'
-      | 'BV'
-      | 'BW'
-      | 'BY'
-      | 'BZ'
-      | 'CA'
-      | 'CC'
-      | 'CD'
-      | 'CF'
-      | 'CG'
-      | 'CH'
-      | 'CI'
-      | 'CK'
-      | 'CL'
-      | 'CM'
-      | 'CN'
-      | 'CO'
-      | 'CR'
-      | 'CU'
-      | 'CV'
-      | 'CW'
-      | 'CX'
-      | 'CY'
-      | 'CZ'
-      | 'DE'
-      | 'DJ'
-      | 'DK'
-      | 'DM'
-      | 'DO'
-      | 'DZ'
-      | 'EC'
-      | 'EE'
-      | 'EG'
-      | 'EH'
-      | 'ER'
-      | 'ES'
-      | 'ET'
-      | 'FI'
-      | 'FJ'
-      | 'FK'
-      | 'FM'
-      | 'FO'
-      | 'FR'
-      | 'GA'
-      | 'GB'
-      | 'GD'
-      | 'GE'
-      | 'GF'
-      | 'GG'
-      | 'GH'
-      | 'GI'
-      | 'GL'
-      | 'GM'
-      | 'GN'
-      | 'GP'
-      | 'GQ'
-      | 'GR'
-      | 'GS'
-      | 'GT'
-      | 'GU'
-      | 'GW'
-      | 'GY'
-      | 'HK'
-      | 'HM'
-      | 'HN'
-      | 'HR'
-      | 'HT'
-      | 'HU'
-      | 'ID'
-      | 'IE'
-      | 'IL'
-      | 'IM'
-      | 'IN'
-      | 'IO'
-      | 'IQ'
-      | 'IR'
-      | 'IS'
-      | 'IT'
-      | 'JE'
-      | 'JM'
-      | 'JO'
-      | 'JP'
-      | 'KE'
-      | 'KG'
-      | 'KH'
-      | 'KI'
-      | 'KM'
-      | 'KN'
-      | 'KP'
-      | 'KR'
-      | 'KW'
-      | 'KY'
-      | 'KZ'
-      | 'LA'
-      | 'LB'
-      | 'LC'
-      | 'LI'
-      | 'LK'
-      | 'LR'
-      | 'LS'
-      | 'LT'
-      | 'LU'
-      | 'LV'
-      | 'LY'
-      | 'MA'
-      | 'MC'
-      | 'MD'
-      | 'ME'
-      | 'MF'
-      | 'MG'
-      | 'MH'
-      | 'MK'
-      | 'ML'
-      | 'MM'
-      | 'MN'
-      | 'MO'
-      | 'MP'
-      | 'MQ'
-      | 'MR'
-      | 'MS'
-      | 'MT'
-      | 'MU'
-      | 'MV'
-      | 'MW'
-      | 'MX'
-      | 'MY'
-      | 'MZ'
-      | 'NA'
-      | 'NC'
-      | 'NE'
-      | 'NF'
-      | 'NG'
-      | 'NI'
-      | 'NL'
-      | 'NO'
-      | 'NP'
-      | 'NR'
-      | 'NU'
-      | 'NZ'
-      | 'OM'
-      | 'PA'
-      | 'PE'
-      | 'PF'
-      | 'PG'
-      | 'PH'
-      | 'PK'
-      | 'PL'
-      | 'PM'
-      | 'PN'
-      | 'PR'
-      | 'PS'
-      | 'PT'
-      | 'PW'
-      | 'PY'
-      | 'QA'
-      | 'RE'
-      | 'RO'
-      | 'RS'
-      | 'RU'
-      | 'RW'
-      | 'SA'
-      | 'SB'
-      | 'SC'
-      | 'SD'
-      | 'SE'
-      | 'SG'
-      | 'SH'
-      | 'SI'
-      | 'SJ'
-      | 'SK'
-      | 'SL'
-      | 'SM'
-      | 'SN'
-      | 'SO'
-      | 'SR'
-      | 'SS'
-      | 'ST'
-      | 'SV'
-      | 'SX'
-      | 'SY'
-      | 'SZ'
-      | 'TC'
-      | 'TD'
-      | 'TF'
-      | 'TG'
-      | 'TH'
-      | 'TJ'
-      | 'TK'
-      | 'TL'
-      | 'TM'
-      | 'TN'
-      | 'TO'
-      | 'TR'
-      | 'TT'
-      | 'TV'
-      | 'TW'
-      | 'TZ'
-      | 'UA'
-      | 'UG'
-      | 'UM'
-      | 'US'
-      | 'UY'
-      | 'UZ'
-      | 'VA'
-      | 'VC'
-      | 'VE'
-      | 'VG'
-      | 'VI'
-      | 'VN'
-      | 'VU'
-      | 'WF'
-      | 'WS'
-      | 'XK'
-      | 'YE'
-      | 'YT'
-      | 'ZA'
-      | 'ZM'
-      | 'ZW';
-  }
-
   export interface Department {
     /**
      * The unique public id of the department
@@ -3226,8 +2569,11 @@ export namespace WorkerInviteResponse {
 }
 export declare namespace Workers {
   export {
+    type PublicWorkerAddress as PublicWorkerAddress,
+    type PublicWorkerManager as PublicWorkerManager,
     type PublicWorkerCompensation as PublicWorkerCompensation,
     type PublicWorkerCustomField as PublicWorkerCustomField,
+    type PublicWorkerSsn as PublicWorkerSsn,
     type PublicTextWorkerCustomField as PublicTextWorkerCustomField,
     type PublicNumberWorkerCustomField as PublicNumberWorkerCustomField,
     type PublicDateWorkerCustomField as PublicDateWorkerCustomField,
@@ -3236,11 +2582,15 @@ export declare namespace Workers {
     type PublicPercentageWorkerCustomField as PublicPercentageWorkerCustomField,
     type PublicSelectWorkerCustomField as PublicSelectWorkerCustomField,
     type PublicMultiSelectWorkerCustomField as PublicMultiSelectWorkerCustomField,
-    type WorkerListResponse as WorkerListResponse,
+    type WorkerUpdateResponse as WorkerUpdateResponse,
     type WorkerGetResponse as WorkerGetResponse,
+    type WorkerRevealSsnResponse as WorkerRevealSsnResponse,
+    type WorkerListResponse as WorkerListResponse,
     type WorkerCreateEmployeeResponse as WorkerCreateEmployeeResponse,
     type WorkerCreateContractorResponse as WorkerCreateContractorResponse,
     type WorkerInviteResponse as WorkerInviteResponse,
+    type WorkerUpdateParams as WorkerUpdateParams,
+    type WorkerRevealSsnParams as WorkerRevealSsnParams,
     type WorkerListParams as WorkerListParams,
     type WorkerCreateEmployeeParams as WorkerCreateEmployeeParams,
     type WorkerCreateContractorParams as WorkerCreateContractorParams,

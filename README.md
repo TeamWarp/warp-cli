@@ -1,8 +1,8 @@
-# warp
+# Warp
 
-This library provides convenient access to the warp REST API from the command line.
+This library provides convenient access to the Warp REST API from the command line.
 
-The full API of this library can be found in [api.md](./api.md).
+The REST API documentation can be found on [docs.warp.co](https://docs.warp.co). The full API of this library can be found in [api.md](./api.md).
 
 <br />
 
@@ -11,7 +11,10 @@ The full API of this library can be found in [api.md](./api.md).
 - [Installation](#installation)
 - [Usage](#usage)
 - [API Reference](./api.md)
+- [Signing In](#signing-in)
+- [File Arguments](#file-arguments)
 - [Shell Completion](#shell-completion)
+- [Upgrading](#upgrading)
 - [Manual Pages](#manual-pages)
 - [Authentication](#authentication)
 - [Errors](#errors)
@@ -37,12 +40,40 @@ brew install TeamWarp/tap/warp
 ```sh
 warp [resource] [command] [flags]
 
-warp benefits:health-plans list --api-key "$WARP_API_KEY" --limit 'limit' --statuses '["active"]'
+warp benefits:health-plans list \
+  --api-key "$WARP_API_KEY" \
+  --limit 'limit' \
+  --statuses '["active"]'
 ```
 
-The examples in the following sections assume a `client` configured as shown above.
+Every command accepts the global flags below, so the examples that follow show only what is specific to them.
 
 See the [API reference](./api.md) for every available operation.
+
+<br />
+
+## Signing In
+
+`warp login` signs you in and saves the credential for later commands, so it does not have to be passed every time. It goes into your operating system's credential store — the Keychain on macOS, the system keyring on Linux, Credential Manager on Windows — and falls back to a file in your state directory, readable only by you, when no such store is available. Either way it is filed under the base URL it was captured for, so a credential saved for one host is never sent to another. `warp logout` forgets it. A credential passed with a flag, or set in the environment, still takes precedence over a saved one.
+
+```sh
+warp login
+warp logout
+warp logout --all
+```
+
+<br />
+
+## File Arguments
+
+Any command flag or credential reads its value from a file when the value begins with `@`, so a body field holding a whole document does not have to survive shell quoting. `@file://` always sends the file as text and `@data://` always sends it base64-encoded; a bare `@` lets the file decide. A flag that uploads a file takes its path with or without the `@`. Escape a literal value that begins with `@` as `\@`. The global options (`--base-url`, `--timeout`, `--format` and the rest) are read exactly as written.
+
+```sh
+warp COMMAND --FLAG @./body.json
+warp COMMAND --FLAG @file://./notes.txt
+warp COMMAND --FLAG @data://./logo.png
+warp COMMAND --FLAG '\@not-a-file'
+```
 
 <br />
 
@@ -59,6 +90,20 @@ eval "$(warp completion zsh)"
 
 # fish (~/.config/fish/config.fish)
 warp completion fish | source
+```
+
+<br />
+
+## Upgrading
+
+`warp upgrade` installs the latest release. When warp was installed through a package manager — Homebrew — it runs that manager's own upgrade instead of replacing files the manager owns. `warp upgrade --check` reports the latest version without installing it, and `warp uninstall` says how to remove this installation. warp also checks GitHub Releases for a newer release at most once a day, and mentions it on stderr when one exists. The check is skipped entirely when output is redirected, when `CI` is set, and under `sudo`; set `WARP_NO_UPDATE_NOTIFIER` or `NO_UPDATE_NOTIFIER` to turn it off everywhere.
+
+```sh
+warp upgrade --check
+warp upgrade
+
+# Never check for a newer release
+export WARP_NO_UPDATE_NOTIFIER=1
 ```
 
 <br />
@@ -80,7 +125,7 @@ Pass credentials to the generated client constructor. Environment variables are 
 
 | Option | Type | Default | Description |
 | --- | --- | --- | --- |
-| `--api-key` | `string \| provider` | - | Credential for the apiKey scheme. Defaults to WARP_API_KEY. |
+| `--api-key` | `<value>` | - | Credential for the apiKey scheme. Defaults to WARP_API_KEY. |
 
 Declared schemes:
 
@@ -90,7 +135,7 @@ Declared schemes:
 
 ## Errors
 
-Failed requests print a structured error to standard error and exit with a status that identifies the failure class. The error body carries the API's own `message` plus a stable `code`, the HTTP `status`, the `requestId`, and — where one applies — an actionable `hint`. Usage errors (exit `2`) are reported as a plain message instead, since no request was made. Exit statuses: `0` success, `1` `error`, `2` `usage`, `10` `auth-failed`, `11` `not-found`, `12` `rate-limited`, `13` `client-error`, `14` `server-error`, `15` `connection-error`.
+Failed requests print a structured error to standard error and exit with a status that identifies the failure class. The error body carries the API's own `message` plus a stable `code`, the HTTP `status`, the `requestId`, and — where one applies — an actionable `hint`. When the API answered with a JSON error payload, its parsed form is under `body`, so structured details such as an API-specific error code or field errors can be read without parsing `message`. Usage errors (exit `2`) are reported as a plain message instead, since no request was made. Exit statuses: `0` success, `1` `error`, `2` `usage`, `10` `auth-failed`, `11` `not-found`, `12` `rate-limited`, `13` `client-error`, `14` `server-error`, `15` `connection-error`.
 
 Documented error statuses: `400`, `401`, `403`, `404`, `409`, `422`, `429`, `500`.
 
@@ -123,6 +168,7 @@ Generated clients support request timeouts and retry temporary failures such as 
 - `--transform <path>` and `--transform-error <path>` — dot-path transform for data/error output.
 - `--raw-output`, `-r` — print transformed string values without JSON quotes.
 - `--max-items <count>` — bound iterator, streaming, and WebSocket command output.
+- `--no-input` — never prompt: a command that would ask fails instead, the same as it does without a terminal.
 - Errors carry a stable `code` and an actionable `hint` beside the API's own message, and each failure class exits with its own status: `1` `error`, `2` `usage`, `10` `auth-failed`, `11` `not-found`, `12` `rate-limited`, `13` `client-error`, `14` `server-error`, `15` `connection-error`.
 
 <br />
