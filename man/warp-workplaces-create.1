@@ -63,13 +63,20 @@ Print transformed string values without JSON quotes.
 \fB\-\-debug\fR
 Enable SDK debug logging on standard error.
 .TP
+\fB\-\-no\-input\fR
+Never prompt; a command that would ask fails instead.
+.TP
 \fB\-\-api\-key\fR \fI<value>\fR
 API credential. Can also be set with the WARP_API_KEY environment variable.
 .SH "EXAMPLES"
 .PP
 .RS 4
 .nf
-warp workplaces create \-\-api\-key "$WARP_API_KEY" \-\-name 'name' \-\-type 'remote' \-\-address '{"line1":"x","city":"","postalCode":"","state":"AL","country":"US"}'
+warp workplaces create \e
+  \-\-api\-key "$WARP_API_KEY" \e
+  \-\-name 'x' \e
+  \-\-type 'remote' \e
+  \-\-address '{"line1":"x","city":"","postalCode":"","state":"AL","country":"US"}'
 .fi
 .RE
 .SH "ENVIRONMENT"

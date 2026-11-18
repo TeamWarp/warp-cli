@@ -6,7 +6,8 @@ import { uuid4 } from './internal/utils/uuid';
 import { validatePositiveInteger, isAbsoluteURL, safeJSON, isEmptyObj } from './internal/utils/values';
 import { sleep } from './internal/utils/sleep';
 import { castToError, isAbortError } from './internal/errors';
-import { getPlatformHeaders } from './internal/detect-platform';
+import { MAX_ERROR_BODY_BYTES, holdDeadline, readBodyText } from './internal/utils/body';
+import { getPlatformHeaders, isRunningInBrowser } from './internal/detect-platform';
 import * as Shims from './internal/shims';
 import * as Opts from './internal/request-options';
 import { readEnv } from './internal/utils/env';
@@ -14,6 +15,8 @@ import {
   formatRequestDetails,
   loggerFor,
   parseLogLevel,
+  redactHeaders,
+  redactUrl,
   type LogLevel,
   type Logger,
 } from './internal/utils/log';
@@ -26,6 +29,12 @@ import { stringifyQuery } from './internal/utils/query';
 import { toFile } from './core/uploads';
 import { VERSION } from './version';
 import { Benefits } from './resources/benefits/benefits';
+import {
+  Company,
+  type PublicCompany,
+  type PublicCompanyAddress,
+  type PublicCompanyBusinessType,
+} from './resources/company';
 import {
   CustomFields,
   type PublicCustomFieldValueOutput,
@@ -64,6 +73,18 @@ import {
   type DepartmentCreateParams,
   type DepartmentUpdateParams,
 } from './resources/departments';
+import {
+  I9Verifications,
+  type PublicI9Verification,
+  type I9VerificationListResponse,
+  type I9VerificationListParams,
+} from './resources/i9-verifications';
+import {
+  BankAccounts,
+  type PublicBankAccount,
+  type BankAccountListResponse,
+  type BankAccountListParams,
+} from './resources/bank-accounts';
 import { Levels, type LevelListResponse } from './resources/levels';
 import {
   Offers,
@@ -85,7 +106,23 @@ import {
   type PublicPayRatePer,
   type PayRateListResponse,
   type PayRateListParams,
-} from './resources/pay-rates';
+} from './resources/pay-rates/pay-rates';
+import {
+  PaySplits,
+  type PublicPaySplit,
+  type PublicPercentagePaySplit,
+  type PublicAmountPaySplit,
+  type PublicPaySplitStatus,
+  type PublicPaySplitPercentageAllocation,
+  type PublicPaySplitAmountAllocation,
+  type PublicBankAccountReference,
+  type PublicPaySplitPercentage,
+  type PublicPaySplitAllocation,
+  type PublicPaySplitFixedAllocation,
+  type PublicPaySplitRemainderAllocation,
+  type PaySplitListResponse,
+  type PaySplitListParams,
+} from './resources/pay-splits';
 import {
   Payroll,
   type PublicPayrollList,
@@ -164,8 +201,11 @@ import {
 } from './resources/time-off/time-off';
 import {
   Workers,
+  type PublicWorkerAddress,
+  type PublicWorkerManager,
   type PublicWorkerCompensation,
   type PublicWorkerCustomField,
+  type PublicWorkerSsn,
   type PublicTextWorkerCustomField,
   type PublicNumberWorkerCustomField,
   type PublicDateWorkerCustomField,
@@ -174,11 +214,15 @@ import {
   type PublicPercentageWorkerCustomField,
   type PublicSelectWorkerCustomField,
   type PublicMultiSelectWorkerCustomField,
-  type WorkerListResponse,
+  type WorkerUpdateResponse,
   type WorkerGetResponse,
+  type WorkerRevealSsnResponse,
+  type WorkerListResponse,
   type WorkerCreateEmployeeResponse,
   type WorkerCreateContractorResponse,
   type WorkerInviteResponse,
+  type WorkerUpdateParams,
+  type WorkerRevealSsnParams,
   type WorkerListParams,
   type WorkerCreateEmployeeParams,
   type WorkerCreateContractorParams,
@@ -194,24 +238,28 @@ import {
 } from './resources/workplaces';
 import {
   Webhooks,
-  type OfferAcceptedWebhookEvent,
+  type TimeOffRequestCreatedWebhookEvent,
+  type TimeOffRequestReviewedWebhookEvent,
+  type TimeOffRequestDeletedWebhookEvent,
+  type TimeOffBalanceAdjustedWebhookEvent,
+  type WorkerCreatedWebhookEvent,
+  type WorkerUpdatedWebhookEvent,
+  type WorkerDeletedWebhookEvent,
+  type WorkerInviteSentWebhookEvent,
+  type WorkerInviteAcceptedWebhookEvent,
+  type WorkerOnboardingCompletedWebhookEvent,
+  type WorkerOffboardingStartedWebhookEvent,
+  type WorkerOffboardedWebhookEvent,
+  type WorkerReactivatedWebhookEvent,
   type OfferCreatedWebhookEvent,
+  type OfferSignatureRequestedWebhookEvent,
   type OfferSentWebhookEvent,
   type OfferViewedWebhookEvent,
+  type OfferAcceptedWebhookEvent,
   type OfferVoidedWebhookEvent,
-  type TimeOffBalanceAdjustedWebhookEvent,
-  type TimeOffRequestCreatedWebhookEvent,
-  type TimeOffRequestDeletedWebhookEvent,
-  type TimeOffRequestReviewedWebhookEvent,
-  type WorkerCreatedWebhookEvent,
-  type WorkerDeletedWebhookEvent,
-  type WorkerInviteAcceptedWebhookEvent,
-  type WorkerInviteSentWebhookEvent,
-  type WorkerOffboardedWebhookEvent,
-  type WorkerOffboardingStartedWebhookEvent,
-  type WorkerOnboardingCompletedWebhookEvent,
-  type WorkerReactivatedWebhookEvent,
-  type WorkerUpdatedWebhookEvent,
+  type OfferExpiredWebhookEvent,
+  type PayRateCreatedWebhookEvent,
+  type PayRateDeletedWebhookEvent,
   type ParsedWebhookEvent,
 } from './resources/webhooks';
 
@@ -256,6 +304,19 @@ export interface ClientOptions {
    * Specify a custom `fetch` function implementation.
    *
    * If not provided, we expect that `fetch` is defined globally.
+   *
+   * The client passes `redirect: 'manual'` and follows redirects itself, dropping credentials when
+   * a redirect leaves the API's origin. A custom `fetch` must honor that option: one that follows
+   * redirects on its own would re-send API keys and cookies to whatever host a redirect names, and
+   * a response it reports as `redirected` is refused for that reason. Every hop of a redirect goes
+   * through this function, so a wrapper that adds a credential itself must add it only for the
+   * API's own origin. A request whose `fetchOptions` set `redirect: 'manual'` gets its 3xx answer
+   * back unfollowed, so a caller can read a signed URL from `Location`; `'error'` is kept too.
+   *
+   * In a browser or a browser worker, which hide a manual redirect's target, a request whose only
+   * credentials are ones the browser itself keeps on the origin (`Authorization`, cookies) is sent
+   * with `redirect: 'follow'`. A request carrying an API key header is not, so a redirect it meets
+   * fails with an `APIConnectionError` rather than handing that key to another host.
    */
   fetch?: Fetch | undefined;
 
@@ -313,7 +374,11 @@ export class Warp {
   logger: Logger;
   logLevel: LogLevel | undefined;
   fetchOptions: MergedRequestInit | undefined;
-  private fetch: Fetch;
+  /**
+   * The `fetch` implementation every request is sent through: the `fetch` client option, or the
+   * platform default. A replacement must honor the same contract as that option.
+   */
+  fetch: Fetch;
   #encoder: Opts.RequestEncoder;
   protected idempotencyHeader?: string;
   private _baseURLOverridden: boolean;
@@ -410,6 +475,25 @@ export class Warp {
     return this._baseURLOverridden || this.baseURL !== this._defaultBaseURL;
   }
 
+  /**
+   * The client as `JSON.stringify` sees it: every credential masked, and the resource accessors,
+   * which point back at the client, left out.
+   */
+  toJSON(): Record<string, unknown> {
+    const view: Record<string, unknown> = {};
+    for (const [key, value] of Object.entries(this)) {
+      if (typeof value === 'object' && value !== null && (value as { _client?: unknown })._client === this)
+        continue;
+      view[key] = redactClientField(key, value);
+    }
+    return view;
+  }
+
+  /** What `console.log` and `util.inspect` print for the client: the masked view `toJSON` builds. */
+  [Symbol.for('nodejs.util.inspect.custom')](): Record<string, unknown> {
+    return this.toJSON();
+  }
+
   protected defaultQuery(): Record<string, string | undefined> | undefined {
     return this._options.defaultQuery;
   }
@@ -419,7 +503,7 @@ export class Warp {
   }
 
   private getUserAgent(): string {
-    return `${this.constructor.name}/JS ${VERSION}`;
+    return `Warp/JS ${VERSION}`;
   }
 
   protected defaultIdempotencyKey(): string {
@@ -557,12 +641,28 @@ export class Warp {
     }
 
     const controller = new AbortController();
-    const response = await this.fetchWithTimeout(url, req, timeout, controller).catch(castToError);
+    // The deadline stays armed until the body is read, not just until headers arrive, so a server
+    // that answers quickly and then trickles its body is still cut off at `timeout`.
+    const { release: releaseDeadline, unref: unrefDeadline } = this.#armDeadline(
+      req.signal,
+      timeout,
+      controller,
+    );
+    // A subclass's own `fetchWithTimeout` sends the request; the deadline above still covers the body.
+    const viaOverride = this.fetchWithTimeout !== Warp.prototype.fetchWithTimeout;
+    const response = await (viaOverride
+      ? Promise.resolve().then(() => this.fetchWithTimeout(url, req, timeout, controller))
+      : this.#fetchFollowingRedirects(url, req, controller)
+    ).catch(castToError);
     const headersTime = Date.now();
 
     if (response instanceof globalThis.Error) {
+      releaseDeadline();
+      // A redirect the SDK refused to follow fails the same way on every attempt, so it is not retried.
+      if (isRefusedRedirect(response)) throw response;
       const retryMessage = `retrying, ${retriesRemaining} attempts remaining`;
-      if (options.signal?.aborted) {
+      // The signal the request was sent with, so an aborted `fetchOptions.signal` reads as a cancel too.
+      if (req.signal?.aborted) {
         throw new Errors.APIUserAbortError();
       }
       // detect native connection timeout errors
@@ -585,7 +685,7 @@ export class Warp {
             message: response.message,
           }),
         );
-        return this.retryRequest(options, retriesRemaining, retryOfRequestLogID ?? requestLogID);
+        return this.retryRequest(options, retriesRemaining, retryOfRequestLogID ?? requestLogID, req.signal);
       }
       loggerFor(this).info(
         `[${requestLogID}] connection ${isTimeout ? 'timed out' : 'failed'} - error; no more retries left`,
@@ -605,7 +705,7 @@ export class Warp {
       throw new Errors.APIConnectionError({ cause: response });
     }
 
-    const responseInfo = `[${requestLogID}${retryLogStr}] ${req.method} ${url} ${
+    const responseInfo = `[${requestLogID}${retryLogStr}] ${req.method} ${redactUrl(url)} ${
       response.ok ? 'succeeded' : 'failed'
     } with status ${response.status} in ${headersTime - startTime}ms`;
 
@@ -615,6 +715,7 @@ export class Warp {
         const retryMessage = `retrying, ${retriesRemaining} attempts remaining`;
 
         // We don't need the body of this response.
+        releaseDeadline();
         await Shims.CancelReadableStream(response.body);
         loggerFor(this).info(`${responseInfo} - ${retryMessage}`);
         loggerFor(this).debug(
@@ -631,6 +732,7 @@ export class Warp {
           options,
           retriesRemaining,
           retryOfRequestLogID ?? requestLogID,
+          req.signal,
           response.headers,
         );
       }
@@ -639,7 +741,12 @@ export class Warp {
 
       loggerFor(this).info(`${responseInfo} - ${retryMessage}`);
 
-      const errText = await response.text().catch((err: any) => castToError(err).message);
+      // Only the first 64 KiB of an error body is read: enough for any message, and a hostile or
+      // broken server cannot make the client buffer more. The read still runs under the deadline.
+      const errText = await readBodyText(response, MAX_ERROR_BODY_BYTES, 'truncate').catch(
+        (err: any) => castToError(err).message,
+      );
+      releaseDeadline();
       const errJSON = safeJSON(errText) as any;
       const errMessage = errJSON ? undefined : errText;
 
@@ -671,30 +778,97 @@ export class Warp {
       }),
     );
 
+    // A streamed or binary body is the caller's to read at its own pace, so the deadline ends with
+    // the headers there; a buffered body keeps it until `defaultParseResponse` has read it.
+    if (options.stream || options.__binaryResponse) releaseDeadline();
+    else {
+      // Unreferenced so a response nobody parses (a call never awaited) cannot hold the process
+      // open until the deadline; a body being read keeps it alive through its own socket.
+      unrefDeadline();
+      holdDeadline(controller, releaseDeadline);
+    }
+
     return { response, options, controller, requestLogID, retryOfRequestLogID, startTime };
   }
 
+  /**
+   * Sends one request with a deadline on its response headers, following redirects as the client
+   * does.
+   *
+   * Override it in a subclass to wrap every HTTP request this client sends to its API, retries included;
+   * call `super.fetchWithTimeout` to send, which keeps the client's redirect handling. When a redirect
+   * leaves the origin that drops the client's own credential headers, but a header an override adds
+   * goes on to the redirect target, so a secret belongs in a client option rather than added here.
+   * A client that does not override it skips this method and sends directly.
+   *
+   * The SDK's own deadline aborts `controller` and stays armed until a buffered body is read, so it
+   * cuts off an override that sends through `super` or passes `controller.signal` on; a larger `ms`
+   * passed to `super` cannot extend it, so set the `timeout` option instead.
+   */
   async fetchWithTimeout(
     url: RequestInfo,
     init: RequestInit | undefined,
     ms: number,
     controller: AbortController,
   ): Promise<Response> {
-    const { signal, method, ...options } = init || {};
+    const deadline = this.#armDeadline(init?.signal, ms, controller);
+    try {
+      return await this.#fetchFollowingRedirects(url, init, controller);
+    } finally {
+      deadline.release();
+    }
+  }
+
+  /**
+   * Starts the request deadline on `controller` and forwards the caller's abort signal to it.
+   *
+   * `release` disarms the deadline. `unref` stops it alone from keeping a Node process alive, for
+   * the stretch where it waits on a body nobody may ever read.
+   */
+  #armDeadline(
+    signal: RequestInit['signal'],
+    ms: number,
+    controller: AbortController,
+  ): { release: () => void; unref: () => void } {
     const abort = this._makeAbort(controller);
-    if (signal) signal.addEventListener('abort', abort, { once: true });
+    if (signal?.aborted) abort();
+    else if (signal) signal.addEventListener('abort', abort, { once: true });
 
     const timeout = setTimeout(abort, ms);
+    return {
+      release: () => clearTimeout(timeout),
+      unref: () => (timeout as { unref?: () => void } | undefined)?.unref?.(),
+    };
+  }
 
-    const isReadableBody =
-      ((globalThis as any).ReadableStream && options.body instanceof (globalThis as any).ReadableStream) ||
-      (typeof options.body === 'object' && options.body !== null && Symbol.asyncIterator in options.body);
+  /**
+   * Sends one request, following its redirects here rather than in `fetch`.
+   *
+   * Platform `fetch` strips only `Authorization` when a redirect leaves the origin, so it would hand
+   * a header API key, cookies and a 307 body to whatever host the API names. Following here, where
+   * the client knows which headers carry credentials, keeps them on the API's own origin.
+   */
+  async #fetchFollowingRedirects(
+    url: RequestInfo,
+    init: RequestInit | undefined,
+    controller: AbortController,
+  ): Promise<Response> {
+    const { signal, method, ...options } = init || {};
+    const isReadableBody = isOneShotBody(options.body);
+    const request = typeof url === 'string' || url instanceof URL ? undefined : url;
+    const carriesUnguardedCredential = [...new Headers(options.headers ?? request?.headers).keys()].some(
+      (name) => CREDENTIAL_HEADERS.includes(name) && !BROWSER_GUARDED_HEADERS.includes(name),
+    );
+    const browserFollows = hidesRedirectTargets() && !carriesUnguardedCredential;
+    const callerRedirect =
+      options.redirect === 'error' || options.redirect === 'manual' ? options.redirect : undefined;
 
     const fetchOptions: RequestInit = {
       signal: controller.signal as any,
       ...(isReadableBody ? { duplex: 'half' } : {}),
       method: 'GET',
       ...options,
+      redirect: callerRedirect ?? (browserFollows ? 'follow' : 'manual'),
     };
     if (method) {
       // Custom methods like 'patch' need to be uppercased
@@ -702,11 +876,97 @@ export class Warp {
       fetchOptions.method = method.toUpperCase();
     }
 
-    try {
-      // use undefined this binding; fetch errors if bound to something else in browser/cloudflare
-      return await this.fetch.call(undefined, url, fetchOptions);
-    } finally {
-      clearTimeout(timeout);
+    // use undefined this binding; fetch errors if bound to something else in browsers and edge runtimes / workers
+    let response = await this.fetch.call(undefined, url, fetchOptions);
+    let current = request ? request.url : String(url);
+    let hop: RequestInit = {
+      ...fetchOptions,
+      headers: new Headers(fetchOptions.headers ?? request?.headers),
+    };
+    // Once a hop leaves the origin, credentials stay dropped for the rest of the chain, even if a
+    // later hop comes back: the foreign host chose where that hop goes.
+    let leftOrigin = false;
+    for (let redirects = 0; ; redirects++) {
+      if (callerRedirect) return response;
+      if (hop.redirect === 'manual' && response.redirected) {
+        throw refuseRedirect(
+          "The fetch implementation followed a redirect itself although the client asked it not to, so its response was not used. A custom fetch must honor redirect: 'manual'.",
+        );
+      }
+      if (response.type === 'opaqueredirect') {
+        // Browsers answer a manual redirect with an opaque response that hides its target, so there
+        // is nothing safe to follow; it is refused rather than mistaken for the API's answer.
+        throw refuseRedirect(
+          carriesUnguardedCredential
+            ? 'The server answered with a redirect, which this request does not follow: the platform hides the target from the SDK, and the request carries an API key header that could reach another host. Call the redirect target directly, or send the request from a server.'
+            : 'The server answered with a redirect whose target this platform hides from the SDK, so it was not followed. Call the redirect target directly, or send the request from a server.',
+        );
+      }
+      const location = REDIRECT_STATUSES.includes(response.status)
+        ? response.headers.get('location')?.trim()
+        : undefined;
+      if (!location) return response;
+      await Shims.CancelReadableStream(response.body);
+      if (redirects >= MAX_REDIRECTS) throw refuseRedirect(`Maximum redirects exceeded (${MAX_REDIRECTS}).`);
+
+      const from = new URL(current);
+      let target: URL;
+      try {
+        target = new URL(location, from);
+      } catch {
+        throw refuseRedirect('The server redirected to a URL that cannot be parsed.');
+      }
+      if (target.protocol !== 'https:' && target.protocol !== 'http:') {
+        throw refuseRedirect(`Refusing to follow a redirect to a ${target.protocol} URL.`);
+      }
+      if (from.protocol === 'https:' && target.protocol === 'http:') {
+        throw refuseRedirect('Refusing to follow a redirect from https to http.');
+      }
+
+      const headers = new Headers(hop.headers);
+      let nextMethod = hop.method ?? 'GET';
+      let body = hop.body ?? request?.body ?? undefined;
+      // A 303 (but for HEAD), and a 301 or 302 answering a POST, re-ask with a bodiless GET, as
+      // browsers do. Every other redirect repeats the request, so its body has to be sent again.
+      if (
+        (response.status === 303 && nextMethod !== 'HEAD') ||
+        ((response.status === 301 || response.status === 302) && nextMethod === 'POST')
+      ) {
+        nextMethod = 'GET';
+        body = undefined;
+        for (const name of [...headers.keys()]) if (name.startsWith('content-')) headers.delete(name);
+      } else if (body != null && isOneShotBody(body)) {
+        throw refuseRedirect(
+          `Refusing to follow a ${response.status} redirect: the request body was a stream, which cannot be sent again.`,
+        );
+      }
+
+      if (target.origin !== from.origin) leftOrigin = true;
+      if (leftOrigin) {
+        for (const name of CREDENTIAL_HEADERS) headers.delete(name);
+      } else {
+        // A `Location` the server spelled does not repeat our query credentials, so a same-origin
+        // hop carries them over; appended rather than set so the target's own query keeps its bytes.
+        for (const name of CREDENTIAL_QUERY) {
+          const value = from.searchParams.get(name);
+          if (value === null || target.searchParams.has(name)) continue;
+          target.search =
+            (target.search ? target.search + '&' : '?') +
+            encodeURIComponent(name) +
+            '=' +
+            encodeURIComponent(value);
+        }
+      }
+
+      hop = { ...hop, method: nextMethod, headers };
+      if (body == null) {
+        delete hop.body;
+        delete (hop as { duplex?: unknown }).duplex;
+      } else {
+        hop.body = body;
+      }
+      current = target.href;
+      response = await this.fetch.call(undefined, current, hop);
     }
   }
 
@@ -737,6 +997,7 @@ export class Warp {
     options: FinalRequestOptions,
     retriesRemaining: number,
     requestLogID: string,
+    signal: RequestInit['signal'],
     responseHeaders?: Headers | undefined,
   ): Promise<APIResponseProps> {
     let timeoutMillis: number | undefined;
@@ -776,7 +1037,11 @@ export class Warp {
       const maxRetries = options.maxRetries ?? this.maxRetries;
       timeoutMillis = this.calculateDefaultRetryTimeoutMillis(retriesRemaining, maxRetries);
     }
-    await sleep(timeoutMillis);
+    // Cancelling during the backoff ends the call now, rather than after the delay and one more request.
+    await sleep(timeoutMillis, signal);
+    if (signal?.aborted) {
+      throw new Errors.APIUserAbortError();
+    }
 
     return this.makeRequest(options, retriesRemaining - 1, requestLogID);
   }
@@ -821,13 +1086,14 @@ export class Warp {
     const req: FinalizedRequestInit = {
       method,
       headers: reqHeaders,
-      ...(options.signal && { signal: options.signal }),
       ...((globalThis as any).ReadableStream &&
         body instanceof (globalThis as any).ReadableStream && { duplex: 'half' }),
       // `buildBody` already collapses no-body into `undefined`; here we only need to drop that
       // sentinel. A truthiness spread would also strip an intentional empty-string body.
       ...(body !== undefined && { body }),
       ...((this.fetchOptions as any) ?? {}),
+      // The call's own signal beats the client's `fetchOptions.signal`; the call's `fetchOptions` beats both.
+      ...(options.signal && { signal: options.signal }),
       ...((options.fetchOptions as any) ?? {}),
     };
     return { req, url, timeout: options.timeout };
@@ -869,12 +1135,24 @@ export class Warp {
     appendAuthCookies(headers.values, await this.authCookiesAsync());
 
     this.validateAuth(url, headers.values, options);
+    // Last, so a subclass sees the headers as they leave here, after the SDK has checked the auth.
+    await this.validateHeaders(headers);
 
     return headers.values;
   }
 
+  /**
+   * Runs once for every HTTP request built from the client's headers, at the end of header building,
+   * with the headers it will be sent with: `values` holds them and `nulls` the names the call removed
+   * with a `null`.
+   * Throwing, or rejecting from an `async` override, which is awaited, rejects the request before it
+   * is sent. Does nothing unless a subclass overrides it.
+   * `fetchOptions.headers` and `prepareRequest` are applied afterwards, so the hook does not see them.
+   */
+  protected validateHeaders({ values, nulls }: NullableHeaders): void {}
+
   private _makeAbort(controller: AbortController) {
-    // note: we can't just inline this method inside `fetchWithTimeout()` because then the closure
+    // note: we can't just inline this method inside `#armDeadline()` because then the closure
     //       would capture all request options, and cause a memory leak.
     return () => controller.abort();
   }
@@ -890,18 +1168,20 @@ export class Warp {
     if (body == null) {
       return { bodyHeaders: undefined, body: undefined };
     }
-    const headers = buildHeaders([rawHeaders]);
+    // A `content-type` from either header bag says how the body is already encoded; the request's
+    // own wins over the client-wide default, as it does on the wire.
+    const headers = buildHeaders([this._options.defaultHeaders, rawHeaders]);
     if (
       // Pass raw type verbatim
       ArrayBuffer.isView(body) ||
       body instanceof ArrayBuffer ||
       body instanceof DataView ||
-      // Always pass strings through verbatim. The previous guard required a caller-set
-      // `content-type` and otherwise fell through to `FallbackEncoder`, which JSON.stringifies
-      // the value and labels it `application/json` — silently quoting plain-text payloads and
-      // mislabeling them as JSON. fetch defaults a string body to `text/plain;charset=UTF-8`
-      // when no `content-type` is set, which is a safer default than misclaiming JSON.
-      typeof body === 'string' ||
+      // A string is only already-encoded when something has said what it is encoded as.
+      // Generated call sites state the declared request media type, so a `text/plain` or
+      // ndjson payload reaches the wire byte-for-byte. A string with no `content-type` came
+      // from a body the document declared as JSON — `{ "type": "string" }` — and encoding it
+      // below is what puts the quotes the server parses for around it.
+      (typeof body === 'string' && headers.values.has('content-type')) ||
       // `Blob` is superset of `File`
       ((globalThis as any).Blob && body instanceof (globalThis as any).Blob) ||
       // `FormData` -> `multipart/form-data`
@@ -1014,11 +1294,15 @@ export class Warp {
   static toFile = toFile;
 
   benefits: Benefits = new Benefits(this);
+  company: Company = new Company(this);
   customFields: CustomFields = new CustomFields(this);
   departments: Departments = new Departments(this);
+  i9Verifications: I9Verifications = new I9Verifications(this);
+  bankAccounts: BankAccounts = new BankAccounts(this);
   levels: Levels = new Levels(this);
   offers: Offers = new Offers(this);
   payRates: PayRates = new PayRates(this);
+  paySplits: PaySplits = new PaySplits(this);
   payroll: Payroll = new Payroll(this);
   timeOff: TimeOff = new TimeOff(this);
   workers: Workers = new Workers(this);
@@ -1027,11 +1311,15 @@ export class Warp {
 }
 
 Warp.Benefits = Benefits;
+Warp.Company = Company;
 Warp.CustomFields = CustomFields;
 Warp.Departments = Departments;
+Warp.I9Verifications = I9Verifications;
+Warp.BankAccounts = BankAccounts;
 Warp.Levels = Levels;
 Warp.Offers = Offers;
 Warp.PayRates = PayRates;
+Warp.PaySplits = PaySplits;
 Warp.Payroll = Payroll;
 Warp.TimeOff = TimeOff;
 Warp.Workers = Workers;
@@ -1041,6 +1329,13 @@ Warp.Webhooks = Webhooks;
 export declare namespace Warp {
   export type RequestOptions = Opts.RequestOptions;
   export { Benefits as Benefits };
+
+  export {
+    Company as Company,
+    type PublicCompany as PublicCompany,
+    type PublicCompanyAddress as PublicCompanyAddress,
+    type PublicCompanyBusinessType as PublicCompanyBusinessType,
+  };
 
   export {
     CustomFields as CustomFields,
@@ -1082,6 +1377,20 @@ export declare namespace Warp {
     type DepartmentUpdateParams as DepartmentUpdateParams,
   };
 
+  export {
+    I9Verifications as I9Verifications,
+    type PublicI9Verification as PublicI9Verification,
+    type I9VerificationListResponse as I9VerificationListResponse,
+    type I9VerificationListParams as I9VerificationListParams,
+  };
+
+  export {
+    BankAccounts as BankAccounts,
+    type PublicBankAccount as PublicBankAccount,
+    type BankAccountListResponse as BankAccountListResponse,
+    type BankAccountListParams as BankAccountListParams,
+  };
+
   export { Levels as Levels, type LevelListResponse as LevelListResponse };
 
   export {
@@ -1105,6 +1414,23 @@ export declare namespace Warp {
     type PublicPayRatePer as PublicPayRatePer,
     type PayRateListResponse as PayRateListResponse,
     type PayRateListParams as PayRateListParams,
+  };
+
+  export {
+    PaySplits as PaySplits,
+    type PublicPaySplit as PublicPaySplit,
+    type PublicPercentagePaySplit as PublicPercentagePaySplit,
+    type PublicAmountPaySplit as PublicAmountPaySplit,
+    type PublicPaySplitStatus as PublicPaySplitStatus,
+    type PublicPaySplitPercentageAllocation as PublicPaySplitPercentageAllocation,
+    type PublicPaySplitAmountAllocation as PublicPaySplitAmountAllocation,
+    type PublicBankAccountReference as PublicBankAccountReference,
+    type PublicPaySplitPercentage as PublicPaySplitPercentage,
+    type PublicPaySplitAllocation as PublicPaySplitAllocation,
+    type PublicPaySplitFixedAllocation as PublicPaySplitFixedAllocation,
+    type PublicPaySplitRemainderAllocation as PublicPaySplitRemainderAllocation,
+    type PaySplitListResponse as PaySplitListResponse,
+    type PaySplitListParams as PaySplitListParams,
   };
 
   export {
@@ -1187,8 +1513,11 @@ export declare namespace Warp {
 
   export {
     Workers as Workers,
+    type PublicWorkerAddress as PublicWorkerAddress,
+    type PublicWorkerManager as PublicWorkerManager,
     type PublicWorkerCompensation as PublicWorkerCompensation,
     type PublicWorkerCustomField as PublicWorkerCustomField,
+    type PublicWorkerSsn as PublicWorkerSsn,
     type PublicTextWorkerCustomField as PublicTextWorkerCustomField,
     type PublicNumberWorkerCustomField as PublicNumberWorkerCustomField,
     type PublicDateWorkerCustomField as PublicDateWorkerCustomField,
@@ -1197,11 +1526,15 @@ export declare namespace Warp {
     type PublicPercentageWorkerCustomField as PublicPercentageWorkerCustomField,
     type PublicSelectWorkerCustomField as PublicSelectWorkerCustomField,
     type PublicMultiSelectWorkerCustomField as PublicMultiSelectWorkerCustomField,
-    type WorkerListResponse as WorkerListResponse,
+    type WorkerUpdateResponse as WorkerUpdateResponse,
     type WorkerGetResponse as WorkerGetResponse,
+    type WorkerRevealSsnResponse as WorkerRevealSsnResponse,
+    type WorkerListResponse as WorkerListResponse,
     type WorkerCreateEmployeeResponse as WorkerCreateEmployeeResponse,
     type WorkerCreateContractorResponse as WorkerCreateContractorResponse,
     type WorkerInviteResponse as WorkerInviteResponse,
+    type WorkerUpdateParams as WorkerUpdateParams,
+    type WorkerRevealSsnParams as WorkerRevealSsnParams,
     type WorkerListParams as WorkerListParams,
     type WorkerCreateEmployeeParams as WorkerCreateEmployeeParams,
     type WorkerCreateContractorParams as WorkerCreateContractorParams,
@@ -1219,24 +1552,28 @@ export declare namespace Warp {
 
   export {
     Webhooks as Webhooks,
-    type OfferAcceptedWebhookEvent as OfferAcceptedWebhookEvent,
+    type TimeOffRequestCreatedWebhookEvent as TimeOffRequestCreatedWebhookEvent,
+    type TimeOffRequestReviewedWebhookEvent as TimeOffRequestReviewedWebhookEvent,
+    type TimeOffRequestDeletedWebhookEvent as TimeOffRequestDeletedWebhookEvent,
+    type TimeOffBalanceAdjustedWebhookEvent as TimeOffBalanceAdjustedWebhookEvent,
+    type WorkerCreatedWebhookEvent as WorkerCreatedWebhookEvent,
+    type WorkerUpdatedWebhookEvent as WorkerUpdatedWebhookEvent,
+    type WorkerDeletedWebhookEvent as WorkerDeletedWebhookEvent,
+    type WorkerInviteSentWebhookEvent as WorkerInviteSentWebhookEvent,
+    type WorkerInviteAcceptedWebhookEvent as WorkerInviteAcceptedWebhookEvent,
+    type WorkerOnboardingCompletedWebhookEvent as WorkerOnboardingCompletedWebhookEvent,
+    type WorkerOffboardingStartedWebhookEvent as WorkerOffboardingStartedWebhookEvent,
+    type WorkerOffboardedWebhookEvent as WorkerOffboardedWebhookEvent,
+    type WorkerReactivatedWebhookEvent as WorkerReactivatedWebhookEvent,
     type OfferCreatedWebhookEvent as OfferCreatedWebhookEvent,
+    type OfferSignatureRequestedWebhookEvent as OfferSignatureRequestedWebhookEvent,
     type OfferSentWebhookEvent as OfferSentWebhookEvent,
     type OfferViewedWebhookEvent as OfferViewedWebhookEvent,
+    type OfferAcceptedWebhookEvent as OfferAcceptedWebhookEvent,
     type OfferVoidedWebhookEvent as OfferVoidedWebhookEvent,
-    type TimeOffBalanceAdjustedWebhookEvent as TimeOffBalanceAdjustedWebhookEvent,
-    type TimeOffRequestCreatedWebhookEvent as TimeOffRequestCreatedWebhookEvent,
-    type TimeOffRequestDeletedWebhookEvent as TimeOffRequestDeletedWebhookEvent,
-    type TimeOffRequestReviewedWebhookEvent as TimeOffRequestReviewedWebhookEvent,
-    type WorkerCreatedWebhookEvent as WorkerCreatedWebhookEvent,
-    type WorkerDeletedWebhookEvent as WorkerDeletedWebhookEvent,
-    type WorkerInviteAcceptedWebhookEvent as WorkerInviteAcceptedWebhookEvent,
-    type WorkerInviteSentWebhookEvent as WorkerInviteSentWebhookEvent,
-    type WorkerOffboardedWebhookEvent as WorkerOffboardedWebhookEvent,
-    type WorkerOffboardingStartedWebhookEvent as WorkerOffboardingStartedWebhookEvent,
-    type WorkerOnboardingCompletedWebhookEvent as WorkerOnboardingCompletedWebhookEvent,
-    type WorkerReactivatedWebhookEvent as WorkerReactivatedWebhookEvent,
-    type WorkerUpdatedWebhookEvent as WorkerUpdatedWebhookEvent,
+    type OfferExpiredWebhookEvent as OfferExpiredWebhookEvent,
+    type PayRateCreatedWebhookEvent as PayRateCreatedWebhookEvent,
+    type PayRateDeletedWebhookEvent as PayRateDeletedWebhookEvent,
     type ParsedWebhookEvent as ParsedWebhookEvent,
   };
 }
@@ -1261,3 +1598,97 @@ const cookieHeaderHas = (value: string | null, name: string): boolean => {
   const target = encodeURIComponent(name) + '=';
   return value.split(';').some((cookie) => cookie.trim().startsWith(target));
 };
+
+/** Client fields holding a secret, masked whenever the client is printed or serialized. */
+const SECRET_CLIENT_FIELDS: readonly string[] = ['apiKey', 'webhookSecret'];
+
+/**
+ * One field of the client (or of its stored options) as a printed client shows it. Credentials are
+ * masked outright; header bags go through the log redaction, which knows every header this SDK
+ * authenticates with; a base URL loses any userinfo or query credential it carries.
+ */
+const redactClientField = (key: string, value: unknown): unknown => {
+  if (value === null || value === undefined) return value;
+  if (SECRET_CLIENT_FIELDS.includes(key)) return '***';
+  if (key === 'baseURL' && typeof value === 'string') return redactUrl(value);
+  if (key === 'defaultHeaders') {
+    if (value instanceof Headers) return redactHeaders(value);
+    if (typeof value !== 'object' || Array.isArray(value)) return '***';
+    const redactValue = (name: string, field: unknown): unknown => {
+      if (typeof field === 'string') return redactHeaders({ [name]: field })[name];
+      if (Array.isArray(field)) return field.map((entry) => redactValue(name, entry));
+      return field === null || field === undefined ? field : '***';
+    };
+    return Object.fromEntries(Object.entries(value).map(([name, field]) => [name, redactValue(name, field)]));
+  }
+  if (typeof value !== 'object') return value;
+  if (key === 'fetchOptions') {
+    const { headers: _headers, ...rest } = value as Record<string, unknown>;
+    return _headers === undefined ? rest : { ...rest, headers: '***' };
+  }
+  if (key === '_options') {
+    return Object.fromEntries(
+      Object.entries(value).map(([name, field]) => [name, redactClientField(name, field)]),
+    );
+  }
+  return value;
+};
+
+/** Statuses the client follows when they carry a `Location`; any other 3xx is the server's answer. */
+const REDIRECT_STATUSES: readonly number[] = [301, 302, 303, 307, 308];
+
+/** The most redirects one request follows, the same cap the platform `fetch` uses. */
+const MAX_REDIRECTS = 20;
+
+/**
+ * Headers that carry a credential: the platform's own and every header this API's security schemes
+ * place. A redirect that leaves the origin drops each of them, wherever it was set.
+ */
+const CREDENTIAL_HEADERS: readonly string[] = ['authorization', 'cookie', 'proxy-authorization', 'x-api-key'];
+
+/** Query parameters this API's security schemes place, carried only to a same-origin redirect target. */
+const CREDENTIAL_QUERY: readonly string[] = [];
+
+/**
+ * Credential headers a browser keeps on the origin itself: it drops `Authorization` from a
+ * cross-origin redirect and never lets script set the other two.
+ */
+const BROWSER_GUARDED_HEADERS: readonly string[] = ['authorization', 'cookie', 'proxy-authorization'];
+
+/**
+ * Whether this runtime's fetch answers a manual redirect opaquely, hiding its target: a browser
+ * page, or a dedicated, shared or service worker in one. A worker scope alone is not enough,
+ * since edge runtimes model theirs on it while returning the real 3xx; a browser user agent is.
+ */
+const hidesRedirectTargets = (): boolean => {
+  if (isRunningInBrowser()) return true;
+  if (typeof (globalThis as { WorkerGlobalScope?: unknown }).WorkerGlobalScope === 'undefined') return false;
+  const agent: unknown = (globalThis as any).navigator?.userAgent;
+  return typeof agent === 'string' && agent.startsWith('Mozilla/');
+};
+
+/** Marks the error for a redirect the client refused to follow, which `makeRequest` does not retry. */
+const REFUSED_REDIRECT = Symbol('refusedRedirect');
+
+/** Marks `error` as a redirect refusal, which no retry layer repeats. */
+const markRefusedRedirect = (error: Errors.APIConnectionError): Errors.APIConnectionError => {
+  (error as { [REFUSED_REDIRECT]?: true })[REFUSED_REDIRECT] = true;
+  return error;
+};
+
+/** A connection error for a redirect the client will not follow. */
+const refuseRedirect = (message: string): Errors.APIConnectionError =>
+  markRefusedRedirect(new Errors.APIConnectionError({ message }));
+
+/** Whether `error` is a redirect refusal from {@link refuseRedirect}. */
+const isRefusedRedirect = (error: unknown): boolean =>
+  typeof error === 'object' &&
+  error !== null &&
+  (error as { [REFUSED_REDIRECT]?: true })[REFUSED_REDIRECT] === true;
+
+/** Whether a request body can be read only once, so a redirect that repeats the request cannot resend it. */
+const isOneShotBody = (body: unknown): boolean =>
+  !!(
+    ((globalThis as any).ReadableStream && body instanceof (globalThis as any).ReadableStream) ||
+    (typeof body === 'object' && body !== null && Symbol.asyncIterator in body)
+  );
