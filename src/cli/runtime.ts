@@ -7,6 +7,7 @@ import as from 'ansis';
 import { Command, Option } from 'commander';
 import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
 
+import { addContextCommand, markCommand, markUnmarkedCommands } from './context.js';
 import { listRow } from './list';
 import { setNoInput } from './prompt';
 import { encodeToon } from './toon.js';
@@ -246,6 +247,12 @@ export const createProgram = ({
   if (completions) addCompletionCommand(program, binaryName, completions);
   if (auth) addAuthCommands(program, auth, selection);
   if (addUpgradeCommands) addUpgradeCommands(program, binaryName, version);
+
+  // Everything registered above that `addGeneratedCommand` did not mark is the runtime's own
+  // (`completion`, `login`, `upgrade`, …), and `context` describes it that way. Registered last, so
+  // the hidden `context` command never shadows a name the commands above claimed.
+  markUnmarkedCommands(program, 'builtin');
+  addContextCommand(program, usageExitCode);
 
   return program;
 };
@@ -729,6 +736,10 @@ const addGeneratedCommand = (
   });
 
   parent.addCommand(command);
+  // Recorded for `context`: the command and every group on its path come from the API description.
+  markCommand(command, { source: 'generated' });
+  for (let group: Command | null = parent; group?.parent; group = group.parent)
+    markCommand(group, { source: 'generated' });
 };
 
 const ensureCommandPath = (
