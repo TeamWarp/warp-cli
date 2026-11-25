@@ -1085,6 +1085,8 @@ const cases: {
       '',
       '--t-shirt-size',
       'XS',
+      '--dietary-restrictions',
+      '{}',
       '--email',
       'john@joinwarp.com',
       '--work-email',
