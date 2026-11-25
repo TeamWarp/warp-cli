@@ -4,7 +4,7 @@
 warp\-benefits\-deductions\-create \- Create Benefit Deduction
 .SH "SYNOPSIS"
 .B warp benefits:deductions create
-\fB\-\-worker\-id\fR \fI<value>\fR \fB\-\-type\fR \fI<value>\fR \fB\-\-calculation\fR \fI<value>\fR \fB\-\-effective\-start\-date\fR \fI<value>\fR [\fIoptions\fR]
+\fB\-\-worker\-id\fR \fI<value>\fR \fB\-\-type\fR \fI<value>\fR \fB\-\-calculation\fR \fI<json>\fR \fB\-\-effective\-start\-date\fR \fI<value>\fR [\fIoptions\fR]
 .SH "DESCRIPTION"
 Create a benefit deduction for a worker.
 .SH "OPTIONS"
@@ -13,15 +13,15 @@ Create a benefit deduction for a worker.
 The id of the worker. Required.
 .TP
 \fB\-\-type\fR \fI<value>\fR
-The payroll deduction type to create. Required.
+The payroll deduction type to create. Use retirement_loan_repayment when a worker repays a retirement plan loan, such as a 401(k) loan, through payroll. Required.
 .TP
-\fB\-\-plan\fR \fI<value>\fR
+\fB\-\-plan\fR \fI<json>\fR
 A matching company plan, or null for a planless deduction.
 .TP
 \fB\-\-name\fR \fI<value>\fR
 The name body parameter.
 .TP
-\fB\-\-calculation\fR \fI<value>\fR
+\fB\-\-calculation\fR \fI<json>\fR
 Both contributions must be supplied. Required.
 .TP
 \fB\-\-recurrence\fR \fI<value>\fR
@@ -59,6 +59,9 @@ Print transformed string values without JSON quotes.
 .TP
 \fB\-\-debug\fR
 Enable SDK debug logging on standard error.
+.TP
+\fB\-\-stdin\fR
+Read JSON/YAML from stdin through EOF, waiting for delayed input.
 .TP
 \fB\-\-no\-input\fR
 Never prompt; a command that would ask fails instead.

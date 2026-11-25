@@ -181,6 +181,7 @@ const commands = [
     iterable: false,
     callShape: 'body',
     authClientKeyRequirements: [['apiKey']],
+    bodyRequired: true,
     positional: [],
     flags: [
       {
@@ -243,6 +244,7 @@ const commands = [
     iterable: false,
     callShape: 'body',
     authClientKeyRequirements: [['apiKey']],
+    bodyRequired: true,
     positional: [
       {
         name: 'id',
@@ -381,6 +383,7 @@ const commands = [
     iterable: false,
     callShape: 'body',
     authClientKeyRequirements: [['apiKey']],
+    bodyRequired: true,
     positional: [],
     flags: [
       {
@@ -398,7 +401,8 @@ const commands = [
         paramKey: 'type',
         location: 'body',
         required: true,
-        description: 'The payroll deduction type to create.',
+        description:
+          'The payroll deduction type to create. Use retirement_loan_repayment when a worker repays a retirement plan loan, such as a 401(k) loan, through payroll.',
         valueKind: 'string',
       },
       {
@@ -408,7 +412,7 @@ const commands = [
         location: 'body',
         required: false,
         description: 'A matching company plan, or null for a planless deduction.',
-        valueKind: 'unknown',
+        valueKind: 'object',
       },
       {
         name: 'name',
@@ -425,7 +429,7 @@ const commands = [
         location: 'body',
         required: true,
         description: 'Both contributions must be supplied.',
-        valueKind: 'unknown',
+        valueKind: 'object',
       },
       {
         name: 'recurrence',
@@ -487,6 +491,7 @@ const commands = [
     iterable: false,
     callShape: 'body',
     authClientKeyRequirements: [['apiKey']],
+    bodyRequired: true,
     positional: [
       {
         name: 'id',
@@ -515,7 +520,7 @@ const commands = [
         location: 'body',
         required: false,
         description: 'Both contributions must be supplied.',
-        valueKind: 'unknown',
+        valueKind: 'object',
       },
       {
         name: 'recurrence',
@@ -582,6 +587,7 @@ const commands = [
     iterable: false,
     callShape: 'body',
     authClientKeyRequirements: [['apiKey']],
+    bodyRequired: true,
     positional: [],
     flags: [
       {
@@ -649,12 +655,15 @@ const commands = [
         valueKind: 'boolean',
       },
       {
-        name: 'options',
-        optionKey: 'options',
+        name: 'option',
+        optionKey: 'option',
         paramKey: 'options',
         location: 'body',
         required: false,
         valueKind: 'array',
+        repeatable: true,
+        itemKind: 'object',
+        nullableArray: true,
       },
     ],
   },
@@ -694,6 +703,7 @@ const commands = [
     iterable: false,
     callShape: 'body',
     authClientKeyRequirements: [['apiKey']],
+    bodyRequired: true,
     positional: [
       {
         name: 'id',
@@ -801,6 +811,7 @@ const commands = [
     iterable: false,
     callShape: 'body',
     authClientKeyRequirements: [['apiKey']],
+    bodyRequired: true,
     positional: [
       {
         name: 'id',
@@ -851,6 +862,7 @@ const commands = [
     iterable: false,
     callShape: 'body',
     authClientKeyRequirements: [['apiKey']],
+    bodyRequired: true,
     positional: [
       {
         name: 'id',
@@ -974,6 +986,7 @@ const commands = [
     iterable: false,
     callShape: 'body',
     authClientKeyRequirements: [['apiKey']],
+    bodyRequired: true,
     positional: [],
     flags: [
       {
@@ -1000,7 +1013,7 @@ const commands = [
         paramKey: 'value',
         location: 'body',
         required: true,
-        valueKind: 'unknown',
+        valueKind: 'object',
       },
     ],
   },
@@ -1087,6 +1100,7 @@ const commands = [
     iterable: false,
     callShape: 'body',
     authClientKeyRequirements: [['apiKey']],
+    bodyRequired: true,
     positional: [],
     flags: [
       {
@@ -1109,6 +1123,7 @@ const commands = [
     iterable: false,
     callShape: 'body',
     authClientKeyRequirements: [['apiKey']],
+    bodyRequired: true,
     positional: [
       {
         name: 'id',
@@ -1390,6 +1405,7 @@ const commands = [
     iterable: false,
     callShape: 'body',
     authClientKeyRequirements: [['apiKey']],
+    bodyRequired: true,
     positional: [],
     flags: [
       {
@@ -1702,6 +1718,7 @@ const commands = [
     iterable: false,
     callShape: 'body',
     authClientKeyRequirements: [['apiKey']],
+    bodyRequired: true,
     positional: [
       {
         name: 'id',
@@ -1743,6 +1760,7 @@ const commands = [
     iterable: false,
     callShape: 'body',
     authClientKeyRequirements: [['apiKey']],
+    bodyRequired: true,
     positional: [
       {
         name: 'id',
@@ -1903,6 +1921,7 @@ const commands = [
     iterable: false,
     callShape: 'body',
     authClientKeyRequirements: [['apiKey']],
+    bodyRequired: true,
     positional: [],
     flags: [
       {
@@ -1990,6 +2009,7 @@ const commands = [
     iterable: false,
     callShape: 'body',
     authClientKeyRequirements: [['apiKey']],
+    bodyRequired: true,
     positional: [],
     flags: [
       {
@@ -2702,6 +2722,7 @@ const commands = [
     iterable: false,
     callShape: 'body',
     authClientKeyRequirements: [['apiKey']],
+    bodyRequired: true,
     positional: [
       {
         name: 'id',
@@ -2811,7 +2832,7 @@ const commands = [
         paramKey: 'address',
         location: 'body',
         required: false,
-        valueKind: 'object',
+        valueKind: 'unknown',
       },
       {
         name: 'position',
@@ -2935,6 +2956,7 @@ const commands = [
     iterable: false,
     callShape: 'body',
     authClientKeyRequirements: [['apiKey']],
+    bodyRequired: true,
     positional: [],
     flags: [
       {
@@ -3026,6 +3048,7 @@ const commands = [
     iterable: false,
     callShape: 'body',
     authClientKeyRequirements: [['apiKey']],
+    bodyRequired: true,
     positional: [],
     flags: [
       {
@@ -3144,7 +3167,7 @@ const commands = [
         required: true,
         description:
           'Where the employee will work. Either an existing company workplace or a remote US state.',
-        valueKind: 'unknown',
+        valueKind: 'object',
       },
       {
         name: 'compensation',
@@ -3197,6 +3220,7 @@ const commands = [
     iterable: false,
     callShape: 'body',
     authClientKeyRequirements: [['apiKey']],
+    bodyRequired: true,
     positional: [],
     flags: [
       {
@@ -3437,6 +3461,7 @@ const commands = [
     iterable: false,
     callShape: 'body',
     authClientKeyRequirements: [['apiKey']],
+    bodyRequired: true,
     positional: [],
     flags: [
       {
@@ -3530,6 +3555,7 @@ const commands = [
     iterable: false,
     callShape: 'body',
     authClientKeyRequirements: [['apiKey']],
+    bodyRequired: true,
     positional: [
       {
         name: 'id',

@@ -151,7 +151,7 @@ warp benefits:retirement-plans get 'crpl_1234' --api-key "$WARP_API_KEY"
 Update a retirement plan for a company on the manual or PayKonnect retirement channel.
 
 ```sh
-warp benefits:retirement-plans update 'crpl_1234' --api-key "$WARP_API_KEY"
+printf '%s' '{}' | warp benefits:retirement-plans update 'crpl_1234' --api-key "$WARP_API_KEY"
 ```
 
 ### `Benefits Deductions`
@@ -195,7 +195,7 @@ warp benefits:deductions get 'pbdg_1234' --api-key "$WARP_API_KEY"
 Update a benefit deduction. The calculation type cannot change.
 
 ```sh
-warp benefits:deductions update 'pbdg_1234' --api-key "$WARP_API_KEY"
+printf '%s' '{}' | warp benefits:deductions update 'pbdg_1234' --api-key "$WARP_API_KEY"
 ```
 
 ## `Company`
@@ -247,7 +247,7 @@ warp custom-fields get 'cf_1234' --api-key "$WARP_API_KEY"
 Update a custom worker field definition. The field type cannot be changed; create a new field instead. Requires the workers:custom_fields permission; changing the category, access level, or input source requires the manage level.
 
 ```sh
-warp custom-fields update 'cf_1234' --api-key "$WARP_API_KEY"
+printf '%s' '{}' | warp custom-fields update 'cf_1234' --api-key "$WARP_API_KEY"
 ```
 
 ### Archive Field
@@ -274,7 +274,7 @@ warp custom-fields create-option 'cf_1234' \
 Update the label or sort order of a custom worker field option. Options of archived fields cannot be edited. Requires the workers:custom_fields permission.
 
 ```sh
-warp custom-fields update-option 'cfo_1234' --api-key "$WARP_API_KEY"
+printf '%s' '{}' | warp custom-fields update-option 'cfo_1234' --api-key "$WARP_API_KEY"
 ```
 
 ### Delete Unused Field Option
@@ -349,7 +349,7 @@ warp departments create --api-key "$WARP_API_KEY" --name 'x'
 Update an existing department.
 
 ```sh
-warp departments update 'dpt_1234' --api-key "$WARP_API_KEY"
+printf '%s' '{}' | warp departments update 'dpt_1234' --api-key "$WARP_API_KEY"
 ```
 
 ## `I9Verifications`
@@ -614,7 +614,7 @@ Endpoints for worker management. "Workers" include anyone employed by your compa
 Update a worker and return the updated worker object. Omitted fields remain unchanged. Requires workers:profile write, plus read access to any referenced department, level, or workplace. See individual fields for update restrictions.
 
 ```sh
-warp workers update 'wrk_1234' --api-key "$WARP_API_KEY"
+printf '%s' '{}' | warp workers update 'wrk_1234' --api-key "$WARP_API_KEY"
 ```
 
 ### Get Worker
@@ -725,5 +725,5 @@ warp workplaces create \
 Update an existing workplace.
 
 ```sh
-warp workplaces update 'wkp_1234' --api-key "$WARP_API_KEY"
+printf '%s' '{}' | warp workplaces update 'wkp_1234' --api-key "$WARP_API_KEY"
 ```
