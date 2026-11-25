@@ -2769,6 +2769,14 @@ const commands = [
         valueKind: 'string',
       },
       {
+        name: 'dietary-restrictions',
+        optionKey: 'dietaryRestrictions',
+        paramKey: 'dietaryRestrictions',
+        location: 'body',
+        required: false,
+        valueKind: 'unknown',
+      },
+      {
         name: 'email',
         optionKey: 'email',
         paramKey: 'email',
