@@ -4,7 +4,7 @@
 warp\-custom\-fields\-upsert\-value \- Set Field Value
 .SH "SYNOPSIS"
 .B warp custom\-fields upsert\-value
-\fB\-\-worker\-id\fR \fI<value>\fR \fB\-\-field\-id\fR \fI<value>\fR \fB\-\-value\fR \fI<value>\fR [\fIoptions\fR]
+\fB\-\-worker\-id\fR \fI<value>\fR \fB\-\-field\-id\fR \fI<value>\fR \fB\-\-value\fR \fI<json>\fR [\fIoptions\fR]
 .SH "DESCRIPTION"
 Create or replace a worker's value for a custom field. The value shape must match the field type, and your API key must hold write on the field's category.
 .SH "OPTIONS"
@@ -15,7 +15,7 @@ The id of the worker. Required.
 \fB\-\-field\-id\fR \fI<value>\fR
 The tag of a company custom worker field. Required.
 .TP
-\fB\-\-value\fR \fI<value>\fR
+\fB\-\-value\fR \fI<json>\fR
 The value body parameter. Required.
 .TP
 \fB\-\-base\-url\fR \fI<url>\fR
@@ -44,6 +44,9 @@ Print transformed string values without JSON quotes.
 .TP
 \fB\-\-debug\fR
 Enable SDK debug logging on standard error.
+.TP
+\fB\-\-stdin\fR
+Read JSON/YAML from stdin through EOF, waiting for delayed input.
 .TP
 \fB\-\-no\-input\fR
 Never prompt; a command that would ask fails instead.
