@@ -16,15 +16,19 @@ import * as RetirementPlansAPI from './retirement-plans';
 import {
   RetirementPlans,
   type PublicRetirementPlan,
+  type PublicRetirementPlan1,
   type PublicRetirementPlanProvider,
   type PublicRetirementPlanStatus,
   type RetirementPlanListResponse,
   type RetirementPlanListParams,
+  type RetirementPlanCreateParams,
+  type RetirementPlanUpdateParams,
 } from './retirement-plans';
 import * as DeductionsAPI from './deductions';
 import {
   Deductions,
   type PublicBenefitDeduction,
+  type PublicBenefitDeduction1,
   type PublicWorkerReference,
   type PublicBenefitDeductionCategory,
   type PublicBenefitDeductionPlan,
@@ -37,6 +41,8 @@ import {
   type PercentageContribution,
   type DeductionListResponse,
   type DeductionListParams,
+  type DeductionCreateParams,
+  type DeductionUpdateParams,
 } from './deductions';
 
 export class Benefits extends APIResource {
@@ -62,15 +68,19 @@ export declare namespace Benefits {
   export {
     RetirementPlans as RetirementPlans,
     type PublicRetirementPlan as PublicRetirementPlan,
+    type PublicRetirementPlan1 as PublicRetirementPlan1,
     type PublicRetirementPlanProvider as PublicRetirementPlanProvider,
     type PublicRetirementPlanStatus as PublicRetirementPlanStatus,
     type RetirementPlanListResponse as RetirementPlanListResponse,
     type RetirementPlanListParams as RetirementPlanListParams,
+    type RetirementPlanCreateParams as RetirementPlanCreateParams,
+    type RetirementPlanUpdateParams as RetirementPlanUpdateParams,
   };
 
   export {
     Deductions as Deductions,
     type PublicBenefitDeduction as PublicBenefitDeduction,
+    type PublicBenefitDeduction1 as PublicBenefitDeduction1,
     type PublicWorkerReference as PublicWorkerReference,
     type PublicBenefitDeductionCategory as PublicBenefitDeductionCategory,
     type PublicBenefitDeductionPlan as PublicBenefitDeductionPlan,
@@ -83,5 +93,7 @@ export declare namespace Benefits {
     type PercentageContribution as PercentageContribution,
     type DeductionListResponse as DeductionListResponse,
     type DeductionListParams as DeductionListParams,
+    type DeductionCreateParams as DeductionCreateParams,
+    type DeductionUpdateParams as DeductionUpdateParams,
   };
 }

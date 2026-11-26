@@ -30,7 +30,7 @@ export class HealthPlans extends APIResource {
    *
    * @param {string} id - The tag of a company health plan.
    * @param {RequestOptions} [options] - Options to apply to the request, such as headers and an abort signal.
-   * @returns {APIPromise<PublicHealthPlan>} A company health plan available through Warp.
+   * @returns {APIPromise<PublicHealthPlan>}
    *
    * @example
    * ```ts
@@ -58,7 +58,18 @@ export interface PublicHealthPlan {
   /**
    * The health coverage type.
    */
-  type: 'medical' | 'dental' | 'vision' | 'life' | 'short_term_disability' | 'long_term_disability';
+  type:
+    | 'medical'
+    | 'dental'
+    | 'vision'
+    | 'life'
+    | 'short_term_disability'
+    | 'long_term_disability'
+    | 'accident'
+    | 'critical_illness'
+    | 'hospital'
+    | 'voluntary_life'
+    | 'miscellaneous';
   /**
    * The company-facing plan name.
    */
@@ -110,15 +121,27 @@ export type PublicHealthPlanStatus = 'active' | 'terminated';
 export interface HealthPlanListParams {
   limit: string | null;
   /**
+   * The tag of a company health plan.
    * @pattern ^chpl_
    */
   afterId?: string | null;
   /**
+   * The tag of a company health plan.
    * @pattern ^chpl_
    */
   beforeId?: string | null;
   types?: Array<
-    'medical' | 'dental' | 'vision' | 'life' | 'short_term_disability' | 'long_term_disability'
+    | 'medical'
+    | 'dental'
+    | 'vision'
+    | 'life'
+    | 'short_term_disability'
+    | 'long_term_disability'
+    | 'accident'
+    | 'critical_illness'
+    | 'hospital'
+    | 'voluntary_life'
+    | 'miscellaneous'
   > | null;
   statuses: Array<PublicHealthPlanStatus> | null;
   carrierIds?: Array<string> | null;
